@@ -1,0 +1,135 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      BrandBoost
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">BrandBoost</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+    <ion-searchbar #searchVal placeholder="Try 'Cancun' or 'Sushi'" (keyup.enter)="search(searchVal.value)"></ion-searchbar>
+<!--
+  <ion-text>
+    <h2>What are you looking for ?</h2>
+  </ion-text>
+  
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" shape="round" color="danger">
+          <ion-icon slot="start" name="pizza"></ion-icon>
+          Restaurant
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" shape="round" color="warning">
+          <ion-icon slot="start" name="bed"></ion-icon>
+          Hotel
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" shape="round" color="success">
+          <ion-icon slot="start" name="leaf"></ion-icon>
+          Healty
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" shape="round" color="primary">
+          <ion-icon slot="start" name="musical-notes"></ion-icon>
+          Bar, club
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  -->
+  <ion-text>
+    <h2>Explore arround you</h2>
+  </ion-text>
+  <div class="scrolling-wrapper">
+      <ion-card [routerLink]="['/tabs/tab3']">
+        <img src="https://cdn.pixabay.com/photo/2016/03/04/05/12/cancun-1235489_960_720.jpg"/>
+        <ion-card-title>Cancun</ion-card-title>
+      </ion-card>
+      <ion-card [routerLink]="['/tabs/tab3']">
+        <img src="https://cdn.pixabay.com/photo/2019/02/21/06/17/souvenir-shopping-4010707_960_720.jpg"/>
+        <ion-card-title>Isla Mujeres</ion-card-title>
+      </ion-card>
+      <ion-card [routerLink]="['/tabs/tab3']">
+        <img src="https://cdn.pixabay.com/photo/2017/07/06/06/32/puerto-del-carmen-2477181_960_720.jpg"/>
+        <ion-card-title>Playa del Carmen</ion-card-title>
+      </ion-card>
+      <ion-card [routerLink]="['/tabs/tab3']">
+        <img src="https://cdn.pixabay.com/photo/2018/02/27/13/10/sea-3185430_960_720.jpg"/>
+        <ion-card-title>Tulum</ion-card-title>
+      </ion-card>
+      <ion-card [routerLink]="['/tabs/tab3']">
+        <img src="https://cdn.pixabay.com/photo/2016/04/25/08/38/cozumel-1351419_960_720.jpg"/>
+        <ion-card-title>Cozumel</ion-card-title>
+      </ion-card>
+  </div>
+  <div class="padding-button">
+    <ion-button expand="full"  fill="outline" >See more ...</ion-button>
+  </div>
+  
+  <ion-text>
+    <h2>Inevitable place</h2>
+  </ion-text>
+  <div class="scrolling-wrapper">
+    <ion-card [routerLink]="['/tabs/tab3']">
+      <img src="https://cdn.pixabay.com/photo/2014/01/14/22/14/tacos-245241_960_720.jpg"/>
+      <ion-card-title>Tacos</ion-card-title>
+    </ion-card>
+    <ion-card [routerLink]="['/tabs/tab3']">
+      <img src="https://cdn.pixabay.com/photo/2018/08/03/08/33/food-3581341_960_720.jpg"/>
+      <ion-card-title>Sushi</ion-card-title>
+    </ion-card>
+    <ion-card [routerLink]="['/tabs/tab3']">
+      <img src="https://cdn.pixabay.com/photo/2020/03/10/13/53/tourism-4919080_960_720.jpg"/>
+      <ion-card-title>Scuba diving</ion-card-title>
+    </ion-card>
+    <ion-card [routerLink]="['/tabs/tab3']">
+      <img src="https://cdn.pixabay.com/photo/2015/09/26/21/33/suspension-bridge-959853_960_720.jpg"/>
+      <ion-card-title>Adventure</ion-card-title>
+    </ion-card>
+    <ion-card [routerLink]="['/tabs/tab3']">
+      <img src="https://cdn.pixabay.com/photo/2016/08/22/16/23/massage-therapy-1612308_960_720.jpg"/>
+      <ion-card-title>Spa</ion-card-title>
+    </ion-card>
+  </div>
+  <div class="padding-button">
+    <ion-button expand="full"  fill="outline" >See more ...</ion-button>
+  </div>
+  <ion-text>
+    <h2>Find your next experience</h2>
+  </ion-text>
+  <div class="event">
+    <ion-card [routerLink]="['/tabs/tab3']">
+      <ion-card-title>Our current events</ion-card-title>
+      <ion-card-subtitle>Come and discover the events near you</ion-card-subtitle>
+      <img src="https://cdn.pixabay.com/photo/2016/12/29/12/36/sol-1938459_960_720.jpg">
+    </ion-card>
+  </div>
+
+  <div class="event2">
+    <ion-card [routerLink]="['/tabs/tab3']">
+      <ion-card-title>Back to school !</ion-card-title>
+      <ion-card-subtitle>It's back to school, get pampered</ion-card-subtitle>
+      <img src="https://cdn.pixabay.com/photo/2017/09/05/12/21/massage-2717431_960_720.jpg">
+    </ion-card>
+  </div>
+
+  <div *ngIf="infoAboutMe">
+    Info about me:<br><br>
+    <ion-label>Email: {{infoAboutMe.data.email}}</ion-label><br>
+    <ion-label>ID: {{infoAboutMe.data.id}}</ion-label>
+  </div>
+
+</ion-content>

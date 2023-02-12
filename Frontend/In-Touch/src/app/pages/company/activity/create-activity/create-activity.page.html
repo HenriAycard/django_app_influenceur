@@ -1,0 +1,126 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add a new experience</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="ion-padding">
+    <h2>Create a new Activity in {{ nameCompany }}</h2>
+    <p>Fill the form to create a new activity</p>
+      <h3>Informations</h3>
+      <ion-list>
+        <ion-item lines="inset">
+          <ion-label position="floating">Name the activity</ion-label>
+          <ion-input type="text" required [clearInput]="true" [(ngModel)]="dataActivity.nameActivity"></ion-input>
+        </ion-item>
+        <ion-item lines="inset">
+          <ion-label>On sit</ion-label>
+          <ion-toggle slot="end" [checked]="true" [(ngModel)]="dataActivity.isOnSit"></ion-toggle>
+        </ion-item>
+        <ion-item lines="inset">
+          <ion-label>Take away</ion-label>
+          <ion-toggle slot="end" [checked]="false" [(ngModel)]="dataActivity.isTakeAway"></ion-toggle>
+        </ion-item>
+        <ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea required maxlength="800" [autoGrow]="true" [(ngModel)]="dataActivity.description"></ion-textarea>
+        </ion-item>
+      </ion-list>
+      <h3>Address</h3>
+      <ion-list>
+        <ion-item lines="inset">
+          <ion-label position="floating">Address *</ion-label>
+          <ion-input type="text" required [clearInput]="true" [(ngModel)]="dataAddress.address1"></ion-input>
+        </ion-item>
+        <ion-item lines="inset">
+          <ion-label position="floating">Address (complement)</ion-label>
+          <ion-input type="text" [clearInput]="true" [(ngModel)]="dataAddress.address2"></ion-input>
+        </ion-item>
+        <ion-item lines="inset">
+          <ion-label position="floating">City *</ion-label>
+          <ion-input type="text" required [clearInput]="true" [(ngModel)]="dataAddress.city"></ion-input>
+        </ion-item>
+        <ion-item lines="inset">
+          <ion-label position="floating">State</ion-label>
+          <ion-input type="text" [clearInput]="true" [(ngModel)]="dataAddress.state"></ion-input>
+        </ion-item>
+        <ion-item lines="inset">
+          <ion-label position="floating">Country *</ion-label>
+          <ion-input type="text" required [clearInput]="true" [(ngModel)]="dataAddress.country"></ion-input>
+        </ion-item>
+        <ion-item lines="inset">
+          <ion-label position="floating">Postal code *</ion-label>
+          <ion-input type="text" required [clearInput]="true" [(ngModel)]="dataAddress.postalCode"></ion-input>
+        </ion-item>
+      </ion-list>
+      <h3>Opening</h3>
+      <ion-button id="open-modal" expand="block">Add opening day</ion-button>
+      <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title>New opening date</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+              <ion-text>
+                <p>Select the days open</p>
+              </ion-text>
+              <ion-label>
+                <ion-chip [id]="day.id" [color]="tagDefaultColor[i]" (click)="changeTagColor(i)" *ngFor="let day of daysChip;let i = index">
+                  <ion-label>{{day.name}}</ion-label>
+                </ion-chip>
+              </ion-label>
+            
+            <ion-item>
+              <ion-label>Open</ion-label>
+              <ion-button (click)="openPicker('startDate')">{{ opening.get('startDate')}}</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-label>Close</ion-label>
+              <ion-button (click)="openPicker('endDate')">{{ opening.get('endDate')}}</ion-button>
+            </ion-item>
+            <ion-item lines="inset">
+              <ion-label>Break hours</ion-label>
+              <ion-toggle slot="end" [checked]="isBreak" [(ngModel)]="isBreak" [ngModelOptions]="{standalone: true}" (ionChange)="setBreak()"></ion-toggle>
+            </ion-item>
+            <ion-item *ngIf="isBreak">
+              <ion-label>Break start</ion-label>
+              <ion-button (click)="openPicker('pauseStart')">{{ opening.get('pauseStart')}}</ion-button>
+            </ion-item>
+            <ion-item *ngIf="isBreak">
+              <ion-label>Break end</ion-label>
+              <ion-button (click)="openPicker('pauseEnd')">{{ opening.get('pauseEnd')}}</ion-button>
+            </ion-item>
+
+            
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <ion-list>
+        <ion-item-sliding lines="inset" *ngFor="let data of datas;let i = index" >
+          <ion-item>
+            <ion-label>{{ data.fromDate }}:</ion-label>
+            <ion-label>{{data.startDate}}-{{data.endDate}}</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="deleteOpeningDate(data.isOrderBy)">Delete</ion-item-option>
+          </ion-item-options>
+          
+        </ion-item-sliding>
+      </ion-list>
+      <ion-button type="submit" expand="block" color="success" (click)="createActivity()">Submit</ion-button>
+  </div>
+
+</ion-content>

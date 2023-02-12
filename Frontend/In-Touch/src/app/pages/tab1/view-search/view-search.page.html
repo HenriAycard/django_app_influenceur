@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Search</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card button *ngFor="let activity of datas">
+    <ion-card-header>
+      <ion-card-title>{{ activity.nameActivity }}</ion-card-title>
+      <ion-card-subtitle>{{ activity.typeActivity.nameTypeActivity }}</ion-card-subtitle>
+      <ion-chip *ngIf="activity.isOnSit">On sit</ion-chip>
+      <ion-chip *ngIf="activity.isTakeAway">Take away</ion-chip>
+    </ion-card-header>
+
+    
+    <ion-card-content class="ion-text-justify">{{activity.description}}</ion-card-content>
+    
+  </ion-card>
+</ion-content>

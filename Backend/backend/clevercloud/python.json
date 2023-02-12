@@ -1,0 +1,5 @@
+{ "deploy": {
+   "module": "backend_wsgi",
+    "static": "/static/"
+  }
+}
