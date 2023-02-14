@@ -55,20 +55,27 @@ export class LoginPage implements OnInit {
       
       
       this.apiService.showLoading();
-          // Check email
-          let params = {
-            "email":email,
-            "password":password,
-          }
-          this.authentificationService.login(params).subscribe({
+      // Check email
+      let params = {
+        "email":email,
+        "password":password,
+      }
+      this.authentificationService.login(params).subscribe({
+        next: (value: any) => {
+          this.authentificationService.fetchCurrentUser().subscribe({
             next: (value: any) => {
-              console.log("ok open page tabs")
+              console.log("[LoginPage] - login - login")
+              this.authentificationService.user$.next(value.results[0])
+              this.apiService.stopLoading();
               this.router.navigateByUrl('/tabs', { replaceUrl: true });
             },
-            error: (err: any) => {
-              this.displayWrongLogin()
-            }
-          }) 
+          })
+        },
+        error: (err: any) => {
+          this.displayWrongLogin()
+        }
+        
+      }) 
 
     }
  

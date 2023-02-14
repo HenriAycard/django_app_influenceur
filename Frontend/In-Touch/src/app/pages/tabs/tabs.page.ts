@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
+import { User } from 'src/app/services/entities';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AuthenticationService } from '../../services/authentication.service';
 
@@ -8,41 +9,23 @@ import { AuthenticationService } from '../../services/authentication.service';
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss']
 })
-export class TabsPage {
+export class TabsPage implements OnInit{
 
-  isInfluencer : boolean = true;
+  isInfluencer : boolean | null = null;
   title = "Authenticated"
 
   constructor(
     public userManager:UserManagerProviderService,
     private authService: AuthenticationService) {
       
-      this.authService.fetchCurrentUser().subscribe({
-        next: (value: any) => {
-          console.log("[TabsPage] - constructor - data")
-        this.authService.user$.next(value.results[0])
-        this.isInfluencer = value.results[0].is_influenceur
+  }
 
-      },
-      error(err) {
-        console.log(err)
-      },
+  ngOnInit(): void {
+    this.authService.getCurrentUser().subscribe({
+      next: (value: User) => (this.isInfluencer = value.is_influenceur)
     })
-        
+  }
 
-      //Get info 
-      /*
-      this.apiService.getAllUser().subscribe((data: any)=>{
-        console.log("[TabsPage] - constructor - data")
-        console.log(data)
-        if (!data.results[0].is_influenceur){
-          this.isCompany = true;
-        }
-      })
-      this.apiService.getUserMe().subscribe((data: any)=>{
-        console.log(data)
-      })
-      */
-    }
+
 
 }

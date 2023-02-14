@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, filter, switchMap, take } from 'rxjs/operators';
+import { catchError, filter, finalize, switchMap, take } from 'rxjs/operators';
 import { AuthenticationService } from './authentication.service';
 import { UserManagerProviderService } from './user-manager-provider.service'
 
@@ -20,9 +20,7 @@ export class TokenInterceptor implements HttpInterceptor{
               private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log("[TokenInterceptor] - intercept - Handle Intercept error")
     const accessToken = this.userManager.getItem('access');
-    console.log("[TokenInterceptor] - intercept - accessToken=" + accessToken)
 
     return next.handle(this.addAuthorizationHeader(req, accessToken)).pipe(
       catchError(err => {
@@ -80,17 +78,18 @@ export class TokenInterceptor implements HttpInterceptor{
         switchMap((res: any) => {
           console.log("[TokenInterceptor] - refreshToken - res=")
           console.log(res)
-          this.refreshingInProgress = false;
+          
           this.accessTokenSubject.next(res.access);
           // repeat failed request with new token
           return next.handle(this.addAuthorizationHeader(request, res.access));
-        })
+        }),
+        finalize(() => (this.refreshingInProgress = false))
       );
     } else {
       // wait while getting new token
       return this.accessTokenSubject.pipe(
-        //filter(token => token !== ""),
-        //take(1),
+        filter(token => token !== ""),
+        take(1),
         switchMap(token => {
           console.log("[TokenInterceptor] - refreshToken - token=")
           console.log(token)

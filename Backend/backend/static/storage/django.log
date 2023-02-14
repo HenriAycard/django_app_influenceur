@@ -19386,3 +19386,354 @@ KeyError: 'id'
 [12/Feb/2023 17:46:01] WARNING [django.request:241] Not Found: /telescope/requests
 [12/Feb/2023 17:46:01] WARNING [django.request:241] Not Found: /api/geojson
 [12/Feb/2023 18:34:45] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[12/Feb/2023 18:55:02] WARNING [django.request:241] Unauthorized: /api/users/
+[12/Feb/2023 19:18:19] WARNING [django.request:241] Not Found: /robots.txt
+[12/Feb/2023 21:10:17] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[12/Feb/2023 21:38:47] WARNING [django.request:241] Not Found: /wp-login.php
+[12/Feb/2023 21:46:54] WARNING [django.request:241] Not Found: /remote/fgt_lang
+[12/Feb/2023 22:02:11] WARNING [django.request:241] Not Found: /modules/mod_ppc_simple_spotlight/elements/upload_file.php
+[13/Feb/2023 02:05:17] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 02:05:17] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 02:12:36] WARNING [django.request:241] Not Found: /public/_ignition/health-check/
+[13/Feb/2023 02:12:38] WARNING [django.request:241] Not Found: /_ignition/health-check/
+[13/Feb/2023 02:12:40] WARNING [django.request:241] Not Found: /wp-includes/wlwmanifest.xml
+[13/Feb/2023 05:30:24] WARNING [django.request:241] Not Found: /ab2g
+[13/Feb/2023 05:30:24] WARNING [django.request:241] Not Found: /ab2h
+[13/Feb/2023 07:34:04] WARNING [django.request:241] Not Found: /robots.txt
+[13/Feb/2023 08:36:49] WARNING [django.request:241] Not Found: /.git/config
+[13/Feb/2023 08:53:42] WARNING [django.request:241] Not Found: /actuator/health
+[13/Feb/2023 09:38:20] WARNING [django.request:241] Not Found: /.env
+[13/Feb/2023 09:38:22] WARNING [django.request:241] Method Not Allowed: /
+[13/Feb/2023 10:31:24] WARNING [django.request:241] Not Found: /robots.txt
+[13/Feb/2023 11:08:28] WARNING [django.request:241] Not Found: /wp-cc.php
+[13/Feb/2023 11:29:32] WARNING [django.request:241] Not Found: /.env
+[13/Feb/2023 11:29:32] WARNING [django.request:241] Method Not Allowed: /
+[13/Feb/2023 11:46:49] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:49] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:46:50] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:50] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:46:50] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:50] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:46:51] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:51] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:46:52] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:52] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:46:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:53] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:46:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:53] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:46:54] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.change-password.fr'. You may need to add 'www.change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 11:46:54] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 11:59:15] WARNING [django.request:241] Not Found: /.env
+[13/Feb/2023 16:35:53] WARNING [django.request:241] Not Found: /wp-login.php
+[13/Feb/2023 16:46:42] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 16:46:42] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 16:48:22] WARNING [django.request:241] Not Found: /HNAP1/
+[13/Feb/2023 16:57:33] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[13/Feb/2023 16:57:33] WARNING [django.request:241] Bad Request: /
+[13/Feb/2023 17:09:33] WARNING [django.request:241] Not Found: /robots.txt
+[13/Feb/2023 18:33:30] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[13/Feb/2023 19:19:22] WARNING [django.request:241] Not Found: /version
+[13/Feb/2023 19:19:59] WARNING [django.request:241] Not Found: /archivarix.cms.php
+[13/Feb/2023 20:46:13] WARNING [django.request:241] Unauthorized: /api/users/
+[13/Feb/2023 20:57:39] WARNING [django.request:241] Not Found: /remote/fgt_lang
+[13/Feb/2023 20:57:39] WARNING [django.request:241] Not Found: /remote/fgt_lang
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:48] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:50] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:53] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:58] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:00:59] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[13/Feb/2023 22:01:12] WARNING [django.request:241] Unauthorized: /api/users/
+[13/Feb/2023 22:01:12] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[13/Feb/2023 22:01:25] WARNING [django.request:241] Unauthorized: /api/users/
+[13/Feb/2023 22:01:25] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[13/Feb/2023 22:59:44] WARNING [django.request:241] Not Found: /ab2g
+[13/Feb/2023 22:59:45] WARNING [django.request:241] Not Found: /ab2h
+[14/Feb/2023 00:07:43] WARNING [django.request:241] Not Found: /wp-login.php
+[14/Feb/2023 02:37:34] WARNING [django.request:241] Not Found: ///remote/fgt_lang
+[14/Feb/2023 02:39:21] WARNING [django.request:241] Not Found: /dns-query
+[14/Feb/2023 02:39:23] WARNING [django.request:241] Not Found: /dns-query
+[14/Feb/2023 02:39:24] WARNING [django.request:241] Not Found: /query
+[14/Feb/2023 02:39:25] WARNING [django.request:241] Not Found: /query
+[14/Feb/2023 02:39:26] WARNING [django.request:241] Not Found: /resolve
+[14/Feb/2023 02:39:28] WARNING [django.request:241] Not Found: /resolve
+[14/Feb/2023 02:39:30] WARNING [django.request:241] Method Not Allowed: /
+[14/Feb/2023 02:52:04] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[14/Feb/2023 03:23:35] WARNING [django.request:241] Not Found: /robots.txt
+[14/Feb/2023 04:51:09] WARNING [django.request:241] Not Found: /.git/config
+[14/Feb/2023 04:51:16] WARNING [django.request:241] Not Found: /.env
+[14/Feb/2023 04:51:17] WARNING [django.request:241] Method Not Allowed: /
+[14/Feb/2023 04:51:20] WARNING [django.request:241] Not Found: /.env
+[14/Feb/2023 04:51:20] WARNING [django.request:241] Method Not Allowed: /
+[14/Feb/2023 05:49:09] WARNING [django.request:241] Not Found: /robots.txt
+[14/Feb/2023 11:30:01] WARNING [django.request:241] Not Found: /components/com_sexycontactform/fileupload/index.php
+[14/Feb/2023 11:52:27] WARNING [django.request:241] Not Found: //.env
+[14/Feb/2023 11:52:28] WARNING [django.request:241] Not Found: /laravel/.env
+[14/Feb/2023 11:52:29] WARNING [django.request:241] Not Found: /api/.env
+[14/Feb/2023 11:52:30] WARNING [django.request:241] Not Found: /app/.env
+[14/Feb/2023 11:52:31] WARNING [django.request:241] Not Found: /core/.env
+[14/Feb/2023 11:52:32] WARNING [django.request:241] Not Found: /blog/.env
+[14/Feb/2023 11:52:32] WARNING [django.request:241] Not Found: /public/.env
+[14/Feb/2023 11:52:33] WARNING [django.request:241] Not Found: /bootstrap/.env
+[14/Feb/2023 11:52:34] WARNING [django.request:241] Not Found: /server/.env
+[14/Feb/2023 11:52:34] WARNING [django.request:241] Not Found: /src/.env
+[14/Feb/2023 11:52:35] WARNING [django.request:241] Not Found: /database/.env
+[14/Feb/2023 11:52:36] WARNING [django.request:241] Not Found: /storage/.env
+[14/Feb/2023 11:52:37] WARNING [django.request:241] Not Found: /resources/.env
+[14/Feb/2023 11:52:37] WARNING [django.request:241] Not Found: /tests/.env
+[14/Feb/2023 11:52:38] WARNING [django.request:241] Not Found: /vendor/.env
+[14/Feb/2023 11:52:39] WARNING [django.request:241] Not Found: /dev/.env
+[14/Feb/2023 12:15:39] WARNING [django.request:241] Not Found: /.git/config
+[14/Feb/2023 13:32:47] WARNING [django.request:241] Not Found: /robots.txt
+[14/Feb/2023 13:51:33] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '183bb.zbc6hyepl.live'. You may need to add '183bb.zbc6hyepl.live' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '183bb.zbc6hyepl.live'. You may need to add '183bb.zbc6hyepl.live' to ALLOWED_HOSTS.
+[14/Feb/2023 13:51:33] WARNING [django.request:241] Bad Request: /zEjNyczNxQDO3kTMyETL1xSMxMzN2MDN5IjN3YTMsETL0xyLt92YuQ2dzl2Zuc3d39yL6MHc0RHasAjM6ATM6AjMgcDMtIDMtMjMwITLkxiNx0id
+[14/Feb/2023 15:15:12] WARNING [django.request:241] Not Found: /.env
+[14/Feb/2023 16:11:48] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 16:11:48] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 16:12:05] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 16:12:05] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 16:12:12] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 16:12:12] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 16:34:36] WARNING [django.request:241] Not Found: /robots.txt
+[14/Feb/2023 18:33:13] WARNING [django.request:241] Not Found: /.env
+[14/Feb/2023 18:33:16] WARNING [django.request:241] Method Not Allowed: /
+[14/Feb/2023 18:33:22] WARNING [django.request:241] Not Found: /.env
+[14/Feb/2023 18:33:24] WARNING [django.request:241] Method Not Allowed: /
+[14/Feb/2023 18:48:47] WARNING [django.request:241] Not Found: /wp-login.php
+[14/Feb/2023 21:12:37] WARNING [django.request:241] Not Found: /.env
+[14/Feb/2023 21:12:37] WARNING [django.request:241] Method Not Allowed: /
+[14/Feb/2023 21:18:11] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 21:18:11] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 21:18:17] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 21:18:17] WARNING [django.request:241] Unauthorized: /api/activity/search/
+[14/Feb/2023 21:19:19] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 21:19:19] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:40:59] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 21:40:59] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:40:59] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:41:03] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 21:41:03] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:41:03] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:41:04] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 21:41:04] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:41:04] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:41:05] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 21:46:56] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:46:56] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:46:56] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:46:56] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:46:57] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:46:57] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:46:57] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:46:57] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:48:25] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:49:05] WARNING [django.request:241] Not Found: /cgi-bin/authLogin.cgi
+[14/Feb/2023 21:51:28] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 21:51:28] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:51:28] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:51:28] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 21:57:55] WARNING [django.request:241] Bad Request: /auth/jwt/refresh/
+[14/Feb/2023 22:03:18] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 22:03:19] WARNING [django.request:241] Unauthorized: /api/activity/
+[14/Feb/2023 22:15:12] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 22:15:12] WARNING [django.request:241] Unauthorized: /api/activity/10
+[14/Feb/2023 22:15:12] WARNING [django.request:241] Unauthorized: /api/offer/
+[14/Feb/2023 22:23:42] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '0.0.0.0'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+[14/Feb/2023 22:23:42] WARNING [django.request:241] Bad Request: /api/v2/cmdb/system/admin/admin
+[14/Feb/2023 22:28:21] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 22:41:36] WARNING [django.request:241] Unauthorized: /api/users/

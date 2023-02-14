@@ -58,7 +58,7 @@ refreshToken(): Observable<{access: string; refresh: string}> {
   return this.http.post<{access: string; refresh: string}>(
       this.apiService.getRefreshTokenUrl,
     {
-      refreshToken
+      refresh: refreshToken
     }).pipe(
       tap(response => {
         console.log(response)
