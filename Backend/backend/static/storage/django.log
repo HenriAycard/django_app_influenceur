@@ -19739,3 +19739,5 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0'. You 
 [14/Feb/2023 22:41:36] WARNING [django.request:241] Unauthorized: /api/users/
 [14/Feb/2023 22:54:25] WARNING [django.request:241] Unauthorized: /api/users/
 [14/Feb/2023 22:55:29] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 23:01:44] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 23:03:21] WARNING [django.request:241] Unauthorized: /api/users/
