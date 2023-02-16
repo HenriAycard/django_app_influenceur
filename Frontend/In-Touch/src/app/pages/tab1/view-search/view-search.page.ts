@@ -44,6 +44,19 @@ export class ViewSearchPage implements OnInit {
       )
     }
 
+    public showDetail(activityId: any, name: any){ 
+      console.log("[showDetail] - navigationExtras: NavigationExtras")
+      let navigationExtras: NavigationExtras = {
+        state: {
+          nameActivity: name,
+          idActivity: activityId
+        },
+        relativeTo: this.activatedRoute
+      };
+      this.router.navigate(['contract'], navigationExtras)
+      
+    }
+
   
 
 }

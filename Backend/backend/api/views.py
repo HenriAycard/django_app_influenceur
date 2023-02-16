@@ -154,9 +154,8 @@ class OfferCreateView(generics.ListCreateAPIView):
         return OfferSerializer
 
     def get_queryset(self):
-        user = self.request.user.id
         activity = self.request.query_params['activity']
-        queryset = Offer.objects.filter(activity__company__user_id=user, activity_id=activity)
+        queryset = Offer.objects.filter(activity_id=activity)
         return queryset
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):

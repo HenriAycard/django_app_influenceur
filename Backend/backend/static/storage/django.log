@@ -19741,3 +19741,253 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0'. You 
 [14/Feb/2023 22:55:29] WARNING [django.request:241] Unauthorized: /api/users/
 [14/Feb/2023 23:01:44] WARNING [django.request:241] Unauthorized: /api/users/
 [14/Feb/2023 23:03:21] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 23:09:03] WARNING [django.request:241] Unauthorized: /api/users/
+[14/Feb/2023 23:10:02] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[14/Feb/2023 23:10:19] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[14/Feb/2023 23:10:47] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[14/Feb/2023 23:10:53] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[14/Feb/2023 23:11:03] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[15/Feb/2023 00:49:13] WARNING [django.request:241] Not Found: /.git/config
+[15/Feb/2023 01:49:55] WARNING [django.request:241] Not Found: /Res/login.html
+[15/Feb/2023 01:49:55] WARNING [django.request:241] Not Found: /aaaaaaaaaaaaaaaaaaaaaaaaaqr
+[15/Feb/2023 01:49:55] WARNING [django.request:241] Not Found: /robots.txt
+[15/Feb/2023 01:49:55] WARNING [django.request:241] Not Found: /robots.txt
+[15/Feb/2023 01:49:55] WARNING [django.request:241] Not Found: /99vt
+[15/Feb/2023 01:49:55] WARNING [django.request:241] Not Found: /99vu
+[15/Feb/2023 03:40:05] WARNING [django.request:241] Not Found: /robots.txt
+[15/Feb/2023 03:43:48] WARNING [django.request:241] Not Found: /.env
+[15/Feb/2023 03:43:48] WARNING [django.request:241] Method Not Allowed: /
+[15/Feb/2023 04:59:03] WARNING [django.request:241] Not Found: /ab2g
+[15/Feb/2023 05:12:56] WARNING [django.request:241] Not Found: /autodiscover/autodiscover.json
+[15/Feb/2023 06:19:19] WARNING [django.request:241] Not Found: ///wp-login.php
+[15/Feb/2023 06:20:53] WARNING [django.request:241] Not Found: /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+[15/Feb/2023 06:50:20] WARNING [django.request:241] Not Found: /robots.txt
+[15/Feb/2023 06:52:30] WARNING [django.request:241] Unauthorized: /api/users/
+[15/Feb/2023 07:08:04] WARNING [django.request:241] Unauthorized: /api/activity/
+[15/Feb/2023 07:23:56] WARNING [django.request:241] Not Found: /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+[15/Feb/2023 07:48:54] WARNING [django.request:241] Not Found: /ReportServer
+[15/Feb/2023 07:49:42] WARNING [django.request:241] Not Found: /login
+[15/Feb/2023 07:55:02] WARNING [django.request:241] Not Found: /index.php
+[15/Feb/2023 08:33:48] WARNING [django.request:241] Unauthorized: /api/users/
+[15/Feb/2023 09:00:10] WARNING [django.request:241] Unauthorized: /api/company/id/
+[15/Feb/2023 09:04:55] WARNING [django.request:241] Not Found: /robots.txt
+[15/Feb/2023 09:04:55] WARNING [django.request:241] Not Found: /robots.txt
+[15/Feb/2023 09:10:15] WARNING [django.request:241] Unauthorized: /api/company/id/
+[15/Feb/2023 10:31:19] WARNING [django.request:241] Not Found: /.env
+[15/Feb/2023 10:31:19] WARNING [django.request:241] Method Not Allowed: /
+[15/Feb/2023 11:29:51] WARNING [django.request:241] Not Found: /Autodiscover/Autodiscover.xml
+[15/Feb/2023 12:05:21] WARNING [django.request:241] Not Found: /.env
+[15/Feb/2023 12:29:52] WARNING [django.request:241] Not Found: /_ignition/execute-solution
+[15/Feb/2023 12:55:45] WARNING [django.request:241] Not Found: /actuator/health
+[15/Feb/2023 13:53:48] WARNING [django.request:241] Not Found: /manager/html
+[15/Feb/2023 13:57:50] WARNING [django.request:241] Not Found: /robots.txt
+[15/Feb/2023 15:16:28] WARNING [django.request:241] Not Found: /.env
+[15/Feb/2023 15:16:28] WARNING [django.request:241] Method Not Allowed: /
+[15/Feb/2023 16:28:05] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[15/Feb/2023 16:28:05] WARNING [django.request:241] Bad Request: /
+[15/Feb/2023 16:41:11] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[15/Feb/2023 17:42:40] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[15/Feb/2023 17:42:40] WARNING [django.request:241] Bad Request: /
+[15/Feb/2023 18:36:23] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[15/Feb/2023 18:44:10] WARNING [django.request:241] Not Found: /HNAP1/
+[15/Feb/2023 19:07:28] WARNING [django.request:241] Not Found: /cgi-bin/luci
+[15/Feb/2023 19:20:41] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'change-password.fr'. You may need to add 'change-password.fr' to ALLOWED_HOSTS.
+[15/Feb/2023 19:20:41] WARNING [django.request:241] Bad Request: /
+[15/Feb/2023 20:16:29] WARNING [django.request:241] Unauthorized: /api/users/
+[15/Feb/2023 20:22:26] WARNING [django.request:241] Unauthorized: /api/users/
+[15/Feb/2023 20:30:40] WARNING [django.request:241] Unauthorized: /api/users/
+[15/Feb/2023 20:30:40] WARNING [django.request:241] Unauthorized: /api/company/id/
+[15/Feb/2023 20:31:22] ERROR [django.request:241] Internal Server Error: /api/activity/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 114, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[15/Feb/2023 20:32:04] ERROR [django.request:241] Internal Server Error: /api/activity/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 114, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[15/Feb/2023 20:32:24] ERROR [django.request:241] Internal Server Error: /api/activity/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 114, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[15/Feb/2023 20:32:41] ERROR [django.request:241] Internal Server Error: /api/activity/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 114, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[15/Feb/2023 20:35:17] WARNING [django.request:241] Unauthorized: /api/users/
+[15/Feb/2023 20:44:17] WARNING [django.request:241] Unauthorized: /api/users/
+[15/Feb/2023 20:48:53] WARNING [django.request:241] Not Found: /components/com_creativecontactform/fileupload/index.php
+[15/Feb/2023 21:22:27] WARNING [django.request:241] Not Found: /cgi-bin/luci
+[15/Feb/2023 21:28:17] WARNING [django.request:241] Not Found: /ab2g
+[15/Feb/2023 21:28:17] WARNING [django.request:241] Not Found: /ab2h
+[15/Feb/2023 21:28:20] WARNING [django.request:241] Not Found: /t4
+[15/Feb/2023 23:23:17] WARNING [django.request:241] Not Found: //wp-content/themes/seotheme/db.php
+[15/Feb/2023 23:23:18] WARNING [django.request:241] Not Found: //wp-content/plugins/seoplugins/mar.php
+[15/Feb/2023 23:23:18] WARNING [django.request:241] Not Found: //wp-content/themes/seotheme/mar.php
+[16/Feb/2023 00:10:39] WARNING [django.request:241] Not Found: /manager/html
+[16/Feb/2023 01:48:09] WARNING [django.request:241] Not Found: /robots.txt
+[16/Feb/2023 03:06:06] WARNING [django.request:241] Not Found: /wp-login.php
+[16/Feb/2023 03:08:56] WARNING [django.request:241] Not Found: /ab2g
+[16/Feb/2023 03:08:57] WARNING [django.request:241] Not Found: /ab2h
+[16/Feb/2023 03:09:00] WARNING [django.request:241] Not Found: /t4
+[16/Feb/2023 05:25:59] WARNING [django.request:241] Not Found: /.env
+[16/Feb/2023 05:26:00] WARNING [django.request:241] Method Not Allowed: /
+[16/Feb/2023 06:53:47] WARNING [django.request:241] Not Found: //.env
+[16/Feb/2023 06:53:48] WARNING [django.request:241] Not Found: /laravel/.env
+[16/Feb/2023 06:53:48] WARNING [django.request:241] Not Found: /api/.env
+[16/Feb/2023 06:53:50] WARNING [django.request:241] Not Found: /app/.env
+[16/Feb/2023 06:53:51] WARNING [django.request:241] Not Found: /core/.env
+[16/Feb/2023 06:53:51] WARNING [django.request:241] Not Found: /blog/.env
+[16/Feb/2023 06:53:52] WARNING [django.request:241] Not Found: /public/.env
+[16/Feb/2023 06:53:53] WARNING [django.request:241] Not Found: /bootstrap/.env
+[16/Feb/2023 06:53:54] WARNING [django.request:241] Not Found: /server/.env
+[16/Feb/2023 06:53:54] WARNING [django.request:241] Not Found: /src/.env
+[16/Feb/2023 06:53:55] WARNING [django.request:241] Not Found: /database/.env
+[16/Feb/2023 06:53:56] WARNING [django.request:241] Not Found: /storage/.env
+[16/Feb/2023 06:53:56] WARNING [django.request:241] Not Found: /resources/.env
+[16/Feb/2023 06:53:57] WARNING [django.request:241] Not Found: /tests/.env
+[16/Feb/2023 06:53:58] WARNING [django.request:241] Not Found: /vendor/.env
+[16/Feb/2023 06:53:58] WARNING [django.request:241] Not Found: /dev/.env
+[16/Feb/2023 06:55:19] WARNING [django.request:241] Not Found: /.env
+[16/Feb/2023 06:55:21] WARNING [django.request:241] Method Not Allowed: /
+[16/Feb/2023 08:15:47] WARNING [django.request:241] Unauthorized: /api/users/
+[16/Feb/2023 08:33:01] WARNING [django.request:241] Unauthorized: /api/users/
+[16/Feb/2023 08:33:01] WARNING [django.request:241] Unauthorized: /api/activity/11
+[16/Feb/2023 08:33:01] WARNING [django.request:241] Unauthorized: /api/offer/

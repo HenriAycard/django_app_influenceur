@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card button *ngFor="let activity of datas">
+  <ion-card button *ngFor="let activity of datas" (click)="showDetail(activity.id, activity.nameActivity)">
     <ion-card-header>
       <ion-card-title>{{ activity.nameActivity }}</ion-card-title>
       <ion-card-subtitle>{{ activity.typeActivity.nameTypeActivity }}</ion-card-subtitle>

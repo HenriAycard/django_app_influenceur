@@ -43,7 +43,7 @@ export class Tab1Page {
           relativeTo: this.activatedRoute
         };
         this.router.navigate(['view-search'], navigationExtras)
-      }
+    }
       
   }
 

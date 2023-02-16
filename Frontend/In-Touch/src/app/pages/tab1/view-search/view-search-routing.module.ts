@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: ViewSearchPage
+  },
+  {
+    path: 'contract',
+    loadChildren: () => import('./contract/contract.module').then( m => m.ContractPageModule)
   }
 ];
 

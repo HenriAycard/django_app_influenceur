@@ -42,7 +42,7 @@ export interface django_pagination {
 export class AuthenticationService {
 
   // Init with null to filter out the first value in a guard!
-  user$ = new BehaviorSubject<User | unknown>(null);
+  user$ = new BehaviorSubject<User|null>(null);
 
   constructor(
     private http: HttpClient,
@@ -114,7 +114,7 @@ fetchCurrentUser(): Observable<django_pagination> {
   return this.http.get<django_pagination>(this.apiService.getUserUrl)
     .pipe(
       tap((datas: django_pagination) => {
-        this.user$.next(datas.results[0]);
+        this.user$.next(datas.results[0] as User);
       })
     );
 }
