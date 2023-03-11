@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
 import { Network } from '@capacitor/network';
 import { resolve } from 'dns';
-import { dataOpeningDate,OpeningDate, AddressDto, ActivityCreatDto, ActivityDto, OfferDto, CreateOfferDto } from 'src/app/models/activity-model';
+import { dataOpeningDate,OpeningDate, AddressDto, ActivityCreatDto, ActivityDto, OfferDto, CreateOfferDto, CreateReservationDto } from 'src/app/models/activity-model';
 
 export enum ConnectionStatus {
   Online,
@@ -72,6 +72,7 @@ export class ApiserviceService {
     getAddressUrl: string = "";
     getOpeningUrl: string = "";
     getOfferUrl: string = "";
+    getReservationUrl: string = "";
     
     
     getAppProfileUrl : string='';
@@ -102,6 +103,7 @@ export class ApiserviceService {
         this.getAddressUrl = this.virtualHostName + this.apiPrefix + "/address/"
         this.getOpeningUrl = this.virtualHostName + this.apiPrefix + "/opening/"
         this.getOfferUrl = this.virtualHostName + this.apiPrefix + "/offer/"
+        this.getReservationUrl = this.virtualHostName + this.apiPrefix + "/reservation/"
       }
 
     constructor(public http: HttpClient,
@@ -113,62 +115,6 @@ export class ApiserviceService {
          this.initProvider(Constant.domainConfig.virtual_host, Constant.domainConfig.client, "api")
         this.http = http
     }
-
-    
-    /*
-
-    public async initializeNetworkEvents() {
-        console.log("======== Initialise Network Events ======")
-        if (this.platform.is("capacitor")){
-            let status = await Network.getStatus();
-            if (status["connected"]==false){
-                this.networkConnected=false
-                this.updateNetworkStatus(ConnectionStatus.Offline);
-            }
-            else{
-                this.networkConnected=true;
-                this.updateNetworkStatus(ConnectionStatus.Online);
-            }
-            let handler = Network.addListener('networkStatusChange', (status) => {
-                console.log("Network status changed", status);
-                if (status["connected"]==false){
-                    this.networkConnected=false
-                    this.updateNetworkStatus(ConnectionStatus.Offline);
-                }
-                else{
-                    this.networkConnected=true;
-                    this.updateNetworkStatus(ConnectionStatus.Online);
-                }
-              });
-
-
-
-
-        }
-        else{
-            if (navigator.onLine){
-                this.updateNetworkStatus(ConnectionStatus.Online);
-            }
-            else{
-                this.updateNetworkStatus(ConnectionStatus.Offline);
-            }
-        }
-      }
-
-      private async updateNetworkStatus(status: ConnectionStatus) {
-        this.status.next(status);
-        this.networkConnected = status == ConnectionStatus.Offline ? false : true;
-        console.log("networkConnected "+this.networkConnected)
-      }
-
-      public onNetworkChange(): Observable<ConnectionStatus> {
-        return this.status.asObservable();
-      }
-
-      public getCurrentNetworkStatus(): ConnectionStatus {
-        return this.status.getValue();
-      }
-      */
 
 
         // Local Data 
@@ -1017,6 +963,19 @@ export class ApiserviceService {
         console.log("[APISERVICE][POST] - URL - " + this.getOfferUrl)
         console.log("[APISERVICE][POST] - BODY - " + bodyJson)
         return this.http.post(this.getOfferUrl, bodyJson, options).pipe(retry(3))
+    }
+
+    createReservation(reservation: CreateReservationDto) {
+        const options = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        var bodyJson: string = JSON.stringify(reservation)
+        console.log("[APISERVICE][POST] - createReservation - start")
+        console.log("[APISERVICE][POST] - URL - " + this.getReservationUrl)
+        console.log("[APISERVICE][POST] - BODY - " + bodyJson)
+        return this.http.post(this.getReservationUrl, bodyJson, options).pipe(retry(3))
     }
 
     public findActivityById(id: number): Observable<ActivityDto>{

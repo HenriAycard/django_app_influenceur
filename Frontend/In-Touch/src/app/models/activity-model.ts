@@ -75,3 +75,8 @@ export class dataOpeningDate {
     descriptionCondition: string;
     activity: number;
   }
+
+  export class CreateReservationDto {
+    offer: number;
+    dateReservation: Date;
+  }

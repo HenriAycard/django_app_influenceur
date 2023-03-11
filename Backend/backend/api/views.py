@@ -162,3 +162,39 @@ class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
+
+class ReservationCreateView(generics.CreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ReservationSerializer
+
+    def create(self, request, *args, **kwargs):
+        #request.data._mutable = True
+        request.data['user'] = str(self.request.user.id)
+        request.data['status'] = 0
+        #request.data._mutable = False
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def perform_create(self, serializer):
+        serializer.save()
+
+class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+
+class CountReservation(generics.ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ReservationSerializer
+
+    def get_queryset(self):
+        status = self.request.query_params['status']
+        print(status)
+        queryset = Reservation.objects.filter(status=status, user_id=self.request.user.id)
+        #.annotate(count_reservation=Count('user_id', output_field=IntegerField()))
+        print(queryset)
+        #results = CountReservationSerializer(queryset, many=False).data
+        return queryset

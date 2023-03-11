@@ -1,10 +1,20 @@
 from backoffice.models import *
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, SerializerMethodField
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics, permissions, serializers
 
 #created by ionic django crud generator
+
+class MethodField(SerializerMethodField):
+    def __init__(self, method_name=None, **kwargs):
+        # use kwargs for our function instead, not the base class
+        super().__init__(method_name) 
+        self.func_kwargs = kwargs
+
+    def to_representation(self, value):
+        method = getattr(self.parent, self.method_name)
+        return method(value, **self.func_kwargs)
 
 class UserSerializer(ModelSerializer):
     class Meta:
@@ -69,3 +79,24 @@ class OfferSerializer(ModelSerializer):
     class Meta:
         model = Offer
         fields = '__all__'
+
+class ReservationSerializer(ModelSerializer):
+    #count_reservation_pending = MethodField("get_count_status", status=0)
+    #count_reservation_accept = MethodField("get_count_status", status=1)
+    #count_reservation_decline = MethodField("get_count_status", status=2)
+
+    class Meta:
+        model = Reservation
+        fields = '__all__'
+    
+    #def get_count_status(self, obj, status):
+    #    return Reservation.objects.filter(status=status).count()
+
+class CountReservationSerializer(serializers.Serializer):
+    count_reservation = serializers.IntegerField()
+
+    class Meta:
+        model = Reservation
+        fields = 'user_id'
+
+#Reservation.objects.filter(status=status).count()
