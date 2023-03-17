@@ -20,6 +20,5 @@ urlpatterns = [
     path('offer/<int:pk>', OfferDetail.as_view(), name='offer_detail'),
     path('reservation/', ReservationCreateView.as_view(), name='reservation_list'),
     path('reservation/<int:pk>', ReservationDetail.as_view(), name='reservation_detail'),
-    path('reservation/count/', CountReservation.as_view(), name='reservation_count'),
     path('', include(router.urls))
 ]

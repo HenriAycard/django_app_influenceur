@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from './../../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -7,6 +7,8 @@ import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
+import { User } from 'src/app/services/entities';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -62,26 +64,41 @@ export class LoginPage implements OnInit {
       }
       this.authentificationService.login(params).subscribe({
         next: (value: any) => {
-          this.authentificationService.fetchCurrentUser().subscribe({
-            next: (value: any) => {
+          this.authentificationService.fetchCurrentUser()
+          .subscribe({
+            next: (response: Array<User>) => {
               console.log("[LoginPage] - login - login")
-              this.authentificationService.user$.next(value.results[0])
-              this.apiService.stopLoading();
-              this.router.navigateByUrl('/tabs', { replaceUrl: true });
+              if (response.length === 1) {
+                console.log("[LoginPage] - login - User is retrieved")
+                this.authentificationService.user$.next(response[0])
+                this.authentificationService.isAuthenticated.next(true)
+                this.apiService.stopLoading();
+                if (response[0].is_influenceur) {
+                  this.router.navigate(['/influenceur']);
+                } else {
+                  this.router.navigate(['/brand']);
+                }
+              } else {
+                this.router.navigate(['/login']);
+              }
             },
+            error: (err: HttpErrorResponse) => {
+              this.apiService.stopLoading();
+            this.displayWrongLogin()
+            }
           })
         },
-        error: (err: any) => {
-          this.displayWrongLogin()
-        }
+          error: (err: HttpErrorResponse) => {
+            this.apiService.stopLoading();
+            this.displayWrongLogin()
+          }
         
-      }) 
-
+      })
     }
  
 
   goNext(){
-    this.router.navigateByUrl("/tabs")
+    this.router.navigateByUrl("/login")
   }
  
   async forgetPwd() {

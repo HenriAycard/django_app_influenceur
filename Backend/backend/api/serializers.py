@@ -80,23 +80,37 @@ class OfferSerializer(ModelSerializer):
         model = Offer
         fields = '__all__'
 
-class ReservationSerializer(ModelSerializer):
-    #count_reservation_pending = MethodField("get_count_status", status=0)
-    #count_reservation_accept = MethodField("get_count_status", status=1)
-    #count_reservation_decline = MethodField("get_count_status", status=2)
+class ReservationActivitySerializer(ModelSerializer):
+    company = CompanySerializer(many=False, read_only=True)
+    typeActivity = TypeActivitySerializer(many=False, read_only=True)
+    class Meta:
+        model = Activity
+        fields = '__all__'
 
+
+class OfferActivitySerializer(ModelSerializer):
+    activity = ReservationActivitySerializer(many=False, read_only=True)
+    class Meta:
+        model = Offer
+        fields = '__all__'
+
+class ReservationSerializer(ModelSerializer):
     class Meta:
         model = Reservation
         fields = '__all__'
-    
-    #def get_count_status(self, obj, status):
-    #    return Reservation.objects.filter(status=status).count()
 
-class CountReservationSerializer(serializers.Serializer):
-    count_reservation = serializers.IntegerField()
+
+class InfluenceurReservationSerializer(ModelSerializer):
+    offer = OfferActivitySerializer(many=False, read_only=True)
 
     class Meta:
         model = Reservation
-        fields = 'user_id'
+        fields = ('id', 'offer', 'status', 'dateReservation')
 
-#Reservation.objects.filter(status=status).count()
+class BrandReservationSerializer(ModelSerializer):
+    offer = OfferActivitySerializer(many=False, read_only=True)
+    user = UserSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Reservation
+        fields = ('id', 'offer', 'status', 'dateReservation', 'user')

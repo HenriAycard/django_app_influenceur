@@ -1,0 +1,136 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Calendar
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Calendar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+    
+    <ion-accordion-group class="ion-padding">
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-icon name="help-outline" slot="start"></ion-icon>
+          <ion-label label>Waiting your answer</ion-label>
+          <ion-label slot="end" class="no-margin">{{countWaiting}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item  *ngFor="let waiting of dataWaiting" detail="true" button (click)="displayInfo(waiting)">
+            <ion-label>
+              <h3 class="bold">{{ waiting.offer.activity.nameActivity }}</h3>
+              <p>{{ waiting.offer.nameOffer }}</p>
+              <p class="blueColor">{{ waiting.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-accordion>
+      <ion-accordion value="second">
+        <ion-item slot="header" color="light">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          <ion-label>Last experiences</ion-label>
+          <ion-label slot="end" class="no-margin">{{countLastExperiences}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item  *ngFor="let lastExper of dataLastExperiences">
+            <ion-label>
+              <h3 class="bold">{{ lastExper.offer.activity.nameActivity }}</h3>
+              <p>{{ lastExper.offer.nameOffer }}</p>
+              <p class="blueColor">{{ lastExper.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-accordion>
+      <ion-accordion value="third">
+        <ion-item slot="header" color="light">
+          <ion-icon name="close-outline" slot="start"></ion-icon>
+          <ion-label>Rejected</ion-label>
+          <ion-label slot="end" class="no-margin">{{countUnsuccessful}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item  *ngFor="let unsuccess of dataUnsuccessful">
+            <ion-label>
+              <h3 class="bold">{{ unsuccess.offer.activity.nameActivity }}</h3>
+              <p>{{ unsuccess.offer.nameOffer }}</p>
+              <p class="blueColor">{{ unsuccess.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+    <ion-text>
+      <h2 class="ion-padding">Coming soon</h2>
+    </ion-text>
+    <p>
+      <ion-text class="ion-padding">
+        {{countComingSoon}} experience to come
+      </ion-text>
+    </p>
+
+  
+  <div>
+    <ion-grid color="light">
+      <ion-row *ngFor="let comingSoon of dataComingSoon">
+        <ion-col size="auto" style="text-align: center;">
+          <p style="color: rgb(185, 171, 171); font-weight: bold;font-size: 25px;padding-bottom: 0 !important;margin-bottom: 0px !important;">{{ comingSoon.date | date:'EEE' }}</p>
+          <p style="color: #0F5298; font-weight: bold;font-size: 35px;padding-top: 0 !important;margin-top: 0px !important">{{ comingSoon.date | date:'d' }}</p>
+        </ion-col>
+        <ion-col>
+          <div *ngFor="let valComingSoon of comingSoon.valeur">
+            <ion-card style="background-color: white;margin-top: 5px !important;margin-bottom: 5px !important;margin-right: 0 !important; padding: 0 !important; width: auto">
+              <ion-card-header text-wrap>
+                <ion-card-title>@{{ valComingSoon.user.username }}</ion-card-title>
+                <ion-card-subtitle>{{ valComingSoon.offer.activity.nameActivity }}</ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content class="blueColor">{{ valComingSoon.offer.nameOffer }} at {{ valComingSoon.dateReservation | date:'h:mm a'}}</ion-card-content>
+            </ion-card>
+            <br>
+          </div>
+          
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <ion-modal #modal [isOpen]="isModalOpen" (willDismiss)="closeModal()">
+    <ng-template>
+      <div class="wrapper">
+
+          <ion-toolbar>
+            <ion-buttons slot="start">
+              <ion-button (click)="closeModal()">Close</ion-button>
+            </ion-buttons>
+            <ion-title>Modal</ion-title>
+          </ion-toolbar>
+          <ion-item>
+            <ion-label>
+              <h3 class="bold">{{ dataModal.offer.activity.nameActivity }}</h3>
+              <p>{{ dataModal.offer.nameOffer }}</p>
+              <p class="blueColor">{{ dataModal.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+          <ion-grid>
+            <ion-row>
+              <ion-col  >
+                <ion-button expand="full" color="danger" (click)="cancelReservation()">Cancel</ion-button>
+              </ion-col>
+              <ion-col  >
+                <ion-button expand="full" color="success" (click)="acceptReservation()">Accept</ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        
+      </div>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

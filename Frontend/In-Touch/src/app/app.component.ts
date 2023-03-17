@@ -20,7 +20,7 @@ import { Preferences } from '@capacitor/preferences';
 })
 export class AppComponent  implements OnInit{
   user$: Observable<User>;
-  user: User;
+  //user: User;
 
   constructor(
     private platform: Platform,
@@ -34,9 +34,23 @@ export class AppComponent  implements OnInit{
  
 
   ngOnInit() {
-    this.user$ = this.authService.getCurrentUser().pipe(share())
+    this.authService.getCurrentUser().subscribe(
+      (response: User | null) => {
+        console.log(response)
+        if(response === null || typeof response === 'undefined') {
+          this.router.navigate(['/login']);
+        } else {
+          if (response.is_influenceur) {
+            this.router.navigate(['/influenceur']);
+          } else {
+            this.router.navigate(['/brand']);
+          }
+          
+        }
+      }
+    )
   }
-
+/*
   logout(): void {
     this.authService.logout();
     this.router.navigate(['/login']);
@@ -46,5 +60,5 @@ export class AppComponent  implements OnInit{
     console.log("--------- need to authenticate ---------")
     this.router.navigateByUrl("/register")
   }
- 
+ */
 }

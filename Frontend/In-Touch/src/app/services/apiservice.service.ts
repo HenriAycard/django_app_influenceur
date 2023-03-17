@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
 import { Network } from '@capacitor/network';
 import { resolve } from 'dns';
-import { dataOpeningDate,OpeningDate, AddressDto, ActivityCreatDto, ActivityDto, OfferDto, CreateOfferDto, CreateReservationDto } from 'src/app/models/activity-model';
+import { dataOpeningDate,OpeningDate, AddressDto, ActivityCreatDto, ActivityDto, OfferDto, CreateOfferDto, CreateReservationDto, django_pagination_ResaByStatusDto, ResaByStatusDto, ResaByStatusBrandDto } from 'src/app/models/activity-model';
 
 export enum ConnectionStatus {
   Online,
@@ -1013,5 +1013,41 @@ export class ApiserviceService {
         console.log("[APISERVICE][GET] - URL - " + url)
         return this.http.get<django_pagination>(url, options)
     }
-      
+
+    public findReservation(status: number, conditionDate: string): Observable<Array<ResaByStatusDto>>{
+        const url = this.getReservationUrl + '?status=' + status.toString() + conditionDate
+        const options = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log("[APISERVICE][GET] - findReservation - start")
+        console.log("[APISERVICE][GET] - URL - " + url)
+        return this.http.get<Array<ResaByStatusDto>>(url, options)
+    }
+    
+    public findReservationBrand(status: number, conditionDate: string): Observable<Array<ResaByStatusBrandDto>>{
+        const url = this.getReservationUrl + '?status=' + status.toString() + conditionDate
+        const options = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        console.log("[APISERVICE][GET] - findReservationBrand - start")
+        console.log("[APISERVICE][GET] - URL - " + url)
+        return this.http.get<Array<ResaByStatusBrandDto>>(url, options)
+    }
+
+    public updateReservationBrand(id: number, status: number, user: string, offer: number): Observable<any>{
+        const url = this.getReservationUrl + id.toString()
+        const options = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        var bodyJson: string = JSON.stringify({status: status, user: user, offer: offer})
+        console.log("[APISERVICE][PUT] - updateReservationBrand - start")
+        console.log("[APISERVICE][PUT] - URL - " + url)
+        return this.http.put<any>(url, bodyJson, options)
+    }
 }

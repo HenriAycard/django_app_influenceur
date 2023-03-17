@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Profile
+    </ion-title>
+    <ion-button slot="end" (click)="logout()">Log out</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Profil</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div class="wrapper">
+    <div class="profile">
+      <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="thumbnail">
+      <div class="check"><i class="fas fa-check"></i></div>
+      <h3 class="name">{{ user.first_name }} {{ user.last_name }}</h3>
+      <p class="title" *ngIf="user.is_influenceur">Influenceur</p>
+      <p class="title" *ngIf="!user.is_influenceur">Brand</p>
+    </div>
+    <div class="social-icons">
+      <div class="icon">
+        <a href="/"><i class="fab fa-dribbble"></i></a>
+        <h4>12.8k</h4>
+        <p>Followers</p>
+      </div>
+      
+      <div class="icon">
+        <a href="#"><i class="fab fa-behance"></i></a>
+        <h4>12.8k</h4>
+        <p>Followers</p>
+      </div>
+      
+      <div class="icon">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <h4>12.8k</h4>
+        <p>Followers</p>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

@@ -1,3 +1,5 @@
+import { User } from "../services/entities";
+
 export class dataOpeningDate {
     lstDays: Array<number>;
     OpeningDays: Map<string, string>;
@@ -79,4 +81,66 @@ export class dataOpeningDate {
   export class CreateReservationDto {
     offer: number;
     dateReservation: Date;
+  }
+  export class ActivityResaDto {
+    id: number;
+    company: companyDto;
+    typeActivity: typeActivityDto;
+    nameActivity: string;
+    isTakeAway: boolean;
+    isOnSit: boolean;
+    description: string;
+    address: number;
+  }
+
+  export class OfferResaDto {
+    id: number;
+    activity: ActivityResaDto;
+    nameOffer: string;
+    descriptionOffer: string;
+    descriptionCondition: string;
+  }
+
+  export class ResaByStatusDto {
+    id: number;
+    offer: OfferResaDto;
+    status: number;
+    dateReservation: Date;
+
+    constructor(init: ResaByStatusDto) {
+      this.id = init.id;
+      this.offer = init.offer
+      this.status = init.status
+      this.dateReservation = parseDate(init.dateReservation)
+    }
+  }
+
+  export class ResaByStatusBrandDto {
+    id: number;
+    offer: OfferResaDto;
+    status: number;
+    dateReservation: Date;
+    user: User;
+
+    constructor(init: ResaByStatusBrandDto) {
+      this.id = init.id;
+      this.offer = init.offer
+      this.status = init.status
+      this.dateReservation = parseDate(init.dateReservation)
+      this.user = init.user
+    }
+  }
+
+  export function parseDate(str: string | Date): Date {
+    if (str !== undefined && str !== null) {
+      return new Date(str);
+    }
+    return new Date();
+  }
+
+  export class django_pagination_ResaByStatusDto {
+    count: number;
+    next: any;
+    previous: any;
+    results: Array<ResaByStatusDto>
   }

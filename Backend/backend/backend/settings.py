@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     #'oauth2_provider',
-    #'django_filters',
+    'django_filters',
     #'rest_framework_docs',
     'rest_framework',
     #'backoffice.apps.BackofficeConfig',

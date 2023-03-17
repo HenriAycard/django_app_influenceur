@@ -1,0 +1,31 @@
+.bold {
+    font-weight: bold;
+}
+
+.blueColor {
+    color: rgb(0, 128, 255);
+}
+
+ion-modal {
+//    .example-modal {
+        --width: fit-content;
+        //--min-width: 300px;
+        --height: fit-content;
+        //--min-height: 250px;
+        --border-radius: 6px;
+        --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+
+        h1 {
+            margin: 20px 20px 10px 20px;
+        }
+        .wrapper {
+            margin-bottom: 10px;
+        }
+ //   }    
+}
+
+
+
+
+
+

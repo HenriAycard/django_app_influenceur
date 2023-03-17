@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, CanMatch, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { UserManagerProviderService } from './../services/user-manager-provider.service';
 import { CanLoad, Router } from '@angular/router';
@@ -10,8 +10,32 @@ import { filter, map, take } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AutoLoginGuard implements CanLoad {
-  constructor(private authService: AuthenticationService, private router: Router,private userManager:UserManagerProviderService) { }
- 
+
+  constructor(
+    private authService: AuthenticationService, 
+    private router: Router) { }
+
+  canLoad(): Observable<boolean> {
+		return new Observable((observer: Observer<boolean>) => {
+      this.authService.isAuthenticated.pipe(
+			//filter((val) => val !== null), // Filter out initial Behaviour subject value
+			take(1), // Otherwise the Observable doesn't complete!
+			map((isAuthenticated) => {
+				console.log('Found previous token, automatic login');
+				if (isAuthenticated === true) {
+					// Directly open inside area
+					this.router.navigateByUrl('/tabs', { replaceUrl: true });
+				} else {
+					// Simply allow access to the login
+					observer.next(true)
+				}
+			})
+		);
+    })
+	}
+  
+  
+  /*
   canLoad(): Observable<boolean> {    
     return new Observable((observer: Observer<boolean>) => {
       this.authService.user$.pipe(
@@ -35,5 +59,5 @@ export class AutoLoginGuard implements CanLoad {
         })
       );
     })
-  }
+  }*/
 }

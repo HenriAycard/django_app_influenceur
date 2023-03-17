@@ -15,6 +15,7 @@ import logging
 from django.http import JsonResponse, HttpResponse
 from django.db.models import Q, IntegerField, Value, Count, Sum, FloatField
 import pandas as pd
+from django_filters import FilterSet, DateTimeFilter, NumberFilter
 
 
 # Get an instance of a logger
@@ -32,6 +33,7 @@ class UserListCreateView(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
     filterset_fields = ['password','last_login','is_superuser','id','email','first_name','last_name','date_joined','is_active','is_staff']
     swagger_schema = None
+    pagination_class = None
          # Filter for connected user
     def get_queryset(self):
             user = self.request.user
@@ -53,6 +55,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     swagger_schema = None
+    pagination_class = None
          # Filter for connected user
     def get_queryset(self):
             user = self.request.user
@@ -163,9 +166,32 @@ class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
-class ReservationCreateView(generics.CreateAPIView):
+class ReservationFilter(FilterSet):
+    from_reservation = DateTimeFilter(field_name='dateReservation', lookup_expr='gte')
+    to_reservation = DateTimeFilter(field_name='dateReservation', lookup_expr='lte')
+
+    class Meta:
+        model: Reservation
+        fields = ['status', 'dateReservation', 'user'] #, 'from_reservation', 'to_reservation']
+
+class ReservationCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ReservationSerializer
+    queryset = Reservation.objects.all()
+    #serializer_class = ReservationSerializer
+    pagination_class = None
+    swagger_schema = None
+    #filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    #filterset_fields = ['status', 'dateReservation', 'user',] # 'from_reservation', 'to_reservation']
+    #filterset_class = ReservationFilter
+    #ordering_fields = ('dateReservation')
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            if self.request.user.is_influenceur:
+                return InfluenceurReservationSerializer
+            else:
+                return BrandReservationSerializer
+        return ReservationSerializer
+    
 
     def create(self, request, *args, **kwargs):
         #request.data._mutable = True
@@ -181,20 +207,40 @@ class ReservationCreateView(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save()
 
+    def get_queryset(self):
+        queryset = Reservation.objects.all()
+        user = self.request.user
+
+        if user.is_influenceur:
+            status_resa = self.request.query_params.get('status')
+            from_date_resa = self.request.query_params.get('from_date')
+            to_date_resa = self.request.query_params.get('to_date')
+
+            if status_resa:
+                if from_date_resa:
+                    queryset = Reservation.objects.filter(user=user.id, status=status_resa, dateReservation__gte=from_date_resa)
+                elif to_date_resa:
+                    queryset = Reservation.objects.filter(user=user.id, status=status_resa, dateReservation__lt=to_date_resa)
+                else:
+                    queryset = Reservation.objects.filter(user=user.id, status=status_resa)
+        else:
+            status_resa = self.request.query_params.get('status')
+            from_date_resa = self.request.query_params.get('from_date')
+            to_date_resa = self.request.query_params.get('to_date')
+
+            if status_resa:
+                if from_date_resa:
+                    queryset = Reservation.objects.filter(offer__activity__company__user_id=user.id, status=status_resa, dateReservation__gte=from_date_resa)
+                elif to_date_resa:
+                    queryset = Reservation.objects.filter(offer__activity__company__user_id=user.id, status=status_resa, dateReservation__lt=to_date_resa)
+                else:
+                    queryset = Reservation.objects.filter(offer__activity__company__user_id=user.id, status=status_resa)
+        
+        return queryset.order_by('dateReservation')
+
+
 class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
-class CountReservation(generics.ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ReservationSerializer
-
-    def get_queryset(self):
-        status = self.request.query_params['status']
-        print(status)
-        queryset = Reservation.objects.filter(status=status, user_id=self.request.user.id)
-        #.annotate(count_reservation=Count('user_id', output_field=IntegerField()))
-        print(queryset)
-        #results = CountReservationSerializer(queryset, many=False).data
-        return queryset
