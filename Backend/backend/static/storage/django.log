@@ -6642,3 +6642,92 @@ KeyError: 'id'
 [17/Mar/2023 19:59:22] WARNING [django.request:241] Unauthorized: /api/activity/
 [17/Mar/2023 20:04:54] WARNING [django.request:241] Unauthorized: /api/activity/
 [17/Mar/2023 20:05:46] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 20:18:57] WARNING [django.request:241] Not Found: /ab2g
+[17/Mar/2023 20:19:01] WARNING [django.request:241] Not Found: /t4
+[17/Mar/2023 20:20:05] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 20:20:05] WARNING [django.request:241] Unauthorized: /auth/jwt/refresh/
+[17/Mar/2023 20:21:36] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[17/Mar/2023 20:21:48] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[17/Mar/2023 20:22:44] WARNING [django.request:241] Unauthorized: /auth/jwt/create/
+[17/Mar/2023 21:08:34] WARNING [django.request:241] Unauthorized: /api/reservation/
+[17/Mar/2023 21:08:34] WARNING [django.request:241] Unauthorized: /api/reservation/
+[17/Mar/2023 21:08:34] WARNING [django.request:241] Unauthorized: /api/reservation/
+[17/Mar/2023 21:08:34] WARNING [django.request:241] Unauthorized: /api/reservation/
+[17/Mar/2023 21:10:18] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:11:16] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:12:01] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:21:05] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:22:23] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:37:50] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:40:26] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:44:21] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 21:47:38] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 22:09:28] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 22:10:58] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 22:12:27] WARNING [django.request:241] Unauthorized: /api/users/
+[17/Mar/2023 22:14:53] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[17/Mar/2023 22:16:45] WARNING [django.request:241] Not Found: /ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application
+[17/Mar/2023 22:17:47] WARNING [django.request:241] Unauthorized: /api/activity/
+[17/Mar/2023 22:19:01] WARNING [django.request:241] Not Found: /theme/assets/global/plugins/jquery-file-upload/server/php/index.php
+[17/Mar/2023 22:19:12] WARNING [django.request:241] Not Found: /owa/auth/x.js
+[17/Mar/2023 22:21:29] WARNING [django.request:241] Unauthorized: /api/activity/
+[18/Mar/2023 01:21:58] WARNING [django.request:241] Not Found: /.env
+[18/Mar/2023 01:21:59] WARNING [django.request:241] Not Found: /.env.example
+[18/Mar/2023 01:22:00] WARNING [django.request:241] Not Found: /blog/.env
+[18/Mar/2023 01:22:01] WARNING [django.request:241] Not Found: /api/.env
+[18/Mar/2023 01:22:02] WARNING [django.request:241] Not Found: /laravel/.env
+[18/Mar/2023 01:22:04] WARNING [django.request:241] Not Found: /docs/.env
+[18/Mar/2023 01:22:05] WARNING [django.request:241] Not Found: /_profiler/phpinfo
+[18/Mar/2023 01:22:06] WARNING [django.request:241] Not Found: /laravel/.env
+[18/Mar/2023 01:22:07] WARNING [django.request:241] Method Not Allowed: /
+[18/Mar/2023 03:27:01] WARNING [django.request:241] Not Found: /t4
+[18/Mar/2023 05:05:11] WARNING [django.request:241] Not Found: /api/index.php/v1/config/application
+[18/Mar/2023 05:26:57] WARNING [django.request:241] Not Found: /.env
+[18/Mar/2023 06:29:36] WARNING [django.request:241] Not Found: /style.php
+[18/Mar/2023 06:29:36] WARNING [django.request:241] Not Found: /wp-admin/style.php
+[18/Mar/2023 06:39:01] WARNING [django.request:241] Not Found: /robots.txt
+[18/Mar/2023 07:06:31] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[18/Mar/2023 07:25:35] WARNING [django.request:241] Not Found: /robots.txt
+[18/Mar/2023 07:41:32] WARNING [django.request:241] Unauthorized: /api/users/
+[18/Mar/2023 09:28:43] WARNING [django.request:241] Not Found: /t4
+[18/Mar/2023 09:32:44] WARNING [django.request:241] Not Found: /.env
+[18/Mar/2023 09:32:44] WARNING [django.request:241] Method Not Allowed: /
+[18/Mar/2023 09:40:15] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[18/Mar/2023 09:45:15] WARNING [django.request:241] Not Found: /.git/config
+[18/Mar/2023 10:11:02] WARNING [django.request:241] Not Found: /.env
+[18/Mar/2023 10:11:02] WARNING [django.request:241] Method Not Allowed: /
+[18/Mar/2023 10:27:12] WARNING [django.request:241] Not Found: /autodiscover/autodiscover.json
+[18/Mar/2023 10:38:21] WARNING [django.request:241] Not Found: /.env
+[18/Mar/2023 10:38:21] WARNING [django.request:241] Method Not Allowed: /
+[18/Mar/2023 11:03:58] WARNING [django.request:241] Not Found: /wp-login.php
+[18/Mar/2023 11:04:03] WARNING [django.request:241] Not Found: /wordpress/wp-login.php
+[18/Mar/2023 11:04:06] WARNING [django.request:241] Not Found: /blog/wp-login.php
+[18/Mar/2023 11:04:08] WARNING [django.request:241] Not Found: /wp/wp-login.php
+[18/Mar/2023 11:15:52] WARNING [django.request:241] Not Found: /action.php
+[18/Mar/2023 11:16:08] WARNING [django.request:241] Not Found: /robots.txt
+[18/Mar/2023 11:16:09] WARNING [django.request:241] Not Found: /sitemap.xml
+[18/Mar/2023 11:34:29] WARNING [django.request:241] Not Found: /module/smartblog/archive
+[18/Mar/2023 11:34:36] WARNING [django.request:241] Not Found: /wp-content/plugins/usc-e-shop/functions/progress-check.php
+[18/Mar/2023 11:38:51] WARNING [django.request:241] Not Found: /robots.txt
+[18/Mar/2023 11:48:26] WARNING [django.request:241] Not Found: /upload/index.php
+[18/Mar/2023 11:51:16] WARNING [django.request:241] Not Found: /homeaction.php
+[18/Mar/2023 12:40:46] WARNING [django.request:241] Unauthorized: /api/activity/
+[18/Mar/2023 12:50:38] WARNING [django.request:241] Not Found: //wp-content/plugins/ccx/index.php
+[18/Mar/2023 12:50:38] WARNING [django.request:241] Not Found: /ccx/index.php
+[18/Mar/2023 12:50:38] WARNING [django.request:241] Not Found: /wp-content/themes/ccx/index.php
+[18/Mar/2023 13:00:49] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'hypnoseeds.com'. You may need to add 'hypnoseeds.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'hypnoseeds.com'. You may need to add 'hypnoseeds.com' to ALLOWED_HOSTS.
+[18/Mar/2023 13:00:50] WARNING [django.request:241] Bad Request: /en/
+[18/Mar/2023 13:36:39] WARNING [django.request:241] Unauthorized: /api/users/
+[18/Mar/2023 13:38:09] WARNING [django.request:241] Unauthorized: /api/users/
+[18/Mar/2023 13:41:43] WARNING [django.request:241] Unauthorized: /api/users/
+[18/Mar/2023 13:43:35] WARNING [django.request:241] Unauthorized: /api/activity/

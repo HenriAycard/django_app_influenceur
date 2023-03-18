@@ -1,10 +1,12 @@
-<ion-content [fullscreen]="true">
+<ion-content >
 <div class="header">
 
   <!--Content before waves-->
   <div class="inner-header flex">
-  <!--Just the logo.. Don't mind this-->
-  <h1>Brand</h1>
+    <h1>Welcome to</h1>
+  </div>
+  <div class="inner-header flex">
+    <h1 style="margin-top: 0">BrandBoots</h1>
   </div>
   
   
@@ -31,7 +33,26 @@
   <!--Content starts-->
  <!-- <div class="content flex">-->
   <div class="content ">
+  <ion-text>
+    <h1 style="font-weight: bold;">Manage your brand</h1>
+  </ion-text>
+  <ion-text>
+    <p>Boots your company's communication by creating experiences with influencers. An easy way to create a contract between your company and an influencer.</p>
+  </ion-text>
+
   <ion-card>
+    <ion-list-header>
+      <ion-label>List of all your brand</ion-label>
+      <ion-button fill="clear" (click)="createCompanyBtn()"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+    </ion-list-header>
+    <ion-card button *ngFor="let company of lstCompanys" (click)="showDetail(company['id'], company['nameCompany'])">
+      <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
+      <ion-card-header>
+        <ion-card-title style="text-align: left;">{{ company['nameCompany'] }}</ion-card-title>
+      </ion-card-header>
+
+    </ion-card>
+    <!--
     <div class="createCompanyCSS">
       <ion-list>
         <ion-list-header>
@@ -44,7 +65,9 @@
       </ion-list>
       
     </div>
+    -->
   </ion-card>
+  <br>
 </div>
 <!--</div>-->
 <!--Content ends-->
