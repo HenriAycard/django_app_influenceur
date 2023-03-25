@@ -43,13 +43,19 @@
   <ion-card>
     <ion-list-header>
       <ion-label>List of all your brand</ion-label>
-      <ion-button fill="clear" (click)="createCompanyBtn()"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
+      <ion-button fill="clear" [routerLink]="['create-company']"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
     </ion-list-header>
-    <ion-card button *ngFor="let company of lstCompanys" (click)="showDetail(company['id'], company['nameCompany'])">
-      <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" />
-      <ion-card-header>
-        <ion-card-title style="text-align: left;">{{ company['nameCompany'] }}</ion-card-title>
-      </ion-card-header>
+    <ion-card button *ngFor="let company_card of lstCompanys" (click)="showDetail(company_card)">
+      <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of company_card.imgCompany" [src]="company_image.file" />
+      <ion-card-header style="text-align: left;">
+        <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
+        <ion-card-subtitle>{{ company_card.typeCompany.nameTypeCompany }}</ion-card-subtitle>
+        <ion-chip *ngIf="company_card['isOnSit']">On sit</ion-chip>
+        <ion-chip *ngIf="company_card['isTakeAway']">Take away</ion-chip>
+      </ion-card-header>  
+      <ion-card-content class="ion-text-justify" >
+        {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
+      </ion-card-content>
 
     </ion-card>
     <!--

@@ -7,11 +7,16 @@ import { IonicModule } from '@ionic/angular';
 const routes: Routes = [
   {
     path: '',
-    component: ViewSearchPage
+    component: ViewSearchPage,
   },
   {
     path: 'contract',
     loadChildren: () => import('./contract/contract.module').then( m => m.ContractPageModule)
+  },
+  {
+    path: '',
+    redirectTo: '/influenceur/explorer/view-search',
+    pathMatch: 'full'
   }
 ];
 

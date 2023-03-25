@@ -24,7 +24,8 @@ export class AutoLoginGuard implements CanLoad {
 				console.log('Found previous token, automatic login');
 				if (isAuthenticated === true) {
 					// Directly open inside area
-					this.router.navigateByUrl('/tabs', { replaceUrl: true });
+          this.router.navigate(['/tabs'], { replaceUrl: true });
+					//this.router.navigateByUrl('/tabs', { replaceUrl: true });
 				} else {
 					// Simply allow access to the login
 					observer.next(true)

@@ -12,6 +12,7 @@ import { filter, share } from 'rxjs/operators';
 
 import {delay} from 'rxjs/operators';
 import { Preferences } from '@capacitor/preferences';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -34,21 +35,22 @@ export class AppComponent  implements OnInit{
  
 
   ngOnInit() {
-    this.authService.getCurrentUser().subscribe(
-      (response: User | null) => {
-        console.log(response)
-        if(response === null || typeof response === 'undefined') {
-          this.router.navigate(['/login']);
-        } else {
-          if (response.is_influenceur) {
+    this.authService.fetchCurrentUser().subscribe({
+      next: (response: Array<User>) => {
+        if (response.length === 1) {
+          if (response[0].is_influenceur) {
             this.router.navigate(['/influenceur']);
           } else {
             this.router.navigate(['/brand']);
           }
-          
+        } else {
+          this.router.navigate(['/login']);
         }
+      },
+      error: (err: HttpErrorResponse) => {
+        this.router.navigate(['/login']);
       }
-    )
+    })
   }
 /*
   logout(): void {

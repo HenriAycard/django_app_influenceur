@@ -3,31 +3,34 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Add a new experience</ion-title>
+    <ion-title>Create a new brand</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="ion-padding">
-    <h2>Create a new Activity in {{ nameCompany }}</h2>
-    <p>Fill the form to create a new activity</p>
+    <h2>Create</h2>
+    <p>Fill the form to create a new brand</p>
       <h3>Informations</h3>
+      <ion-button color="dark" size="small" fill="outline" class="tt-none" mode="md" (click)="chooseOrTakePicture()">
+        Take picture
+      </ion-button>
       <ion-list>
         <ion-item lines="inset">
-          <ion-label position="floating">Name the activity</ion-label>
-          <ion-input type="text" required [clearInput]="true" [(ngModel)]="dataActivity.nameActivity"></ion-input>
+          <ion-label position="floating">Name of your brand</ion-label>
+          <ion-input type="text" required [clearInput]="true" [(ngModel)]="dataCompany.nameCompany"></ion-input>
         </ion-item>
         <ion-item lines="inset">
           <ion-label>On sit</ion-label>
-          <ion-toggle slot="end" [checked]="true" [(ngModel)]="dataActivity.isOnSit"></ion-toggle>
+          <ion-toggle slot="end" [checked]="true" [(ngModel)]="dataCompany.isOnSit"></ion-toggle>
         </ion-item>
         <ion-item lines="inset">
           <ion-label>Take away</ion-label>
-          <ion-toggle slot="end" [checked]="false" [(ngModel)]="dataActivity.isTakeAway"></ion-toggle>
+          <ion-toggle slot="end" [checked]="false" [(ngModel)]="dataCompany.isTakeAway"></ion-toggle>
         </ion-item>
         <ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">
           <ion-label position="floating">Description</ion-label>
-          <ion-textarea required maxlength="800" [autoGrow]="true" [(ngModel)]="dataActivity.description"></ion-textarea>
+          <ion-textarea required maxlength="800" [autoGrow]="true" [(ngModel)]="dataCompany.description"></ion-textarea>
         </ion-item>
       </ion-list>
       <h3>Address</h3>
@@ -120,7 +123,7 @@
           
         </ion-item-sliding>
       </ion-list>
-      <ion-button type="submit" expand="block" color="success" (click)="createActivity()">Submit</ion-button>
+      <ion-button type="submit" expand="block" color="success" (click)="createCompany()">Submit</ion-button>
   </div>
 
 </ion-content>

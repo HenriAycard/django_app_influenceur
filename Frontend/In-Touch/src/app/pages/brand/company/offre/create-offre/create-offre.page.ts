@@ -9,7 +9,6 @@ import { CreateOfferDto } from 'src/app/models/activity-model';
 export interface queryParamsDto {
   id: number;
   nameCompany: string;
-  idActivity: number;
 }
 
 
@@ -57,7 +56,7 @@ export class CreateOffrePage implements OnInit {
       nameOffer: form.value.nameOffer,
       descriptionOffer: form.value.descriptionOffer,
       descriptionCondition: form.value.descriptionCondition,
-      activity: this.parameters.idActivity
+      company: this.parameters.id
     }
     this.saveOffer(newOffer);
 

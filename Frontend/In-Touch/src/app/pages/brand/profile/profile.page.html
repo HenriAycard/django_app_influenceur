@@ -17,7 +17,7 @@
     <div class="profile">
       <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" class="thumbnail">
       <div class="check"><i class="fas fa-check"></i></div>
-      <h3 class="name">{{ user.first_name }} {{ user.last_name }}</h3>
+      <h3 class="name">{{ user.first_name! }} {{ user.last_name! }}</h3>
       <p class="title" *ngIf="user.is_influenceur">Influenceur</p>
       <p class="title" *ngIf="!user.is_influenceur">Brand</p>
     </div>

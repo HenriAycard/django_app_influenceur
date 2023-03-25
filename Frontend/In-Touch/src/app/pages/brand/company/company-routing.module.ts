@@ -13,16 +13,16 @@ const routes: Routes = [
     loadChildren: () => import('./activity/view-activity/view-activity.module').then( m => m.ViewActivityPageModule)
   },
   {
-    path: 'create-activity',
-    loadChildren: () => import('./activity/create-activity/create-activity.module').then( m => m.CreateActivityPageModule)
-  },
-  {
     path: 'view-offre',
     loadChildren: () => import('./offre/view-offre/view-offre.module').then( m => m.ViewOffrePageModule)
   },
   {
     path: 'create-offre',
     loadChildren: () => import('./offre/create-offre/create-offre.module').then( m => m.CreateOffrePageModule)
+  },
+  {
+    path: 'create-company',
+    loadChildren: () => import('./create-company/create-company.module').then( m => m.CreateCompanyPageModule)
   }
 ];
 

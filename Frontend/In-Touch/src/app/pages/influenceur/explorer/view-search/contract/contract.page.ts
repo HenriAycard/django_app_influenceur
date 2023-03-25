@@ -4,14 +4,13 @@ import { UserManagerProviderService } from 'src/app/services/user-manager-provid
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { catchError, retry, BehaviorSubject } from 'rxjs';
-import { ActivityDto, OfferDto, CreateReservationDto } from 'src/app/models/activity-model';
+import { CompanyDto, OfferDto, CreateReservationDto } from 'src/app/models/activity-model';
 import { CheckboxCustomEvent } from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
 
 export interface queryParamsDto {
-  nameActivity: string,
-  idActivity: number
+  id: number
 }
 
 export interface django_pagination {
@@ -29,7 +28,7 @@ export interface django_pagination {
 export class ContractPage implements OnInit {
 
   public parameters: queryParamsDto
-  public datas: ActivityDto = new ActivityDto();
+  public datas: CompanyDto = new CompanyDto();
   public datasOffer: Array<OfferDto> = Array<OfferDto>(new OfferDto);
   public canDismiss = false;
   public isModalOpen = false;
@@ -53,21 +52,22 @@ export class ContractPage implements OnInit {
     // Get query params
     const navigation = this.router.getCurrentNavigation();
     this.parameters = navigation?.extras.state as queryParamsDto
-    this.findActivityByIdActivity()
-    this.findOffreByIdActivity()
+    this.findCompanyByIdCompany()
+    this.findOffreByIdCompany()
     this.presentingElement = document.querySelector('.ion-page');
   }
 
-  public async findActivityByIdActivity(){
-    this.apiService.findActivityById(this.parameters.idActivity).subscribe(
+  public async findCompanyByIdCompany(){
+    
+    this.apiService.findCompanyById(this.parameters.id).subscribe(
       data => {
-        this.datas = data as ActivityDto
+        this.datas = data as CompanyDto
       }
     )
   }
 
-  public async findOffreByIdActivity(){
-    this.apiService.findOfferById(this.parameters.idActivity).subscribe(
+  public async findOffreByIdCompany(){
+    this.apiService.findOfferById(this.parameters.id).subscribe(
       (data: django_pagination) => {
         console.log(data)
         this.datasOffer = data.results as OfferDto[]
@@ -87,8 +87,8 @@ export class ContractPage implements OnInit {
 
   public handleRefresh($event: any){
     setTimeout(() => {
-        this.findActivityByIdActivity()
-        this.findOffreByIdActivity()
+        this.findCompanyByIdCompany()
+        this.findOffreByIdCompany()
         $event.target.complete();
       
         
@@ -158,6 +158,9 @@ export class ContractPage implements OnInit {
     this.canDismiss = ev.detail.checked;
   }
 
+  public returnPreviousPage(): void{
+    this.router.navigate(['../view-search'])
+  }
 
 
 }

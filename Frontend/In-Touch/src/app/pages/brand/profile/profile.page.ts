@@ -1,24 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
-
-interface User {
-  logentry:string;
-  password:string;
-  last_login:any;
-  is_superuser:any;
-  id:any;
-  email:string;
-  first_name:string;
-  last_name:string;
-  date_joined:any;
-  is_influenceur:any;
-  is_active:any;
-  is_staff:any;
-  avatar:any;
-  groups:any;
-  user_permissions:any;
-}
+import { User } from 'src/app/services/entities';
 
 @Component({
   selector: 'app-profile',
@@ -27,7 +10,7 @@ interface User {
 })
 export class ProfilePage implements OnInit {
 
-  user: any
+  user: User
 
   constructor(
     private authService: AuthenticationService,
@@ -36,11 +19,21 @@ export class ProfilePage implements OnInit {
 
 
   ngOnInit(): void {
-    this.authService.user$.subscribe(
+    this.authService.getCurrentUser().subscribe(
       (response: any) => {
-        this.user = response;
+        this.user = new User(
+          response.id,
+          response.first_name,
+          response.last_name,
+          response.username,
+          response.facebookId,
+          response.android,
+          response.ios,
+          response.is_influenceur
+        );
       }
     )
+    
   }
 
   public logout(): void {

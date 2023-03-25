@@ -33,4 +33,4 @@ urlpatterns = [
     #path('o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

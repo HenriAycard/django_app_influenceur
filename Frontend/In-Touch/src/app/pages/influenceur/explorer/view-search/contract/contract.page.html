@@ -1,22 +1,18 @@
 <div class="ion-page">
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{parameters.nameActivity}}</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+  <div class="button-retour">
+    <ion-button fill="clear" color="light" (click)="returnPreviousPage()"><ion-icon name="close-outline"></ion-icon></ion-button>
+  </div>
+  <img style="height: 250px; width: 100%; object-fit: cover;" *ngFor="let company_image of datas.imgCompany" [src]="company_image.file" />
+
   <ion-item>
     <ion-label>
-      <h1>{{ datas.nameActivity }}</h1>
-      <p>{{ datas.typeActivity.nameTypeActivity}}</p>
+      <h1 class="header-font">{{ datas.nameCompany }}</h1>
+      <p>{{ datas.typeCompany.nameTypeCompany}}</p>
       <ion-chip *ngIf="datas.isOnSit">On sit</ion-chip>
       <ion-chip *ngIf="datas.isTakeAway">Take away</ion-chip>
     </ion-label>
@@ -28,12 +24,18 @@
       <ion-label>{{ datas.address.city }} {{ datas.address.postalCode }}</ion-label>
     </ion-label>
   </ion-item>
+  <ion-item button >
+    <ion-icon name="logo-instagram" size="default" style="padding-right: 20px;"></ion-icon>
+    <ion-label>
+      @{{ datas.nameCompany }}
+    </ion-label>
+  </ion-item>
   <ion-item>
-    <ion-label class="ion-text-wrap">{{ datas.description }}</ion-label>
+    <ion-label class="ion-text-wrap">{{ datas.description | slice:0:300 }}{{datas.description.length > 300 ? '...' : ''}}</ion-label>
   </ion-item>
   <ion-item>
     <ion-label>
-      <h1>Opening hours</h1>
+      <h1 class="header-font">Opening hours</h1>
       <p *ngFor="let open of datas.openings">
         {{open.fromDate}}: {{open.startDate}}-{{open.endDate}}
       </p>

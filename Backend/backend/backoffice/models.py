@@ -15,6 +15,8 @@ import datetime
 from django.contrib.auth.models import User
 from django.shortcuts import reverse
 
+def upload_to(instance, filename):
+    return 'images/{filename}'.format(filename=filename)
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -81,16 +83,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         '''
         return self.first_name
 
-
-class Company(models.Model):
+class TypeCompany(models.Model):
     id = models.BigAutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    nameCompany = models.CharField(('nameCompany'), max_length=50, null=True, blank=True)
-
-
-class TypeActivity(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    nameTypeActivity = models.CharField(('nameTypeActivity'), max_length=50, blank=True)
+    nameTypeCompany = models.CharField(('nameTypeCompany'), max_length=50, blank=True)
 
 class Address(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -102,20 +97,25 @@ class Address(models.Model):
     country = models.CharField(('country'), max_length=30, blank=True)
     postalCode = models.CharField(('postalCode'),max_length=5, blank=True)
 
-class Activity(models.Model):
+class Company(models.Model):
     id = models.BigAutoField(primary_key=True)
-    nameActivity = models.CharField(('nameActivity'), max_length=50, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    nameCompany = models.CharField(('nameCompany'), max_length=50, blank=True)
     isTakeAway = models.BooleanField(('isTakeAway'), default=False)
     isOnSit = models.BooleanField(('isOnSit'), default=False)
     description = models.CharField(('description'), max_length=800, blank=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    typeActivity = models.ForeignKey(TypeActivity, on_delete=models.CASCADE)
-    address = models.OneToOneField(Address, on_delete=models.CASCADE)
-    #opening = models.ManyToManyField(Opening)
+    typeCompany = models.ForeignKey(TypeCompany, on_delete=models.CASCADE, null=True)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
+
+class imgCompany(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='imgCompany')
+    file = models.ImageField(upload_to=upload_to, blank=True, null=True)
+    isPrincipal = models.BooleanField(('isPrincipal'), default=False)
 
 class Opening(models.Model):
     id = models.BigAutoField(primary_key=True)
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='openings')
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='openings', null=True)
     fromDate = models.CharField(('fromDate'), max_length=15, blank=True)
     toDate = models.CharField(('toDate'), max_length=15, blank=True)
     startDate = models.CharField(('startDate'), max_length=15, blank=True)
@@ -129,7 +129,7 @@ class Opening(models.Model):
 
 class Offer(models.Model):
     id = models.BigAutoField(primary_key=True)
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
     nameOffer = models.CharField(('nameOffer'), max_length=100, blank=True)
     descriptionOffer = models.CharField(('descriptionOffer'), max_length=500, blank=True)
     descriptionCondition = models.CharField(('descriptionCondition'), max_length=500, blank=True)

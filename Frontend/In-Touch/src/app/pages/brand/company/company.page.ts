@@ -3,6 +3,7 @@ import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { MainCompanyDto } from 'src/app/models/activity-model';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 })
 export class CompanyPage implements OnInit {
 
-  lstCompanys = []
+  lstCompanys: Array<MainCompanyDto> = []
 
   constructor(
     public userManager:UserManagerProviderService,
@@ -30,56 +31,22 @@ export class CompanyPage implements OnInit {
   ngOnInit() {
   }
 
-  public showDetail(id: any, nameCompany: string){
-    
+  public showDetail(companySearch: MainCompanyDto){ 
+    console.log("[showDetail] - navigationExtras: NavigationExtras")
     let navigationExtras: NavigationExtras = {
       state: {
-          id: id,
-          nameCompany: nameCompany
+          id: companySearch.id,
+          nameCompany: companySearch.nameCompany
       },
       relativeTo: this.activatedRoute
     };
-    console.log(id)
+    console.log(navigationExtras)
 
-    this.router.navigate(['view-activity'], navigationExtras)
+    this.router.navigate(['view-offre'], navigationExtras)
+    
   }
 
-  async createCompanyBtn() {
-    const alert = await this.alertController.create({
-      header: "Please enter a company name",
-      inputs: [
-        {
-          name: 'nameCompany',
-          type: 'text',
-          placeholder: 'Company name'
-        }
-      ],
-      buttons: [
-        {
-          text: "Cancel",
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-             
-          }
-        }, {
-          text: "Confirm",
-          handler: (data) => {
-            if (data["nameCompany"]){
-              this.apiService.showLoading().then(()=>{
-                this.apiService.createCompany(data["nameCompany"]).subscribe(()=>{
-                  this.apiService.stopLoading()
-                  this.apiService.showMessage("Thanks","A new company has been save")
-                })
-              })
-            }
-          }
-        }
-      ]
-    });
 
-    await alert.present();
-  }
 
 
 }

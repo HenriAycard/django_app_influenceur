@@ -21,20 +21,6 @@ class UserSerializer(ModelSerializer):
         model = User
         fields = ('id', 'first_name', 'last_name', 'username', 'facebookId', 'android', 'ios', 'is_influenceur')
 
-class CompanyCreateSerializer(ModelSerializer):
-
-    class Meta:
-        model = Company
-        fields = '__all__'
-
-
-class CompanySerializer(ModelSerializer):
-
-    class Meta:
-        model = Company
-        fields = ('id', 'nameCompany')
-
-
 class AddressSerializer(ModelSerializer):
 
     class Meta:
@@ -47,25 +33,42 @@ class OpeningSerializer(ModelSerializer):
         model = Opening
         fields = '__all__'
 
-class TypeActivitySerializer(ModelSerializer):
+class TypeCompanySerializer(ModelSerializer):
 
     class Meta:
-        model = TypeActivity
+        model = TypeCompany
         fields = '__all__'
 
-class ActivitySerializer(ModelSerializer):
-    company = CompanySerializer(many=False, read_only=True)
+
+class imgCompanySerializer(ModelSerializer):
+    
+    class Meta:
+        model = imgCompany
+        fields = '__all__'
+
+class CompanySerializer(ModelSerializer):
+    user = UserSerializer(many=False, read_only=True)
+    typeCompany = TypeCompanySerializer(many=False, read_only=True)
+    imgCompany = imgCompanySerializer(many=True, read_only=True)
+    class Meta:
+        model = Company
+        fields = ('id', 'nameCompany', 'isTakeAway', 'isOnSit', 'description', 'typeCompany', 'imgCompany', 'user')
+
+
+class CompanyDetailsSerializer(ModelSerializer):
     address = AddressSerializer(many=False, read_only=True)
-    typeActivity = TypeActivitySerializer(many=False, read_only=True)
+    typeCompany = TypeCompanySerializer(many=False, read_only=True)
     openings = OpeningSerializer(many=True)
+    imgCompany = imgCompanySerializer(many=True, read_only=True)
     class Meta:
-        model = Activity
-        fields = ('id', 'nameActivity', 'isTakeAway', 'isOnSit', 'description', 'address', 'typeActivity', 'company', 'openings')
+        model = Company
+        fields = ('id', 'nameCompany', 'isTakeAway', 'isOnSit', 'description', 'address', 'typeCompany', 'openings', 'imgCompany')
 
-class ActivityCreateSerializer(ModelSerializer):
+
+class CompanyCreateSerializer(ModelSerializer):
 
     class Meta:
-        model = Activity
+        model = Company
         fields = '__all__'
 
 class OfferCreateSerializer(ModelSerializer):
@@ -80,16 +83,16 @@ class OfferSerializer(ModelSerializer):
         model = Offer
         fields = '__all__'
 
-class ReservationActivitySerializer(ModelSerializer):
+class ReservationCompanySerializer(ModelSerializer):
     company = CompanySerializer(many=False, read_only=True)
-    typeActivity = TypeActivitySerializer(many=False, read_only=True)
+    typeCompany = TypeCompanySerializer(many=False, read_only=True)
     class Meta:
-        model = Activity
+        model = Company
         fields = '__all__'
 
 
-class OfferActivitySerializer(ModelSerializer):
-    activity = ReservationActivitySerializer(many=False, read_only=True)
+class OfferCompanySerializer(ModelSerializer):
+    company = ReservationCompanySerializer(many=False, read_only=True)
     class Meta:
         model = Offer
         fields = '__all__'
@@ -101,16 +104,18 @@ class ReservationSerializer(ModelSerializer):
 
 
 class InfluenceurReservationSerializer(ModelSerializer):
-    offer = OfferActivitySerializer(many=False, read_only=True)
+    offer = OfferCompanySerializer(many=False, read_only=True)
 
     class Meta:
         model = Reservation
         fields = ('id', 'offer', 'status', 'dateReservation')
 
 class BrandReservationSerializer(ModelSerializer):
-    offer = OfferActivitySerializer(many=False, read_only=True)
+    offer = OfferCompanySerializer(many=False, read_only=True)
     user = UserSerializer(many=False, read_only=True)
 
     class Meta:
         model = Reservation
         fields = ('id', 'offer', 'status', 'dateReservation', 'user')
+
+

@@ -36,11 +36,13 @@ export class ViewActivityPage implements OnInit {
   }
 
   public findActivityByCompanyId(){
+    /*
     this.apiService.findActivityByCompanyId(this.id).subscribe((data: any)=>{
       this.lstActivity = data.results
       console.log("[ngOnInit] - findActivityByCompanyId - subscribe - data.results")
       console.log(this.lstActivity)
     })
+    */
   }
 
   public showDetail(activityId: any){ 

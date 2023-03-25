@@ -8,16 +8,19 @@
 </ion-header>
 
 <ion-content>
-  <ion-card button *ngFor="let activity of datas" (click)="showDetail(activity.id, activity.nameActivity)">
-    <ion-card-header>
-      <ion-card-title>{{ activity.nameActivity }}</ion-card-title>
-      <ion-card-subtitle>{{ activity.typeActivity.nameTypeActivity }}</ion-card-subtitle>
-      <ion-chip *ngIf="activity.isOnSit">On sit</ion-chip>
-      <ion-chip *ngIf="activity.isTakeAway">Take away</ion-chip>
-    </ion-card-header>
 
-    
-    <ion-card-content class="ion-text-justify">{{activity.description}}</ion-card-content>
-    
+
+  <ion-card button *ngFor="let company_card of datas" (click)="showDetail(company_card)">
+    <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of company_card.imgCompany" [src]="company_image.file" />
+    <ion-card-header style="text-align: left;">
+      <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
+      <ion-card-subtitle>{{ company_card.typeCompany.nameTypeCompany }}</ion-card-subtitle>
+      <ion-chip *ngIf="company_card['isOnSit']">On sit</ion-chip>
+      <ion-chip *ngIf="company_card['isTakeAway']">Take away</ion-chip>
+    </ion-card-header>  
+    <ion-card-content class="ion-text-justify" >
+      {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
+    </ion-card-content>
+
   </ion-card>
 </ion-content>

@@ -1,16 +1,16 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { catchError, retry, BehaviorSubject } from 'rxjs';
-import { ActivityDto, OfferDto } from 'src/app/models/activity-model';
+import { catchError, retry, BehaviorSubject, map } from 'rxjs';
+import { CompanyDto, OfferDto } from 'src/app/models/activity-model';
+import { NavigationService } from 'src/app/services/navigation.service';
 
 
 export interface queryParamsDto {
   id: number;
   nameCompany: string;
-  idActivity: number;
 }
 
 export interface django_pagination {
@@ -20,6 +20,7 @@ export interface django_pagination {
   results: Array<Object>
 }
 
+
 @Component({
   selector: 'app-view-offre',
   templateUrl: './view-offre.page.html',
@@ -28,8 +29,8 @@ export interface django_pagination {
 export class ViewOffrePage implements OnInit {
 
   public parameters: queryParamsDto
-  //public datas$: BehaviorSubject<ActivityDto> = new BehaviorSubject<ActivityDto>(new ActivityDto());
-  public datas: ActivityDto = new ActivityDto();
+  //public datas$: BehaviorSubject<CompanyDto> = new BehaviorSubject<CompanyDto>(new CompanyDto());
+  public datas: CompanyDto = new CompanyDto();
   public datasOffer: Array<OfferDto> = Array<OfferDto>(new OfferDto);;
 
   constructor(
@@ -37,7 +38,8 @@ export class ViewOffrePage implements OnInit {
     public apiService:ApiserviceService,
     public alertController: AlertController,
     public router:Router,
-    public activatedRoute: ActivatedRoute) {
+    public activatedRoute: ActivatedRoute,
+    private navigation: NavigationService) {
     
   }
 
@@ -45,21 +47,21 @@ export class ViewOffrePage implements OnInit {
     // Get query params
     const navigation = this.router.getCurrentNavigation();
     this.parameters = navigation?.extras.state as queryParamsDto
-    this.findActivityByIdActivity()
+    this.findCompanyByIdCompany()
     this.findOffreByIdActivity()
     
   }
 
-  public async findActivityByIdActivity(){
-    this.apiService.findActivityById(this.parameters.idActivity).subscribe(
-      data => {
-        this.datas = data as ActivityDto
+  public async findCompanyByIdCompany(){
+    this.apiService.findCompanyById(this.parameters.id).subscribe(
+      (data: CompanyDto)  => {
+        this.datas = data as CompanyDto
       }
     )
   }
 
   public async findOffreByIdActivity(){
-    this.apiService.findOfferById(this.parameters.idActivity).subscribe(
+    this.apiService.findOfferById(this.parameters.id).subscribe(
       (data: django_pagination) => {
         this.datasOffer = data.results as OfferDto[]
       })
@@ -78,12 +80,17 @@ export class ViewOffrePage implements OnInit {
 
   public handleRefresh($event: any){
     setTimeout(() => {
-        this.findActivityByIdActivity()
+        this.findCompanyByIdCompany()
         this.findOffreByIdActivity()
         $event.target.complete();
       
         
       }, 2000);
+  }
+
+
+  public returnPreviousPage(): void{
+    this.router.navigate(['../brand'])
   }
 
 }

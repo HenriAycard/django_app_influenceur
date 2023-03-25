@@ -3,7 +3,7 @@ import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { ActivityDto, OfferDto } from 'src/app/models/activity-model';
+import { CompanyDto, MainCompanyDto, OfferDto } from 'src/app/models/activity-model';
 import { django_pagination } from './contract/contract.page';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -19,7 +19,7 @@ export interface queryParamsDto {
 export class ViewSearchPage implements OnInit {
 
   public parameters: queryParamsDto
-  public datas: Array<ActivityDto> = new Array<ActivityDto>();
+  public datas: Array<MainCompanyDto> = new Array<MainCompanyDto>();
 
   constructor(
     public userManager:UserManagerProviderService,
@@ -33,30 +33,28 @@ export class ViewSearchPage implements OnInit {
     ngOnInit() {
       const navigation = this.router.getCurrentNavigation();
       this.parameters = navigation?.extras.state as queryParamsDto
-      this.findActivityBySearch();
+      this.findCompanyBySearch();
     }
 
-    public async findActivityBySearch(){
-      this.apiService.showLoading();
-      await this.apiService.findActivityBySearch(this.parameters.search).subscribe({
+    public async findCompanyBySearch(){
+      await this.apiService.findCompanyBySearch(this.parameters.search).subscribe({
         next: (response: django_pagination) => {
-          this.datas = response.results as Array<ActivityDto>
+          this.datas = response.results as Array<MainCompanyDto>
         },
         error: (err: HttpErrorResponse) => {
           console.log(err)
         },
         complete: () => {
-          this.apiService.stopLoading();
+          console.log("Complete findCompanyBySearch")
         }
       })
     }
 
-    public showDetail(activityId: any, name: any){ 
+    public showDetail(companySearch: MainCompanyDto){ 
       console.log("[showDetail] - navigationExtras: NavigationExtras")
       let navigationExtras: NavigationExtras = {
         state: {
-          nameActivity: name,
-          idActivity: activityId
+          id: companySearch.id
         },
         relativeTo: this.activatedRoute
       };

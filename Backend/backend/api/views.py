@@ -4,11 +4,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import User
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from rest_framework import generics, permissions, serializers
-from rest_framework import filters
+from rest_framework import generics, permissions, serializers, filters, status
+from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from backoffice.models import *
 import json
 import logging
@@ -62,7 +61,7 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
             queryset = User.objects.filter(pk=user.id)
             return queryset
 
-
+'''
 class CompanyDetailView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CompanySerializer
@@ -85,48 +84,78 @@ class CompanyCreateView(generics.CreateAPIView):
     
     def perform_create(self, serializer):
         serializer.save()
+'''
 
-class ActivityCreateView(generics.ListCreateAPIView):
+class CompanyCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
+
     def get_serializer_class(self):
         if self.request.method == 'POST':
-            return ActivityCreateSerializer
-        return ActivitySerializer
+            return CompanyCreateSerializer
+        return CompanySerializer
+
+    def create(self, request, *args, **kwargs):
+        request.data['user'] = str(self.request.user.id)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    def perform_create(self, serializer):
+        serializer.save()
 
     def get_queryset(self):
-        user = self.request.user.id
-        company = self.request.query_params['company']
-        queryset = Activity.objects.filter(company__user_id=user, company_id=company)
+        user = self.request.user
+        print(user)
+
+        if user.is_influenceur == 0:
+            queryset = Company.objects.filter(user_id=user.id, user__is_influenceur=user.is_influenceur)
+        else:
+            queryset = Company.objects.all()
         return queryset
 
-class ActivitySearchView(generics.ListAPIView):
+class CompanySearchView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = ActivitySerializer
+    serializer_class = CompanySerializer
     swagger_schema = None
 
     def get_queryset(self):
         search = self.request.query_params['search']
         df = pd.DataFrame()
         for val in search.split(" "):
-            querysetNameActivity = Activity.objects.filter(nameActivity__icontains=val).annotate(weight=Value(0.8, output_field=FloatField()))
-            querysetNameCompany = Activity.objects.filter(company__nameCompany__icontains=val).annotate(weight=Value(1, output_field=FloatField()))
-            querysetDescription = Activity.objects.filter(description__icontains=val).annotate(weight=Value(0.6, output_field=FloatField()))
-            query = querysetNameActivity.union(querysetDescription, querysetNameCompany, all=True).values('id', 'weight')
+            querysetNameCompany = Company.objects.filter(nameCompany__icontains=val).annotate(weight=Value(0.8, output_field=FloatField()))
+            querysetDescription = Company.objects.filter(description__icontains=val).annotate(weight=Value(0.6, output_field=FloatField()))
+            querysetCity = Company.objects.filter(address__city__icontains=val).annotate(weight=Value(0.5, output_field=FloatField()))
+            query = querysetNameCompany.union(querysetDescription, querysetCity, all=True).values('id', 'weight')
+            #query = querysetNameCompany.union(querysetDescription, all=True).values('id', 'weight')
+            #query = query.union(querysetCity, all=True).values('id', 'weight')
             tmp = pd.DataFrame(list(query))
             df = pd.concat([df, tmp])
         df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
         pk_list = df_groupby.index.values.tolist()
         ordering = 'FIELD(`id`, %s)' % ','.join(str(id) for id in pk_list)
-        queryset = Activity.objects.filter(pk__in=pk_list).extra(
+        queryset = Company.objects.filter(pk__in=pk_list).extra(
            select={'ordering': ordering}, order_by=('ordering',))
         
         return queryset
 
 
-class ActivityDetail(generics.RetrieveUpdateDestroyAPIView):
+class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = Activity.objects.all()
-    serializer_class = ActivitySerializer
+    queryset = Company.objects.all()
+    serializer_class = CompanyDetailsSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        user = self.request.user
+        print(user)
+
+        if user.is_influenceur == 0:
+            queryset = Company.objects.filter(user_id=user.id)
+        else:
+            queryset = Company.objects.all()
+        return queryset
 
 
 class AddressCreate(generics.CreateAPIView):
@@ -157,8 +186,8 @@ class OfferCreateView(generics.ListCreateAPIView):
         return OfferSerializer
 
     def get_queryset(self):
-        activity = self.request.query_params['activity']
-        queryset = Offer.objects.filter(activity_id=activity)
+        company = self.request.query_params['company']
+        queryset = Offer.objects.filter(company_id=company)
         return queryset
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -230,11 +259,11 @@ class ReservationCreateView(generics.ListCreateAPIView):
 
             if status_resa:
                 if from_date_resa:
-                    queryset = Reservation.objects.filter(offer__activity__company__user_id=user.id, status=status_resa, dateReservation__gte=from_date_resa)
+                    queryset = Reservation.objects.filter(offer__company__user_id=user.id, status=status_resa, dateReservation__gte=from_date_resa)
                 elif to_date_resa:
-                    queryset = Reservation.objects.filter(offer__activity__company__user_id=user.id, status=status_resa, dateReservation__lt=to_date_resa)
+                    queryset = Reservation.objects.filter(offer__company__user_id=user.id, status=status_resa, dateReservation__lt=to_date_resa)
                 else:
-                    queryset = Reservation.objects.filter(offer__activity__company__user_id=user.id, status=status_resa)
+                    queryset = Reservation.objects.filter(offer__company__user_id=user.id, status=status_resa)
         
         return queryset.order_by('dateReservation')
 
@@ -244,3 +273,20 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
+class imgCompanyView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    parser_class = (MultiPartParser, FormParser)
+    serializer_class = imgCompanySerializer
+
+    def post(self, request, *args, **kwargs):
+      print("=== DANS POST METHOD")
+      print(request.data)
+      print(request)
+      print(request.POST)
+      file_serializer = imgCompanySerializer(data=request.data)
+      if file_serializer.is_valid():
+          file_serializer.save()
+          return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+      else:
+          print(file_serializer.errors)
+          return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

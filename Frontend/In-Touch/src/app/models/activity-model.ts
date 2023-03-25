@@ -15,52 +15,68 @@ export class dataOpeningDate {
     pauseEnd: string;
     isOpen: boolean;
     isOrderBy: number;
-    activity: number;
+    company: number;
   }
   
   export class AddressDto {
-    id: number;
-    address1: string;
-    address2: string;
-    address3: string;
-    city: string;
-    state: string;
-    country: string;
-    postalCode: string;
+    id: number = -1;
+    address1: string = '';
+    address2: string = '';
+    address3: string = '';
+    city: string = '';
+    state: string = '';
+    country: string = '';
+    postalCode: string = '';
   }
   
   
-  export class ActivityCreatDto {
+  export class NewCompanyDto {
     id: number;
-    nameActivity: string;
+    nameCompany: string;
     isTakeAway: boolean;
     isOnSit: boolean;
     description: string;
     address: number;
     company: number;
-    typeActivity: number;
+    typeCompany: number;
+    user: number;
   }
 
-  export class typeActivityDto {
+  export class typeCompanyDto {
+    id: number = -1;
+    nameTypeCompany: string = '';
+  }
+
+  export class ImgCompanyDto {
     id: number;
-    nameTypeActivity: string;
+    file: string;
+    isPrincipal: boolean;
+    company: number;
   }
 
-  export class companyDto {
+  export class MainCompanyDto {
     id: number;
     nameCompany: string;
-  }
-
-  export class ActivityDto {
-    id: number;
-    nameActivity: string;
     isTakeAway: boolean;
     isOnSit: boolean;
     description: string;
+    user: User;
+    typeCompany: typeCompanyDto = new typeCompanyDto();
+    imgCompany : Array<ImgCompanyDto> = Array<ImgCompanyDto>(new ImgCompanyDto); 
+  }
+
+  export class CompanyDto {
+    id: number = 0;
+    nameCompany: string = '';
+    isTakeAway: boolean = false;
+    isOnSit: boolean = false;
+    description: string = '';
     address : AddressDto = new AddressDto();
-    typeActivity: typeActivityDto = new typeActivityDto();
-    company: companyDto = new companyDto();
+    typeCompany: typeCompanyDto = new typeCompanyDto();
     openings : Array<OpeningDate> = Array<OpeningDate>(new OpeningDate);
+    imgCompany : Array<ImgCompanyDto> = Array<ImgCompanyDto>(new ImgCompanyDto); 
+
+  
   }
 
   export class OfferDto {
@@ -68,25 +84,25 @@ export class dataOpeningDate {
     nameOffer: string;
     descriptionOffer: string;
     descriptionCondition: string;
-    activity: number;
+    company: number;
   }
 
   export class CreateOfferDto {
     nameOffer: string;
     descriptionOffer: string;
     descriptionCondition: string;
-    activity: number;
+    company: number;
   }
 
   export class CreateReservationDto {
     offer: number;
     dateReservation: Date;
   }
-  export class ActivityResaDto {
+  export class CompanyResaDto {
     id: number;
-    company: companyDto;
-    typeActivity: typeActivityDto;
-    nameActivity: string;
+    company: CompanyDto;
+    typeCompany: typeCompanyDto;
+    nameCompany: string;
     isTakeAway: boolean;
     isOnSit: boolean;
     description: string;
@@ -95,7 +111,7 @@ export class dataOpeningDate {
 
   export class OfferResaDto {
     id: number;
-    activity: ActivityResaDto;
+    company: CompanyResaDto;
     nameOffer: string;
     descriptionOffer: string;
     descriptionCondition: string;

@@ -1,0 +1,28 @@
+.button-retour {
+    //line-height: 12px;
+    //width: 60px;
+    //font-size: 8pt;
+    //font-family: tahoma;
+    margin-top: 5px;
+    margin-left: 5px;
+    position:absolute;
+    top:0;
+    left:0;
+    //background-color: transparent;
+    //border: none;
+    //outline: none;
+    
+    
+    ion-button {
+        width: 80px;
+        height: 80px;
+       ion-icon {
+        font-size: 80px;
+       }
+    }
+    
+}
+
+.header-font {
+    font-weight: bold;
+}

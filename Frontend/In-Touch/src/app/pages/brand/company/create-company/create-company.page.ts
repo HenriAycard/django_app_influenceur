@@ -3,21 +3,21 @@ import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AlertController, PickerController, IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { dataOpeningDate,OpeningDate, AddressDto, ActivityCreatDto } from 'src/app/models/activity-model';
+import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto } from 'src/app/models/activity-model';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-
+import { Camera, CameraResultType, Photo } from '@capacitor/camera';
 
 
 @Component({
-  selector: 'app-create-activity',
-  templateUrl: './create-activity.page.html',
-  styleUrls: ['./create-activity.page.scss'],
+  selector: 'app-create-company',
+  templateUrl: './create-company.page.html',
+  styleUrls: ['./create-company.page.scss'],
 })
-export class CreateActivityPage implements OnInit {
+export class CreateCompanyPage implements OnInit {
+
   @ViewChild(IonModal) modal: IonModal;
 
-  id: any;
-  nameCompany: string = ""
+
   days = [{id: 1, name:'Monday'}, {id:2, name:'Tuesday'}, {id:3, name:'Wednesday'}, {id:4, name:'Thursday'}, {id:5, name:'Friday'}, {id:6, name:'Saturday'}, {id:7, name:'Sunday'}]
   daysChip = [{id: 1, name:'Monday'}, {id:2, name:'Tuesday'}, {id:3, name:'Wednesday'}, {id:4, name:'Thursday'}, {id:5, name:'Friday'}, {id:6, name:'Saturday'}, {id:7, name:'Sunday'}]
   tagDefaultColor = Array(this.daysChip.length).fill("medium");
@@ -26,8 +26,10 @@ export class CreateActivityPage implements OnInit {
   datas: Array<OpeningDate> = new Array<OpeningDate>()
 
   opening = new Map<string, string>();
-  dataActivity: ActivityCreatDto = new ActivityCreatDto();
+  dataCompany: NewCompanyDto = new NewCompanyDto();
   dataAddress: AddressDto = new AddressDto();
+
+  image: void | Photo;
 
 
   constructor(
@@ -42,12 +44,7 @@ export class CreateActivityPage implements OnInit {
   }
 
   ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras.state as {id: number, nameCompany: string}
-    this.id = state.id
-    this.nameCompany = state.nameCompany
-    this.dataActivity.company = +state.id
-    this.dataActivity.typeActivity = 1;
+    this.dataCompany.typeCompany = 1;
   }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
@@ -234,13 +231,13 @@ export class CreateActivityPage implements OnInit {
       this.apiService.showLoading();
       this.apiService.createAddresse(this.dataAddress).subscribe({
         next: (value: any) => {
-          console.log("[CREATE-ACTIVITY] - saveAddress - end OK")
+          console.log("[CREATE-COMPANY] - saveAddress - end OK")
           console.log(value.id)
-          this.dataActivity.address = value.id
-          this.saveActivity();
+          this.dataCompany.address = value.id
+          this.saveCompany();
         },
         error: (err: any) => {
-            console.error("[CREATE-ACTIVITY] - saveAddress - end KO")
+            console.error("[CREATE-COMPANY] - saveAddress - end KO")
             console.log(err);// Error getting the data
         },
         complete: () => {
@@ -250,19 +247,20 @@ export class CreateActivityPage implements OnInit {
     
   }
 
-  async saveActivity(){
+  async saveCompany(){
 
-    this.apiService.createActivity(this.dataActivity).subscribe({
+    this.apiService.createCompany(this.dataCompany).subscribe({
       next: (value: any) => {
-        console.log("[CREATE-ACTIVITY] - saveActivity - end OK")
+        console.log("[CREATE-COMPANY] - saveCompany - end OK")
         console.log(value.id)
-        this.dataActivity.id = value.id
+        this.dataCompany.id = value.id
         this.saveOpeningOpen(value.id);
         this.saveOpeningClose(value.id);
+        this.savePhoto(value.id);
         this.apiService.stopLoading();
       },
       error: (err: any) => {
-          console.error("[CREATE-ACTIVITY] - saveActivity - end KO")
+          console.error("[CREATE-COMPANY] - saveCompany - end KO")
           console.log(err);// Error getting the data
       },
       complete: () => {
@@ -271,17 +269,18 @@ export class CreateActivityPage implements OnInit {
     })
 
   }
+  
 
   async saveOpeningOpen(id: number){
     this.datas.forEach(item => {
-      item.activity = id
+      item.company = id
       this.apiService.createOpening(item).subscribe({
         next: (value: any) => {
-          console.log("[CREATE-ACTIVITY] - saveOpeningOpen - end OK")
+          console.log("[CREATE-COMPANY] - saveOpeningOpen - end OK")
           console.log(value.id)
         },
         error: (err: any) => {
-            console.error("[CREATE-ACTIVITY] - saveOpeningOpen - end KO")
+            console.error("[CREATE-COMPANY] - saveOpeningOpen - end KO")
             console.log(err);// Error getting the data
         },
         complete: () => {
@@ -298,14 +297,14 @@ export class CreateActivityPage implements OnInit {
       tmp.isOrderBy = item.id
       tmp.fromDate = item.name
       tmp.toDate = item.name
-      tmp.activity = id
+      tmp.company = id
       this.apiService.createOpening(tmp).subscribe({
         next: (value: any) => {
-          console.log("[CREATE-ACTIVITY] - saveOpeningClose - end OK")
+          console.log("[CREATE-COMPANY] - saveOpeningClose - end OK")
           console.log(value.id)
         },
         error: (err: any) => {
-            console.error("[CREATE-ACTIVITY] - saveOpeningClose - end KO")
+            console.error("[CREATE-COMPANY] - saveOpeningClose - end KO")
             console.log(err);// Error getting the data
         },
         complete: () => {
@@ -315,20 +314,72 @@ export class CreateActivityPage implements OnInit {
     })
   }
 
-  public createActivity(){
+  public createCompany(){
     // initialise a zero
     this.saveAddress()
-    console.log(this.dataActivity)
-    let navigationExtras: NavigationExtras = {
-      state: {
-        id: this.id,
-        nameCompany: this.nameCompany
-      },
-      relativeTo: this.activatedRoute
-    };
-    this.router.navigate(['../view-activity'], navigationExtras)
+    this.router.navigate(['/brand/company'])
 
   }
 
+  public b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+ 
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+ 
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+ 
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+ 
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  }
 
+  async chooseOrTakePicture() {
+    this.image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Base64
+    }).catch((error)=>{
+      console.log(error)
+    });
+  };
+
+  savePhoto(id: number) {
+    if (this.image ){
+      // convert base64 image to blob
+      let blob = this.b64toBlob(this.image.base64String!)
+      var formData = new FormData();
+      //Generate a fake filename
+      let name = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 10);
+      formData.append('file', blob, name+`.${this.image.format}`);
+      formData.append('company', id.toString())
+      formData.append('isPrincipal', 'true')
+
+      console.log("company:")
+      console.log(formData.get('company'))
+
+      this.apiService.uploadPhoto(formData).subscribe({
+        next: (value: any) => {
+          console.log("[UPLOAD-PHOTO] - savePhoto - end OK")
+          console.log(value)
+        },
+        error: (err: any) => {
+            console.error("[UPLOAD-PHOTO] - savePhoto - end KO")
+            console.log(err);// Error getting the data
+        },
+        complete: () => {
+          console.info('Complete')
+        },
+      })
+      
+      
+    }
+  }
 }

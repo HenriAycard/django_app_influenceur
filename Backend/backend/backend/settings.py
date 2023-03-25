@@ -35,7 +35,9 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
 
-MEDIA_ROOT='static/storage/'
+MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR), 'mediafiles')
+MEDIA_URL = '/media/'
+
 
 
 # Application definition

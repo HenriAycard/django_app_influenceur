@@ -24,7 +24,7 @@ const routes: Routes = [
         path: '',
         redirectTo: '/influenceur/explorer',
         pathMatch: 'full'
-      }
+      },
     ]
   }
 ];

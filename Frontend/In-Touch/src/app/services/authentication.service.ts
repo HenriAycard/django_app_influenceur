@@ -30,10 +30,11 @@ export class AuthenticationService {
 
   loadToken() {
     const accessToken = this.localStorageService.getItem('access');
-    const refreshToken = this.localStorageService.getItem('refresh');
-    if(accessToken && refreshToken) {
+    const refreshTokenVar = this.localStorageService.getItem('refresh');
+    if(accessToken && refreshTokenVar) {
       console.log("[loadToken] - Connect OK !")
       this.isAuthenticated.next(true);
+      this.getCurrentUser()
     } else {
       console.log("[loadToken] - Disconnect KO !")
       this.isAuthenticated.next(false);
@@ -88,32 +89,17 @@ login(form: {email: string; password: string}): Observable<LoginResponse> {
       })
     );
 }
-/*
-isAuthenticated(): Observable<boolean>{
-  var subject = new Subject<boolean>()
-  this.getCurrentUser().subscribe(
-    (response: any) => {
-      console.log(response)
-      if(response === null || typeof response === 'undefined') {
-        subject.next(false);
-      } else {
-        subject.next(true);
-      }
-    }
-  )
-  return subject.asObservable();
-}
-*/
+
 
 getCurrentUser(): Observable<User> {
   console.log("start")
   return this.user$.pipe(
-    switchMap((user: any) => {
+    switchMap((userVal: any) => {
       // check if we already have user data
-      console.log(user)
-      if (user) {
+      console.log(userVal)
+      if (userVal){
         this.isAuthenticated.next(true);
-        return of(user);
+        return of(userVal);
       }
 
       const token = this.localStorageService.getItem('access');
@@ -123,8 +109,18 @@ getCurrentUser(): Observable<User> {
         this.isAuthenticated.next(true);
         this.fetchCurrentUser().subscribe({
           next: (response: Array<User>) => {
-            this.user$.next(response[0] as User);
-            return of(response[0])
+            var tmp: User = new User(
+              response[0].id,
+              response[0].first_name,
+              response[0].last_name,
+              response[0].username,
+              response[0].facebookId,
+              response[0].android,
+              response[0].ios,
+              response[0].is_influenceur
+            );
+            this.user$.next(tmp as User);
+            return of(tmp)
           },
           error: (err: HttpErrorResponse) => {
             console.log(err)
@@ -132,7 +128,7 @@ getCurrentUser(): Observable<User> {
           }
         })
       }
-      console.log("null")
+      console.log("User is not authenticated")
       this.isAuthenticated.next(false);
       return of(null);
     })
@@ -214,3 +210,7 @@ fetchCurrentUser(): any {
     //return this.
   }*/
 }
+function typeOf(userVal: any) {
+  throw new Error('Function not implemented.');
+}
+

@@ -27,7 +27,7 @@
         <div class="ion-padding" slot="content">
           <ion-item  *ngFor="let waiting of dataWaiting" detail="true" button (click)="displayInfo(waiting)">
             <ion-label>
-              <h3 class="bold">{{ waiting.offer.activity.nameActivity }}</h3>
+              <h3 class="bold">{{ waiting.offer.company.nameCompany }}</h3>
               <p>{{ waiting.offer.nameOffer }}</p>
               <p class="blueColor">{{ waiting.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
             </ion-label>
@@ -43,7 +43,7 @@
         <div class="ion-padding" slot="content">
           <ion-item  *ngFor="let lastExper of dataLastExperiences">
             <ion-label>
-              <h3 class="bold">{{ lastExper.offer.activity.nameActivity }}</h3>
+              <h3 class="bold">{{ lastExper.offer.company.nameCompany }}</h3>
               <p>{{ lastExper.offer.nameOffer }}</p>
               <p class="blueColor">{{ lastExper.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
             </ion-label>
@@ -59,7 +59,7 @@
         <div class="ion-padding" slot="content">
           <ion-item  *ngFor="let unsuccess of dataUnsuccessful">
             <ion-label>
-              <h3 class="bold">{{ unsuccess.offer.activity.nameActivity }}</h3>
+              <h3 class="bold">{{ unsuccess.offer.company.nameCompany }}</h3>
               <p>{{ unsuccess.offer.nameOffer }}</p>
               <p class="blueColor">{{ unsuccess.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
             </ion-label>
@@ -89,7 +89,7 @@
             <ion-card style="background-color: white;margin-top: 5px !important;margin-bottom: 5px !important;margin-right: 0 !important; padding: 0 !important; width: auto">
               <ion-card-header text-wrap>
                 <ion-card-title>@{{ valComingSoon.user.username }}</ion-card-title>
-                <ion-card-subtitle>{{ valComingSoon.offer.activity.nameActivity }}</ion-card-subtitle>
+                <ion-card-subtitle>{{ valComingSoon.offer.company.nameCompany }}</ion-card-subtitle>
               </ion-card-header>
               <ion-card-content class="blueColor">{{ valComingSoon.offer.nameOffer }} at {{ valComingSoon.dateReservation | date:'h:mm a'}}</ion-card-content>
             </ion-card>
@@ -113,7 +113,7 @@
           </ion-toolbar>
           <ion-item>
             <ion-label>
-              <h3 class="bold">{{ dataModal.offer.activity.nameActivity }}</h3>
+              <h3 class="bold">{{ dataModal.offer.company.nameCompany }}</h3>
               <p>{{ dataModal.offer.nameOffer }}</p>
               <p class="blueColor">{{ dataModal.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
             </ion-label>

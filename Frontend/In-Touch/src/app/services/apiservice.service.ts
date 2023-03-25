@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
 import { Network } from '@capacitor/network';
 import { resolve } from 'dns';
-import { dataOpeningDate,OpeningDate, AddressDto, ActivityCreatDto, ActivityDto, OfferDto, CreateOfferDto, CreateReservationDto, django_pagination_ResaByStatusDto, ResaByStatusDto, ResaByStatusBrandDto } from 'src/app/models/activity-model';
+import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto, CompanyDto, OfferDto, CreateOfferDto, CreateReservationDto, django_pagination_ResaByStatusDto, ResaByStatusDto, ResaByStatusBrandDto } from 'src/app/models/activity-model';
 
 export enum ConnectionStatus {
   Online,
@@ -68,7 +68,7 @@ export class ApiserviceService {
     getMeUrl : string=""
     getUserUrl : string='';
     getCompanyUrl : string = "";
-    getActivityUrl : string = "";
+    getImgCompanyUrl : string = "";
     getAddressUrl: string = "";
     getOpeningUrl: string = "";
     getOfferUrl: string = "";
@@ -99,7 +99,7 @@ export class ApiserviceService {
         this.getUserUrl = this.virtualHostName + this.apiPrefix + "/users/"
         this.getAppProfileUrl = this.virtualHostName + this.apiPrefix + "/appprofile/"
         this.getCompanyUrl = this.virtualHostName + this.apiPrefix + "/company/"
-        this.getActivityUrl = this.virtualHostName + this.apiPrefix + "/activity/"
+        this.getImgCompanyUrl = this.virtualHostName + this.apiPrefix + "/imgCompany/"
         this.getAddressUrl = this.virtualHostName + this.apiPrefix + "/address/"
         this.getOpeningUrl = this.virtualHostName + this.apiPrefix + "/opening/"
         this.getOfferUrl = this.virtualHostName + this.apiPrefix + "/offer/"
@@ -150,7 +150,7 @@ export class ApiserviceService {
 
 
     public findCompany() {
-        let url = this.getCompanyUrl + 'id/'
+        let url = this.getCompanyUrl
 
         const options = {
             headers: new HttpHeaders({
@@ -177,6 +177,7 @@ export class ApiserviceService {
                 });
         });
     }
+    /*
 
     public findActivityByCompanyId(valeur: any){
         let url = this.getActivityUrl + '?company=' + valeur
@@ -189,7 +190,7 @@ export class ApiserviceService {
 
         return this.callBackEnd(url, options);
     }
-
+*/
     public callBackEnd(url: string, options: {
         headers?: HttpHeaders | {
             [header: string]: string | string[];
@@ -772,7 +773,7 @@ export class ApiserviceService {
         this.isShowingLoader=true
           this.loader = await this.loadingController.create({
             message:  'Merci de patienter',
-            duration: 4000
+            duration: 2000
           });
           return await this.loader.present();
         
@@ -783,6 +784,7 @@ export class ApiserviceService {
     async stopLoading() {
      
       console.log("STOP LOADING?")
+      console.log(this.isShowingLoader)
       if (this.loader){
         this.loader.dismiss()
         this.loader =  null
@@ -884,34 +886,6 @@ export class ApiserviceService {
         });
     }
 
-    createCompany(nameCompany: string) {
-        const options = {
-            headers: new HttpHeaders({
-                'Content-Type': 'application/json'
-            })
-        };
-        let postParams = {
-            'nameCompany' : nameCompany
-        }
-        return new Observable((observer: Observer<boolean>) => {
-            // At this point make a request to your backend to make a real check!
-            this.http.post(this.getCompanyUrl, postParams, options)
-                .pipe(retry(3))
-                .subscribe({
-                    next: () => {
-                        //this.networkConnected = true
-                        observer.next(true);
-                        observer.complete();
-                    },
-                    error: (err: any) => {
-                        observer.next(false);
-                        observer.complete();
-                        console.log(err);// Error getting the data
-                    },
-
-                });
-        });
-    }
 
     createAddresse(address: AddressDto) {
         const options = {
@@ -939,17 +913,17 @@ export class ApiserviceService {
         return this.http.post(this.getOpeningUrl, bodyJson, options).pipe(retry(3))
     }
 
-    createActivity(activity: ActivityCreatDto) {
+    createCompany(activity: NewCompanyDto) {
         const options = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
         var bodyJson: string = JSON.stringify(activity)
-        console.log("[APISERVICE][POST] - createActivity - start")
-        console.log("[APISERVICE][POST] - URL - " + this.getActivityUrl)
+        console.log("[APISERVICE][POST] - createCompany - start")
+        console.log("[APISERVICE][POST] - URL - " + this.getCompanyUrl)
         console.log("[APISERVICE][POST] - BODY - " + bodyJson)
-        return this.http.post(this.getActivityUrl, bodyJson, options).pipe(retry(3))
+        return this.http.post(this.getCompanyUrl, bodyJson, options).pipe(retry(3))
     }
 
     createOffer(offer: CreateOfferDto) {
@@ -978,20 +952,20 @@ export class ApiserviceService {
         return this.http.post(this.getReservationUrl, bodyJson, options).pipe(retry(3))
     }
 
-    public findActivityById(id: number): Observable<ActivityDto>{
-        const url = this.getActivityUrl + id.toString()
+    public findCompanyById(id: number): Observable<CompanyDto>{
+        const url = this.getCompanyUrl + id.toString()
         const options = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-        console.log("[APISERVICE][GET] - findActivityById - start")
+        console.log("[APISERVICE][GET] - findCompanyById - start")
         console.log("[APISERVICE][GET] - URL - " + url)
-        return this.http.get<ActivityDto>(url, options)
+        return this.http.get<CompanyDto>(url, options)
     }
 
     public findOfferById(id: number): Observable<django_pagination>{
-        const url = this.getOfferUrl + "?activity=" + id.toString()
+        const url = this.getOfferUrl + "?company=" + id.toString()
         const options = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
@@ -1002,14 +976,14 @@ export class ApiserviceService {
         return this.http.get<django_pagination>(url, options)
     }
 
-    public findActivityBySearch(search: string): Observable<django_pagination>{
-        const url = this.getActivityUrl + 'search/?search=' + search
+    public findCompanyBySearch(search: string): Observable<django_pagination>{
+        const url = this.getCompanyUrl + 'search/?search=' + search
         const options = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
             })
         };
-        console.log("[APISERVICE][GET] - findActivityBySearch - start")
+        console.log("[APISERVICE][GET] - findCompanyBySearch - start")
         console.log("[APISERVICE][GET] - URL - " + url)
         return this.http.get<django_pagination>(url, options)
     }
@@ -1049,5 +1023,17 @@ export class ApiserviceService {
         console.log("[APISERVICE][PUT] - updateReservationBrand - start")
         console.log("[APISERVICE][PUT] - URL - " + url)
         return this.http.put<any>(url, bodyJson, options)
+    }
+
+    public uploadPhoto(formData: FormData): Observable<any> {
+        const url = this.getImgCompanyUrl
+        console.log("[APISERVICE][POST] - uploadPhoto - start")
+        console.log("[APISERVICE][POST] - URL - " + url)
+        console.log("[APISERVICE][POST] - formData - " + formData.get('company'))
+        return this.http.post<any>(url, formData, {
+            reportProgress: true,
+            observe: 'events'
+          })
+
     }
 }
