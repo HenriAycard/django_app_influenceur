@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { catchError, retry, BehaviorSubject } from 'rxjs';
 import { CompanyDto, OfferDto, CreateReservationDto } from 'src/app/models/activity-model';
@@ -28,7 +28,7 @@ export interface django_pagination {
 export class ContractPage implements OnInit {
 
   public parameters: queryParamsDto
-  public datas: CompanyDto = new CompanyDto();
+  public datas: CompanyDto;
   public datasOffer: Array<OfferDto> = Array<OfferDto>(new OfferDto);
   public canDismiss = false;
   public isModalOpen = false;
@@ -44,7 +44,8 @@ export class ContractPage implements OnInit {
     public apiService:ApiserviceService,
     public alertController: AlertController,
     public router:Router,
-    public activatedRoute: ActivatedRoute) {
+    public activatedRoute: ActivatedRoute,
+    private navController: NavController) {
     
   }
 
@@ -159,7 +160,7 @@ export class ContractPage implements OnInit {
   }
 
   public returnPreviousPage(): void{
-    this.router.navigate(['../view-search'])
+    this.navController.back();
   }
 
 

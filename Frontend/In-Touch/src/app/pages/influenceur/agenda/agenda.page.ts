@@ -129,6 +129,8 @@ export class AgendaPage implements OnInit {
           for (const res of response){
             this.dataComingSoon.push(new ResaByStatusDto(res))
           }
+          console.log(response)
+          console.log(this.dataComingSoon)
           this.countComingSoon = this.dataComingSoon.length
         },
         error: (err: HttpErrorResponse) => {

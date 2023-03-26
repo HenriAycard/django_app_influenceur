@@ -72,7 +72,7 @@
     </ion-text>
     <p>
       <ion-text class="ion-padding">
-        {{countComingSoon}} experience to come
+        {{countComingSoon}} experience(s) to come
       </ion-text>
     </p>
 
@@ -80,11 +80,11 @@
   <div>
     <ion-grid color="light">
       <ion-row *ngFor="let comingSoon of dataComingSoon">
-        <ion-col size="auto" style="text-align: center;">
+        <ion-col size="2" style="text-align: center;">
           <p style="color: rgb(185, 171, 171); font-weight: bold;font-size: 25px;padding-bottom: 0 !important;margin-bottom: 0px !important;">{{ comingSoon.date | date:'EEE' }}</p>
           <p style="color: #0F5298; font-weight: bold;font-size: 35px;padding-top: 0 !important;margin-top: 0px !important">{{ comingSoon.date | date:'d' }}</p>
         </ion-col>
-        <ion-col>
+        <ion-col size="10">
           <div *ngFor="let valComingSoon of comingSoon.valeur">
             <ion-card style="background-color: white;margin-top: 5px !important;margin-bottom: 5px !important;margin-right: 0 !important; padding: 0 !important; width: auto">
               <ion-card-header text-wrap>

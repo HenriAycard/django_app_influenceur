@@ -26,6 +26,9 @@
         </ion-item>
         <div class="ion-padding" slot="content">
           <ion-item  *ngFor="let waiting of dataWaiting">
+            <ion-thumbnail slot="start">
+              <img src="{{waiting.offer.company.imgCompany[0].file }}" />
+            </ion-thumbnail>
             <ion-label>
               <h3 class="bold">{{ waiting.offer.company.nameCompany }}</h3>
               <p>{{ waiting.offer.nameOffer }}</p>
@@ -42,6 +45,9 @@
         </ion-item>
         <div class="ion-padding" slot="content">
           <ion-item  *ngFor="let lastExper of dataLastExperiences">
+            <ion-thumbnail slot="start">
+              <img src="{{lastExper.offer.company.imgCompany[0].file }}" />
+            </ion-thumbnail>
             <ion-label>
               <h3 class="bold">{{ lastExper.offer.company.nameCompany }}</h3>
               <p>{{ lastExper.offer.nameOffer }}</p>
@@ -58,6 +64,9 @@
         </ion-item>
         <div class="ion-padding" slot="content">
           <ion-item  *ngFor="let unsuccess of dataUnsuccessful">
+            <ion-thumbnail slot="start">
+              <img src="{{unsuccess.offer.company.imgCompany[0].file }}" />
+            </ion-thumbnail>
             <ion-label>
               <h3 class="bold">{{ unsuccess.offer.company.nameCompany }}</h3>
               <p>{{ unsuccess.offer.nameOffer }}</p>
@@ -78,6 +87,9 @@
     </p>
     <div slot="content">
       <ion-item  *ngFor="let comingSoon of dataComingSoon">
+        <ion-thumbnail slot="start">
+          <img src="{{comingSoon.offer.company.imgCompany[0].file }}" />
+        </ion-thumbnail>
         <ion-label>
           <h3 class="bold">{{ comingSoon.offer.company.nameCompany }}</h3>
           <p>{{ comingSoon.offer.nameOffer }}</p>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { catchError, retry, BehaviorSubject, map } from 'rxjs';
 import { CompanyDto, OfferDto } from 'src/app/models/activity-model';
@@ -30,7 +30,7 @@ export class ViewOffrePage implements OnInit {
 
   public parameters: queryParamsDto
   //public datas$: BehaviorSubject<CompanyDto> = new BehaviorSubject<CompanyDto>(new CompanyDto());
-  public datas: CompanyDto = new CompanyDto();
+  public datas: CompanyDto;
   public datasOffer: Array<OfferDto> = Array<OfferDto>(new OfferDto);;
 
   constructor(
@@ -39,7 +39,7 @@ export class ViewOffrePage implements OnInit {
     public alertController: AlertController,
     public router:Router,
     public activatedRoute: ActivatedRoute,
-    private navigation: NavigationService) {
+    private navController: NavController) {
     
   }
 
@@ -90,7 +90,7 @@ export class ViewOffrePage implements OnInit {
 
 
   public returnPreviousPage(): void{
-    this.router.navigate(['../brand'])
+    this.navController.back();
   }
 
 }

@@ -84,7 +84,7 @@ class OfferSerializer(ModelSerializer):
         fields = '__all__'
 
 class ReservationCompanySerializer(ModelSerializer):
-    company = CompanySerializer(many=False, read_only=True)
+    imgCompany = imgCompanySerializer(many=True, read_only=True)
     typeCompany = TypeCompanySerializer(many=False, read_only=True)
     class Meta:
         model = Company
