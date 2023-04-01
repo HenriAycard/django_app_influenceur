@@ -9094,3 +9094,1780 @@ django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.
 [26/Mar/2023 17:14:10] WARNING [django.request:241] Unauthorized: /api/reservation/
 [26/Mar/2023 17:14:10] WARNING [django.request:241] Unauthorized: /api/reservation/
 [26/Mar/2023 17:14:10] WARNING [django.request:241] Unauthorized: /api/reservation/
+[26/Mar/2023 17:19:55] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 17:19:55] WARNING [django.request:241] Unauthorized: /api/reservation/
+[26/Mar/2023 17:19:56] WARNING [django.request:241] Unauthorized: /api/reservation/
+[26/Mar/2023 17:19:56] WARNING [django.request:241] Unauthorized: /api/reservation/
+[26/Mar/2023 17:19:56] WARNING [django.request:241] Unauthorized: /api/reservation/
+[26/Mar/2023 17:26:39] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 17:36:51] WARNING [django.request:241] Unauthorized: /api/company/search/
+[26/Mar/2023 17:53:47] WARNING [django.request:241] Not Found: /wp-login.php
+[26/Mar/2023 19:08:31] WARNING [django.request:241] Not Found: /.git/config
+[26/Mar/2023 19:50:24] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 19:55:44] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 20:02:49] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 20:10:02] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 20:16:07] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 20:21:15] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 20:27:22] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 20:32:45] WARNING [django.request:241] Unauthorized: /api/users/
+[26/Mar/2023 20:37:14] WARNING [django.request:241] Not Found: /backup.sql
+[26/Mar/2023 20:55:12] WARNING [django.request:241] Not Found: /robots.txt
+[26/Mar/2023 21:47:16] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[26/Mar/2023 22:30:52] WARNING [django.request:241] Not Found: /ab2g
+[26/Mar/2023 22:30:52] WARNING [django.request:241] Not Found: /ab2h
+[26/Mar/2023 22:30:59] WARNING [django.request:241] Not Found: /t4
+[26/Mar/2023 23:06:52] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[26/Mar/2023 23:06:52] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:06:52] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:52] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:52] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /sdk
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /Portal0000.htm
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /index.cfm
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /Portal/Portal.mwsl
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /CSS/Miniweb.css
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /.git/HEAD
+[26/Mar/2023 23:06:53] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /c9Vj
+[26/Mar/2023 23:06:53] WARNING [django.request:241] Bad Request: /nmaplowercheck1679872012
+[26/Mar/2023 23:06:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:55] WARNING [django.request:241] Bad Request: /scripts/WPnBr.dll
+[26/Mar/2023 23:06:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:55] WARNING [django.request:241] Bad Request: /robots.txt
+[26/Mar/2023 23:06:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:55] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:06:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:55] WARNING [django.request:241] Bad Request: /HNAP1
+[26/Mar/2023 23:06:55] WARNING [django.request:241] Bad Request: /pools/default/buckets
+[26/Mar/2023 23:06:55] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:06:57] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:57] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:57] WARNING [django.request:241] Bad Request: /home.jhtml
+[26/Mar/2023 23:06:57] WARNING [django.request:241] Bad Request: /pools
+[26/Mar/2023 23:06:57] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:57] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:06:58] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:58] WARNING [django.request:241] Bad Request: /start.pl
+[26/Mar/2023 23:06:58] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:06:58] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:07:00] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:07:00] WARNING [django.request:241] Bad Request: /default.cfm
+[26/Mar/2023 23:07:01] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:07:01] WARNING [django.request:241] Bad Request: /main.html
+[26/Mar/2023 23:07:15] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[26/Mar/2023 23:07:16] WARNING [django.request:241] Bad Request: /
+[26/Mar/2023 23:07:16] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[26/Mar/2023 23:07:16] WARNING [django.request:241] Bad Request: /
+[27/Mar/2023 01:01:12] WARNING [django.request:241] Not Found: /.env
+[27/Mar/2023 01:01:13] WARNING [django.request:241] Method Not Allowed: /
+[27/Mar/2023 01:01:14] WARNING [django.request:241] Not Found: /_profiler/phpinfo
+[27/Mar/2023 01:01:14] WARNING [django.request:241] Not Found: /debug/default/view
+[27/Mar/2023 01:01:15] WARNING [django.request:241] Not Found: /config.json
+[27/Mar/2023 01:36:57] WARNING [django.request:241] Not Found: /geoserver/web/
+[27/Mar/2023 01:37:38] WARNING [django.request:241] Not Found: /.git/config
+[27/Mar/2023 03:33:33] WARNING [django.request:241] Not Found: /robots.txt
+[27/Mar/2023 03:42:16] WARNING [django.request:241] Not Found: /actuator/health
+[27/Mar/2023 03:51:44] WARNING [django.request:241] Not Found: /dump.sql
+[27/Mar/2023 04:41:34] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[27/Mar/2023 04:41:34] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[27/Mar/2023 06:54:30] WARNING [django.request:241] Not Found: /test.sql
+[27/Mar/2023 07:05:29] WARNING [django.request:241] Not Found: /t4
+[27/Mar/2023 09:15:08] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[27/Mar/2023 10:07:38] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[27/Mar/2023 10:13:23] WARNING [django.request:241] Not Found: /ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application
+[27/Mar/2023 10:18:21] WARNING [django.request:241] Not Found: /owa/auth/x.js
+[27/Mar/2023 11:08:56] WARNING [django.request:241] Not Found: /test.sql
+[27/Mar/2023 11:25:20] WARNING [django.request:241] Not Found: /_matrix/client/versions
+[27/Mar/2023 13:57:59] WARNING [django.request:241] Not Found: /remote/login
+[27/Mar/2023 14:11:42] WARNING [django.request:241] Not Found: /mysqldump.sql
+[27/Mar/2023 15:11:12] WARNING [django.request:241] Not Found: /ab2g
+[27/Mar/2023 15:11:12] WARNING [django.request:241] Not Found: /ab2h
+[27/Mar/2023 15:11:14] WARNING [django.request:241] Not Found: /t4
+[27/Mar/2023 15:55:17] WARNING [django.request:241] Not Found: /.env
+[27/Mar/2023 15:55:25] WARNING [django.request:241] Method Not Allowed: /
+[27/Mar/2023 16:43:04] WARNING [django.request:241] Not Found: /.git/config
+[27/Mar/2023 17:12:51] WARNING [django.request:241] Not Found: /robots.txt
+[27/Mar/2023 17:17:07] WARNING [django.request:241] Not Found: /explore
+[27/Mar/2023 17:25:04] WARNING [django.request:241] Not Found: /public/_ignition/health-check/
+[27/Mar/2023 17:25:06] WARNING [django.request:241] Not Found: /_ignition/health-check/
+[27/Mar/2023 17:25:09] WARNING [django.request:241] Not Found: /wp-includes/wlwmanifest.xml
+[27/Mar/2023 17:48:26] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'ace185.com'. You may need to add 'ace185.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'ace185.com'. You may need to add 'ace185.com' to ALLOWED_HOSTS.
+[27/Mar/2023 17:48:26] WARNING [django.request:241] Bad Request: /
+[27/Mar/2023 18:27:03] WARNING [django.request:241] Not Found: /mysqldump.sql
+[27/Mar/2023 19:06:49] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[27/Mar/2023 19:06:49] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[27/Mar/2023 19:27:47] WARNING [django.request:241] Not Found: /robots.txt
+[27/Mar/2023 19:35:20] WARNING [django.request:241] Not Found: /.env
+[27/Mar/2023 20:07:47] WARNING [django.request:241] Not Found: /wp-login.php
+[27/Mar/2023 21:30:46] WARNING [django.request:241] Not Found: /mysql.sql
+[27/Mar/2023 21:48:08] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[27/Mar/2023 22:00:01] WARNING [django.request:241] Not Found: /autodiscover/autodiscover.json
+[28/Mar/2023 00:13:46] WARNING [django.request:241] Not Found: /.env
+[28/Mar/2023 00:13:46] WARNING [django.request:241] Method Not Allowed: /
+[28/Mar/2023 01:46:37] WARNING [django.request:241] Not Found: /mysql.sql
+[28/Mar/2023 01:58:35] WARNING [django.request:241] Not Found: /wp-login.php
+[28/Mar/2023 02:03:41] WARNING [django.request:241] Not Found: /.env
+[28/Mar/2023 02:03:42] WARNING [django.request:241] Method Not Allowed: /
+[28/Mar/2023 02:49:41] WARNING [django.request:241] Not Found: /ab2g
+[28/Mar/2023 02:49:41] WARNING [django.request:241] Not Found: /ab2h
+[28/Mar/2023 02:49:41] WARNING [django.request:241] Not Found: /t4
+[28/Mar/2023 04:49:18] WARNING [django.request:241] Not Found: /1.sql
+[28/Mar/2023 06:11:21] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[28/Mar/2023 06:35:01] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 08:17:31] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.syweicai.com'. You may need to add 'www.syweicai.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.syweicai.com'. You may need to add 'www.syweicai.com' to ALLOWED_HOSTS.
+[28/Mar/2023 08:17:31] WARNING [django.request:241] Bad Request: /vplayer/134151.html
+[28/Mar/2023 09:04:29] WARNING [django.request:241] Not Found: /1.sql
+[28/Mar/2023 09:21:59] WARNING [django.request:241] Not Found: /.env
+[28/Mar/2023 09:22:00] WARNING [django.request:241] Method Not Allowed: /
+[28/Mar/2023 09:45:58] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 09:46:01] WARNING [django.request:241] Not Found: /sitemap.xml
+[28/Mar/2023 09:51:25] WARNING [django.request:241] Not Found: /version
+[28/Mar/2023 10:16:25] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[28/Mar/2023 10:16:25] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[28/Mar/2023 11:33:35] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 11:33:35] WARNING [django.request:241] Not Found: /sitemap.xml
+[28/Mar/2023 11:33:36] WARNING [django.request:241] Not Found: /.well-known/security.txt
+[28/Mar/2023 11:38:07] WARNING [django.request:241] Not Found: /geoserver/web/
+[28/Mar/2023 11:39:17] WARNING [django.request:241] Not Found: /.git/config
+[28/Mar/2023 12:29:39] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[28/Mar/2023 12:29:40] WARNING [django.request:241] Bad Request: /
+[28/Mar/2023 12:29:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[28/Mar/2023 12:29:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[28/Mar/2023 12:29:55] WARNING [django.request:241] Bad Request: /sdk
+[28/Mar/2023 12:29:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[28/Mar/2023 12:29:55] WARNING [django.request:241] Bad Request: /nmaplowercheck1680006594
+[28/Mar/2023 12:29:55] WARNING [django.request:241] Bad Request: /
+[28/Mar/2023 12:29:56] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[28/Mar/2023 12:29:56] WARNING [django.request:241] Bad Request: /
+[28/Mar/2023 12:29:56] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[28/Mar/2023 12:29:56] WARNING [django.request:241] Bad Request: /HNAP1
+[28/Mar/2023 12:29:56] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[28/Mar/2023 12:29:56] WARNING [django.request:241] Bad Request: /evox/about
+[28/Mar/2023 13:20:04] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '127.0.0.1'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '127.0.0.1'. You may need to add '127.0.0.1' to ALLOWED_HOSTS.
+[28/Mar/2023 13:20:04] WARNING [django.request:241] Bad Request: /a.txt
+[28/Mar/2023 13:21:37] WARNING [django.request:241] Not Found: /.env
+[28/Mar/2023 14:20:26] WARNING [django.request:241] Not Found: /ab2g
+[28/Mar/2023 14:20:26] WARNING [django.request:241] Not Found: /ab2h
+[28/Mar/2023 14:20:29] WARNING [django.request:241] Not Found: /t4
+[28/Mar/2023 15:56:04] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 16:25:58] WARNING [django.request:241] Not Found: /www.sql
+[28/Mar/2023 16:37:04] WARNING [django.request:241] Not Found: /remote/login
+[28/Mar/2023 19:04:36] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 20:06:23] WARNING [django.request:241] Not Found: /spog/welcome
+[28/Mar/2023 20:06:23] WARNING [django.request:241] Not Found: /cgi-bin/welcome
+[28/Mar/2023 20:23:22] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 20:23:22] WARNING [django.request:241] Not Found: /aaaaaaaaaaaaaaaaaaaaaaaaaqr
+[28/Mar/2023 20:23:22] WARNING [django.request:241] Not Found: /Res/login.html
+[28/Mar/2023 20:23:22] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 20:23:22] WARNING [django.request:241] Not Found: /99vt
+[28/Mar/2023 20:23:22] WARNING [django.request:241] Not Found: /99vu
+[28/Mar/2023 20:28:49] WARNING [django.request:241] Not Found: /wp-login.php
+[28/Mar/2023 21:48:06] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[28/Mar/2023 21:58:29] WARNING [django.request:241] Not Found: /robots.txt
+[28/Mar/2023 21:58:46] WARNING [django.request:241] Not Found: /wp-login.php
+[28/Mar/2023 21:59:13] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'ftp.aycard.site'. You may need to add 'ftp.aycard.site' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'ftp.aycard.site'. You may need to add 'ftp.aycard.site' to ALLOWED_HOSTS.
+[28/Mar/2023 21:59:13] WARNING [django.request:241] Bad Request: /
+[28/Mar/2023 22:19:31] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 00:17:55] WARNING [django.request:241] Not Found: /assets/jQuery-File-Upload/server/php/index.php
+[29/Mar/2023 01:49:36] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[29/Mar/2023 01:49:36] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[29/Mar/2023 02:49:45] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[29/Mar/2023 02:56:49] WARNING [django.request:241] Not Found: /sendgrid.env
+[29/Mar/2023 04:11:08] WARNING [django.request:241] Not Found: /.env
+[29/Mar/2023 04:11:08] WARNING [django.request:241] Method Not Allowed: /
+[29/Mar/2023 04:38:05] WARNING [django.request:241] Not Found: /jmx-console/
+[29/Mar/2023 04:38:05] WARNING [django.request:241] Not Found: /jmx-console/
+[29/Mar/2023 04:38:06] WARNING [django.request:241] Not Found: /web-console/ServerInfo.jsp
+[29/Mar/2023 04:38:06] WARNING [django.request:241] Not Found: /web-console/ServerInfo.jsp
+[29/Mar/2023 04:38:06] WARNING [django.request:241] Not Found: /manager/html
+[29/Mar/2023 04:38:06] WARNING [django.request:241] Not Found: /pma/
+[29/Mar/2023 04:38:06] WARNING [django.request:241] Not Found: /phpmyadmin/
+[29/Mar/2023 04:38:06] WARNING [django.request:241] Not Found: /phpMyAdmin/
+[29/Mar/2023 04:38:07] WARNING [django.request:241] Not Found: /ab2g
+[29/Mar/2023 06:37:45] WARNING [django.request:241] Not Found: /geoserver/web/
+[29/Mar/2023 06:38:06] WARNING [django.request:241] Not Found: /.git/config
+[29/Mar/2023 08:12:32] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[29/Mar/2023 08:12:32] WARNING [django.request:241] Bad Request: /
+[29/Mar/2023 08:20:50] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 09:10:12] WARNING [django.request:241] Not Found: /wp-content/plugins/woocommerce-payments/dist/blocks-checkout.css
+[29/Mar/2023 09:50:48] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.cn-comic.com'. You may need to add 'www.cn-comic.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.cn-comic.com'. You may need to add 'www.cn-comic.com' to ALLOWED_HOSTS.
+[29/Mar/2023 09:50:48] WARNING [django.request:241] Bad Request: /info/183973/
+[29/Mar/2023 10:45:12] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 11:10:04] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[29/Mar/2023 11:14:53] WARNING [django.request:241] Not Found: /ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application
+[29/Mar/2023 11:22:50] WARNING [django.request:241] Not Found: /owa/auth/x.js
+[29/Mar/2023 11:46:11] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 11:46:12] WARNING [django.request:241] Not Found: /.well-known/security.txt
+[29/Mar/2023 14:14:06] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 14:49:25] WARNING [django.request:241] Not Found: /solr/
+[29/Mar/2023 14:50:04] WARNING [django.request:241] Not Found: /webfig/
+[29/Mar/2023 14:50:35] WARNING [django.request:241] Not Found: /owa/
+[29/Mar/2023 14:50:35] WARNING [django.request:241] Not Found: /autodiscover/autodiscover.json
+[29/Mar/2023 15:10:43] WARNING [django.request:241] Not Found: /.env
+[29/Mar/2023 15:10:44] WARNING [django.request:241] Method Not Allowed: /
+[29/Mar/2023 16:02:11] WARNING [django.request:241] Not Found: /wp-login.php
+[29/Mar/2023 17:01:41] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 17:29:32] WARNING [django.request:241] Unauthorized: /api/users/
+[29/Mar/2023 17:29:33] WARNING [django.request:241] Unauthorized: /auth/jwt/refresh/
+[29/Mar/2023 18:46:47] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 18:56:15] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[29/Mar/2023 18:56:15] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[29/Mar/2023 21:11:03] WARNING [django.request:241] Not Found: /wp-login.php
+[29/Mar/2023 22:01:07] WARNING [django.request:241] Not Found: /.env
+[29/Mar/2023 22:01:08] WARNING [django.request:241] Method Not Allowed: /
+[29/Mar/2023 22:27:46] WARNING [django.request:241] Not Found: /actuator/health
+[29/Mar/2023 23:31:00] WARNING [django.request:241] Not Found: /robots.txt
+[29/Mar/2023 23:58:31] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[30/Mar/2023 01:18:34] WARNING [django.request:241] Not Found: /robots.txt
+[30/Mar/2023 01:18:34] WARNING [django.request:241] Not Found: /robots.txt
+[30/Mar/2023 01:18:34] WARNING [django.request:241] Not Found: /sitemap
+[30/Mar/2023 01:18:50] WARNING [django.request:241] Not Found: /sitemap
+[30/Mar/2023 01:19:07] WARNING [django.request:241] Not Found: /sitemap.txt
+[30/Mar/2023 01:19:23] WARNING [django.request:241] Not Found: /sitemap.txt
+[30/Mar/2023 01:54:00] WARNING [django.request:241] Not Found: /robots.txt
+[30/Mar/2023 01:54:01] WARNING [django.request:241] Not Found: /humans.txt
+[30/Mar/2023 01:54:01] WARNING [django.request:241] Not Found: /ads.txt
+[30/Mar/2023 02:37:55] WARNING [django.request:241] Not Found: /ReportServer
+[30/Mar/2023 02:37:57] WARNING [django.request:241] Not Found: /login
+[30/Mar/2023 07:27:50] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 07:27:50] WARNING [django.request:241] Bad Request: /
+[30/Mar/2023 07:30:27] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 07:30:27] WARNING [django.request:241] Bad Request: /
+[30/Mar/2023 07:32:58] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 07:32:58] WARNING [django.request:241] Bad Request: /
+[30/Mar/2023 10:58:25] WARNING [django.request:241] Not Found: /assets/plugins/jQuery-File-Upload/server/php/index.php
+[30/Mar/2023 11:01:52] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.60y.cc'. You may need to add 'www.60y.cc' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.60y.cc'. You may need to add 'www.60y.cc' to ALLOWED_HOSTS.
+[30/Mar/2023 11:01:52] WARNING [django.request:241] Bad Request: /MOV/145689.html
+[30/Mar/2023 11:11:49] WARNING [django.request:241] Not Found: /geoserver/web/
+[30/Mar/2023 11:12:10] WARNING [django.request:241] Not Found: /.git/config
+[30/Mar/2023 11:36:45] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '84.ip-51-38-187.eu'. You may need to add '84.ip-51-38-187.eu' to ALLOWED_HOSTS.
+[30/Mar/2023 11:36:45] WARNING [django.request:241] Bad Request: /
+[30/Mar/2023 12:25:56] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 12:25:56] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[30/Mar/2023 13:19:55] WARNING [django.request:241] Not Found: /.env
+[30/Mar/2023 13:41:26] WARNING [django.request:241] Not Found: /dns-query
+[30/Mar/2023 13:41:28] WARNING [django.request:241] Not Found: /dns-query
+[30/Mar/2023 13:41:32] WARNING [django.request:241] Not Found: /query
+[30/Mar/2023 13:41:33] WARNING [django.request:241] Not Found: /query
+[30/Mar/2023 13:41:35] WARNING [django.request:241] Not Found: /resolve
+[30/Mar/2023 13:41:42] WARNING [django.request:241] Method Not Allowed: /
+[30/Mar/2023 17:27:31] WARNING [django.request:241] Not Found: /remote/login
+[30/Mar/2023 18:50:31] WARNING [django.request:241] Not Found: /.env
+[30/Mar/2023 18:50:31] WARNING [django.request:241] Method Not Allowed: /
+[30/Mar/2023 19:40:49] WARNING [django.request:241] Not Found: /.git/HEAD
+[30/Mar/2023 19:51:20] WARNING [django.request:241] Not Found: /robots.txt
+[30/Mar/2023 20:13:40] WARNING [django.request:241] Not Found: /autodiscover/autodiscover.json
+[30/Mar/2023 20:28:17] WARNING [django.request:241] Not Found: /robots.txt
+[30/Mar/2023 21:18:21] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 21:18:21] WARNING [django.request:241] Bad Request: /
+[30/Mar/2023 21:21:54] WARNING [django.request:241] Not Found: /actuator/gateway/routes
+[30/Mar/2023 21:50:20] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[30/Mar/2023 22:36:22] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 22:36:22] WARNING [django.request:241] Bad Request: /
+[30/Mar/2023 22:36:29] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 22:36:29] WARNING [django.request:241] Bad Request: /
+[30/Mar/2023 23:56:04] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[30/Mar/2023 23:56:04] WARNING [django.request:241] Bad Request: /
+[31/Mar/2023 01:53:27] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 01:53:27] WARNING [django.request:241] Method Not Allowed: /
+[31/Mar/2023 02:51:08] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 02:51:09] WARNING [django.request:241] Method Not Allowed: /
+[31/Mar/2023 03:21:55] WARNING [django.request:241] Not Found: /robots.txt
+[31/Mar/2023 03:42:07] WARNING [django.request:241] Not Found: /api/v1
+[31/Mar/2023 04:10:55] WARNING [django.request:241] Not Found: /wp-login.php
+[31/Mar/2023 04:32:20] WARNING [django.request:241] Not Found: /creds.txt
+[31/Mar/2023 06:11:41] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[31/Mar/2023 06:11:41] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[31/Mar/2023 07:59:42] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 07:59:43] WARNING [django.request:241] Method Not Allowed: /
+[31/Mar/2023 08:30:27] WARNING [django.request:241] Not Found: /robots.txt
+[31/Mar/2023 09:03:30] WARNING [django.request:241] Not Found: /geoserver/web/
+[31/Mar/2023 09:03:58] WARNING [django.request:241] Not Found: /.git/config
+[31/Mar/2023 09:50:47] WARNING [django.request:241] Not Found: /version
+[31/Mar/2023 11:13:37] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 11:13:38] WARNING [django.request:241] Method Not Allowed: /
+[31/Mar/2023 11:32:32] WARNING [django.request:241] Not Found: /ab2g
+[31/Mar/2023 11:32:33] WARNING [django.request:241] Not Found: /ab2h
+[31/Mar/2023 11:32:43] WARNING [django.request:241] Not Found: /t4
+[31/Mar/2023 11:34:06] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 11:34:07] WARNING [django.request:241] Method Not Allowed: /
+[31/Mar/2023 12:02:44] WARNING [django.request:241] Not Found: /actuator/health
+[31/Mar/2023 12:14:05] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[31/Mar/2023 12:17:30] WARNING [django.request:241] Not Found: /ecp/Current/exporttool/microsoft.exchange.ediscovery.exporttool.application
+[31/Mar/2023 12:22:09] WARNING [django.request:241] Not Found: /robots.txt
+[31/Mar/2023 12:22:41] WARNING [django.request:241] Not Found: /owa/auth/x.js
+[31/Mar/2023 13:53:33] WARNING [django.request:241] Not Found: /robots.txt
+[31/Mar/2023 13:53:34] WARNING [django.request:241] Not Found: /robots.txt
+[31/Mar/2023 13:53:45] WARNING [django.request:241] Not Found: /+CSCOE+/logon.html
+[31/Mar/2023 13:59:52] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: 'www.dailianjun.com'. You may need to add 'www.dailianjun.com' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: 'www.dailianjun.com'. You may need to add 'www.dailianjun.com' to ALLOWED_HOSTS.
+[31/Mar/2023 13:59:52] WARNING [django.request:241] Bad Request: /vodarticle/d03CCS.html
+[31/Mar/2023 17:11:43] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 17:11:43] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 17:20:20] WARNING [django.request:241] Not Found: /ajax
+[31/Mar/2023 17:45:12] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 17:45:13] WARNING [django.request:241] Method Not Allowed: /
+[31/Mar/2023 17:45:32] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '172.105.210.22'. You may need to add '172.105.210.22' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '172.105.210.22'. You may need to add '172.105.210.22' to ALLOWED_HOSTS.
+[31/Mar/2023 17:45:32] WARNING [django.request:241] Bad Request: /
+[31/Mar/2023 18:10:03] WARNING [django.request:241] Not Found: /wp-login.php
+[31/Mar/2023 19:21:52] WARNING [django.request:241] Not Found: ///remote/fgt_lang
+[31/Mar/2023 20:55:34] WARNING [django.request:241] Unauthorized: /api/users/
+[31/Mar/2023 21:01:12] WARNING [django.request:241] Unauthorized: /api/users/
+[31/Mar/2023 21:48:23] WARNING [django.request:241] Not Found: /owa/auth/logon.aspx
+[31/Mar/2023 22:22:27] WARNING [django.request:241] Not Found: /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+[31/Mar/2023 22:25:35] WARNING [django.request:241] Not Found: /.env
+[31/Mar/2023 22:25:37] WARNING [django.request:241] Method Not Allowed: /
+[31/Mar/2023 23:03:55] WARNING [django.request:241] Not Found: /plugins/jQuery-File-Upload/server/php/index.php
+[31/Mar/2023 23:22:24] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[31/Mar/2023 23:22:24] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[01/Apr/2023 00:31:09] WARNING [django.request:241] Not Found: /.env
+[01/Apr/2023 00:31:10] WARNING [django.request:241] Method Not Allowed: /
+[01/Apr/2023 00:58:19] WARNING [django.request:241] Not Found: /vendor/phpunit/phpunit/src/Util/PHP/eval-stdin.php
+[01/Apr/2023 01:23:37] WARNING [django.request:241] Not Found: /.git/config
+[01/Apr/2023 02:04:58] WARNING [django.request:241] Not Found: /sendgrid.env
+[01/Apr/2023 02:14:45] WARNING [django.request:241] Not Found: /index.php
+[01/Apr/2023 03:01:52] WARNING [django.request:241] Not Found: /ab2g
+[01/Apr/2023 03:01:52] WARNING [django.request:241] Not Found: /ab2h
+[01/Apr/2023 03:01:52] WARNING [django.request:241] Not Found: /t4
+[01/Apr/2023 03:44:12] WARNING [django.request:241] Not Found: /robots.txt
+[01/Apr/2023 04:23:32] WARNING [django.request:241] Not Found: /mifs/.;/services/LogService
+[01/Apr/2023 04:24:31] WARNING [django.request:241] Not Found: /.git/config
+[01/Apr/2023 05:45:10] WARNING [django.request:241] Not Found: /console/
+[01/Apr/2023 05:46:19] WARNING [django.request:241] Not Found: /.git/config
+[01/Apr/2023 07:13:47] WARNING [django.request:241] Not Found: /Autodiscover/Autodiscover.xml
+[01/Apr/2023 07:15:01] WARNING [django.request:241] Not Found: /config/default.json
+[01/Apr/2023 07:15:10] WARNING [django.request:241] Not Found: /config/config.json
+[01/Apr/2023 07:15:19] WARNING [django.request:241] Not Found: /config.json
+[01/Apr/2023 07:15:28] WARNING [django.request:241] Not Found: /credentials/config.json
+[01/Apr/2023 07:15:37] WARNING [django.request:241] Not Found: /.env.bak
+[01/Apr/2023 07:15:46] WARNING [django.request:241] Not Found: /.env.production
+[01/Apr/2023 07:15:55] WARNING [django.request:241] Not Found: /.env.example
+[01/Apr/2023 07:16:04] WARNING [django.request:241] Not Found: /api/.env
+[01/Apr/2023 07:16:13] WARNING [django.request:241] Not Found: /sendgrid.env
+[01/Apr/2023 07:16:22] WARNING [django.request:241] Not Found: /.env
+[01/Apr/2023 07:16:31] WARNING [django.request:241] Not Found: /assets/app.config.json
+[01/Apr/2023 07:16:40] WARNING [django.request:241] Not Found: /config.php.bak
+[01/Apr/2023 07:16:49] WARNING [django.request:241] Not Found: /settings.php.bak
+[01/Apr/2023 07:16:58] WARNING [django.request:241] Not Found: /wp-config.php.bak
+[01/Apr/2023 07:17:07] WARNING [django.request:241] Not Found: /settings.py
+[01/Apr/2023 07:17:16] WARNING [django.request:241] Not Found: /app/settings.py
+[01/Apr/2023 07:17:25] WARNING [django.request:241] Not Found: /django/settings.py
+[01/Apr/2023 07:17:34] WARNING [django.request:241] Not Found: /settings/settings.py
+[01/Apr/2023 07:17:43] WARNING [django.request:241] Not Found: /web/settings/settings.py
+[01/Apr/2023 07:17:52] WARNING [django.request:241] Not Found: /credentials.json
+[01/Apr/2023 07:18:01] WARNING [django.request:241] Not Found: /assets/credentials.json
+[01/Apr/2023 07:18:10] WARNING [django.request:241] Not Found: /environment.rb
+[01/Apr/2023 07:18:19] WARNING [django.request:241] Not Found: /config/environment.rb
+[01/Apr/2023 07:18:28] WARNING [django.request:241] Not Found: /redmine/config/environment.rb
+[01/Apr/2023 07:18:37] WARNING [django.request:241] Not Found: /config.rb
+[01/Apr/2023 08:04:38] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 08:05:17] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 08:21:46] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 08:21:46] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 08:21:46] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 08:21:46] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 08:32:56] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 08:33:31] WARNING [django.request:241] Not Found: /.env
+[01/Apr/2023 08:33:31] WARNING [django.request:241] Method Not Allowed: /
+[01/Apr/2023 08:41:50] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 08:47:08] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 08:50:55] WARNING [django.request:241] Not Found: /robots.txt
+[01/Apr/2023 08:58:55] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 09:04:09] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 09:27:24] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 09:32:45] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 09:38:53] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 09:41:10] WARNING [django.request:241] Not Found: /_ignition/execute-solution
+[01/Apr/2023 09:46:38] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 09:46:38] WARNING [django.request:241] Unauthorized: /api/company/search/
+[01/Apr/2023 09:51:45] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 09:57:20] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 10:05:08] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 11:32:03] WARNING [django.request:241] Not Found: /geoserver/web/
+[01/Apr/2023 11:53:58] WARNING [django.request:241] Unauthorized: /api/company/search/
+[01/Apr/2023 11:59:13] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 12:08:44] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 12:13:47] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 12:19:50] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 12:25:04] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 12:30:20] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 12:35:06] WARNING [django.request:241] Not Found: /robots.txt
+[01/Apr/2023 12:35:06] WARNING [django.request:241] Not Found: /robots.txt
+[01/Apr/2023 12:35:54] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 12:45:15] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 13:03:59] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 13:05:58] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:06:05] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:12:19] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 13:17:29] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 13:19:29] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:20:13] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:20:51] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:34:45] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 13:35:06] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:36:55] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:38:10] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 13:38:44] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:38:48] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:38:56] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:39:05] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:39:38] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:39:48] WARNING [django.request:241] Unauthorized: /api/company/search/
+[01/Apr/2023 13:39:49] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:40:34] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 13:43:48] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 13:44:49] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 14:53:10] WARNING [django.request:241] Not Found: /config/default.json
+[01/Apr/2023 14:53:18] WARNING [django.request:241] Not Found: /config/config.json
+[01/Apr/2023 14:53:26] WARNING [django.request:241] Not Found: /config.json
+[01/Apr/2023 14:53:34] WARNING [django.request:241] Not Found: /credentials/config.json
+[01/Apr/2023 14:53:42] WARNING [django.request:241] Not Found: /.env.bak
+[01/Apr/2023 14:53:50] WARNING [django.request:241] Not Found: /.env.production
+[01/Apr/2023 14:53:58] WARNING [django.request:241] Not Found: /.env.example
+[01/Apr/2023 14:54:06] WARNING [django.request:241] Not Found: /api/.env
+[01/Apr/2023 14:54:14] WARNING [django.request:241] Not Found: /sendgrid.env
+[01/Apr/2023 14:54:22] WARNING [django.request:241] Not Found: /.env
+[01/Apr/2023 14:54:30] WARNING [django.request:241] Not Found: /assets/app.config.json
+[01/Apr/2023 14:54:38] WARNING [django.request:241] Not Found: /config.php.bak
+[01/Apr/2023 14:54:46] WARNING [django.request:241] Not Found: /settings.php.bak
+[01/Apr/2023 14:54:54] WARNING [django.request:241] Not Found: /wp-config.php.bak
+[01/Apr/2023 14:55:02] WARNING [django.request:241] Not Found: /settings.py
+[01/Apr/2023 14:55:10] WARNING [django.request:241] Not Found: /app/settings.py
+[01/Apr/2023 14:55:18] WARNING [django.request:241] Not Found: /django/settings.py
+[01/Apr/2023 14:55:26] WARNING [django.request:241] Not Found: /settings/settings.py
+[01/Apr/2023 14:55:34] WARNING [django.request:241] Not Found: /web/settings/settings.py
+[01/Apr/2023 14:55:42] WARNING [django.request:241] Not Found: /credentials.json
+[01/Apr/2023 14:55:50] WARNING [django.request:241] Not Found: /assets/credentials.json
+[01/Apr/2023 14:55:58] WARNING [django.request:241] Not Found: /environment.rb
+[01/Apr/2023 14:56:06] WARNING [django.request:241] Not Found: /config/environment.rb
+[01/Apr/2023 14:56:14] WARNING [django.request:241] Not Found: /redmine/config/environment.rb
+[01/Apr/2023 14:56:22] WARNING [django.request:241] Not Found: /config.rb
+[01/Apr/2023 15:43:55] ERROR [django.security.DisallowedHost:124] Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/utils/deprecation.py", line 135, in __call__
+    response = self.process_request(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/http/request.py", line 148, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '/run/gunicorn.sock:'. The domain name provided is not valid according to RFC 1034/1035.
+[01/Apr/2023 15:43:56] WARNING [django.request:241] Bad Request: /remote/fgt_lang
+[01/Apr/2023 16:57:42] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 16:57:42] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 16:57:42] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 16:57:42] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 17:13:16] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:14:49] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:26:22] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:26:28] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:32:04] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:32:11] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:33:34] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:33:47] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:34:19] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:35:17] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:35:20] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:35:22] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:37:27] WARNING [django.request:241] Unauthorized: /api/company/search/
+[01/Apr/2023 17:39:59] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:40:45] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:41:19] ERROR [django.request:241] Internal Server Error: /api/company/search/
+Traceback (most recent call last):
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/generics.py", line 199, in get
+    return self.list(request, *args, **kwargs)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/rest_framework/mixins.py", line 38, in list
+    queryset = self.filter_queryset(self.get_queryset())
+  File "/root/app/Backend/backend/api/views.py", line 135, in get_queryset
+    df_groupby = df.groupby(['id']).sum().sort_values(by=['weight'], ascending=False)
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/frame.py", line 8402, in groupby
+    return DataFrameGroupBy(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/groupby.py", line 965, in __init__
+    grouper, exclusions, obj = get_grouper(
+  File "/root/app/Backend/env/lib/python3.10/site-packages/pandas/core/groupby/grouper.py", line 888, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'id'
+[01/Apr/2023 17:43:55] WARNING [django.request:241] Unauthorized: /api/users/
+[01/Apr/2023 17:45:41] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 17:45:41] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 17:45:41] WARNING [django.request:241] Unauthorized: /api/reservation/
+[01/Apr/2023 17:45:42] WARNING [django.request:241] Unauthorized: /api/reservation/

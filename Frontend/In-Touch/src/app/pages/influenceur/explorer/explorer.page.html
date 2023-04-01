@@ -1,5 +1,5 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
+<ion-header [translucent]="true" style="--background: #ADE1DF">
+  <ion-toolbar style="--background: #ADE1DF">
     <ion-title>
       BrandBoost
     </ion-title>
@@ -8,48 +8,57 @@
 
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
-    <ion-toolbar>
+    <ion-toolbar style="--background: #ADE1DF">
       <ion-title size="large">BrandBoost</ion-title>
     </ion-toolbar>
   </ion-header>
+  <div style="background-color: #EAE7DF;">
+    <ion-searchbar #searchVal placeholder="Try 'Cancun' or 'Sushi'" (keyup.enter)="search(searchVal.value)" style="--background: white"></ion-searchbar>
+  </div>
 
-    <ion-searchbar #searchVal placeholder="Try 'Cancun' or 'Sushi'" (keyup.enter)="search(searchVal.value)"></ion-searchbar>
-<!--
   <ion-text>
-    <h2>What are you looking for ?</h2>
+    <h2>Which kind of brand<br>do you search ?</h2>
   </ion-text>
   
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <ion-button expand="full" shape="round" color="danger">
-          <ion-icon slot="start" name="pizza"></ion-icon>
-          Restaurant
-        </ion-button>
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <img src="https://cdn-icons-png.flaticon.com/512/5505/5505190.png" />
+          </ion-thumbnail>
+          <ion-label class="ion-text-wrap">Beauty</ion-label>
+        </ion-item>
       </ion-col>
-      <ion-col>
-        <ion-button expand="full" shape="round" color="warning">
-          <ion-icon slot="start" name="bed"></ion-icon>
-          Hotel
-        </ion-button>
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <img src="https://cdn-icons-png.flaticon.com/512/7339/7339607.png" />
+          </ion-thumbnail>
+          <ion-label class="ion-text-wrap">Fitness / Lifestyle</ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col>
-        <ion-button expand="full" shape="round" color="success">
-          <ion-icon slot="start" name="leaf"></ion-icon>
-          Healty
-        </ion-button>
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <img src="https://cdn-icons-png.flaticon.com/512/2818/2818619.png" />
+          </ion-thumbnail>
+          <ion-label class="ion-text-wrap">Clothe</ion-label>
+        </ion-item>
       </ion-col>
-      <ion-col>
-        <ion-button expand="full" shape="round" color="primary">
-          <ion-icon slot="start" name="musical-notes"></ion-icon>
-          Bar, club
-        </ion-button>
+      <ion-col size="6">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <img src="https://cdn-icons-png.flaticon.com/512/5001/5001087.png" />
+          </ion-thumbnail>
+          <ion-label class="ion-text-wrap">Others</ion-label>
+        </ion-item>
       </ion-col>
     </ion-row>
   </ion-grid>
-  -->
+  
   <ion-text>
     <h2>Explore arround you</h2>
   </ion-text>
@@ -75,38 +84,88 @@
         <ion-card-title>Cozumel</ion-card-title>
       </ion-card>
   </div>
+  <!--
   <div class="padding-button">
     <ion-button expand="full"  fill="outline" >See more ...</ion-button>
   </div>
-  
+  -->
   <ion-text>
-    <h2>Inevitable place</h2>
+    <h2>The mexican brands</h2>
+  </ion-text>
+  <div class="scrolling-wrapper">
+    <ion-card button (click)="search('aletazul')">
+      <img src="https://aycard.site/media/images/kl6775cdx8qiyhnzzt1.jpeg"/>
+      <ion-card-title>Aletazul</ion-card-title>
+    </ion-card>
+    <ion-card button (click)="search('rosanegra')">
+      <img src="https://aycard.site/media/images/3g7zu8acxxmdbnulurn.jpeg"/>
+      <ion-card-title>Rosanegra</ion-card-title>
+    </ion-card>
+    <ion-card button (click)="search('tora')">
+      <img src="https://aycard.site/media/images/a7kkr0o75dgqs9942hx.jpeg"/>
+      <ion-card-title>Tora</ion-card-title>
+    </ion-card>
+    <ion-card button (click)="search('taboo')">
+      <img src="https://aycard.site/media/images/mzrn23l8b79znzdqkrq.jpeg"/>
+      <ion-card-title>Taboo</ion-card-title>
+    </ion-card>
+  </div>
+  <ion-text>
+    <h2>Inevitable foods</h2>
   </ion-text>
   <div class="scrolling-wrapper">
     <ion-card button (click)="search('tacos')">
-      <img src="https://cdn.pixabay.com/photo/2014/01/14/22/14/tacos-245241_960_720.jpg"/>
+      <img src="https://cdn.pixabay.com/photo/2016/08/23/08/53/tacos-1613795_960_720.jpg"/>
       <ion-card-title>Tacos</ion-card-title>
     </ion-card>
     <ion-card button (click)="search('sushi')">
-      <img src="https://cdn.pixabay.com/photo/2018/08/03/08/33/food-3581341_960_720.jpg"/>
+      <img src="https://cdn.pixabay.com/photo/2019/08/09/18/32/sushi-roll-images-4395598_960_720.jpg"/>
       <ion-card-title>Sushi</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('scuba diving')">
-      <img src="https://cdn.pixabay.com/photo/2020/03/10/13/53/tourism-4919080_960_720.jpg"/>
-      <ion-card-title>Scuba diving</ion-card-title>
+    <ion-card button (click)="search('pizza')">
+      <img src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg"/>
+      <ion-card-title>Pizza</ion-card-title>
     </ion-card>
+    <ion-card button (click)="search('steakhouse')">
+      <img src="https://cdn.pixabay.com/photo/2022/08/31/12/38/steak-7423230_960_720.jpg"/>
+      <ion-card-title>Steakhouse</ion-card-title>
+    </ion-card>
+    <ion-card button (click)="search('seafood')">
+      <img src="https://cdn.pixabay.com/photo/2019/06/11/03/59/seafood-4265994_960_720.jpg"/>
+      <ion-card-title>Seafood</ion-card-title>
+    </ion-card>
+  </div>
+  <ion-text>
+    <h2>Inevitable activities</h2>
+  </ion-text>
+  <div class="scrolling-wrapper">
     <ion-card button (click)="search('adventure')">
       <img src="https://cdn.pixabay.com/photo/2015/09/26/21/33/suspension-bridge-959853_960_720.jpg"/>
       <ion-card-title>Adventure</ion-card-title>
+    </ion-card>
+    <ion-card button (click)="search('scuba diving')">
+      <img src="https://cdn.pixabay.com/photo/2016/09/07/23/05/diving-1652869_960_720.jpg"/>
+      <ion-card-title>Scuba diving</ion-card-title>
     </ion-card>
     <ion-card button (click)="search('spa')">
       <img src="https://cdn.pixabay.com/photo/2016/08/22/16/23/massage-therapy-1612308_960_720.jpg"/>
       <ion-card-title>Spa</ion-card-title>
     </ion-card>
+    <ion-card button (click)="search('kitesurf')">
+      <img src="https://cdn.pixabay.com/photo/2019/06/14/11/05/beach-4273396_960_720.jpg"/>
+      <ion-card-title>Kitesurf</ion-card-title>
+    </ion-card>
+    <ion-card button (click)="search('event')">
+      <img src="https://cdn.pixabay.com/photo/2016/12/29/12/36/sol-1938459_960_720.jpg"/>
+      <ion-card-title>Event</ion-card-title>
+    </ion-card>
   </div>
+  <!--
   <div class="padding-button">
     <ion-button expand="full"  fill="outline" >See more ...</ion-button>
   </div>
+  -->
+  <!--
   <ion-text>
     <h2>Find your next experience</h2>
   </ion-text>
@@ -131,5 +190,6 @@
     <ion-label>Email: {{infoAboutMe.data.email}}</ion-label><br>
     <ion-label>ID: {{infoAboutMe.data.id}}</ion-label>
   </div>
+  -->
 
 </ion-content>

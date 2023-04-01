@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras, UrlCreationOptions } from '@angular/router';
 import { IonSearchbar } from '@ionic/angular';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
@@ -30,10 +30,14 @@ export class ExplorerPage implements OnInit {
   
     search(val: string | null | undefined) {
       if (typeof val === 'string'){
+        
         let navigationExtras: NavigationExtras = {
           state: { search: val},
+          queryParamsHandling: 'merge',
+          preserveFragment: true,
           relativeTo: this.activatedRoute
         };
+        console.log("[EXPLORER] - search - " + val)
         this.router.navigate(['view-search'], navigationExtras)
     }
       

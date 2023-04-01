@@ -21,16 +21,7 @@ export class ProfilePage implements OnInit {
   ngOnInit(): void {
     this.authService.getCurrentUser().subscribe(
       (response: any) => {
-        this.user = new User(
-          response.id,
-          response.first_name,
-          response.last_name,
-          response.username,
-          response.facebookId,
-          response.android,
-          response.ios,
-          response.is_influenceur
-        );
+        this.user = new User(response);
       }
     )
     

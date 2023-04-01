@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AlertController } from '@ionic/angular';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras, UrlCreationOptions } from '@angular/router';
 import { CompanyDto, MainCompanyDto, OfferDto } from 'src/app/models/activity-model';
 import { django_pagination } from './contract/contract.page';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 export interface queryParamsDto {
   search: string;
+  navigationId?: number;
 }
 
 @Component({
@@ -26,14 +28,18 @@ export class ViewSearchPage implements OnInit {
     public apiService:ApiserviceService,
     public alertController: AlertController,
     public router:Router,
-    public activatedRoute: ActivatedRoute) { 
+    public activatedRoute: ActivatedRoute,
+    private location: Location) { 
       
     }
   
     ngOnInit() {
+      console.log("[VIEW-SEARCH]")
       const navigation = this.router.getCurrentNavigation();
+      console.log(navigation?.extras.state)
       this.parameters = navigation?.extras.state as queryParamsDto
       this.findCompanyBySearch();
+      console.log(this.location)
     }
 
     public async findCompanyBySearch(){
@@ -51,13 +57,16 @@ export class ViewSearchPage implements OnInit {
     }
 
     public showDetail(companySearch: MainCompanyDto){ 
-      console.log("[showDetail] - navigationExtras: NavigationExtras")
       let navigationExtras: NavigationExtras = {
         state: {
           id: companySearch.id
         },
+        queryParamsHandling: 'merge',
+        preserveFragment: true,
         relativeTo: this.activatedRoute
       };
+      console.log("[VIEW-SEARCH] - showDetail - " + companySearch.id)
+      console.log(this.location)
       this.router.navigate(['contract'], navigationExtras)
       
     }

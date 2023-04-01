@@ -109,16 +109,7 @@ getCurrentUser(): Observable<User> {
         this.isAuthenticated.next(true);
         this.fetchCurrentUser().subscribe({
           next: (response: Array<User>) => {
-            var tmp: User = new User(
-              response[0].id,
-              response[0].first_name,
-              response[0].last_name,
-              response[0].username,
-              response[0].facebookId,
-              response[0].android,
-              response[0].ios,
-              response[0].is_influenceur
-            );
+            var tmp: User = new User(response[0] as User);
             this.user$.next(tmp as User);
             return of(tmp)
           },

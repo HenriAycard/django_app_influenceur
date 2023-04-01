@@ -8,6 +8,8 @@ import { CompanyDto, OfferDto, CreateReservationDto } from 'src/app/models/activ
 import { CheckboxCustomEvent } from '@ionic/angular';
 import { IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { Location } from '@angular/common';
+
 
 export interface queryParamsDto {
   id: number
@@ -45,7 +47,8 @@ export class ContractPage implements OnInit {
     public alertController: AlertController,
     public router:Router,
     public activatedRoute: ActivatedRoute,
-    private navController: NavController) {
+    private navController: NavController,
+    private location: Location) {
     
   }
 
@@ -62,7 +65,8 @@ export class ContractPage implements OnInit {
     
     this.apiService.findCompanyById(this.parameters.id).subscribe(
       data => {
-        this.datas = data as CompanyDto
+        this.datas = new CompanyDto(data)
+        console.log(this.datas)
       }
     )
   }
@@ -160,7 +164,9 @@ export class ContractPage implements OnInit {
   }
 
   public returnPreviousPage(): void{
-    this.navController.back();
+    console.log(this.location)
+    this.router.navigateByUrl("/influenceur")
+    
   }
 
 

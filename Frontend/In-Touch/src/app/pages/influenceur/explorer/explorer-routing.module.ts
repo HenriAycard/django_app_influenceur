@@ -12,11 +12,6 @@ const routes: Routes = [
     path: 'view-search',
     loadChildren: () => import('./view-search/view-search.module').then( m => m.ViewSearchPageModule)
   },
-  {
-    path: '',
-    redirectTo: '/influenceur/explorer',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({

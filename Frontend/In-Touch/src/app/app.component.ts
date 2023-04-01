@@ -39,7 +39,7 @@ export class AppComponent  implements OnInit{
       next: (response: Array<User>) => {
         if (response.length === 1) {
           if (response[0].is_influenceur) {
-            this.router.navigate(['/influenceur']);
+            this.router.navigate(['influenceur']);
           } else {
             this.router.navigate(['/brand']);
           }

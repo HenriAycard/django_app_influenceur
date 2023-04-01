@@ -12,11 +12,6 @@ const routes: Routes = [
   {
     path: 'contract',
     loadChildren: () => import('./contract/contract.module').then( m => m.ContractPageModule)
-  },
-  {
-    path: '',
-    redirectTo: '/influenceur/explorer/view-search',
-    pathMatch: 'full'
   }
 ];
 
