@@ -10,7 +10,7 @@
 <ion-content>
 
 
-  <ion-card button *ngFor="let company_card of datas" (click)="showDetail(company_card)">
+  <ion-card button *ngFor="let company_card of datas" [routerLink]="['experience']" [queryParams]="{ id: company_card.id }">
     <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of company_card.imgCompany" [src]="company_image.file" />
     <ion-card-header style="text-align: left;">
       <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>

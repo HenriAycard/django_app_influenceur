@@ -39,16 +39,16 @@ export class AppComponent  implements OnInit{
       next: (response: Array<User>) => {
         if (response.length === 1) {
           if (response[0].is_influenceur) {
-            this.router.navigate(['influenceur']);
+            this.router.navigateByUrl('influenceur');
           } else {
-            this.router.navigate(['/brand']);
+            this.router.navigateByUrl('/brand');
           }
         } else {
-          this.router.navigate(['/login']);
+          this.router.navigateByUrl('/login');
         }
       },
       error: (err: HttpErrorResponse) => {
-        this.router.navigate(['/login']);
+        this.router.navigateByUrl('/login');
       }
     })
   }

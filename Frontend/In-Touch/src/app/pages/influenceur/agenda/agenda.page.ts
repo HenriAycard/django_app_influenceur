@@ -58,7 +58,7 @@ export class AgendaPage implements OnInit {
       {
         next: (response: Array<ResaByStatusDto>) => {
           for (const res of response){
-            this.dataWaiting.push(new ResaByStatusDto(res))
+            this.dataWaiting.push(res as ResaByStatusDto)
           }
           this.countWaiting = this.dataWaiting.length
         },
@@ -81,7 +81,7 @@ export class AgendaPage implements OnInit {
       {
         next: (response: Array<ResaByStatusDto>) => {
           for (const res of response){
-            this.dataLastExperiences.push(new ResaByStatusDto(res))
+            this.dataLastExperiences.push(res as ResaByStatusDto)
           }
           this.countLastExperiences = this.dataLastExperiences.length
         },
@@ -104,7 +104,7 @@ export class AgendaPage implements OnInit {
       {
         next: (response: Array<ResaByStatusDto>) => {
           for (const res of response){
-            this.dataUnsuccessful.push(new ResaByStatusDto(res))
+            this.dataUnsuccessful.push(res as ResaByStatusDto)
           }
           this.countUnsuccessful = this.dataUnsuccessful.length
         },
@@ -127,7 +127,7 @@ export class AgendaPage implements OnInit {
       {
         next: (response: Array<ResaByStatusDto>) => {
           for (const res of response){
-            this.dataComingSoon.push(new ResaByStatusDto(res))
+            this.dataComingSoon.push(res as ResaByStatusDto)
           }
           console.log(response)
           console.log(this.dataComingSoon)

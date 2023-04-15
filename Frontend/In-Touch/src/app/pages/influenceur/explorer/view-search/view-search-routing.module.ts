@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ViewSearchPage } from './view-search.page';
-import { IonicModule } from '@ionic/angular';
 
 const routes: Routes = [
   {
@@ -10,13 +9,13 @@ const routes: Routes = [
     component: ViewSearchPage,
   },
   {
-    path: 'contract',
-    loadChildren: () => import('./contract/contract.module').then( m => m.ContractPageModule)
+    path: 'experience',
+    loadChildren: () => import('./experience/experience.module').then( m => m.ExperiencePageModule)
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes), IonicModule],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
 export class ViewSearchPageRoutingModule {}

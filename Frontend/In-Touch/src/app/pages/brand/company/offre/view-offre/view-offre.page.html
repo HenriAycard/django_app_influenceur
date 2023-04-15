@@ -6,63 +6,88 @@
   <div class="button-retour">
     <ion-button fill="clear" color="light" (click)="returnPreviousPage()"><ion-icon name="close-outline"></ion-icon></ion-button>
   </div>
-  <img style="height: 250px; width: 100%; object-fit: cover;" *ngFor="let company_image of datas.imgCompany" [src]="company_image.file" />
 
-  <ion-item>
-    <ion-label>
-      <h1 class="header-font">{{ datas.nameCompany }}</h1>
-      <p>{{ datas.typeCompany.nameTypeCompany}}</p>
-      <ion-chip *ngIf="datas.isOnSit">On sit</ion-chip>
-      <ion-chip *ngIf="datas.isTakeAway">Take away</ion-chip>
-    </ion-label>
-  </ion-item>
-  <ion-item button >
-    <ion-icon name="location-outline" size="default" style="padding-right: 20px;"></ion-icon>
-    <ion-label>
-      <ion-label>{{ datas.address.address1 }} {{ datas.address.address2 }}</ion-label>
-      <ion-label>{{ datas.address.city }} {{ datas.address.postalCode }}</ion-label>
-    </ion-label>
-  </ion-item>
-  <ion-item button >
-    <ion-icon name="logo-instagram" size="default" style="padding-right: 20px;"></ion-icon>
-    <ion-label>
-      @{{ datas.nameCompany }}
-    </ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label class="ion-text-wrap">{{ datas.description | slice:0:300 }}{{datas.description.length > 300 ? '...' : ''}}</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>
-      <h1 class="header-font">Opening hours</h1>
-      <p *ngFor="let open of datas.openings">
-        {{open.fromDate}}: {{open.startDate}}-{{open.endDate}}
-      </p>
-    </ion-label>
-  </ion-item>
-  <ion-item lines="none">
-    <ion-label class="ion-text-wrap">
-      <h1 class="header-font">Contrats</h1>
-      <p>List of contrats that you propose</p>
-    </ion-label>
-    <ion-button slot="end" size="default" fill="solid" (click)="newOffer()">New contract</ion-button>
+  <div *ngIf="loaded">
+    <img style="height: 250px; width: 100%; object-fit: cover;" *ngFor="let company_image of datas.imgCompany" [src]="company_image.file" />
+    <ion-item>
+      <ion-label>
+        <h1 class="header-font">{{ datas.nameCompany }}</h1>
+        <p>{{ datas.typeCompany.nameTypeCompany}}</p>
+        <ion-chip *ngIf="datas.isOnSit">On sit</ion-chip>
+        <ion-chip *ngIf="datas.isTakeAway">Take away</ion-chip>
+      </ion-label>
+    </ion-item>
+    <ion-item button >
+      <ion-icon name="location-outline" size="default" style="padding-right: 20px;"></ion-icon>
+      <ion-label>
+        <ion-label>{{ datas.address.address1 }} {{ datas.address.address2 }}</ion-label>
+        <ion-label>{{ datas.address.city }} {{ datas.address.postalCode }}</ion-label>
+      </ion-label>
+    </ion-item>
+    <ion-item button >
+      <ion-icon name="logo-instagram" size="default" style="padding-right: 20px;"></ion-icon>
+      <ion-label>
+        @{{ datas.nameCompany }}
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label class="ion-text-wrap">{{ datas.description | slice:0:300 }}{{datas.description.length > 300 ? '...' : ''}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <h1 class="header-font">Opening hours</h1>
+        <p *ngFor="let open of datas.openings">
+          {{open.fromDate}}: {{open.startDate}}-{{open.endDate}}
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-label class="ion-text-wrap">
+        <h1 class="header-font">Contrats</h1>
+        <p>List of contrats that you propose</p>
+      </ion-label>
+      <ion-button slot="end" size="default" fill="solid" [routerLink]="['../create-offre']" [queryParams]="{ id: parameters.id, nameCompany: parameters.nameCompany}">New contract</ion-button>
 
-  </ion-item>
-  <ion-card *ngFor="let dataOffer of datasOffer">
-    <ion-card-header>
-      <ion-card-title>{{dataOffer.nameOffer}}</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-label>
-        <ion-card-subtitle>Offer</ion-card-subtitle>
-        <p>{{dataOffer.descriptionOffer}}</p>
-      </ion-label>
-      <ion-label>
-        <ion-card-subtitle style="padding-top: 20px;">Conditions</ion-card-subtitle>
-        <p>{{dataOffer.descriptionCondition}}</p>
-      </ion-label>
-    </ion-card-content>
-  </ion-card>
+    </ion-item>
+    <ion-card *ngFor="let dataOffer of datasOffer">
+      <ion-card-header>
+        <ion-card-title>{{dataOffer.nameOffer}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-label>
+          <ion-card-subtitle>Offer</ion-card-subtitle>
+          <p>{{dataOffer.descriptionOffer}}</p>
+        </ion-label>
+        <ion-label>
+          <ion-card-subtitle style="padding-top: 20px;">Conditions</ion-card-subtitle>
+          <p>{{dataOffer.descriptionCondition}}</p>
+        </ion-label>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="!loaded">
+    <ion-list>
+      <ion-list-header>
+        <ion-skeleton-text [animated]="true" style="width: 80px"></ion-skeleton-text>
+      </ion-list-header>
+      <ion-item>
+        <ion-thumbnail slot="start">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3>
+            <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+          </h3>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+          </p>
+          <p>
+            <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+          </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
     
 
 </ion-content>

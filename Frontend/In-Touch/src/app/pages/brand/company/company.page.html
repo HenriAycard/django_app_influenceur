@@ -31,7 +31,6 @@
   <!--Header ends-->
   
   <!--Content starts-->
- <!-- <div class="content flex">-->
   <div class="content ">
   <ion-text>
     <h1 style="font-weight: bold;">Manage your brand</h1>
@@ -45,7 +44,7 @@
       <ion-label>List of all your brand</ion-label>
       <ion-button fill="clear" [routerLink]="['create-company']"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
     </ion-list-header>
-    <ion-card button *ngFor="let company_card of lstCompanys" (click)="showDetail(company_card)">
+    <ion-card button *ngFor="let company_card of lstCompanys" [routerLink]="['view-offre']" [queryParams]="{ id: company_card.id, nameCompany: company_card.nameCompany}">
       <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of company_card.imgCompany" [src]="company_image.file" />
       <ion-card-header style="text-align: left;">
         <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
@@ -56,64 +55,8 @@
       <ion-card-content class="ion-text-justify" >
         {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
       </ion-card-content>
-
     </ion-card>
-    <!--
-    <div class="createCompanyCSS">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>List of all your brand</ion-label>
-          <ion-button fill="clear" (click)="createCompanyBtn()"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-        </ion-list-header>
-        <ion-item button *ngFor="let company of lstCompanys" (click)="showDetail(company['id'], company['nameCompany'])">
-          <ion-label>{{ company['nameCompany'] }}</ion-label>
-        </ion-item>
-      </ion-list>
-      
-    </div>
-    -->
   </ion-card>
   <br>
 </div>
-<!--</div>-->
-<!--Content ends-->
-  
 </ion-content>
-<!--
-<div class="container">
-  
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Company</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <svg viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-    <path d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z" style="stroke: none; fill:red;"></path>
-  </svg>
-  
-
-  <ion-header collapse="condense" >
-    <ion-toolbar >
-      <ion-title size="large" style="color: #000000;">Company</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <ion-card>
-    <div class="createCompanyCSS">
-      <ion-list>
-        <ion-item button *ngFor="let company of lstCompanys" (click)="showDetail(company['id'], company['nameCompany'])">
-          <ion-label>{{ company['nameCompany'] }}</ion-label>
-        </ion-item>
-      </ion-list>
-      <ion-button fill="clear" (click)="createCompanyBtn()">ADD ENTRY</ion-button>
-    </div>
-    
-  </ion-card>
-
-
-
-</ion-content>
-</div>
--->

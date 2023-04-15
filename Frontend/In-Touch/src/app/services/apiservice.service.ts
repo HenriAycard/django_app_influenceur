@@ -780,6 +780,8 @@ export class ApiserviceService {
       }
      
     }
+
+
   
     async stopLoading() {
      
@@ -798,6 +800,18 @@ export class ApiserviceService {
         message: message,
       });
       this.loader.present();
+    }
+
+    async loadingPresent() {
+        const loading = await this.loadingController.create({
+            message:  'Loading, please wait',
+            duration: 2000
+        });
+        return await loading.present();
+    }
+
+    async loadingDismiss(){
+        this.loadingController.dismiss();
     }
   
   

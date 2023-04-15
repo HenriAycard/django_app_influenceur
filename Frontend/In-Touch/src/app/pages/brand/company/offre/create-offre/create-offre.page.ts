@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
-import { AlertController } from '@ionic/angular';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { catchError, retry, BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 import { CreateOfferDto } from 'src/app/models/activity-model';
+import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingController, ToastController } from '@ionic/angular';
 
 export interface queryParamsDto {
   id: number;
@@ -23,31 +24,52 @@ export class CreateOffrePage implements OnInit {
 
   constructor(public userManager:UserManagerProviderService,
     public apiService:ApiserviceService,
-    public alertController: AlertController,
     public router:Router,
-    public activatedRoute: ActivatedRoute) { }
+    private location: Location,
+    private loadingController: LoadingController,
+    public toastController: ToastController
+    ) { }
 
   ngOnInit() {
     // Get query params
+    console.log("[CREATE-OFFRE] - Initialization page")
     const navigation = this.router.getCurrentNavigation();
-    this.parameters = navigation?.extras.state as queryParamsDto
+    this.parameters = navigation?.extractedUrl.queryParams as queryParamsDto
   }
 
   async saveOffer(newOffer: CreateOfferDto){
-      this.apiService.showLoading();
-      this.apiService.createOffer(newOffer).subscribe({
-        next: (value: any) => {
-          console.log("[CREATE-OFFER] - saveOffer - end OK")
-          this.apiService.stopLoading();
-        },
-        error: (err: any) => {
-            console.error("[CREATE-OFFER] - saveOffer - end KO")
-            console.log(err);// Error getting the data
-        },
-        complete: () => {
-          console.info('Complete')
-        },
-      })
+    const loading = await this.loadingController.create({
+      message: 'Loading, please wait ...',
+      duration: 2000
+    });
+    loading.present();
+
+    this.apiService.createOffer(newOffer).subscribe({
+      next: (value: any) => {
+        console.log("[CREATE-OFFER] - saveOffer - OK")
+        this.presentToast(
+          'New Contract !',
+          'The new contract has been created !',
+          'top',
+          'success'
+        )
+      },
+      error: (err: any) => {
+          console.error("[CREATE-OFFER] - saveOffer - KO")
+          console.log(err);// Error getting the data
+          this.presentToast(
+            'Error',
+            'Sorry we are currently experiencing an error in our system, please try later',
+            'top',
+            'danger'
+          )
+      },
+      complete: () => {
+        console.info('[CREATE-OFFER][HTTP] Complete')
+        loading.dismiss();
+        this.location.back();
+      },
+    })
     
   }
 
@@ -59,15 +81,29 @@ export class CreateOffrePage implements OnInit {
       company: this.parameters.id
     }
     this.saveOffer(newOffer);
-
-    let navigationExtras: NavigationExtras = {
-      state: this.parameters,
-      relativeTo: this.activatedRoute
-    };
-    this.router.navigate(['../view-offre'], navigationExtras)
   }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
     return `${maxLength - inputLength} characters remaining`;
+  }
+
+  async presentToast(header: string, message: string, position: 'top' | 'middle' | 'bottom', color: string){
+    try {
+      this.toastController.dismiss().then(() => {
+      }).catch(() => {
+      }).finally(() => {
+      });
+    } catch(e) {}
+    
+    this.toastController.create({
+      header: header,
+      message: message,
+      position: position,
+      duration: 10000,
+      buttons: [{text: 'Dismiss',role: 'cancel'}],
+      color: color
+    }).then((toast) => {
+      toast.present();
+    });
   }
 }

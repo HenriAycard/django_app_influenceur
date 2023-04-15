@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
-import { AlertController, NavController } from '@ionic/angular';
-import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
-import { catchError, retry, BehaviorSubject, map } from 'rxjs';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { CompanyDto, OfferDto } from 'src/app/models/activity-model';
-import { NavigationService } from 'src/app/services/navigation.service';
+import { combineLatest } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 
 export interface queryParamsDto {
@@ -29,68 +30,65 @@ export interface django_pagination {
 export class ViewOffrePage implements OnInit {
 
   public parameters: queryParamsDto
-  //public datas$: BehaviorSubject<CompanyDto> = new BehaviorSubject<CompanyDto>(new CompanyDto());
-  public datas: CompanyDto;
-  public datasOffer: Array<OfferDto> = Array<OfferDto>(new OfferDto);;
+  public datas: CompanyDto = {} as CompanyDto;
+  public datasOffer: Array<OfferDto> = Array<OfferDto>(new OfferDto);
+  public loaded : boolean = false;
+
 
   constructor(
     public userManager:UserManagerProviderService,
     public apiService:ApiserviceService,
     public alertController: AlertController,
     public router:Router,
-    public activatedRoute: ActivatedRoute,
-    private navController: NavController) {
+    private location: Location,
+    private loadingController: LoadingController) {
     
   }
 
   ngOnInit() {
     // Get query params
+    console.log("[VIEW-OFFRE] - Initialization page")
     const navigation = this.router.getCurrentNavigation();
-    this.parameters = navigation?.extras.state as queryParamsDto
-    this.findCompanyByIdCompany()
-    this.findOffreByIdActivity()
-    
+    this.parameters = navigation?.extractedUrl.queryParams as queryParamsDto
+    this.callApiService()
   }
 
-  public async findCompanyByIdCompany(){
-    this.apiService.findCompanyById(this.parameters.id).subscribe(
-      (data: CompanyDto)  => {
-        this.datas = data as CompanyDto
-      }
-    )
+  public async callApiService(){
+    const loading = await this.loadingController.create({
+      message: 'Loading, please wait ...',
+      duration: 2000
+    });
+    loading.present();
+
+    combineLatest([
+      this.apiService.findCompanyById(this.parameters.id),
+      this.apiService.findOfferById(this.parameters.id)
+    ]).subscribe({
+      next: ([first, second]) => {
+        this.datas = first as CompanyDto
+        this.datasOffer = second.results as OfferDto[]
+        loading.dismiss();
+        this.loaded = true
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err)
+      },
+      complete: () => {
+        console.log("[VIEW-OFFRE][HTTP] Complete findCompanyById & findOfferById")
+      } 
+    })     
   }
-
-  public async findOffreByIdActivity(){
-    this.apiService.findOfferById(this.parameters.id).subscribe(
-      (data: django_pagination) => {
-        this.datasOffer = data.results as OfferDto[]
-      })
-  }
-
-  public newOffer(){
-    console.log("[newOffer] - navigationExtras: NavigationExtras")
-    let navigationExtras: NavigationExtras = {
-      state: this.parameters,
-      relativeTo: this.activatedRoute
-    };
-    this.router.navigate(['../create-offre'], navigationExtras)
-  }
-
-
 
   public handleRefresh($event: any){
     setTimeout(() => {
-        this.findCompanyByIdCompany()
-        this.findOffreByIdActivity()
-        $event.target.complete();
-      
-        
+        this.callApiService()
+        $event.target.complete();        
       }, 2000);
   }
 
 
   public returnPreviousPage(): void{
-    this.navController.back();
+    this.location.back();
   }
 
 }

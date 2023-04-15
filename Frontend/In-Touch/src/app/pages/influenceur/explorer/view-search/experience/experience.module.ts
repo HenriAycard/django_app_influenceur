@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ContractPageRoutingModule } from './contract-routing.module';
+import { ExperiencePageRoutingModule } from './experience-routing.module';
 
-import { ContractPage } from './contract.page';
+import { ExperiencePage } from './experience.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ContractPageRoutingModule
+    ExperiencePageRoutingModule
   ],
-  declarations: [ContractPage]
+  declarations: [ExperiencePage]
 })
-export class ContractPageModule {}
+export class ExperiencePageModule {}

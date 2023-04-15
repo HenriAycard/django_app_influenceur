@@ -46,11 +46,6 @@ export class NewCompanyDto {
 export class typeCompanyDto {
   id: number
   nameTypeCompany: string
-
-  constructor(init: typeCompanyDto) {
-    this.id = init.id
-    this.nameTypeCompany = init.nameTypeCompany
-  }
 }
 
 export class ImgCompanyDto {
@@ -58,13 +53,6 @@ export class ImgCompanyDto {
   file: string
   isPrincipal: boolean
   company: number
-
-  constructor(init: ImgCompanyDto) {
-    this.id = init.id
-    this.file = init.file
-    this.isPrincipal = init.isPrincipal
-    this.company = init.company
-  }
 }
 
 export class MainCompanyDto {
@@ -88,19 +76,6 @@ export class CompanyDto {
   typeCompany: typeCompanyDto
   openings: Array<OpeningDate>
   imgCompany: Array<ImgCompanyDto>
-
-  constructor(init: CompanyDto) {
-    this.id = init.id
-    this.nameCompany = init.nameCompany
-    this.isTakeAway = init.isTakeAway
-    this.isOnSit = init.isOnSit
-    this.description = init.description
-    this.address = init.address
-    this.typeCompany = init.typeCompany
-    this.openings = init.openings
-    this.imgCompany = init.imgCompany
-  }
-
 }
 
 export class OfferDto {
@@ -133,18 +108,6 @@ export class CompanyResaDto {
   address: number
   typeCompany: typeCompanyDto
   imgCompany: Array<ImgCompanyDto>
-
-  constructor(init: CompanyResaDto) {
-    this.id = init.id
-    this.nameCompany = init.nameCompany
-    this.isTakeAway = init.isTakeAway
-    this.isOnSit = init.isOnSit
-    this.description = init.description
-    this.address = init.address
-    this.typeCompany = new typeCompanyDto(init.typeCompany)
-    this.imgCompany = init.imgCompany
-  }
-
 }
 
 export class OfferResaDto {
@@ -154,13 +117,6 @@ export class OfferResaDto {
   descriptionOffer: string;
   descriptionCondition: string;
 
-  constructor(init: OfferResaDto) {
-    this.id = init.id
-    this.company = new CompanyResaDto(init.company)
-    this.nameOffer = init.nameOffer
-    this.descriptionOffer = init.descriptionOffer
-    this.descriptionCondition = init.descriptionCondition
-  }
 }
 
 export class ResaByStatusDto {
@@ -169,12 +125,7 @@ export class ResaByStatusDto {
   status: number;
   dateReservation: Date;
 
-  constructor(init: ResaByStatusDto) {
-    this.id = init.id;
-    this.offer = new OfferResaDto(init.offer)
-    this.status = init.status
-    this.dateReservation = parseDate(init.dateReservation)
-  }
+  
 }
 
 export class ResaByStatusBrandDto {

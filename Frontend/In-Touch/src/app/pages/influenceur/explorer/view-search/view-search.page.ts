@@ -4,13 +4,18 @@ import { UserManagerProviderService } from 'src/app/services/user-manager-provid
 import { AlertController } from '@ionic/angular';
 import { Router, ActivatedRoute, NavigationExtras, UrlCreationOptions } from '@angular/router';
 import { CompanyDto, MainCompanyDto, OfferDto } from 'src/app/models/activity-model';
-import { django_pagination } from './contract/contract.page';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Location } from '@angular/common';
 
 export interface queryParamsDto {
   search: string;
   navigationId?: number;
+}
+export interface django_pagination {
+  count: number;
+  next: any;
+  previous: any;
+  results: Array<Object>
 }
 
 @Component({
@@ -34,12 +39,10 @@ export class ViewSearchPage implements OnInit {
     }
   
     ngOnInit() {
-      console.log("[VIEW-SEARCH]")
+      console.log("[VIEW-SEARCH] - Initialization page")
       const navigation = this.router.getCurrentNavigation();
-      console.log(navigation?.extras.state)
-      this.parameters = navigation?.extras.state as queryParamsDto
+      this.parameters = navigation?.extractedUrl.queryParams as queryParamsDto
       this.findCompanyBySearch();
-      console.log(this.location)
     }
 
     public async findCompanyBySearch(){
@@ -51,26 +54,8 @@ export class ViewSearchPage implements OnInit {
           console.log(err)
         },
         complete: () => {
-          console.log("Complete findCompanyBySearch")
+          console.log("[VIEW-SEARCH][HTTP] Complete findCompanyBySearch")
         }
       })
     }
-
-    public showDetail(companySearch: MainCompanyDto){ 
-      let navigationExtras: NavigationExtras = {
-        state: {
-          id: companySearch.id
-        },
-        queryParamsHandling: 'merge',
-        preserveFragment: true,
-        relativeTo: this.activatedRoute
-      };
-      console.log("[VIEW-SEARCH] - showDetail - " + companySearch.id)
-      console.log(this.location)
-      this.router.navigate(['contract'], navigationExtras)
-      
-    }
-
-  
-
 }

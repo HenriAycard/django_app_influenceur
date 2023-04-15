@@ -1,0 +1,120 @@
+<div class="ion-page">
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+  
+    <div class="button-retour">
+      <ion-button fill="clear" color="light" (click)="returnPreviousPage()"><ion-icon name="close-outline"></ion-icon></ion-button>
+    </div>
+    <div *ngIf="loaded">
+      <img style="height: 250px; width: 100%; object-fit: cover;" *ngFor="let company_image of datas.imgCompany" [src]="company_image.file" />
+    
+      <ion-item>
+        <ion-label>
+          <h1 class="header-font">{{ datas.nameCompany }}</h1>
+          <p>{{ datas.typeCompany.nameTypeCompany}}</p>
+          <ion-chip *ngIf="datas.isOnSit">On sit</ion-chip>
+          <ion-chip *ngIf="datas.isTakeAway">Take away</ion-chip>
+        </ion-label>
+      </ion-item>
+      <ion-item button >
+        <ion-icon name="location-outline" size="default" style="padding-right: 20px;"></ion-icon>
+        <ion-label>
+          <ion-label>{{ datas.address.address1 }} {{ datas.address.address2 }}</ion-label>
+          <ion-label>{{ datas.address.city }} {{ datas.address.postalCode }}</ion-label>
+        </ion-label>
+      </ion-item>
+      <ion-item button >
+        <ion-icon name="logo-instagram" size="default" style="padding-right: 20px;"></ion-icon>
+        <ion-label>
+          @{{ datas.nameCompany }}
+        </ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="ion-text-wrap">{{ datas.description | slice:0:300 }}{{datas.description.length > 300 ? '...' : ''}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <h1 class="header-font">Opening hours</h1>
+          <p *ngFor="let open of datas.openings">
+            {{open.fromDate}}: {{open.startDate}}-{{open.endDate}}
+          </p>
+        </ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label class="ion-text-wrap">
+          <h1>Contrats</h1>
+          <p>List of contrats available</p>
+        </ion-label>
+      </ion-item>
+      <ion-card *ngFor="let dataOffer of datasOffer">
+        <ion-card-header>
+          <ion-card-title>{{dataOffer.nameOffer}}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-label>
+            <ion-card-subtitle>Offer</ion-card-subtitle>
+            <p>{{dataOffer.descriptionOffer}}</p>
+          </ion-label>
+          <ion-label>
+            <ion-card-subtitle style="padding-top: 20px;">Conditions</ion-card-subtitle>
+            <p>{{dataOffer.descriptionCondition}}</p>
+          </ion-label>
+          <!--(click)="addContrat(dataOffer.id)"-->
+          <ion-button expand="block" (click)="setOpen(dataOffer.id)">Accept</ion-button>
+        </ion-card-content>
+      </ion-card>
+      <ion-modal #modal [isOpen]="isModalOpen" [canDismiss]="canDismiss" [presentingElement]="presentingElement">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title>Reservation</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="confirm()">Accept</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-item>
+              <ion-datetime [(ngModel)]="newResa.dateReservation">
+                <span slot="title">Select a Reservation Date</span>
+              </ion-datetime>
+            </ion-item>
+            <p class="ion-padding-horizontal">You must accept the terms and conditions to make your reservation.</p>
+            <ion-item>
+              <ion-label class="ion-text-wrap" for="terms">Do you accept the terms and conditions?</ion-label>
+              <ion-checkbox id="terms" (ionChange)="onTermsChanged($event)" [checked]="canDismiss"></ion-checkbox>
+            </ion-item>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+    </div>
+    <div *ngIf="!loaded">
+      <ion-list>
+        <ion-list-header>
+          <ion-skeleton-text [animated]="true" style="width: 80px"></ion-skeleton-text>
+        </ion-list-header>
+        <ion-item>
+          <ion-thumbnail slot="start">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text [animated]="true" style="width: 80%;"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text [animated]="true" style="width: 60%;"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text [animated]="true" style="width: 30%;"></ion-skeleton-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </div>
+  </ion-content>
+  </div>

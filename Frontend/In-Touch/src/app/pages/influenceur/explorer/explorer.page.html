@@ -63,7 +63,7 @@
     <h2>Explore arround you</h2>
   </ion-text>
   <div class="scrolling-wrapper">
-      <ion-card button (click)="search('Cancun')">
+      <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'cancun'}">
         <img src="https://cdn.pixabay.com/photo/2016/03/04/05/12/cancun-1235489_960_720.jpg"/>
         <ion-card-title>Cancun</ion-card-title>
       </ion-card>
