@@ -62,7 +62,7 @@ class CompanyDetailsSerializer(ModelSerializer):
     imgCompany = imgCompanySerializer(many=True, read_only=True)
     class Meta:
         model = Company
-        fields = ('id', 'nameCompany', 'isTakeAway', 'isOnSit', 'description', 'address', 'typeCompany', 'openings', 'imgCompany')
+        fields = ('id', 'nameCompany', 'isTakeAway', 'isOnSit', 'description', 'address', 'typeCompany', 'openings', 'imgCompany', 'isCompanyActif')
 
 
 class CompanyCreateSerializer(ModelSerializer):

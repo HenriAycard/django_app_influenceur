@@ -110,7 +110,7 @@ class CompanyCreateView(generics.ListCreateAPIView):
         print(user)
 
         if user.is_influenceur == 0:
-            queryset = Company.objects.filter(user_id=user.id, user__is_influenceur=user.is_influenceur)
+            queryset = Company.objects.filter(user_id=user.id, user__is_influenceur=user.is_influenceur, isCompanyActif=1)
         else:
             queryset = Company.objects.all()
         return queryset
@@ -124,9 +124,9 @@ class CompanySearchView(generics.ListAPIView):
         search = self.request.query_params['search']
         df = pd.DataFrame()
         for val in search.split(" "):
-            querysetNameCompany = Company.objects.filter(nameCompany__icontains=val).annotate(weight=Value(0.8, output_field=FloatField()))
-            querysetDescription = Company.objects.filter(description__icontains=val).annotate(weight=Value(0.6, output_field=FloatField()))
-            querysetCity = Company.objects.filter(address__city__icontains=val).annotate(weight=Value(0.5, output_field=FloatField()))
+            querysetNameCompany = Company.objects.filter(nameCompany__icontains=val, isCompanyActif=1).annotate(weight=Value(0.8, output_field=FloatField()))
+            querysetDescription = Company.objects.filter(description__icontains=val, isCompanyActif=1).annotate(weight=Value(0.6, output_field=FloatField()))
+            querysetCity = Company.objects.filter(address__city__icontains=val, isCompanyActif=1).annotate(weight=Value(0.5, output_field=FloatField()))
             query = querysetNameCompany.union(querysetDescription, querysetCity, all=True).values('id', 'weight')
             #query = querysetNameCompany.union(querysetDescription, all=True).values('id', 'weight')
             #query = query.union(querysetCity, all=True).values('id', 'weight')

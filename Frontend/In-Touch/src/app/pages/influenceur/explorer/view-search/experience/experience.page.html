@@ -4,9 +4,12 @@
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
   
-    <div class="button-retour">
-      <ion-button fill="clear" color="light" (click)="returnPreviousPage()"><ion-icon name="close-outline"></ion-icon></ion-button>
-    </div>
+    <ion-fab slot="fixed" vertical="top" horizontal="start">
+      <ion-fab-button routerDirection="back" [routerLink]="['..']" fill="clear" style="--background: rgba(0, 0, 0, 0.5);">
+        <ion-icon name="close" size="large" color="light"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    
     <div *ngIf="loaded">
       <img style="height: 250px; width: 100%; object-fit: cover;" *ngFor="let company_image of datas.imgCompany" [src]="company_image.file" />
     

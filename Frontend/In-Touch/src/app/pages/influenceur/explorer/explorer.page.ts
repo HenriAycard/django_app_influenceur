@@ -32,9 +32,7 @@ export class ExplorerPage implements OnInit {
       if (typeof val === 'string'){
         
         let navigationExtras: NavigationExtras = {
-          state: { search: val},
-          queryParamsHandling: 'merge',
-          preserveFragment: true,
+          queryParams: { search: val},
           relativeTo: this.activatedRoute
         };
         console.log("[EXPLORER] - search - " + val)

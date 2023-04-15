@@ -99,6 +99,7 @@ class Address(models.Model):
 
 class Company(models.Model):
     id = models.BigAutoField(primary_key=True)
+    isCompanyActif = models.BooleanField(('isCompanyActif'), default=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     nameCompany = models.CharField(('nameCompany'), max_length=50, blank=True)
     isTakeAway = models.BooleanField(('isTakeAway'), default=False)

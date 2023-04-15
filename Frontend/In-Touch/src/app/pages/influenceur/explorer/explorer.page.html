@@ -23,7 +23,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size="6">
-        <ion-item lines="none">
+        <ion-item lines="none" [routerLink]="['view-search']" [queryParams]="{ search: 'beauty'}">
           <ion-thumbnail slot="start">
             <img src="https://cdn-icons-png.flaticon.com/512/5505/5505190.png" />
           </ion-thumbnail>
@@ -31,7 +31,7 @@
         </ion-item>
       </ion-col>
       <ion-col size="6">
-        <ion-item lines="none">
+        <ion-item lines="none" [routerLink]="['view-search']" [queryParams]="{ search: 'fitness'}">
           <ion-thumbnail slot="start">
             <img src="https://cdn-icons-png.flaticon.com/512/7339/7339607.png" />
           </ion-thumbnail>
@@ -41,7 +41,7 @@
     </ion-row>
     <ion-row>
       <ion-col size="6">
-        <ion-item lines="none">
+        <ion-item lines="none" button [routerLink]="['view-search']" [queryParams]="{ search: 'clothe'}">
           <ion-thumbnail slot="start">
             <img src="https://cdn-icons-png.flaticon.com/512/2818/2818619.png" />
           </ion-thumbnail>
@@ -49,7 +49,7 @@
         </ion-item>
       </ion-col>
       <ion-col size="6">
-        <ion-item lines="none">
+        <ion-item lines="none" button [routerLink]="['view-search']" [queryParams]="{ search: 'others'}">
           <ion-thumbnail slot="start">
             <img src="https://cdn-icons-png.flaticon.com/512/5001/5001087.png" />
           </ion-thumbnail>
@@ -67,19 +67,19 @@
         <img src="https://cdn.pixabay.com/photo/2016/03/04/05/12/cancun-1235489_960_720.jpg"/>
         <ion-card-title>Cancun</ion-card-title>
       </ion-card>
-      <ion-card button (click)="search('Isla Mujeres')">
+      <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'isla mujeres'}">
         <img src="https://cdn.pixabay.com/photo/2019/02/21/06/17/souvenir-shopping-4010707_960_720.jpg"/>
         <ion-card-title>Isla Mujeres</ion-card-title>
       </ion-card>
-      <ion-card button (click)="search('Playa del Carmen')">
+      <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'playa carmen'}">
         <img src="https://cdn.pixabay.com/photo/2017/07/06/06/32/puerto-del-carmen-2477181_960_720.jpg"/>
         <ion-card-title>Playa del Carmen</ion-card-title>
       </ion-card>
-      <ion-card button (click)="search('Tulum')">
+      <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'tulum'}">
         <img src="https://cdn.pixabay.com/photo/2018/02/27/13/10/sea-3185430_960_720.jpg"/>
         <ion-card-title>Tulum</ion-card-title>
       </ion-card>
-      <ion-card button (click)="search('Cozumel')">
+      <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'cozumel'}">
         <img src="https://cdn.pixabay.com/photo/2016/04/25/08/38/cozumel-1351419_960_720.jpg"/>
         <ion-card-title>Cozumel</ion-card-title>
       </ion-card>
@@ -93,19 +93,19 @@
     <h2>The mexican brands</h2>
   </ion-text>
   <div class="scrolling-wrapper">
-    <ion-card button (click)="search('aletazul')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'aletazul'}">
       <img src="https://aycard.site/media/images/kl6775cdx8qiyhnzzt1.jpeg"/>
       <ion-card-title>Aletazul</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('rosanegra')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'rosanegra'}">
       <img src="https://aycard.site/media/images/3g7zu8acxxmdbnulurn.jpeg"/>
       <ion-card-title>Rosanegra</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('tora')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'tora'}">
       <img src="https://aycard.site/media/images/a7kkr0o75dgqs9942hx.jpeg"/>
       <ion-card-title>Tora</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('taboo')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'taboo'}">
       <img src="https://aycard.site/media/images/mzrn23l8b79znzdqkrq.jpeg"/>
       <ion-card-title>Taboo</ion-card-title>
     </ion-card>
@@ -114,23 +114,23 @@
     <h2>Inevitable foods</h2>
   </ion-text>
   <div class="scrolling-wrapper">
-    <ion-card button (click)="search('tacos')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'tacos'}">
       <img src="https://cdn.pixabay.com/photo/2016/08/23/08/53/tacos-1613795_960_720.jpg"/>
       <ion-card-title>Tacos</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('sushi')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'sushi'}">
       <img src="https://cdn.pixabay.com/photo/2019/08/09/18/32/sushi-roll-images-4395598_960_720.jpg"/>
       <ion-card-title>Sushi</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('pizza')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'pizza'}">
       <img src="https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_1280.jpg"/>
       <ion-card-title>Pizza</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('steakhouse')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'steakhouse'}">
       <img src="https://cdn.pixabay.com/photo/2022/08/31/12/38/steak-7423230_960_720.jpg"/>
       <ion-card-title>Steakhouse</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('seafood')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'seafood'}">
       <img src="https://cdn.pixabay.com/photo/2019/06/11/03/59/seafood-4265994_960_720.jpg"/>
       <ion-card-title>Seafood</ion-card-title>
     </ion-card>
@@ -139,23 +139,23 @@
     <h2>Inevitable activities</h2>
   </ion-text>
   <div class="scrolling-wrapper">
-    <ion-card button (click)="search('adventure')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'adventure'}">
       <img src="https://cdn.pixabay.com/photo/2015/09/26/21/33/suspension-bridge-959853_960_720.jpg"/>
       <ion-card-title>Adventure</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('scuba diving')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'scuba diving'}">
       <img src="https://cdn.pixabay.com/photo/2016/09/07/23/05/diving-1652869_960_720.jpg"/>
       <ion-card-title>Scuba diving</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('spa')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'spa'}">
       <img src="https://cdn.pixabay.com/photo/2016/08/22/16/23/massage-therapy-1612308_960_720.jpg"/>
       <ion-card-title>Spa</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('kitesurf')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'kitesurf'}">
       <img src="https://cdn.pixabay.com/photo/2019/06/14/11/05/beach-4273396_960_720.jpg"/>
       <ion-card-title>Kitesurf</ion-card-title>
     </ion-card>
-    <ion-card button (click)="search('event')">
+    <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'event'}">
       <img src="https://cdn.pixabay.com/photo/2016/12/29/12/36/sol-1938459_960_720.jpg"/>
       <ion-card-title>Event</ion-card-title>
     </ion-card>
