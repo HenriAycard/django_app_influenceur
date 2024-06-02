@@ -3,9 +3,10 @@ import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AlertController, PickerController, IonModal } from '@ionic/angular';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto } from 'src/app/models/activity-model';
+import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto, typeCompanyDto } from 'src/app/models/activity-model';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 @Component({
@@ -31,17 +32,120 @@ export class CreateCompanyPage implements OnInit {
 
   image: void | Photo;
 
+  public progress = 1/5
+  public steps: String[] = ['MAIN','DESCRIPTION','PICTURE','ADDRESS','OPENING_DAY', 'END']
+  public indice: number = 0
+  public step: String = this.steps[this.indice]
+  public mainForm: FormGroup;
+  public descriptionForm: FormGroup;
+  public addressForm: FormGroup;
+  public typeCompany: typeCompanyDto[] = new Array<typeCompanyDto>();
 
   constructor(
     public userManager:UserManagerProviderService,
     public apiService:ApiserviceService,
     private pickerCtrl: PickerController,
     public router:Router,
-    public activatedRoute: ActivatedRoute
+    public activatedRoute: ActivatedRoute,
+    public fb: FormBuilder
   ) { 
+    this.apiService.findTypeCompany().subscribe({
+      next: (response: typeCompanyDto[]) => {
+        this.typeCompany = response as typeCompanyDto[];
+      }
+    });
     this.opening.set('startDate', "00:00 AM");
     this.opening.set('endDate', "00:00 AM");
+    this.mainForm = this.fb.group({
+      name: ['', [Validators.required]],
+      isOnSit: [true, [Validators.required]],
+      isTakeAway: [false, [Validators.required]],
+      typeCompany: ['', [Validators.required, Validators.pattern("^[0-9]*$")]],
+    });
+
+    this.descriptionForm = this.fb.group({
+      description: ['', [Validators.required]]
+    });
+
+    this.addressForm = this.fb.group({
+      address1: ['', [Validators.required]],
+      address2: [''],
+      city: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      country: ['', [Validators.required]],
+      postalCode: ['', [Validators.required]]
+    })
   }
+
+  public compareWith(o1: typeCompanyDto, o2: typeCompanyDto) {
+    return o1 && o2 ? o1.id === o2.id : o1 === o2;
+  }
+
+  public handleChange(ev: any) {
+    this.mainForm.controls['typeCompany'].setValue(ev.target.value.id);
+  }
+
+  public next() {
+    if (this.indice+1 < this.step.length) {
+      this.indice += 1;
+      this.step = this.steps[this.indice]
+      this.progress = (this.indice+1)/this.steps.length
+    } else {
+      this.back()
+    }
+    
+  }
+
+  public previous() {
+    if (this.indice-1 >= 0) {
+      this.indice -= 1;
+      this.step = this.steps[this.indice]
+      this.progress = (this.indice+1)/this.steps.length
+    } else {
+      this.back();
+    }
+  }
+
+  public isIndiceNotMinMax() {
+    return this.indice > 0 && this.indice < this.step.length ? true : false
+  }
+
+  public back() {
+    this.router.navigateByUrl('/brand/company')
+  }
+
+  public nextMainForm() {
+    console.log(this.mainForm)
+    this.next();
+  }
+
+  public nextDescriptionForm(){
+    console.log(this.descriptionForm)
+    this.next();
+  }
+
+  public nextAddressForm(){
+    console.log(this.addressForm)
+    this.next();
+  }
+
+
+  public submit(){
+    this.saveAddress()
+    this.next();
+  }
+
+  async chooseOrTakePicture() {
+    this.image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: true,
+      resultType: CameraResultType.Base64
+    }).catch((error)=>{
+      console.log(error)
+    }).finally(() => {
+      this.next();
+    });
+  };
 
   ngOnInit() {
     this.dataCompany.typeCompany = 1;
@@ -229,43 +333,53 @@ export class CreateCompanyPage implements OnInit {
   
   async saveAddress(){
       this.apiService.showLoading();
-      this.apiService.createAddresse(this.dataAddress).subscribe({
+
+      let param: AddressDto = {
+        address1: this.addressForm.value.address1,
+        address2: this.addressForm.value.address2,
+        city: this.addressForm.value.city,
+        state: this.addressForm.value.state,
+        country: this.addressForm.value.country,
+        postalCode: this.addressForm.value.postalCode
+      }
+
+      this.apiService.createAddresse(param).subscribe({
         next: (value: any) => {
-          console.log("[CREATE-COMPANY] - saveAddress - end OK")
-          console.log(value.id)
-          this.dataCompany.address = value.id
-          this.saveCompany();
+          console.log("[CREATE][ADDRESS] new address created with id " + value.id)
+          this.saveCompany(value.id);
         },
         error: (err: any) => {
-            console.error("[CREATE-COMPANY] - saveAddress - end KO")
-            console.log(err);// Error getting the data
-        },
-        complete: () => {
-          console.info('Complete')
-        },
+            console.error("[CREATE][ADDRESS] impossible to insert the address")
+            console.error(err);
+        }
       })
     
   }
 
-  async saveCompany(){
+  async saveCompany(idAddress: number){
 
-    this.apiService.createCompany(this.dataCompany).subscribe({
+    let param: NewCompanyDto = {
+      nameCompany: this.mainForm.value.name,
+      isTakeAway: this.mainForm.value.isOnSit,
+      isOnSit: this.mainForm.value.isTakeAway,
+      description: this.descriptionForm.value.description,
+      address: idAddress,
+      typeCompany: this.mainForm.value.typeCompany
+    }
+
+    this.apiService.createCompany(param).subscribe({
       next: (value: any) => {
-        console.log("[CREATE-COMPANY] - saveCompany - end OK")
-        console.log(value.id)
-        this.dataCompany.id = value.id
+        console.log("[CREATE][COMPANY] new company created with id " + value.id)
+        
         this.saveOpeningOpen(value.id);
         this.saveOpeningClose(value.id);
         this.savePhoto(value.id);
         this.apiService.stopLoading();
       },
       error: (err: any) => {
-          console.error("[CREATE-COMPANY] - saveCompany - end KO")
-          console.log(err);// Error getting the data
-      },
-      complete: () => {
-        console.info('Complete')
-      },
+          console.error("[CREATE][COMPANY] impossible to insert the company")
+          console.error(err);
+      }
     })
 
   }
@@ -276,16 +390,12 @@ export class CreateCompanyPage implements OnInit {
       item.company = id
       this.apiService.createOpening(item).subscribe({
         next: (value: any) => {
-          console.log("[CREATE-COMPANY] - saveOpeningOpen - end OK")
-          console.log(value.id)
+          console.log("[CREATE][OPENING DATE] new opening date created with id " + value.id)
         },
         error: (err: any) => {
-            console.error("[CREATE-COMPANY] - saveOpeningOpen - end KO")
+            console.error("[CREATE][OPENING DATE] impossible to insert the opening date")
             console.log(err);// Error getting the data
-        },
-        complete: () => {
-          console.info('Complete')
-        },
+        }
       })
     })
   }
@@ -300,25 +410,14 @@ export class CreateCompanyPage implements OnInit {
       tmp.company = id
       this.apiService.createOpening(tmp).subscribe({
         next: (value: any) => {
-          console.log("[CREATE-COMPANY] - saveOpeningClose - end OK")
-          console.log(value.id)
+          console.log("[CREATE][CLOSE DATE] new closing date created with id " + value.id)
         },
         error: (err: any) => {
-            console.error("[CREATE-COMPANY] - saveOpeningClose - end KO")
+          console.error("[CREATE][CLOSE DATE] impossible to insert the closing date")
             console.log(err);// Error getting the data
-        },
-        complete: () => {
-          console.info('Complete')
-        },
+        }
       })
     })
-  }
-
-  public createCompany(){
-    // initialise a zero
-    this.saveAddress()
-    this.router.navigate(['/brand/company'])
-
   }
 
   public b64toBlob(b64Data: string, contentType = '', sliceSize = 512) {
@@ -341,15 +440,7 @@ export class CreateCompanyPage implements OnInit {
     return blob;
   }
 
-  async chooseOrTakePicture() {
-    this.image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.Base64
-    }).catch((error)=>{
-      console.log(error)
-    });
-  };
+  
 
   savePhoto(id: number) {
     if (this.image ){
@@ -362,24 +453,18 @@ export class CreateCompanyPage implements OnInit {
       formData.append('company', id.toString())
       formData.append('isPrincipal', 'true')
 
-      console.log("company:")
-      console.log(formData.get('company'))
+      console.log("[UPLOAD][PHOTO] filename: " + name+`.${this.image.format}`)
 
       this.apiService.uploadPhoto(formData).subscribe({
         next: (value: any) => {
-          console.log("[UPLOAD-PHOTO] - savePhoto - end OK")
+          console.log("[UPLOAD][PHOTO] photo successfully uploaded")
           console.log(value)
         },
         error: (err: any) => {
-            console.error("[UPLOAD-PHOTO] - savePhoto - end KO")
-            console.log(err);// Error getting the data
-        },
-        complete: () => {
-          console.info('Complete')
-        },
-      })
-      
-      
+            console.error("[UPLOAD][PHOTO] error during the upload")
+            console.log(err);
+        }
+      })      
     }
   }
 }

@@ -1,15 +1,191 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Create a new brand</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
+<ion-content [fullscreen]="true">
   <div class="ion-padding">
-    <h2>Create</h2>
+    <ion-item lines="none" style="--padding-start: 0">
+      <ion-button slot="start" size="large" color="white" (click)="previous()" *ngIf="isIndiceNotMinMax()" style="--box-shadow: none">
+        <ion-icon name="chevron-back-outline" slot="start" size="large" color="dark"></ion-icon>
+      </ion-button>
+      <ion-button slot="end" size="large" color="white" (click)="back()" style="--padding-end: 0; --box-shadow: none">
+        <ion-icon name="close-outline" slot="end" size="large" color="dark"></ion-icon>
+      </ion-button>
+      
+    </ion-item>
+    
+    <ion-progress-bar [value]="progress"></ion-progress-bar>
+
+    <div *ngIf="step === steps[0]">
+      <form [formGroup]="mainForm">
+        <h1 class="heading item-text-wrap">👋 Welcome! What's your company name ?</h1>
+        <ion-item lines="none" class="ion-item">
+          <fieldset  class="input-item">
+            <legend>Brand name</legend> 
+            <ion-input formControlName="name" type="text" placeholder="name" [clearInput]="true" ></ion-input>
+          </fieldset>
+        </ion-item>
+        <ion-item lines="none" class="ion-item">
+          <legend>On sit</legend> 
+          <ion-toggle slot="end" [checked]="true" formControlName="isOnSit"></ion-toggle>
+        </ion-item>
+        <ion-item lines="none" class="ion-item">
+          <legend>Take away</legend> 
+          <ion-toggle slot="end" [checked]="false" formControlName="isTakeAway"></ion-toggle>
+        </ion-item>
+        <ion-list>
+          <ion-item>
+            <ion-select label="Category" label-placement="floating" fill="outline" [compareWith]="compareWith" (ionChange)="handleChange($event)" placeholder="Select one category">
+              <ion-select-option *ngFor="let type of typeCompany" [value]="type">{{ type.nameTypeCompany }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+        
+        <ion-button class="next-button" (click)="nextMainForm()" expand="block" [disabled]="!mainForm.valid">Next</ion-button>
+      </form>
+    </div>
+
+    <div *ngIf="step === steps[1]">
+      <form [formGroup]="descriptionForm">
+        <h1 class="heading item-text-wrap">📝 Describe your company</h1>
+        <ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">
+          <ion-label position="floating">Description</ion-label>
+          <ion-textarea required maxlength="800" [autoGrow]="true" formControlName="description" style="min-height: 250px;"></ion-textarea>
+        </ion-item>
+        <ion-button class="next-button" (click)="nextDescriptionForm()" expand="block" [disabled]="!descriptionForm.valid">Next</ion-button>
+      </form>
+    </div>
+
+    <div *ngIf="step === steps[2]">
+      <h1 class="heading item-text-wrap">📸 Choose your more beautifull image</h1>
+      <ion-button size="full" (click)="chooseOrTakePicture()">
+        <ion-icon name="cloud-upload-outline" style="margin-right: 10px;"></ion-icon>Choose a file
+      </ion-button>
+    </div>
+
+    <div *ngIf="step === steps[3]">
+      <form [formGroup]="addressForm">
+        <h1 class="heading item-text-wrap">📍 What is your company address ?</h1>
+        <ion-item lines="none" class="ion-item">
+          <fieldset  class="input-item">
+            <legend>Address *</legend> 
+            <ion-input formControlName="address1" type="text" placeholder="Address" [clearInput]="true" required></ion-input>
+          </fieldset>
+        </ion-item>
+        <ion-item lines="none" class="ion-item">
+          <fieldset  class="input-item">
+            <legend>Address (complement)</legend> 
+            <ion-input formControlName="address2" type="text" placeholder="Address (complement)" [clearInput]="true"></ion-input>
+          </fieldset>
+        </ion-item>
+        <ion-item lines="none" class="ion-item">
+          <fieldset  class="input-item">
+            <legend>City *</legend> 
+            <ion-input formControlName="city" type="text" placeholder="Cancun" [clearInput]="true" required></ion-input>
+          </fieldset>
+        </ion-item>
+        <ion-item lines="none" class="ion-item">
+          <fieldset  class="input-item">
+            <legend>State *</legend> 
+            <ion-input formControlName="state" type="text" placeholder="Quintana Roo" [clearInput]="true" required></ion-input>
+          </fieldset>
+        </ion-item>
+        <ion-item lines="none" class="ion-item">
+          <fieldset  class="input-item">
+            <legend>Country *</legend> 
+            <ion-input formControlName="country" type="text" placeholder="Mexico" [clearInput]="true" required></ion-input>
+          </fieldset>
+        </ion-item>
+        <ion-item lines="none" class="ion-item">
+          <fieldset  class="input-item">
+            <legend>Postal code *</legend> 
+            <ion-input formControlName="postalCode" type="text" placeholder="Mexico" [clearInput]="true" required></ion-input>
+          </fieldset>
+        </ion-item>
+        <ion-button class="next-button" (click)="nextAddressForm()" expand="block" [disabled]="!addressForm.valid">Next</ion-button>
+      </form>
+    </div>
+
+    <div *ngIf="step === steps[4]">
+      <h1 class="heading item-text-wrap">📅 When are you open ?</h1>
+      <ion-button id="open-modal" expand="block">
+        <ion-icon name="add-circle-outline" style="margin-right: 10px;"></ion-icon>ADD OPENING DAY
+      </ion-button>
+      <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-buttons slot="start">
+                <ion-button (click)="cancel()">Cancel</ion-button>
+              </ion-buttons>
+              <ion-title>New opening date</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content class="ion-padding">
+              <ion-text>
+                <p>Select the days open</p>
+              </ion-text>
+              <ion-label>
+                <ion-chip [id]="day.id" [color]="tagDefaultColor[i]" (click)="changeTagColor(i)" *ngFor="let day of daysChip;let i = index">
+                  <ion-label>{{day.name}}</ion-label>
+                </ion-chip>
+              </ion-label>
+            <ion-item>
+              <ion-label>Open</ion-label>
+              <ion-button (click)="openPicker('startDate')">{{ opening.get('startDate')}}</ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-label>Close</ion-label>
+              <ion-button (click)="openPicker('endDate')">{{ opening.get('endDate')}}</ion-button>
+            </ion-item>
+            <ion-item lines="inset">
+              <ion-label>Break hours</ion-label>
+              <ion-toggle slot="end" [checked]="isBreak" [(ngModel)]="isBreak" [ngModelOptions]="{standalone: true}" (ionChange)="setBreak()"></ion-toggle>
+            </ion-item>
+            <ion-item *ngIf="isBreak">
+              <ion-label>Break start</ion-label>
+              <ion-button (click)="openPicker('pauseStart')">{{ opening.get('pauseStart')}}</ion-button>
+            </ion-item>
+            <ion-item *ngIf="isBreak">
+              <ion-label>Break end</ion-label>
+              <ion-button (click)="openPicker('pauseEnd')">{{ opening.get('pauseEnd')}}</ion-button>
+            </ion-item>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+
+      <ion-list>
+        <ion-item-sliding lines="inset" *ngFor="let data of datas;let i = index" >
+          <ion-item>
+            <ion-label>{{ data.fromDate }}:</ion-label>
+            <ion-label>{{data.startDate}}-{{data.endDate}}</ion-label>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option color="danger" (click)="deleteOpeningDate(data.isOrderBy)">Delete</ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      
+      <ion-button class="next-button" (click)="submit()" expand="block">SAVE</ion-button>
+    </div>
+
+    <div *ngIf="step === steps[5]">
+      <h1 class="heading item-text-wrap">Succesfully saved !</h1>
+    </div>
+    
+  </div>
+
+  
+    <!--
+    <form>
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>Brand name</legend> 
+          <ion-input type="text" placeholder="name" [clearInput]="true" ></ion-input>
+        </fieldset>
+      </ion-item>
+    </form>
+    -->
+    <!--
     <p>Fill the form to create a new brand</p>
       <h3>Informations</h3>
       <ion-button color="dark" size="small" fill="outline" class="tt-none" mode="md" (click)="chooseOrTakePicture()">
@@ -123,7 +299,7 @@
           
         </ion-item-sliding>
       </ion-list>
-      <ion-button type="submit" expand="block" color="success" (click)="createCompany()">Submit</ion-button>
-  </div>
+      <ion-button type="submit" expand="block" color="success" (click)="createCompany()">Submit</ion-button>-->
+  
 
 </ion-content>

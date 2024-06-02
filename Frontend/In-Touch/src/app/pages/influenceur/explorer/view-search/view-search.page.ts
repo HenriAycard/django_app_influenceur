@@ -47,8 +47,9 @@ export class ViewSearchPage implements OnInit {
 
     public async findCompanyBySearch(){
       await this.apiService.findCompanyBySearch(this.parameters.search).subscribe({
-        next: (response: django_pagination) => {
-          this.datas = response.results as Array<MainCompanyDto>
+        next: (response: Array<MainCompanyDto>) => {
+          this.datas = response as Array<MainCompanyDto>;
+          console.log(this.datas)
         },
         error: (err: HttpErrorResponse) => {
           console.log(err)

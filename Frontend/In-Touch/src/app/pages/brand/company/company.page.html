@@ -1,62 +1,66 @@
-<ion-content >
-<div class="header">
+<ion-content>
+  <div class="header">
 
-  <!--Content before waves-->
-  <div class="inner-header flex">
-    <h1>Welcome to</h1>
-  </div>
-  <div class="inner-header flex">
-    <h1 style="margin-top: 0">BrandBoots</h1>
-  </div>
-  
-  
-  <!--Waves Container-->
-  <div>
-  <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
-  <defs>
-  <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
-  </defs>
-  <g class="parallax">
-  <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
-  <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
-  <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
-  <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
-  </g>
-  </svg>
-  </div>
-  <!--Waves end-->
-  
+    <!--Content before waves-->
+    <div class="inner-header flex">
+      <h1>Welcome to</h1>
+    </div>
+    <div class="inner-header flex">
+      <h1 style="margin-top: 0">InTouch</h1>
+    </div>
+
+
+    <!--Waves Container-->
+    <div>
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+      </svg>
+    </div>
+    <!--Waves end-->
+
   </div>
   <!--Header ends-->
-  
+
   <!--Content starts-->
   <div class="content ">
-  <ion-text>
-    <h1 style="font-weight: bold;">Manage your brand</h1>
-  </ion-text>
-  <ion-text>
-    <p>Boots your company's communication by creating experiences with influencers. An easy way to create a contract between your company and an influencer.</p>
-  </ion-text>
+    <ion-text>
+      <h1 style="font-weight: bold;">Manage your brand</h1>
+    </ion-text>
+    <ion-text>
+      <p>Boots your company's communication by creating experiences with influencers. An easy way to create a contract
+        between your company and an influencer.</p>
+    </ion-text>
 
-  <ion-card>
-    <ion-list-header>
-      <ion-label>List of all your brand</ion-label>
-      <ion-button fill="clear" [routerLink]="['create-company']"><ion-icon name="add-circle-outline"></ion-icon></ion-button>
-    </ion-list-header>
-    <ion-card button *ngFor="let company_card of lstCompanys" [routerLink]="['view-offre']" [queryParams]="{ id: company_card.id, nameCompany: company_card.nameCompany}">
-      <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of company_card.imgCompany" [src]="company_image.file" />
-      <ion-card-header style="text-align: left;">
-        <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
-        <ion-card-subtitle>{{ company_card.typeCompany.nameTypeCompany }}</ion-card-subtitle>
-        <ion-chip *ngIf="company_card['isOnSit']">On sit</ion-chip>
-        <ion-chip *ngIf="company_card['isTakeAway']">Take away</ion-chip>
-      </ion-card-header>  
-      <ion-card-content class="ion-text-justify" >
-        {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
-      </ion-card-content>
+    <ion-card>
+      <ion-list-header>
+        <ion-label>List of all your brand</ion-label>
+        <ion-button fill="clear" [routerLink]="['create-company']"><ion-icon
+            name="add-circle-outline"></ion-icon></ion-button>
+      </ion-list-header>
+      <ion-card button *ngFor="let company_card of lstCompanys" [routerLink]="['view-offre']"
+        [queryParams]="{ id: company_card.id, nameCompany: company_card.nameCompany}">
+        <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains"
+          *ngFor="let company_image of company_card.imgCompany" [src]="company_image.file" />
+        <ion-card-header style="text-align: left;">
+          <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
+          <ion-card-subtitle>{{ company_card.typeCompany.nameTypeCompany }}</ion-card-subtitle>
+          <ion-chip *ngIf="company_card['isOnSit']">On sit</ion-chip>
+          <ion-chip *ngIf="company_card['isTakeAway']">Take away</ion-chip>
+        </ion-card-header>
+        <ion-card-content class="ion-text-justify">
+          {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
+        </ion-card-content>
+      </ion-card>
     </ion-card>
-  </ion-card>
-  <br>
-</div>
+    <br>
+  </div>
 </ion-content>

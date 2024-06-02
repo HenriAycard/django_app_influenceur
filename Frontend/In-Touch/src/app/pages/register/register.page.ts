@@ -99,19 +99,19 @@ export class RegisterPage implements OnInit {
     
   }
 
-  goLogin() {
+  signin() {
     this.router.navigateByUrl("/login")
   }
 
 
 
-  onSubmit(values: any) {
+  register() {
     
-    let email = values["email"]
-    let password = values["password"]
-    let confirmpassword = values["confirmpassword"]
-    let firstName = values["firstName"]
-    let lastName = values["lastName"]
+    let email = this.validations_form.get("email")?.value
+    let password = this.validations_form.get("password")?.value
+    let confirmpassword = this.validations_form.get("confirmpassword")?.value 
+    let firstName = this.validations_form.get("firstName")?.value 
+    let lastName = this.validations_form.get("lastName")?.value
 
     if (!email) {
       this.apiService.showError("Please enter an email")

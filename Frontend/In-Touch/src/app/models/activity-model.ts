@@ -19,7 +19,7 @@ export class OpeningDate {
 
 }
 
-export class AddressDto {
+export class Address {
   id: number = -1;
   address1: string = '';
   address2: string = '';
@@ -30,17 +30,23 @@ export class AddressDto {
   postalCode: string = '';
 }
 
+export class AddressDto {
+  address1: string;
+  address2: string;
+  city: string;
+  state: string;
+  country: string;
+  postalCode: string;
+}
+
 
 export class NewCompanyDto {
-  id: number;
   nameCompany: string;
   isTakeAway: boolean;
   isOnSit: boolean;
   description: string;
   address: number;
-  company: number;
   typeCompany: number;
-  user: number;
 }
 
 export class typeCompanyDto {

@@ -9,7 +9,7 @@ import { Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
 import { Network } from '@capacitor/network';
 import { resolve } from 'dns';
-import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto, CompanyDto, OfferDto, CreateOfferDto, CreateReservationDto, django_pagination_ResaByStatusDto, ResaByStatusDto, ResaByStatusBrandDto } from 'src/app/models/activity-model';
+import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto, CompanyDto, OfferDto, CreateOfferDto, CreateReservationDto, django_pagination_ResaByStatusDto, ResaByStatusDto, ResaByStatusBrandDto, MainCompanyDto, typeCompanyDto } from 'src/app/models/activity-model';
 
 export enum ConnectionStatus {
   Online,
@@ -73,6 +73,7 @@ export class ApiserviceService {
     getOpeningUrl: string = "";
     getOfferUrl: string = "";
     getReservationUrl: string = "";
+    getTypeCompanyUrl: string = "";
     
     
     getAppProfileUrl : string='';
@@ -104,6 +105,7 @@ export class ApiserviceService {
         this.getOpeningUrl = this.virtualHostName + this.apiPrefix + "/opening/"
         this.getOfferUrl = this.virtualHostName + this.apiPrefix + "/offer/"
         this.getReservationUrl = this.virtualHostName + this.apiPrefix + "/reservation/"
+        this.getTypeCompanyUrl = this.virtualHostName + this.apiPrefix + "/typeCompany/"
       }
 
     constructor(public http: HttpClient,
@@ -157,25 +159,9 @@ export class ApiserviceService {
                 'Content-Type': 'application/json'
             })
         };
-
-        return new Observable((observer: Observer<object>) => {
-            // At this point make a request to your backend to make a real check!
-            console.log("[GET][URL] " + url);
-            console.log(options)
-            this.http.get(url, options)
-                .pipe(retry(3))
-                .subscribe({
-                    next: (value) => {
-                        observer.next(value);
-                        observer.complete();
-                    },
-                    error(err) {
-                        observer.error(err);
-                        observer.complete();
-                        console.log(err);// Error getting the data
-                    },
-                });
-        });
+        console.log("[GET][URL] " + url);
+        console.log(options)
+        return this.http.get(url, options);
     }
     /*
 
@@ -978,7 +964,7 @@ export class ApiserviceService {
         return this.http.get<CompanyDto>(url, options)
     }
 
-    public findOfferById(id: number): Observable<django_pagination>{
+    public findOfferById(id: number): Observable<OfferDto[]>{
         const url = this.getOfferUrl + "?company=" + id.toString()
         const options = {
             headers: new HttpHeaders({
@@ -987,10 +973,10 @@ export class ApiserviceService {
         };
         console.log("[APISERVICE][GET] - findOfferById - start")
         console.log("[APISERVICE][GET] - URL - " + url)
-        return this.http.get<django_pagination>(url, options)
+        return this.http.get<OfferDto[]>(url, options)
     }
 
-    public findCompanyBySearch(search: string): Observable<django_pagination>{
+    public findCompanyBySearch(search: string): Observable<Array<MainCompanyDto>>{
         const url = this.getCompanyUrl + 'search/?search=' + search
         const options = {
             headers: new HttpHeaders({
@@ -999,7 +985,7 @@ export class ApiserviceService {
         };
         console.log("[APISERVICE][GET] - findCompanyBySearch - start")
         console.log("[APISERVICE][GET] - URL - " + url)
-        return this.http.get<django_pagination>(url, options)
+        return this.http.get<Array<MainCompanyDto>>(url, options)
     }
 
     public findReservation(status: number, conditionDate: string): Observable<Array<ResaByStatusDto>>{
@@ -1049,5 +1035,15 @@ export class ApiserviceService {
             observe: 'events'
           })
 
+    }
+
+    public findTypeCompany(): Observable<typeCompanyDto[]> {
+        const url = this.getTypeCompanyUrl;
+        const options = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        };
+        return this.http.get<typeCompanyDto[]>(url, options)
     }
 }

@@ -22,10 +22,12 @@ export class CompanyPage implements OnInit {
     public router:Router,
     public activatedRoute: ActivatedRoute) {
       //Get info 
-      this.apiService.findCompany().subscribe((data: any)=>{
-        this.lstCompanys = data.results
-        console.log(this.lstCompanys)
-    })
+      this.apiService.findCompany().subscribe({
+        next: (data: any) => {
+          this.lstCompanys = data
+          console.log(this.lstCompanys)
+        }
+      })
   }
 
   ngOnInit() {

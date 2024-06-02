@@ -1,19 +1,37 @@
-<ion-header [translucent]="true" style="--background: #ADE1DF">
-  <ion-toolbar style="--background: #ADE1DF">
-    <ion-title>
-      BrandBoost
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar style="--background: #ADE1DF">
-      <ion-title size="large">BrandBoost</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <div style="background-color: #EAE7DF;">
-    <ion-searchbar #searchVal placeholder="Try 'Cancun' or 'Sushi'" (keyup.enter)="search(searchVal.value)" style="--background: white"></ion-searchbar>
+  <div class="header">
+
+    <!--Content before waves-->
+    <div class="inner-header flex">
+      <h1>Welcome to</h1>
+    </div>
+    <div class="inner-header flex">
+      <h1 style="margin-top: 0">InTouch</h1>
+    </div>
+
+
+    <!--Waves Container-->
+    <div>
+      <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+        viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+        <defs>
+          <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+        </defs>
+        <g class="parallax">
+          <use xlink:href="#gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.7" />
+          <use xlink:href="#gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.5)" />
+          <use xlink:href="#gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.3)" />
+          <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+        </g>
+      </svg>
+    </div>
+    <!--Waves end-->
+
+  </div>
+  <!--Header ends-->
+
+  <div style="background-color: white;">
+    <ion-searchbar #searchVal placeholder="Try 'Cancun' or 'Sushi'" (keyup)="search($event, searchVal.value)" style="--background: white"></ion-searchbar>
   </div>
 
   <ion-text>
@@ -94,19 +112,19 @@
   </ion-text>
   <div class="scrolling-wrapper">
     <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'aletazul'}">
-      <img src="https://aycard.site/media/images/kl6775cdx8qiyhnzzt1.jpeg"/>
+      <img src="https://intouch.ovh/media/images/kl6775cdx8qiyhnzzt1.jpeg"/>
       <ion-card-title>Aletazul</ion-card-title>
     </ion-card>
     <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'rosanegra'}">
-      <img src="https://aycard.site/media/images/3g7zu8acxxmdbnulurn.jpeg"/>
+      <img src="https://intouch.ovh/media/images/3g7zu8acxxmdbnulurn.jpeg"/>
       <ion-card-title>Rosanegra</ion-card-title>
     </ion-card>
     <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'tora'}">
-      <img src="https://aycard.site/media/images/a7kkr0o75dgqs9942hx.jpeg"/>
+      <img src="https://intouch.ovh/media/images/a7kkr0o75dgqs9942hx.jpeg"/>
       <ion-card-title>Tora</ion-card-title>
     </ion-card>
     <ion-card button [routerLink]="['view-search']" [queryParams]="{ search: 'taboo'}">
-      <img src="https://aycard.site/media/images/mzrn23l8b79znzdqkrq.jpeg"/>
+      <img src="https://intouch.ovh/media/images/mzrn23l8b79znzdqkrq.jpeg"/>
       <ion-card-title>Taboo</ion-card-title>
     </ion-card>
   </div>

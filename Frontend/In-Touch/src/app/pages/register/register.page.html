@@ -1,4 +1,4 @@
-<ion-header>
+<!--<ion-header>
   <ion-toolbar>
     <ion-title>Register</ion-title>
   </ion-toolbar>
@@ -43,4 +43,40 @@
   <ion-button buttonType="button" class="btn-login" routerLink="/login">
     {{"Login"|translate}}
   </ion-button>
+</ion-content>
+-->
+
+<ion-content [fullscreen]="true">
+  <div class="container">
+    <h1 class="heading">🚀 Create Account<br><br></h1>
+    <p class="para">Sign up to get started!</p>
+    <form [formGroup]="validations_form">
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>First name</legend> 
+          <ion-input formControlName="firstName" type="text" placeholder="John"></ion-input>
+        </fieldset>
+      </ion-item>
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>Last name</legend> 
+          <ion-input formControlName="lastName" type="text" placeholder="Doe"></ion-input>
+        </fieldset>
+      </ion-item>
+      <ion-item lines="none" class="ion-item">
+        <fieldset  class="input-item">
+          <legend>Email</legend> 
+          <ion-input formControlName="email" type="email" placeholder="john@doe.com"></ion-input>
+        </fieldset>
+      </ion-item>
+      <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+          <legend>Password</legend> 
+          <ion-input formControlName="password" type="password" placeholder="*******"></ion-input>
+        </fieldset>
+      </ion-item>
+      <p class="signup-text">I'm already a member&nbsp;<a (click)="signin()">Sign In?</a></p>
+      <ion-button class="login-button" (click)="register()" expand="block" [disabled]="!validations_form.valid">Sign Up</ion-button>
+    </form>
+  </div>
 </ion-content>

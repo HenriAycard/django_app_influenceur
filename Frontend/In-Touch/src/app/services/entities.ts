@@ -3,19 +3,19 @@ export class User {
     first_name: string
     last_name: string
     username: string
-    facebookId: string
-    android: boolean
-    ios: boolean
-    is_influenceur: boolean
+    instagram: string
+    tiktok: string
+    youtube: string
+    is_influencer: boolean
 
     constructor(init: User) {
         this.id = init.id
         this.first_name = init.first_name
         this.last_name = init.last_name
         this.username = init.username
-        this.facebookId = init.facebookId
-        this.android = init.android
-        this.ios = init.ios
-        this.is_influenceur = init.is_influenceur
+        this.instagram = init.instagram
+        this.tiktok = init.tiktok
+        this.youtube = init.youtube
+        this.is_influencer = init.is_influencer
     }
 }

@@ -28,8 +28,9 @@ export class ExplorerPage implements OnInit {
       
     }
   
-    search(val: string | null | undefined) {
-      if (typeof val === 'string'){
+    search(event: any, val: string | null | undefined) {
+      console.log(event)
+      if (event.key === 'Enter' && typeof val === 'string'){
         
         let navigationExtras: NavigationExtras = {
           queryParams: { search: val},

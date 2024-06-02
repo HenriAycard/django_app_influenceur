@@ -66,7 +66,7 @@ export class ViewOffrePage implements OnInit {
     ]).subscribe({
       next: ([first, second]) => {
         this.datas = first as CompanyDto
-        this.datasOffer = second.results as OfferDto[]
+        this.datasOffer = second as OfferDto[]
         loading.dismiss();
         this.loaded = true
       },

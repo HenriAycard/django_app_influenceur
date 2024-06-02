@@ -73,7 +73,7 @@ export class LoginPage implements OnInit {
                 this.authentificationService.user$.next(response[0])
                 this.authentificationService.isAuthenticated.next(true)
                 this.apiService.stopLoading();
-                if (response[0].is_influenceur) {
+                if (response[0].is_influencer) {
                   this.router.navigate(['/influenceur']);
                 } else {
                   this.router.navigate(['/brand']);
@@ -101,6 +101,9 @@ export class LoginPage implements OnInit {
     this.router.navigateByUrl("/login")
   }
  
+  signup(){
+    this.router.navigateByUrl("/register")
+  }
   async forgetPwd() {
     const alert = await this.alertController.create({
       header: this.translateService.instant("Please enter an email"),

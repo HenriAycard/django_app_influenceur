@@ -38,7 +38,7 @@ export class AppComponent  implements OnInit{
     this.authService.fetchCurrentUser().subscribe({
       next: (response: Array<User>) => {
         if (response.length === 1) {
-          if (response[0].is_influenceur) {
+          if (response[0].is_influencer) {
             this.router.navigateByUrl('influenceur');
           } else {
             this.router.navigateByUrl('/brand');
