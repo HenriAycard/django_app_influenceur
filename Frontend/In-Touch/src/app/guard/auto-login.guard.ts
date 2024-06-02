@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanMatch, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, Observer } from 'rxjs';
 import { UserManagerProviderService } from './../services/user-manager-provider.service';
-import { CanLoad, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
 import { filter, map, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AutoLoginGuard implements CanLoad {
+export class AutoLoginGuard  {
 
   constructor(
     private authService: AuthenticationService, 
