@@ -45,26 +45,28 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email = models.EmailField(unique=True,db_index=True)
-    first_name = models.CharField(('first_name'), max_length=30, blank=True)
-    username = models.CharField(max_length=100, null=True, blank=True)
-    last_name = models.CharField(('last_name'), max_length=30, blank=True)
-    date_joined = models.DateTimeField(auto_now_add=True)
-    facebookId = models.CharField(max_length=100, null=True, blank=True,db_index=True)
-    android = models.BooleanField(blank=True, default=False)
-    ios = models.BooleanField(blank=True, default=False)
-    acceptPush = models.BooleanField(default=False)
-    pushToken = models.CharField(max_length=100, null=True, blank=True,db_index=True)
-    is_active = models.BooleanField(('active'), default=True)
-    is_staff = models.BooleanField(('staff'), default=False)
-    is_influenceur = models.BooleanField(('influenceur'), default=False)
-    valid = models.BooleanField(('valid'), default=True)
+    
+    email = models.EmailField(unique=True, db_index=True, db_collation="case_insentive", max_length=255)
+    first_name = models.CharField(('first_name'), max_length=100, blank=True)
+    last_name = models.CharField(('last_name'), max_length=100, blank=True)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+
+    facebook = models.CharField(max_length=100, null=True, blank=True)
+    instagram = models.CharField(max_length=100, null=True, blank=True)
+    tiktok = models.CharField(max_length=100, null=True, blank=True)
+    twitter = models.CharField(max_length=100, null=True, blank=True)
+    youtube = models.CharField(max_length=100, null=True, blank=True)
+    snapchat = models.CharField(max_length=100, null=True, blank=True)
+
+    is_active = models.BooleanField(('is_active'), default=False)
+    is_influenceur = models.BooleanField(('is_influenceur'), default=False)
+    is_company = models.BooleanField(('is_company'), default=False)
+
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
 
     class Meta:
         verbose_name = ('User')
