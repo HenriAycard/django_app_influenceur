@@ -3,12 +3,9 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular
 import { Observable,BehaviorSubject, Observer, throwError} from 'rxjs';
 import { from, of, forkJoin } from 'rxjs';
 import { catchError, retry, map, tap, switchMap } from 'rxjs/operators';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular/standalone';
 import * as Constant from '../config/constant';
-import { Platform } from '@ionic/angular';
 import { Preferences } from '@capacitor/preferences';
-import { Network } from '@capacitor/network';
-import { resolve } from 'dns';
 import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto, CompanyDto, OfferDto, CreateOfferDto, CreateReservationDto, django_pagination_ResaByStatusDto, ResaByStatusDto, ResaByStatusBrandDto, MainCompanyDto, typeCompanyDto } from 'src/app/models/activity-model';
 
 export enum ConnectionStatus {
@@ -116,38 +113,6 @@ export class ApiserviceService {
 
          this.initProvider(Constant.domainConfig.virtual_host, Constant.domainConfig.client, "api")
         this.http = http
-    }
-
-
-        // Local Data 
-      public setLocalData(key: string, jsonData: any) {
-        return new Promise(async resolve => {
-
-            console.log("=ON enregistre cle "+Constant.domainConfig.client+"-"+key+" valeur "+JSON.stringify(jsonData))
-            await Preferences.set({key:`${Constant.domainConfig.client}-${key}`,value:JSON.stringify(jsonData)})
-            resolve(true)
-      
-    });
-      }
-
-      public removeLocalData(key: string){
-        return new Promise(async resolve => {
-            let ret = await Preferences.remove({key:`${Constant.domainConfig.client}-${key}`}) 
-
-        });
-      }
-      // Get cached API result
-      public getLocalData(key: string) {
-        return new Promise(async resolve => {
-            let ret = await Preferences.get({key:`${Constant.domainConfig.client}-${key}`}) 
-            
-            if (ret.value){
-                resolve( JSON.parse(ret.value))
-            }
-            else{
-                resolve(null)
-            }
-        });
     }
 
 

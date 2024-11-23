@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
-import { Platform, AlertController } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { AuthenticationService } from 'src/app/services/authentication.service';

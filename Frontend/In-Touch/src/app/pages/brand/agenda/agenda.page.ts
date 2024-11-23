@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonModal } from '@ionic/angular';
+import { AlertController, IonModal } from '@ionic/angular/standalone';
 import { ResaByStatusBrandDto } from 'src/app/models/activity-model';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 

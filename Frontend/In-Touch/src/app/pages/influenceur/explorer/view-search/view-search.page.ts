@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras, UrlCreationOptions } from '@angular/router';
 import { CompanyDto, MainCompanyDto, OfferDto } from 'src/app/models/activity-model';
 import { HttpErrorResponse } from '@angular/common/http';

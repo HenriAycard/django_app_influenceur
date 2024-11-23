@@ -1,0 +1,7 @@
+{
+  "name": "InTouch",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

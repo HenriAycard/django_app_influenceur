@@ -44,7 +44,8 @@
     <div *ngIf="step === steps[1]">
       <form [formGroup]="descriptionForm">
         <h1 class="heading item-text-wrap">📝 Describe your company</h1>
-        <ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">
+        <!--<ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">-->
+        <ion-item lines="inset" counter="true">
           <ion-label position="floating">Description</ion-label>
           <ion-textarea required maxlength="800" [autoGrow]="true" formControlName="description" style="min-height: 250px;"></ion-textarea>
         </ion-item>

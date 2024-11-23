@@ -1,46 +1,24 @@
 <ion-content [fullscreen]="true">
-  <!--<form (ngSubmit)="login()" [formGroup]="credentials">
-    <div class="input-group">
-      <ion-item>
-        <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-      </ion-item>
-      
-      <ion-item>
-        <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-      </ion-item>
-      
-    </div>
- 
-    <ion-button type="submit" expand="block" [disabled]="!credentials.valid">{{"Log in"|translate}}</ion-button>
-    <ion-button buttonType="button" fill="clear" class="forget-pass" (click)="forgetPwd()">
-      {{"Forget Your Password ?"|translate}}
-    </ion-button>
-    <ion-button type="button" expand="block" color="light" fill="clear" routerLink="/register">{{"Not yet a member? Sign up!"|translate}}
-    </ion-button>
- 
-    
-  </form>-->
-
   <!-- Login Page -->
   <div class="container">
     <h1 class="heading">👋 Welcome<br><br></h1>
     <p class="para">Sign in to continue!</p>
-    <form [formGroup]="credentials">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <ion-item lines="none" class="ion-item">
         <fieldset  class="input-item">
           <legend>Email</legend> 
-          <ion-input formControlName="email" type="email" placeholder="name@domain.com"></ion-input>
+          <ion-input type="email" formControlName="email" class="form-control" placeholder="name@domain.com"></ion-input>
         </fieldset>
       </ion-item>
       <ion-item lines="none" class="ion-item">
         <fieldset class="input-item">
           <legend>Password</legend> 
-          <ion-input formControlName="password" type="password" placeholder="*******"></ion-input>
+          <ion-input type="password" formControlName="password" class="form-control" placeholder="*******"></ion-input>
         </fieldset>
       </ion-item>
-      <p class="forget-text"><a (click)="forgetPwd()">Forgot Password?</a></p>
-      <p class="signup-text">I'm a new user&nbsp;<a (click)="signup()">Sign Up?</a></p>
-      <ion-button class="login-button" (click)="login()" expand="block" [disabled]="!credentials.valid">LOGIN</ion-button>
+      <!--<p class="forget-text"><a (click)="forgetPwd()">Forgot Password?</a></p>
+      <p class="signup-text">I'm a new user&nbsp;<a (click)="signup()">Sign Up?</a></p>-->
+      <ion-button class="login-button" type="submit" expand="block">LOGIN</ion-button>
     </form>
   </div>
 </ion-content>

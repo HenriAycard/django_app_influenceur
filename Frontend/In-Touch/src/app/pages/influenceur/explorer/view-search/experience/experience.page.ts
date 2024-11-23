@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CompanyDto, OfferDto, CreateReservationDto } from 'src/app/models/activity-model';
-import { CheckboxCustomEvent, LoadingController } from '@ionic/angular';
-import { IonModal, ToastController } from '@ionic/angular';
+import { CheckboxCustomEvent, LoadingController, IonModal, ToastController } from '@ionic/angular/standalone';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { Location } from '@angular/common';
 import { ApiserviceService } from 'src/app/services/apiservice.service';

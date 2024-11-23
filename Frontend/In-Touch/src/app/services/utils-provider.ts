@@ -1,6 +1,6 @@
 import * as Constant from '../config/constant';
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 
 @Injectable({
   providedIn: 'root'

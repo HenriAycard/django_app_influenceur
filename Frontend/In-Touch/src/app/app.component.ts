@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 import { ApiserviceService } from './services/apiservice.service'
 import { Router } from '@angular/router';
 import { NavDataServiceService } from './services/nav-data-service.service';
@@ -19,7 +19,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent  implements OnInit{
+export class AppComponent {
   user$: Observable<User>;
   //user: User;
 
@@ -31,25 +31,29 @@ export class AppComponent  implements OnInit{
     public userManager: UserManagerProviderService,
     public utilsProvider: UtilsProviderService,
     public authService: AuthenticationService)
-    { }
+    { 
+      this.initializeApp();
+    }
  
 
-  ngOnInit() {
-    this.authService.fetchCurrentUser().subscribe({
-      next: (response: Array<User>) => {
-        if (response.length === 1) {
-          if (response[0].is_influencer) {
-            this.router.navigateByUrl('influenceur');
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.authService.fetchCurrentUser().subscribe({
+        next: (response: Array<User>) => {
+          if (response.length === 1) {
+            if (response[0].is_influencer) {
+              this.router.navigateByUrl('influenceur');
+            } else {
+              this.router.navigateByUrl('/brand');
+            }
           } else {
-            this.router.navigateByUrl('/brand');
+            this.router.navigateByUrl('/login');
           }
-        } else {
+        },
+        error: (err: HttpErrorResponse) => {
           this.router.navigateByUrl('/login');
         }
-      },
-      error: (err: HttpErrorResponse) => {
-        this.router.navigateByUrl('/login');
-      }
+      })
     })
   }
 /*

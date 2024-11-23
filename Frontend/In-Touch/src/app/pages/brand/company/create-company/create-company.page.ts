@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
-import { AlertController, PickerController, IonModal } from '@ionic/angular';
+import { AlertController, PickerController, IonModal } from '@ionic/angular/standalone';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { dataOpeningDate,OpeningDate, AddressDto, NewCompanyDto, typeCompanyDto } from 'src/app/models/activity-model';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationExtras, UrlCreationOptions } from '@angular/router';
-import { IonSearchbar } from '@ionic/angular';
+import { IonSearchbar } from '@ionic/angular/standalone';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 

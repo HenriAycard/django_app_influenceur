@@ -1,0 +1,120 @@
+.wrapper {
+    //width: 90%;
+    //height: 540px;
+    background: #FDFEFF;
+    border-radius: 10px;
+    padding: 5px 40px 5px 40px;
+    box-shadow: 0 8px 40px rgba(#000000, .2);
+
+    .profile {
+        margin-top: 2.2em;
+        position: relative;
+        
+        &:after {
+        width: 100%;
+        height: 1px;
+        content: ' ';
+        display: block;
+        margin-top: 1.3em;
+        background: #E9EFF6;
+        }
+        
+        .check {
+        position: absolute;
+        right: 5em;
+        bottom: 12.7em;
+        i {
+            color: #fff;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+            border-radius: 100%;
+            background: linear-gradient(to bottom right, #C90A6D, #FF48A0); 
+        }
+        }
+        .thumbnail {
+        width: 124px;
+        height: 124px;
+        display: flex;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 1.5em;
+        border-radius: 100%;
+        box-shadow: 0 13px 26px rgba(#000, .2), 0 3px 6px rgba(#000, .2);
+        }
+        .name {
+        color: #2D354A;
+        font-size: 24px;
+        font-weight: 600;
+        text-align: center;
+        }
+        
+        .title {
+        color: #7C8097;
+        font-size: .75em;
+        font-weight: 300;
+        text-align: center;
+        padding-top: .5em;
+        padding-bottom: .7em;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        }
+    }
+
+    .social-icons {
+        display: flex;
+        margin-top: 1.2em;
+        justify-content: space-between;
+        
+        .icon {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        a {
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            font-size: 28px;
+            line-height: 60px;
+            text-align: center;
+            border-radius: 30px;
+            box-shadow: 0 13px 26px rgba(#000, .2), 0 3px 6px rgba(#000, .2);
+        }
+        &:nth-of-type(1) {
+            a {
+                background-image: url("https://cdn.pixabay.com/photo/2016/09/17/07/03/instagram-1675670_1280.png"); //linear-gradient(to bottom right, #C90A6D, #FF48A0);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+        &:nth-of-type(2) {
+            a {
+                background-image: url("https://cdn.pixabay.com/photo/2022/02/09/08/24/tiktok-7002866_1280.png"); //linear-gradient(to bottom right, #5E5AEC, #3F9EFC);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+        &:nth-of-type(3) {
+            a {
+                background-image: url("https://cdn.pixabay.com/photo/2016/11/19/03/08/youtube-1837872_1280.png"); //linear-gradient(to bottom right, #6452E9, #639FF9);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+        
+        h4 {
+            color: #080911;
+            font-size: 1em;
+            margin-top: 1.3em;
+            margin-bottom: .2em;
+        }
+        
+        p {
+            color: #666B7D;
+            font-size: 12px;    
+        }
+        }
+    }
+}

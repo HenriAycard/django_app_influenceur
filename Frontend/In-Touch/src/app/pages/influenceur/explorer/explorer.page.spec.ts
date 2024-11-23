@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
 
 import { ExplorerPage } from './explorer.page';
 
@@ -9,8 +8,7 @@ describe('ExplorerPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ExplorerPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ ExplorerPage ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ExplorerPage);

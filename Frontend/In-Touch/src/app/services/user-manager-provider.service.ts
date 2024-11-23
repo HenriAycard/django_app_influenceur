@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { ApiserviceService } from './apiservice.service'
 import { UtilsProviderService } from './utils-provider';
-import { Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular/standalone';
 import { AuthenticationService } from './authentication.service';
 import { User } from './entities';
 import { Preferences } from '@capacitor/preferences';

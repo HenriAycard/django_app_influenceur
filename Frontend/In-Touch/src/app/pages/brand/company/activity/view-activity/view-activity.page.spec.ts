@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
 
 import { ViewActivityPage } from './view-activity.page';
 
@@ -9,8 +8,7 @@ describe('ViewActivityPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ViewActivityPage ],
-      imports: [IonicModule.forRoot()]
+      declarations: [ ViewActivityPage ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ViewActivityPage);

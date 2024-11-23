@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, forwardRef } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { FormControl, FormGroup, NG_VALUE_ACCESSOR, Validators } from '@angular/forms';
+import { AlertController } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
-import { Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { UserManagerProviderService } from 'src/app/services/user-manager-provider.service';
 import { User } from 'src/app/services/entities';
@@ -17,51 +16,40 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class LoginPage implements OnInit {
 
-  credentials: FormGroup;
-  isIOS=false;
+  form!: FormGroup;
 
   constructor(public apiService:ApiserviceService,
-    public fb: FormBuilder,
-    public platform:Platform,
     public router:Router,
     public alertController:AlertController,
     public translateService: TranslateService,
     public authentificationService:AuthenticationService,
-    public userManager:UserManagerProviderService) { 
-      if (this.platform.is("ios")){
-        this.isIOS=true;
-      }}
- 
-  ngOnInit() {
-    this.credentials = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
-  }
-  
- 
-    // Easy access for form fields
-    get email() {
-      return this.credentials.get('email');
-    }
-    
-    get password() {
-      return this.credentials.get('password');
-    }
-    
+    public userManager:UserManagerProviderService) { }
 
-    async login(){
-   
-      let email = this.credentials.value["email"]
-      let password = this.credentials.value["password"]
+    ngOnInit() {
+      this.form = new FormGroup({
+        email: new FormControl("", [Validators.required, Validators.email]),
+        password: new FormControl("", [Validators.required, Validators.minLength(6)])
+      });
+    }
+
+    // convenience getter for easy access to form fields
+    get f() { return this.form.controls; }
+
+    onSubmit(){
+
+      // stop here if form is invalid
+      if (this.form.invalid) {
+        return;
+      }
       
       
       this.apiService.showLoading();
       // Check email
       let params = {
-        "email":email,
-        "password":password,
+        "email": this.f['email'].value,
+        "password": this.f['password'].value,
       }
+
       this.authentificationService.login(params).subscribe({
         next: (value: any) => {
           this.authentificationService.fetchCurrentUser()
@@ -92,9 +80,9 @@ export class LoginPage implements OnInit {
             this.apiService.stopLoading();
             this.displayWrongLogin()
           }
-        
+      
       })
-    }
+  }
  
 
   goNext(){
@@ -104,6 +92,7 @@ export class LoginPage implements OnInit {
   signup(){
     this.router.navigateByUrl("/register")
   }
+
   async forgetPwd() {
     const alert = await this.alertController.create({
       header: this.translateService.instant("Please enter an email"),

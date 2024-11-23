@@ -4,20 +4,21 @@ import { FormsModule } from '@angular/forms';
 import {  ReactiveFormsModule } from '@angular/forms';
 import {TranslateModule} from '@ngx-translate/core';
 
-import { IonicModule } from '@ionic/angular';
 
 import { RegisterPageRoutingModule } from './register-routing.module';
 
 import { RegisterPage } from './register.page';
+import { IonButton, IonContent, IonItem } from '@ionic/angular/standalone';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
+    IonContent,
+    IonButton,
+    IonItem,
     RegisterPageRoutingModule,
     TranslateModule,
-    IonicModule,
     ReactiveFormsModule
   ],
   declarations: [RegisterPage]

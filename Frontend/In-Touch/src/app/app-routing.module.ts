@@ -1,25 +1,21 @@
-import { inject, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guard/auth.guard';
-import { AutoLoginGuard } from './guard/auto-login.guard';
-import { AuthenticationService } from './services/authentication.service';
+import { authGuard } from './guard/auth.guard';
 
 const routes: Routes = [
-  {
+  /*{
     path: 'brand',
     loadChildren: () => import('./pages/brand/brand-tabs/brand-tabs.module').then(m => m.BrandTabsPageModule),
-    canLoad: [AuthGuard]
+    canActivate: [authGuard]
   },
   {
     path: 'influenceur',
     loadChildren: () => import('./pages/influenceur/InfluenceurTabs/InfluenceurTabs.module').then(m => m.InfluenceurTabsPageModule),
-    canLoad: [AuthGuard]
-  },
+    canActivate: [authGuard]
+  },*/
   {
     path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule),
-    canMatch: [() => inject(AuthenticationService).hasPermission('login')]
-    //canLoad: [AutoLoginGuard]
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'register',

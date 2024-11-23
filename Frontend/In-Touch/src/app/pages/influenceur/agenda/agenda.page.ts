@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular/standalone';
 import { ResaByStatusDto } from 'src/app/models/activity-model';
 import { ApiserviceService } from 'src/app/services/apiservice.service';
 

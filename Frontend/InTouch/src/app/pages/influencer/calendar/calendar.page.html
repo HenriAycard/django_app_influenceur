@@ -1,0 +1,94 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Calendar</ion-title>
+    </ion-toolbar>
+  </ion-header>
+    
+    <ion-accordion-group>
+      <ion-accordion value="first">
+        <ion-item slot="header" color="light">
+          <ion-icon name="help-outline" slot="start"></ion-icon>
+          <ion-label label>Waiting for an answer</ion-label>
+          <ion-label slot="end" class="no-margin">{{countWaiting}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item  *ngFor="let waiting of dataWaiting">
+            <ion-thumbnail slot="start">
+              <img src="{{waiting.offer.company.imgCompany[0].file }}" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3 class="bold">{{ waiting.offer.company.nameCompany }}</h3>
+              <p>{{ waiting.offer.nameOffer }}</p>
+              <p class="blueColor">{{ waiting.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-accordion>
+      <ion-accordion value="second">
+        <ion-item slot="header" color="light">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          <ion-label>Last experiences</ion-label>
+          <ion-label slot="end" class="no-margin">{{countLastExperiences}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item  *ngFor="let lastExper of dataLastExperiences">
+            <ion-thumbnail slot="start">
+              <img src="{{lastExper.offer.company.imgCompany[0].file }}" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3 class="bold">{{ lastExper.offer.company.nameCompany }}</h3>
+              <p>{{ lastExper.offer.nameOffer }}</p>
+              <p class="blueColor">{{ lastExper.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-accordion>
+      <ion-accordion value="third">
+        <ion-item slot="header" color="light">
+          <ion-icon name="close-outline" slot="start"></ion-icon>
+          <ion-label>Unsuccessful</ion-label>
+          <ion-label slot="end" class="no-margin">{{countUnsuccessful}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item  *ngFor="let unsuccess of dataUnsuccessful">
+            <ion-thumbnail slot="start">
+              <img src="{{unsuccess.offer.company.imgCompany[0].file }}" />
+            </ion-thumbnail>
+            <ion-label>
+              <h3 class="bold">{{ unsuccess.offer.company.nameCompany }}</h3>
+              <p>{{ unsuccess.offer.nameOffer }}</p>
+              <p class="blueColor">{{ unsuccess.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+            </ion-label>
+          </ion-item>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+    <div class="tab2Padding">
+    <ion-text>
+      <h2>Coming soon</h2>
+    </ion-text>
+    <p>
+      <ion-text>
+        {{countComingSoon}} experience to come
+      </ion-text>
+    </p>
+    <div slot="content">
+      <ion-item  *ngFor="let comingSoon of dataComingSoon">
+        <ion-thumbnail slot="start">
+          <img src="{{comingSoon.offer.company.imgCompany[0].file }}" />
+        </ion-thumbnail>
+        <ion-label>
+          <h3 class="bold">{{ comingSoon.offer.company.nameCompany }}</h3>
+          <p>{{ comingSoon.offer.nameOffer }}</p>
+          <p class="blueColor">{{ comingSoon.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+        </ion-label>
+      </ion-item>
+    </div>
+  </div>  
+
+</ion-content>

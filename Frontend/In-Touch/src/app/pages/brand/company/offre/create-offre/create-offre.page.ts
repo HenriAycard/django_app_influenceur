@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { CreateOfferDto } from 'src/app/models/activity-model';
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { LoadingController, ToastController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular/standalone';
 
 export interface queryParamsDto {
   id: number;

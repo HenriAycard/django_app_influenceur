@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Search</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card button *ngFor="let company_card of datas" [routerLink]="['../experience']" [queryParams]="{ id: company_card.id }">
+    <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of company_card.imgCompany" [src]="company_image.file" />
+    <ion-card-header style="text-align: left;">
+      <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
+      <ion-card-subtitle>{{ company_card.typeCompany.nameTypeCompany }}</ion-card-subtitle>
+    </ion-card-header>  
+    
+    <ion-card-content class="ion-text-justify" >
+      {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
+    </ion-card-content>
+
+    <ion-chip *ngIf="company_card['isOnSit']" class="card-chip">On sit</ion-chip>
+    <ion-chip *ngIf="company_card['isTakeAway']" class="card-chip">Take away</ion-chip>
+  </ion-card>
+</ion-content>

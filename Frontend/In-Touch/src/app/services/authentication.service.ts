@@ -28,6 +28,12 @@ export class AuthenticationService {
       this.loadToken()
     }
 
+  async isAuth(): Promise<boolean> {
+    const accessToken = this.localStorageService.getItem('access');
+    const refreshTokenVar = this.localStorageService.getItem('refresh');
+    return accessToken && refreshTokenVar && this.isAuthenticated.getValue()
+  }
+
   loadToken() {
     const accessToken = this.localStorageService.getItem('access');
     const refreshTokenVar = this.localStorageService.getItem('refresh');
@@ -80,7 +86,7 @@ logout(): void {
     this.user$.next(null);
 }
 
-login(form: {email: string; password: string}): Observable<LoginResponse> {
+login(form: {email: string|null; password: string|null}): Observable<LoginResponse> {
   return this.http.post<LoginResponse>(this.apiService.getLoginUrl, form)
     .pipe(
       tap((response: any) => {
@@ -95,7 +101,7 @@ getCurrentUser(): Observable<User> {
   console.log("start")
   return this.user$.pipe(
     switchMap((userVal: any) => {
-      // check if we already have user data
+      
       console.log(userVal)
       if (userVal){
         this.isAuthenticated.next(true);

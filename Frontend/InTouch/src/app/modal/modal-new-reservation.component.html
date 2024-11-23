@@ -1,0 +1,25 @@
+<div class="ion-page">
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+            </ion-buttons>
+            <ion-title>Reservation</ion-title>
+            <ion-buttons slot="end">
+            <ion-button (click)="confirm()">Accept</ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-item>
+            <ion-datetime [min]="minDate" [max]="maxDate" [(ngModel)]="dateReservation" ngDefaultControl>
+            <span slot="title">Select a Reservation Date</span>
+            </ion-datetime>
+        </ion-item>
+        <p class="ion-padding-horizontal">You must accept the terms and conditions to make your reservation.</p>
+        <ion-item>
+            <ion-label class="ion-text-wrap" for="terms">Do you accept the terms and conditions?</ion-label>
+            <ion-checkbox id="terms" (ionChange)="onTermsChanged($event)" [checked]="canDismiss"></ion-checkbox>
+        </ion-item>
+    </ion-content>
+</div>

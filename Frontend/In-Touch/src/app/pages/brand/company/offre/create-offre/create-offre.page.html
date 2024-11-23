@@ -20,11 +20,13 @@
               <ion-label position="floating">Contract name</ion-label>
               <ion-input name="nameOffer" type="text" required [clearInput]="true" ngModel maxlength="100"></ion-input>
             </ion-item>
-            <ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">
+            <!--<ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter"> -->
+            <ion-item lines="inset" counter="true" >
               <ion-label position="floating">Offer</ion-label>
               <ion-textarea name="descriptionOffer" required maxlength="500" [autoGrow]="true" ngModel ></ion-textarea>
             </ion-item>
-            <ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">
+            <!--<ion-item lines="inset" counter="true" [counterFormatter]="customCounterFormatter">-->
+            <ion-item lines="inset" counter="true">
               <ion-label position="floating">Conditions</ion-label>
               <ion-textarea name="descriptionCondition" required maxlength="500" [autoGrow]="true" ngModel ></ion-textarea>
             </ion-item>
