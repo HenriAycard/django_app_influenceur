@@ -8,7 +8,7 @@ import { searchOutline, calendarOutline, personCircleOutline } from 'ionicons/ic
   templateUrl: './influencer-tabs.page.html',
   styleUrls: ['./influencer-tabs.page.scss'],
   standalone: true,
-  imports: [IonTab, IonTabButton, IonLabel, IonLabel, IonIcon, IonTabBar, IonTabs]
+  imports: [IonTabButton, IonLabel, IonLabel, IonIcon, IonTabBar, IonTabs]
 })
 export class InfluencerTabsPage implements OnInit {
 

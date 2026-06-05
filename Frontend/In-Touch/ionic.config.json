@@ -1,7 +1,0 @@
-{
-  "name": "In-Touch",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}

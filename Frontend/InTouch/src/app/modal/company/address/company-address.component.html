@@ -1,0 +1,46 @@
+<form [formGroup]="addressForm">
+    <h1 class="heading item-text-wrap">📍 What is your company address ?</h1>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Address *</legend>
+            <ion-input formControlName="addressPrincipal" type="text" placeholder="Address" [clearInput]="true"
+                required></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Address (complement)</legend>
+            <ion-input formControlName="addressSecondary" type="text" placeholder="Address (complement)"
+                [clearInput]="true"></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>City *</legend>
+            <ion-input formControlName="city" type="text" placeholder="Cancun" [clearInput]="true" required></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>State *</legend>
+            <ion-input formControlName="state" type="text" placeholder="Quintana Roo" [clearInput]="true"
+                required></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Country *</legend>
+            <ion-input formControlName="country" type="text" placeholder="Mexico" [clearInput]="true"
+                required></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Postal code *</legend>
+            <ion-input formControlName="zipCode" type="text" placeholder="77500" [clearInput]="true"
+                required></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-button class="ion-padding-vertical" shape="round" (click)="addNewAddress()" expand="block"
+        [disabled]="!addressForm.valid">Next</ion-button>
+</form>

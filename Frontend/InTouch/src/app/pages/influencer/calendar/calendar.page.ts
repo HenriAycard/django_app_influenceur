@@ -7,13 +7,15 @@ import { ApiBookingService } from 'src/app/services/api/api-booking.service';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 import { addIcons } from 'ionicons';
 import { closeOutline, helpOutline, timeOutline } from 'ionicons/icons';
+import { CalendarInfluencerComponent } from 'src/app/modal/calendar/influencer/calendar-influencer.component';
+import { ReloadService } from 'src/app/services/reload.service';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonLabel, IonThumbnail, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonLabel, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, CalendarInfluencerComponent]
 })
 export class CalendarPage implements OnInit {
 
@@ -31,12 +33,26 @@ export class CalendarPage implements OnInit {
 
   private apiBooking = inject(ApiBookingService)
   private alertCtrlService = inject(AlertControllerService)
+  private reloadService = inject(ReloadService);
 
   constructor() {
     addIcons({helpOutline,timeOutline,closeOutline})
+    this.reloadService.reload$.subscribe(() => {
+      this.loadData()
+    })
   }
 
   ngOnInit(): void {
+    this.loadData()
+  }
+
+  public handleRefresh($event: any){
+    setTimeout(() => {
+        this.loadData()
+      }, 2000);
+  }
+
+  public loadData() {
     this.alertCtrlService.showLoading();
     const dateObj = new Date()
     this.findResaWaiting(dateObj)
@@ -45,23 +61,12 @@ export class CalendarPage implements OnInit {
     this.findResaComingSoon(dateObj)
   }
 
-  public handleRefresh($event: any){
-    setTimeout(() => {
-        const dateObj = new Date()
-        this.findResaWaiting(dateObj)
-        this.findResaLastExperiences(dateObj)
-        this.findResaUnsuccessful(dateObj)
-        this.findResaComingSoon(dateObj)
-        $event.target.complete();  
-      }, 2000);
-  }
-
 
   public async findResaWaiting(dateObj: Date){
     
     this.dataWaiting = new Array<BookingStatus>()
     
-    await this.apiBooking.findBooking(0, dateObj).subscribe({
+    await this.apiBooking.findBooking4Influencer(0, dateObj, 'from_date').subscribe({
         next: (response: Array<BookingStatus>) => {
           this.dataWaiting = response as BookingStatus[]
           this.countWaiting = this.dataWaiting.length
@@ -74,7 +79,7 @@ export class CalendarPage implements OnInit {
     
     this.dataLastExperiences = new Array<BookingStatus>()
 
-    await this.apiBooking.findBooking(1, dateObj).subscribe({
+    await this.apiBooking.findBooking4Influencer(1, dateObj, 'to_date').subscribe({
       next: (response: Array<BookingStatus>) => {
         this.dataLastExperiences = response as BookingStatus[]
         this.countLastExperiences = this.dataLastExperiences.length
@@ -87,7 +92,7 @@ export class CalendarPage implements OnInit {
     
     this.dataUnsuccessful = new Array<BookingStatus>()
 
-    await this.apiBooking.findBooking(2, dateObj).subscribe({
+    await this.apiBooking.findBooking4Influencer(2, dateObj).subscribe({
       next: (response: Array<BookingStatus>) => {
         this.dataUnsuccessful = response as BookingStatus[]
         this.countUnsuccessful = this.dataUnsuccessful.length
@@ -100,7 +105,7 @@ export class CalendarPage implements OnInit {
 
     this.dataComingSoon = new Array<BookingStatus>()
     
-    await this.apiBooking.findBooking(1, dateObj).subscribe({
+    await this.apiBooking.findBooking4Influencer(1, dateObj).subscribe({
       next: (response: Array<BookingStatus>) => {
         this.dataComingSoon = response as BookingStatus[]
         this.countComingSoon = this.dataComingSoon.length

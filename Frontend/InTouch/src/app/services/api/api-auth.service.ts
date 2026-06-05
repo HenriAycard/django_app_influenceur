@@ -1,16 +1,15 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User, LoginParam, RefreshTokenParam, TokenResponse, UserParam } from 'src/app/models/users';
 import * as Constant from '../../config/constant';
+import { ApiService } from './api.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiAuthService {
-
-  constructor(public http: HttpClient) { }
+export class ApiAuthService extends ApiService {
   
   urlBase: string = Constant.domainConfig.virtual_host + "auth/";
 
@@ -28,6 +27,16 @@ export class ApiAuthService {
 
   createUser(params: UserParam) : Observable<any> {
     return this.http.post<any>(this.urlBase + "users/", params);
+  }
+
+  update(id: string, params: Partial<User>): Observable<User> {
+    const url = `${Constant.domainConfig.virtual_host}${Constant.domainConfig.apiPrefix}/user/${id}`;
+    return this.http.patch<User>(url, params, this.options)
+  }
+
+  updateAvatar(id: string, formData: FormData): Observable<HttpEvent<User>> {
+    const url = `${Constant.domainConfig.virtual_host}${Constant.domainConfig.apiPrefix}/user/${id}`;
+    return this.http.patch<User>(url, formData, { reportProgress: true, observe: 'events'})
   }
   
 }

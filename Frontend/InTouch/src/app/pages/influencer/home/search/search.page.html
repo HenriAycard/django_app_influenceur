@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/influencer/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Search</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card button *ngFor="let data of datas" (click)="navToCompany(data.id)">
+    <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of data.imgCompany" [src]="company_image.file" />
+    <ion-card-header style="text-align: left;">
+      <ion-card-title>{{ data['nameCompany'] }}</ion-card-title>
+      <ion-card-subtitle>{{ data.typeCompany.name }}</ion-card-subtitle>
+      <ion-label>
+        <ion-chip *ngIf="data['isOnsit']" class="chip-padding">On sit</ion-chip>
+        <ion-chip *ngIf="data['isTakeaway']" class="chip-padding">Take away</ion-chip>
+      </ion-label>
+    </ion-card-header>  
+    
+    <ion-card-content class="ion-text-justify" >
+      {{ data.description | slice:0:250 }}{{data.description.length > 250 ? '...' : ''}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

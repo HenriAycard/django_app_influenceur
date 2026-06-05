@@ -1,5 +1,7 @@
 from .models import *
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, PrimaryKeyRelatedField, ValidationError, IntegerField
+import uuid
+from rest_framework import serializers
 
 #created by ionic django crud generator
 
@@ -16,7 +18,7 @@ class MethodField(SerializerMethodField):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'youtube', 'instagram', 'tiktok', 'is_influencer')
+        fields = ('id', 'firstname', 'lastname', 'youtube', 'instagram', 'tiktok', 'is_influencer', 'is_company', 'avatar')
 
 class AddressSerializer(ModelSerializer):
 
@@ -45,24 +47,38 @@ class imgCompanySerializer(ModelSerializer):
 
 class CompanySerializer(ModelSerializer):
     user = UserSerializer(many=False, read_only=True)
-    typeCompany = TypeCompanySerializer(many=False, read_only=True)
+    type_company = TypeCompanySerializer(many=False, read_only=True)
     imgCompany = imgCompanySerializer(many=True, read_only=True)
+
     class Meta:
         model = Company
-        fields = ('id', 'nameCompany', 'isTakeAway', 'isOnSit', 'description', 'typeCompany', 'imgCompany', 'user')
+        fields = ('id', 'name_company', 'is_takeaway', 'is_onsit', 'description', 'type_company', 'imgCompany', 'user')
 
 
 class CompanyDetailsSerializer(ModelSerializer):
     address = AddressSerializer(many=False, read_only=True)
-    typeCompany = TypeCompanySerializer(many=False, read_only=True)
+    type_company = TypeCompanySerializer(many=False, read_only=True)
+    type_company_id = PrimaryKeyRelatedField(
+        queryset=TypeCompany.objects.all(),
+        source='typeCompany',
+        write_only=True,
+    )
+    address_id = PrimaryKeyRelatedField(
+        queryset=Address.objects.all(),
+        source='address',
+        write_only=True,
+    )
     openings = OpeningSerializer(many=True)
     imgCompany = imgCompanySerializer(many=True, read_only=True)
+
     class Meta:
         model = Company
-        fields = ('id', 'nameCompany', 'isTakeAway', 'isOnSit', 'description', 'address', 'typeCompany', 'openings', 'imgCompany', 'isCompanyActif')
+        fields = ('id', 'name_company', 'is_takeaway', 'is_onsit', 'description', 'address', 'address_id', 'type_company', 'type_company_id', 'openings', 'imgCompany', 'is_actif', 'facebook', 'tiktok', 'instagram', 'youtube', 'twitter')
 
 
 class CompanyCreateSerializer(ModelSerializer):
+    user = PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True, required=False)
+
 
     class Meta:
         model = Company
@@ -82,7 +98,8 @@ class OfferSerializer(ModelSerializer):
 
 class ReservationCompanySerializer(ModelSerializer):
     imgCompany = imgCompanySerializer(many=True, read_only=True)
-    typeCompany = TypeCompanySerializer(many=False, read_only=True)
+    type_company = TypeCompanySerializer(many=False, read_only=True)
+
     class Meta:
         model = Company
         fields = '__all__'
@@ -95,17 +112,22 @@ class OfferCompanySerializer(ModelSerializer):
         fields = '__all__'
 
 class ReservationSerializer(ModelSerializer):
+    offer_id = PrimaryKeyRelatedField(
+        queryset=Offer.objects.all(), source="offer", write_only=True
+    )
+    offer = OfferCompanySerializer(many=False, read_only=True) # Keep for reading
+    user = UserSerializer(many=False, read_only=True)
+
     class Meta:
         model = Reservation
-        fields = '__all__'
-
+        fields = ('id', 'offer', 'offer_id', 'status', 'date_reservation', 'user')
 
 class InfluenceurReservationSerializer(ModelSerializer):
     offer = OfferCompanySerializer(many=False, read_only=True)
 
     class Meta:
         model = Reservation
-        fields = ('id', 'offer', 'status', 'dateReservation')
+        fields = ('id', 'offer', 'status', 'date_reservation')
 
 class BrandReservationSerializer(ModelSerializer):
     offer = OfferCompanySerializer(many=False, read_only=True)
@@ -113,4 +135,15 @@ class BrandReservationSerializer(ModelSerializer):
 
     class Meta:
         model = Reservation
-        fields = ('id', 'offer', 'status', 'dateReservation', 'user')
+        fields = ('id', 'offer', 'status', 'date_reservation', 'user')
+
+class FCMTokenSerializer(ModelSerializer):
+    class Meta:
+        model = FCMToken
+        fields = ['token']
+
+
+class NotificationSerializer(serializers.Serializer):
+    user_id = serializers.UUIDField()
+    title = serializers.CharField(max_length=255)
+    body = serializers.CharField(max_length=1000)

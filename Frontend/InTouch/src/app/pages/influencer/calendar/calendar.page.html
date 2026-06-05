@@ -16,17 +16,8 @@
           <ion-label label>Waiting for an answer</ion-label>
           <ion-label slot="end" class="no-margin">{{countWaiting}}</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">
-          <ion-item  *ngFor="let waiting of dataWaiting">
-            <ion-thumbnail slot="start">
-              <img src="{{waiting.offer.company.imgCompany[0].file }}" />
-            </ion-thumbnail>
-            <ion-label>
-              <h3 class="bold">{{ waiting.offer.company.nameCompany }}</h3>
-              <p>{{ waiting.offer.nameOffer }}</p>
-              <p class="blueColor">{{ waiting.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
-            </ion-label>
-          </ion-item>
+        <div slot="content">
+          <app-calendar-influencer [collaborations]="dataWaiting"></app-calendar-influencer>
         </div>
       </ion-accordion>
       <ion-accordion value="second">
@@ -35,17 +26,8 @@
           <ion-label>Last experiences</ion-label>
           <ion-label slot="end" class="no-margin">{{countLastExperiences}}</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">
-          <ion-item  *ngFor="let lastExper of dataLastExperiences">
-            <ion-thumbnail slot="start">
-              <img src="{{lastExper.offer.company.imgCompany[0].file }}" />
-            </ion-thumbnail>
-            <ion-label>
-              <h3 class="bold">{{ lastExper.offer.company.nameCompany }}</h3>
-              <p>{{ lastExper.offer.nameOffer }}</p>
-              <p class="blueColor">{{ lastExper.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
-            </ion-label>
-          </ion-item>
+        <div slot="content">
+          <app-calendar-influencer [collaborations]="dataLastExperiences"></app-calendar-influencer>
         </div>
       </ion-accordion>
       <ion-accordion value="third">
@@ -54,17 +36,8 @@
           <ion-label>Unsuccessful</ion-label>
           <ion-label slot="end" class="no-margin">{{countUnsuccessful}}</ion-label>
         </ion-item>
-        <div class="ion-padding" slot="content">
-          <ion-item  *ngFor="let unsuccess of dataUnsuccessful">
-            <ion-thumbnail slot="start">
-              <img src="{{unsuccess.offer.company.imgCompany[0].file }}" />
-            </ion-thumbnail>
-            <ion-label>
-              <h3 class="bold">{{ unsuccess.offer.company.nameCompany }}</h3>
-              <p>{{ unsuccess.offer.nameOffer }}</p>
-              <p class="blueColor">{{ unsuccess.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
-            </ion-label>
-          </ion-item>
+        <div slot="content">
+          <app-calendar-influencer [collaborations]="dataUnsuccessful"></app-calendar-influencer>
         </div>
       </ion-accordion>
     </ion-accordion-group>
@@ -78,16 +51,7 @@
       </ion-text>
     </p>
     <div slot="content">
-      <ion-item  *ngFor="let comingSoon of dataComingSoon">
-        <ion-thumbnail slot="start">
-          <img src="{{comingSoon.offer.company.imgCompany[0].file }}" />
-        </ion-thumbnail>
-        <ion-label>
-          <h3 class="bold">{{ comingSoon.offer.company.nameCompany }}</h3>
-          <p>{{ comingSoon.offer.nameOffer }}</p>
-          <p class="blueColor">{{ comingSoon.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
-        </ion-label>
-      </ion-item>
+      <app-calendar-influencer [collaborations]="dataComingSoon"></app-calendar-influencer>
     </div>
   </div>  
 

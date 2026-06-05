@@ -1,0 +1,54 @@
+<ion-card (click)="onCardDealClick()">
+    <ion-card-header>
+        <ion-card-title>{{ contract.name }}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+        <ion-list lines="none">
+            <ion-item>
+                <ion-text>
+                    <h3>Offer</h3>
+                    <p>{{contract.content}}</p>
+                </ion-text>
+            </ion-item>
+            <ion-item class="ion-padding-top">
+                <ion-text>
+                    <h3>Conditions</h3>
+                    <p>{{contract.conditions}}</p>
+                </ion-text>
+            </ion-item>
+        </ion-list>
+    </ion-card-content>
+</ion-card>
+
+<ion-modal [isOpen]="isModalOpen" [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]" handleBehavior="cycle"
+    (ionModalWillDismiss)="closeModal()">
+    <ng-template>
+        <div class="block">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-title>Actions</ion-title>
+                    <ion-buttons slot="end">
+                        <ion-button (click)="closeModal()">Close</ion-button>
+                    </ion-buttons>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-list lines="none">
+                    <ion-item button (click)="onView()">
+                        <ion-icon aria-hidden="true" name="eye-outline" slot="start"></ion-icon>
+                        <ion-label>View</ion-label>
+                    </ion-item>
+                    <ion-item button (click)="onEdit()">
+                        <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
+                        <ion-label>Edit</ion-label>
+                    </ion-item>
+                    <ion-item button (click)="onDelete()">
+                        <ion-icon aria-hidden="true" name="trash-outline" slot="start"></ion-icon>
+                        <ion-label>Delete</ion-label>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </div>
+    </ng-template>
+</ion-modal>

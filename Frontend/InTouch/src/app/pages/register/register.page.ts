@@ -91,8 +91,8 @@ export class RegisterPage {
     let params: UserParam = {
       "email": email,
       "password": password,
-      "first_name": firstName,
-      "last_name": lastName
+      "firstname": firstName,
+      "lastname": lastName
     }
     this.createAccount(params)
     

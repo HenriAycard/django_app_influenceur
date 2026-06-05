@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@angular/fire": "^19.0.0",
+    "@rx-angular/state": "^19.0.3",
+    "firebase": "^11.4.0"
+  }
+}

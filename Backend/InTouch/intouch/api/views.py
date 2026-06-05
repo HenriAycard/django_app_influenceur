@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
-from django.contrib.auth.models import User
 from django_filters import FilterSet, DateTimeFilter
 from django.contrib.postgres.search import SearchVector, SearchQuery
 
@@ -13,8 +12,13 @@ from rest_framework.response import Response
 
 from .models import *
 from .serializers import *
+from .permissions import IsCompanyOwner, IsRelatedToCompanyOwner, IsReservationParty
 
 import logging
+from uuid import UUID
+from firebase_admin import messaging
+
+logger = logging.getLogger(__name__)
 
 # Create your views here.
 
@@ -27,7 +31,7 @@ class UserListCreateView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
-    filterset_fields = ['password','last_login','is_superuser','id','email','first_name','last_name','is_active']
+    filterset_fields = ['password','last_login','is_superuser','id','email','firstname','lastname','is_active']
     swagger_schema = None
     pagination_class = None
          # Filter for connected user
@@ -54,34 +58,9 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     pagination_class = None
          # Filter for connected user
     def get_queryset(self):
-            user = self.request.user
-            queryset = User.objects.filter(pk=user.id)
-            return queryset
-
-'''
-class CompanyDetailView(generics.ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = CompanySerializer
-    def get_queryset(self):
         user = self.request.user
-        queryset = Company.objects.filter(user_id=user.id)
+        queryset = User.objects.filter(pk=user.id)
         return queryset
-
-class CompanyCreateView(generics.CreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = CompanyCreateSerializer
-
-    def create(self, request, *args, **kwargs):
-        request.data['user'] = str(self.request.user.id)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    
-    def perform_create(self, serializer):
-        serializer.save()
-'''
 
 class CompanyCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -92,22 +71,20 @@ class CompanyCreateView(generics.ListCreateAPIView):
         return CompanySerializer
 
     def create(self, request, *args, **kwargs):
-        request.data['user'] = str(self.request.user.id)
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)  # Validate properly
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(user=self.request.user)
 
     def get_queryset(self):
         user = self.request.user
         print(user)
 
         if user.is_influencer == 0:
-            queryset = Company.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, isCompanyActif=1)
+            queryset = Company.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, is_actif=1)
         else:
             queryset = Company.objects.all()
         return queryset
@@ -122,7 +99,7 @@ class CompanySearchView(generics.ListAPIView):
         query = "|".join(query.split(' ')) #joining the space separated words with | for OR condition
 
         search_query = SearchQuery(query, search_type='raw')
-        search_vector = SearchVector('nameCompany', weight='A') + SearchVector('description', weight='B') + SearchVector('address__city', weight='C')
+        search_vector = SearchVector('name_company', weight='A') + SearchVector('description', weight='B') + SearchVector('address__city', weight='C')
 
         brands = Company.objects.annotate(
             search=search_vector,
@@ -133,7 +110,7 @@ class CompanySearchView(generics.ListAPIView):
 
 
 class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsCompanyOwner]
     queryset = Company.objects.all()
     serializer_class = CompanyDetailsSerializer
     pagination_class = None
@@ -155,7 +132,7 @@ class AddressCreate(generics.CreateAPIView):
     serializer_class = AddressSerializer
 
 class AddressDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
 
@@ -165,7 +142,7 @@ class OpeningCreate(generics.CreateAPIView):
     serializer_class = OpeningSerializer
 
 class OpeningDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
     queryset = Opening.objects.all()
     serializer_class = OpeningSerializer
 
@@ -182,28 +159,24 @@ class OfferCreateView(generics.ListCreateAPIView):
         return queryset
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
 class ReservationFilter(FilterSet):
-    from_reservation = DateTimeFilter(field_name='dateReservation', lookup_expr='gte')
-    to_reservation = DateTimeFilter(field_name='dateReservation', lookup_expr='lte')
+    from_reservation = DateTimeFilter(field_name='date_reservation', lookup_expr='gte')
+    to_reservation = DateTimeFilter(field_name='date_reservation', lookup_expr='lte')
 
     class Meta:
-        model: Reservation
-        fields = ['status', 'dateReservation', 'user'] #, 'from_reservation', 'to_reservation']
+        model = Reservation
+        fields = ['status', 'date_reservation', 'user']
 
 class ReservationCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Reservation.objects.all()
-    #serializer_class = ReservationSerializer
     pagination_class = None
     swagger_schema = None
-    #filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    #filterset_fields = ['status', 'dateReservation', 'user',] # 'from_reservation', 'to_reservation']
-    #filterset_class = ReservationFilter
-    #ordering_fields = ('dateReservation')
+
     def get_serializer_class(self):
         if self.request.method == 'GET':
             if self.request.user.is_influencer:
@@ -212,77 +185,168 @@ class ReservationCreateView(generics.ListCreateAPIView):
                 return BrandReservationSerializer
         return ReservationSerializer
     
-
     def create(self, request, *args, **kwargs):
-        #request.data._mutable = True
-        request.data['user'] = str(self.request.user.id)
-        request.data['status'] = 0
-        #request.data._mutable = False
+        request.data['status'] = 0  # Default status
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)  # Validate properly
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        # Retrieve the user who made the reservation
+        user = self.request.user  # Assuming user is a field in the reservation model
+
+        # Get the FCMToken object for the user
+        try:
+            fcm_token_object = FCMToken.objects.get(user=user.id)
+            fcm_token = fcm_token_object.token
+        except FCMToken.DoesNotExist:
+            return Response({"error": f"FCM token not found for user {user.id}"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Prepare the notification message
+        message = messaging.Message(
+            notification=messaging.Notification(
+                title="Reservation Confirmed",
+                body="Your reservation has been successfully confirmed!",
+            ),
+            token=fcm_token,  # Send notification to the user's FCM token
+        )
+
+        # Send the notification to the user
+        try:
+            response = messaging.send(message)
+            print('Successfully sent message:', response)
+        except Exception as e:
+            print(f"Error sending notification: {e}")
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     def perform_create(self, serializer):
-        serializer.save()
+        serializer.save(user=self.request.user)
 
     def get_queryset(self):
         queryset = Reservation.objects.all()
         user = self.request.user
 
+        # Get query parameters only once
+        status_resa = self.request.query_params.get('status')
+        from_date_resa = self.request.query_params.get('from_date')
+        to_date_resa = self.request.query_params.get('to_date')
+
+        # Determine if the user is an influencer or not
         if user.is_influencer:
-            status_resa = self.request.query_params.get('status')
-            from_date_resa = self.request.query_params.get('from_date')
-            to_date_resa = self.request.query_params.get('to_date')
-
-            if status_resa:
-                if from_date_resa:
-                    queryset = Reservation.objects.filter(user=user.id, status=status_resa, dateReservation__gte=from_date_resa)
-                elif to_date_resa:
-                    queryset = Reservation.objects.filter(user=user.id, status=status_resa, dateReservation__lt=to_date_resa)
-                else:
-                    queryset = Reservation.objects.filter(user=user.id, status=status_resa)
+            filter_params = {'user': user.id}
         else:
-            status_resa = self.request.query_params.get('status')
-            from_date_resa = self.request.query_params.get('from_date')
-            to_date_resa = self.request.query_params.get('to_date')
-
-            if status_resa:
-                if from_date_resa:
-                    queryset = Reservation.objects.filter(offer__company__user_id=user.id, status=status_resa, dateReservation__gte=from_date_resa)
-                elif to_date_resa:
-                    queryset = Reservation.objects.filter(offer__company__user_id=user.id, status=status_resa, dateReservation__lt=to_date_resa)
-                else:
-                    queryset = Reservation.objects.filter(offer__company__user_id=user.id, status=status_resa)
+            filter_params = {'offer__company__user_id': user.id}
         
-        return queryset.order_by('dateReservation')
+        # Apply filters based on status and date range
+        if status_resa:
+            filter_params['status'] = status_resa
+        
+        if from_date_resa:
+            filter_params['date_reservation__gte'] = from_date_resa
 
+        if to_date_resa:
+            filter_params['date_reservation__lt'] = to_date_resa
+
+        # Apply filters and return the result
+        return queryset.filter(**filter_params).order_by('date_reservation')
 
 class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsReservationParty]
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
 
-class imgCompanyView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    parser_class = (MultiPartParser, FormParser)
-    serializer_class = imgCompanySerializer
 
-    def post(self, request, *args, **kwargs):
-      print("=== DANS POST METHOD")
-      print(request.data)
-      print(request)
-      print(request.POST)
-      file_serializer = imgCompanySerializer(data=request.data)
-      if file_serializer.is_valid():
-          file_serializer.save()
-          return Response(file_serializer.data, status=status.HTTP_201_CREATED)
-      else:
-          print(file_serializer.errors)
-          return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#class imgCompanyView(APIView):
+#    permission_classes = [permissions.IsAuthenticated]
+#    parser_class = (MultiPartParser, FormParser)
+#    serializer_class = imgCompanySerializer
+
+#    def post(self, request, *args, **kwargs):
+#      file_serializer = imgCompanySerializer(data=request.data)
+#      if file_serializer.is_valid():
+#          file_serializer.save()
+#          return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+#      else:
+#          print(file_serializer.errors)
+#          return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ImgCompanyListCreateView(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = imgCompanySerializer
+    queryset = imgCompany.objects.all()
+
+class ImgCompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
+    parser_classes = (MultiPartParser, FormParser)
+    serializer_class = imgCompanySerializer
+    queryset = imgCompany.objects.all()
 
 class TypeCompanyView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     queryset = TypeCompany.objects.all()
     serializer_class = TypeCompanySerializer
+
+class SaveFCMTokenView(generics.UpdateAPIView):
+    serializer_class = FCMTokenSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        token = request.data.get('token')
+
+        if not token:
+            return Response({'error': 'Token is required'}, status=400)
+        
+        # Check if the token already exists
+        existing_token = FCMToken.objects.filter(token=token).first()
+        if existing_token:
+            # Delete the old token if it exists
+            existing_token.delete()
+
+        # Store or update the FCM token for the logged-in user
+        obj, created = FCMToken.objects.update_or_create(
+            user=request.user, defaults={'token': token}
+        )
+
+        return Response({'message': 'FCM Token saved successfully', 'created': created})
+
+
+@api_view(['POST'])
+def send_push_notification(request):
+    # Serialize and validate the incoming data
+    serializer = NotificationSerializer(data=request.data)
+    if serializer.is_valid():
+        user_id = serializer.validated_data['user_id']
+        title = serializer.validated_data['title']
+        body = serializer.validated_data['body']
+
+        try:
+            # Convert user_id to UUID to query the database            
+            # Retrieve the FCM token for the user
+            fcm_token = FCMToken.objects.get(user_id=user_id).token
+            if not fcm_token:
+                return Response({"error": "FCM token not found for user"}, status=status.HTTP_404_NOT_FOUND)
+
+            # Create the message payload
+            message = messaging.Message(
+                notification=messaging.Notification(
+                    title=title,
+                    body=body
+                ),
+                token=fcm_token
+            )
+
+            # Send the message using Firebase Admin SDK
+            response = messaging.send(message)
+
+            # Return response
+            return Response(
+                {"status": "Notification sent", "response": response},
+                status=status.HTTP_200_OK
+            )
+
+        except FCMToken.DoesNotExist:
+            return Response({"error": "FCM token not found for user"}, status=status.HTTP_404_NOT_FOUND)
+        except ValueError:
+            return Response({"error": "Invalid UUID format for user_id"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

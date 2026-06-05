@@ -1,0 +1,44 @@
+ion-card-content ion-item {
+    --padding-start: 0;
+}
+
+.tags-label {
+    display: block;
+    /* Makes the label take a new line */
+}
+
+.tags-text {
+    white-space: pre-line;
+    /* Preserve any line breaks in contract.tags */
+    word-wrap: break-word;
+    /* Ensures long words break properly */
+}
+
+.inline-label {
+    display: inline-block;
+    /* Keeps the label on the same line */
+    width: auto;
+}
+
+.inline-text {
+    display: inline-block;
+    /* Keeps text on the same line as the label when short */
+    white-space: normal;
+    /* Allows the text to wrap */
+    word-wrap: break-word;
+    /* Ensures that long words break properly */
+    word-break: break-word;
+    /* Ensures that the text breaks at the right places */
+}
+
+ h2 {
+    font-weight: bold;
+}
+
+ p {
+    margin: 0;
+    white-space: pre-line;
+    /* Wrap long text */
+    word-wrap: break-word;
+    text-align: justify;
+}

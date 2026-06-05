@@ -13,26 +13,33 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from datetime import timedelta
 import environ
+import os
+from dotenv import load_dotenv
+import firebase_admin
+from firebase_admin import credentials
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 #sys.path.insert(0, os.path.join(BASE_DIR, 'api'))  # your 'apps' dir containing django apps
-
+load_dotenv()
 
 env = environ.Env()
 environ.Env.read_env()
 
-ENVIRONMENT_NAME = env("ENVIRONMENT_NAME", default="")
-SECRET_KEY = env("DJANGO_SECRET_KEY")
-
+ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", default="")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+FIREBASE_CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH")
+cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
+firebase_admin.initialize_app(cred)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DJANGO_DEBUG")
+DEBUG = os.getenv("DJANGO_DEBUG")
 
-ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
@@ -46,7 +53,7 @@ SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 X_FRAME_OPTIONS = 'DENY'
-CORS_ORIGIN_ALLOW_ALL=True
+CORS_ALLOWED_ORIGINS = [o for o in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if o]
 
 # Application definition
 DJANGO_CORE_APPS = [
@@ -61,6 +68,9 @@ DJANGO_CORE_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'django_extensions',
+    'corsheaders',
+    'djoser',
+    'django_filters',
 ]
 
 LOCAL_APPS = [
@@ -79,6 +89,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'csp.middleware.CSPMiddleware',
+    'djangorestframework_camel_case.middleware.CamelCaseMiddleWare',
 ]
 
 ROOT_URLCONF = 'intouch.urls'
@@ -107,11 +118,11 @@ WSGI_APPLICATION = 'intouch.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("PG_DBNAME"),
-        "USER": env("PG_USERNAME"),
-        "PASSWORD": env("PG_PASSWORD"),
-        "HOST": env("PG_HOST"),
-        "PORT": env("PG_PORT"),
+        "NAME": os.getenv("PG_DBNAME"),
+        "USER": os.getenv("PG_USERNAME"),
+        "PASSWORD": os.getenv("PG_PASSWORD"),
+        "HOST": os.getenv("PG_HOST"),
+        "PORT": os.getenv("PG_PORT"),
     }
 }
 
@@ -154,7 +165,7 @@ STATIC_ROOT = "/var/www/intouch.ovh/static"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Actual directory user files go to
-MEDIA_ROOT = '/var/www/intouch.ovh/mediafiles'
+MEDIA_ROOT = '/var/www/intouch.ovh/mediafiles/media'
 # URL used to access the media
 MEDIA_URL = '/media/'
 
@@ -207,9 +218,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
     'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+        'djangorestframework_camel_case.render.CamelCaseJSONRenderer',
+        'djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer',
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'djangorestframework_camel_case.parser.CamelCaseFormParser',
+        'djangorestframework_camel_case.parser.CamelCaseMultiPartParser',
+        'djangorestframework_camel_case.parser.CamelCaseJSONParser',
     ),
     'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend','rest_framework.filters.OrderingFilter',)
 }
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB

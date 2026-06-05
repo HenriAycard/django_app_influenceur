@@ -1,19 +1,19 @@
 export interface Address {
     id: number;
-    address1: string;
-    address2: string;
-    address3: string;
+    addressPrincipal: string;
+    addressSecondary: string;
     city: string;
     state: string;
     country: string;
-    postalCode: string;
+    zipCode: string;
   }
   
 export interface AddressDto {
-    address1: string;
-    address2: string;
+    id?: number | undefined;
+    addressPrincipal: string;
+    addressSecondary: string;
     city: string;
     state: string;
     country: string;
-    postalCode: string;
+    zipCode: string;
 }

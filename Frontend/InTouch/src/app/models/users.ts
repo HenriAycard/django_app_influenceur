@@ -1,17 +1,19 @@
 export interface User {
     id: string;
-    first_name: string
-    last_name: string
+    firstname: string
+    lastname: string
     username: string
+    avatar: null | string
     instagram: string
     tiktok: string
     youtube: string
-    is_influencer: boolean
+    isInfluencer: boolean
+    isCompany: boolean
 }
 
 export interface UserParam {
-    first_name: string
-    last_name: string
+    firstname: string
+    lastname: string
     email: string
     password: string
 }

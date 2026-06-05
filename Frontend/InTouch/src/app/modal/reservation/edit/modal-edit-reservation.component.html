@@ -1,0 +1,28 @@
+<div class="ion-page">
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+            </ion-buttons>
+            <ion-title>Edit reservation</ion-title>
+            <ion-buttons slot="end">
+            <ion-button (click)="confirm()">Accept</ion-button>
+            </ion-buttons>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content>
+        <ion-list>
+            <ion-item>
+                <ion-datetime [min]="minDate" [max]="maxDate" [(ngModel)]="dateReservation" ngDefaultControl style="margin-top: 25px; margin-bottom: 25px;">
+                    <span slot="title">Select a new reservation date</span>
+                </ion-datetime>
+            </ion-item>
+
+            <ion-item>
+                <ion-checkbox justify="space-between" (ionChange)="onTermsChanged($event)" [checked]="canDismiss">
+                    Do you accept the terms and conditions?
+                </ion-checkbox>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</div>

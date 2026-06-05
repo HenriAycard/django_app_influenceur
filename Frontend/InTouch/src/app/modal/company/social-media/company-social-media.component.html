@@ -1,0 +1,34 @@
+<form [formGroup]="socialMediaForm">
+    <h1 class="heading item-text-wrap">📱 What are your social media ?</h1>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Instagram</legend>
+            <ion-input formControlName="instagram" type="text" [clearInput]="true"></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Tiktok</legend>
+            <ion-input formControlName="tiktok" type="text" [clearInput]="true"></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Youtube</legend>
+            <ion-input formControlName="youtube" type="text" [clearInput]="true"></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Twitter</legend>
+            <ion-input formControlName="twitter" type="text" [clearInput]="true"></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Facebook</legend>
+            <ion-input formControlName="facebook" type="text" [clearInput]="true"></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-button class="ion-padding-vertical" expand="block" shape="round" type="submit" (click)="onSubmit()">Next</ion-button>
+</form>

@@ -1,10 +1,10 @@
-import { AddressDto } from "./address"
+import { Address, AddressDto } from "./address"
 import { OpeningDate } from "./opening-date"
 import { User } from "./users"
 
 export interface typeCompanyDto {
     id: number
-    nameTypeCompany: string
+    name: string
 }
 
 export interface ImgCompanyDto {
@@ -17,8 +17,8 @@ export interface ImgCompanyDto {
 export interface CompanySortDto {
     id: number;
     nameCompany: string;
-    isTakeAway: boolean;
-    isOnSit: boolean;
+    isTakeaway: boolean;
+    isOnsit: boolean;
     description: string;
     user: User;
     typeCompany: typeCompanyDto;
@@ -28,8 +28,8 @@ export interface CompanySortDto {
 export interface CompanyBooking {
     id: number
     nameCompany: string
-    isTakeAway: boolean
-    isOnSit: boolean
+    isTakeaway: boolean
+    isOnsit: boolean
     description: string
     address: number
     typeCompany: typeCompanyDto
@@ -39,11 +39,68 @@ export interface CompanyBooking {
 export interface Company {
     id: number
     nameCompany: string
-    isTakeAway: boolean
-    isOnSit: boolean
+    isTakeaway: boolean
+    isOnsit: boolean
     description: string
-    address: AddressDto
+    instagram: string | null
+    youtube: string | null
+    tiktok: string | null
+    facebook: string | null
+    twitter: string | null
+    address: Address
     typeCompany: typeCompanyDto
     openings: OpeningDate[]
     imgCompany: ImgCompanyDto[]
-  }
+}
+
+export interface CompanyCreateDto {
+    id?: number
+    nameCompany: string;
+    isTakeaway: boolean;
+    isOnsit: boolean;
+    description: string;
+    address: number;
+    typeCompany: number;
+    instagram: string | null
+    youtube: string | null
+    tiktok: string | null
+    facebook: string | null
+    twitter: string | null
+}
+
+export interface CompanyUpdateDto {
+    id: number
+    nameCompany: string;
+    isTakeaway: boolean;
+    isOnsit: boolean;
+    description: string;
+    addressId?: number;
+    typeCompanyId: number;
+    instagram: string | null
+    youtube: string | null
+    tiktok: string | null
+    facebook: string | null
+    twitter: string | null
+}
+
+export interface CompanyMainDto {
+    id: number;
+    nameCompany: string;
+    isTakeaway: boolean;
+    isOnsit: boolean;
+    typeCompany: typeCompanyDto | null;
+}
+
+export interface CompanyQueryParams {
+    id: number;
+    nameCompany: string;
+    refresh?: number;
+}
+
+export interface SocialMedia {
+    instagram: string | null
+    youtube: string | null
+    tiktok: string | null
+    facebook: string | null
+    twitter: string | null
+}

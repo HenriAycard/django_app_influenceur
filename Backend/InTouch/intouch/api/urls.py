@@ -7,11 +7,12 @@ router = DefaultRouter()
 
 urlpatterns = [
     path('users/', UserListCreateView.as_view(), name='users_list'),
-    path('user/<uuid:pk>/',  UserDetailView.as_view(), name='user_detail'),
+    path('user/<uuid:pk>',  UserDetailView.as_view(), name='user_detail'),
     path('company/', CompanyCreateView.as_view(), name='company_create'),
     path('company/search/', CompanySearchView.as_view(), name='company_search'),
     path('company/<int:pk>', CompanyDetail.as_view(), name='company_detail'),
-    path('imgCompany/', imgCompanyView.as_view(), name='imgCompany_create'),
+    path('imgCompany/', ImgCompanyListCreateView.as_view(), name='imgCompany_create'),
+    path('imgCompany/<int:pk>', ImgCompanyRetrieveUpdateDestroyView.as_view(), name='imgCompany_detail'),
     path('address/', AddressCreate.as_view(), name='address_list'),
     path('address/<int:pk>', AddressDetail.as_view(), name='address_detail'),
     path('opening/', OpeningCreate.as_view(), name='opening_list'),
@@ -21,5 +22,7 @@ urlpatterns = [
     path('reservation/', ReservationCreateView.as_view(), name='reservation_list'),
     path('reservation/<int:pk>', ReservationDetail.as_view(), name='reservation_detail'),
     path('typeCompany/', TypeCompanyView.as_view(), name='typeCompany_list'),
+    path('save-fcm-token/', SaveFCMTokenView.as_view(), name='save_fcm_token'),
+    path('send-notification', send_push_notification, name='send_push_notification'),
     path('', include(router.urls))
 ]

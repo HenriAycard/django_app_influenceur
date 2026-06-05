@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Edit Contract</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <app-contract-form
+        [contractEdit]="dealInput"
+        (contract)="update($event)"
+        *ngIf="isLoad">
+    </app-contract-form>
+</ion-content>

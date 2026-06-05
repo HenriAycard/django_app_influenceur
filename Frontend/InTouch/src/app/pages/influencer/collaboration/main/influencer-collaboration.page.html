@@ -1,0 +1,18 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/influencer/calendar"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Collaboration</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+    <div *ngIf="isLoad">
+        <app-booking-view [reservation]="reservation"></app-booking-view>
+  
+        <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()" *ngIf="(reservation.status === 0 || reservation.status === 1) && !isPastReservation()">
+            <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
+        </ion-button>
+    </div>
+  </ion-content>

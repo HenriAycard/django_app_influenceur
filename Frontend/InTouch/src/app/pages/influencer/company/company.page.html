@@ -1,0 +1,29 @@
+<div class="ion-page">
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab slot="fixed" vertical="top" horizontal="start">
+    <ion-fab-button (click)="goBack()" fill="clear" style="--background: rgba(0, 0, 0, 0.5);">
+      <ion-icon name="close" color="light"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  
+  <div *ngIf="loaded">
+    <app-company-main-view [company]="company"></app-company-main-view>
+    
+    <ion-item lines="none">
+      <h1 class="header-font header-margin">Collaborations</h1>
+    </ion-item>
+
+    <app-contract-card [contract]="deal" (actionPerformed)="onActionPerformed($event)"
+            *ngFor="let deal of deals"></app-contract-card>
+    
+  </div>
+  <div *ngIf="!loaded">
+    <app-company-skeleton></app-company-skeleton>
+  </div>
+</ion-content>
+</div>

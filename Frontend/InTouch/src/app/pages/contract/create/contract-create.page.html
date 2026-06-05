@@ -1,0 +1,16 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Create contract</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <app-contract-form
+        [contractEdit]="dealInput"
+        (contract)="save($event)">
+    </app-contract-form>
+
+</ion-content>

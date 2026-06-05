@@ -21,9 +21,9 @@ export class AlertControllerService {
   */
   async showError(text: string) {
     let alert = await this.alertCtrl.create({
-        header: 'Erreur',
-        message: text,
-        buttons: ['OK']
+      header: 'Erreur',
+      message: text,
+      buttons: ['OK']
     });
     return await alert.present();
   }
@@ -37,32 +37,32 @@ export class AlertControllerService {
   */
   async showMessage(title: string, message: string) {
     let alert = await this.alertCtrl.create({
-        header: title,
-        message: message,
-        buttons: ['OK']
+      header: title,
+      message: message,
+      buttons: ['OK']
     });
     return await alert.present();
   }
 
   async showLoading() {
-    if (!this.isShowingLoader){
-      this.isShowingLoader=true
-        this.loader = await this.loadingController.create({
-          message:  'Merci de patienter',
-          duration: 2000
-        });
-        return await this.loader.present();
+    if (!this.isShowingLoader) {
+      this.isShowingLoader = true
+      this.loader = await this.loadingController.create({
+        message: 'Loading, please wait',
+        duration: 2000
+      });
+      return await this.loader.present();
     }
   }
 
   async stopLoading() {
-    if (this.loader){
+    if (this.loader) {
       this.loader.dismiss()
-      this.loader =  null
-      this.isShowingLoader=false
+      this.loader = null
+      this.isShowingLoader = false
     }
   }
-  
+
   async showLoadingMessage(message: string) {
     this.loader = await this.loadingController.create({
       message: message,
@@ -71,15 +71,15 @@ export class AlertControllerService {
   }
 
   async loadingPresent() {
-      const loading = await this.loadingController.create({
-          message:  'Loading, please wait',
-          duration: 2000
-      });
-      return await loading.present();
+    const loading = await this.loadingController.create({
+      message: 'Loading, please wait',
+      duration: 2000
+    });
+    return await loading.present();
   }
 
-  async loadingDismiss(){
-      this.loadingController.dismiss();
+  async loadingDismiss() {
+    this.loadingController.dismiss();
   }
 
 }

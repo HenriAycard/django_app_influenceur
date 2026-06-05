@@ -1,0 +1,25 @@
+import { HttpHeaders, HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import * as Constant from '../../config/constant';
+import { Observable, retry } from "rxjs";
+import { Address, AddressDto } from "src/app/models/address";
+import { ApiService } from "./api.service";
+import { GetTokenResult } from "@capacitor-firebase/messaging";
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApiFCMTokenService extends ApiService {
+
+  urlBase: string = Constant.domainConfig.virtual_host + Constant.domainConfig.apiPrefix + "/save-fcm-token/";
+  urlBase2: string = Constant.domainConfig.virtual_host + Constant.domainConfig.apiPrefix + "/send-notification";
+
+  sendTokenToBackend(token: string): Observable<any> {
+    return this.http.patch(this.urlBase, { token })
+  }
+
+  sendNotification(user: string): Observable<any> {
+    return this.http.post(this.urlBase2, { user_id: user, title: "test", body: "body" })
+  }
+  
+}

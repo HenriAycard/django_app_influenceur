@@ -2,18 +2,22 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
+from datetime import datetime, date
+import os
 import uuid
 
 # function
 def upload_to(instance, filename):
-    return 'images/{filename}'.format(filename=filename)
+    now = datetime.now()
+    base, ext = os.path.splitext(filename)
+    return f'images/{now.year}/{now.month}/{now.day}/{base}{ext}'
 
 # Create your models here.
 class UserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
     """
-    def _create_user(self, email, first_name, last_name, password, **extra_fields):
+    def _create_user(self, email, firstname, lastname, password, **extra_fields):
         """
         Create and save a User with the given email, first name, last name and password.
         """
@@ -21,16 +25,16 @@ class UserManager(BaseUserManager):
             raise ValueError("User must have an email")
         if not password:
             raise ValueError("User must have a password")
-        if not first_name:
+        if not firstname:
             raise ValueError("User must have a first name")
-        if not last_name:
+        if not lastname:
             raise ValueError("User must have a last name")
         
         user = self.model(
             email=self.normalize_email(email)
         )
-        user.first_name = first_name
-        user.last_name = last_name
+        user.firstname = firstname
+        user.lastname = lastname
         user.set_password(password) # change password to hash
 
         user.is_active = False
@@ -40,14 +44,14 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, first_name, last_name, password=None, **extra_fields):
+    def create_user(self, email, firstname, lastname, password=None, **extra_fields):
         extra_fields.setdefault('is_superuser', False)
         if extra_fields.get('is_superuser') is not False:
             raise ValueError('User must have is_superuser=False.')
         
-        return self._create_user(email, first_name, last_name, password, **extra_fields)
+        return self._create_user(email, firstname, lastname, password, **extra_fields)
 
-    def create_superuser(self, email, first_name, last_name, password, **extra_fields):
+    def create_superuser(self, email, firstname, lastname, password, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
 
@@ -56,14 +60,14 @@ class UserManager(BaseUserManager):
         if extra_fields.get('is_staff') is not True:
             raise ValueError(('Superuser must have is_staff=True.'))
 
-        return self._create_user(email, first_name, last_name, password, **extra_fields)
+        return self._create_user(email, firstname, lastname, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     
     email = models.EmailField(unique=True, db_index=True, max_length=255)
-    first_name = models.CharField("person's first name", max_length=100, blank=True)
-    last_name = models.CharField("person's last name", max_length=100, blank=True)
+    firstname = models.CharField(max_length=100, blank=True)
+    lastname = models.CharField(max_length=100, blank=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
 
     facebook = models.CharField(max_length=100, null=True, blank=True)
@@ -81,7 +85,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     avatar = models.ImageField(upload_to=upload_to, null=True, blank=True)
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['firstname', 'lastname']
 
     objects = UserManager()
 
@@ -91,16 +95,16 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         '''
-        Returns the first_name plus the last_name, with a space in between.
+        Returns the firstname plus the last_name, with a space in between.
         '''
-        full_name = '%s %s' % (self.first_name, self.last_name)
+        full_name = '%s %s' % (self.firstname, self.lastname)
         return full_name.strip()
 
     def get_short_name(self):
         '''
         Returns the short name for the user.
         '''
-        return self.first_name
+        return self.firstname
     
     @property
     def is_staff(self):
@@ -108,56 +112,81 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class TypeCompany(models.Model):
     id = models.BigAutoField(primary_key=True)
-    nameTypeCompany = models.CharField(max_length=100, blank=True)
+    name = models.CharField(max_length=100, blank=True)
 
 class Address(models.Model):
     id = models.BigAutoField(primary_key=True)
-    address1 = models.CharField(('address1'), max_length=250, blank=True)
-    address2 = models.CharField(('address2'), max_length=50, blank=True, null=True)
-    city = models.CharField(('city'), max_length=30, blank=True)
-    state = models.CharField(('state'), max_length=30, blank=True, null=True)
-    country = models.CharField(('country'), max_length=30, blank=True)
-    postalCode = models.CharField(('postalCode'),max_length=5, blank=True)
+    address_principal = models.CharField(max_length=250, blank=True)
+    address_secondary = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=30, blank=True)
+    state = models.CharField(max_length=30, blank=True, null=True)
+    country = models.CharField(max_length=30, blank=True)
+    zip_code = models.CharField(max_length=5, blank=True)
 
 class Company(models.Model):
     id = models.BigAutoField(primary_key=True)
-    isCompanyActif = models.BooleanField(('isCompanyActif'), default=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    nameCompany = models.CharField(('nameCompany'), max_length=50, blank=True)
-    isTakeAway = models.BooleanField(('isTakeAway'), default=False)
-    isOnSit = models.BooleanField(('isOnSit'), default=False)
-    description = models.CharField(('description'), max_length=800, blank=True)
-    typeCompany = models.ForeignKey(TypeCompany, on_delete=models.CASCADE, null=True)
+    name_company = models.CharField(max_length=50, blank=True)
+    is_takeaway = models.BooleanField(default=False)
+    is_onsit = models.BooleanField(default=False)
+    description = models.CharField(max_length=800, blank=True)
+    facebook = models.CharField(max_length=100, null=True, blank=True)
+    instagram = models.CharField(max_length=100, null=True, blank=True)
+    tiktok = models.CharField(max_length=100, null=True, blank=True)
+    twitter = models.CharField(max_length=100, null=True, blank=True)
+    youtube = models.CharField(max_length=100, null=True, blank=True)
+    type_company = models.ForeignKey(TypeCompany, on_delete=models.CASCADE, null=True)
     address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
+    is_actif = models.BooleanField(default=True)
 
 class imgCompany(models.Model):
     id = models.BigAutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='imgCompany')
     file = models.ImageField(upload_to=upload_to, blank=True, null=True)
-    isPrincipal = models.BooleanField(('isPrincipal'), default=False)
+    is_principal = models.BooleanField(default=False)
 
 class Opening(models.Model):
     id = models.BigAutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='openings', null=True)
-    fromDate = models.CharField(('fromDate'), max_length=15, blank=True)
-    toDate = models.CharField(('toDate'), max_length=15, blank=True)
-    startDate = models.CharField(('startDate'), max_length=15, blank=True)
-    endDate = models.CharField(('endDate'), max_length=15, blank=True)
-    pauseStart = models.CharField(('pauseStart'), max_length=15, blank=True)
-    pauseEnd = models.CharField(('pauseEnd'), max_length=15, blank=True)
-    isOpen = models.BooleanField(('isOpen'), default=False)
-    isOrderBy = models.IntegerField(('isOrderBy'),blank=True)
+    id_day = models.IntegerField(blank=True)
+    day = models.CharField(max_length=15, blank=True)
+    open_hour = models.CharField(max_length=15, blank=True)
+    close_hour = models.CharField(max_length=15, blank=True)
+    break_start = models.CharField(max_length=15, blank=True)
+    break_end = models.CharField(max_length=15, blank=True)
+    is_open = models.BooleanField(default=False)
+    
 
 class Offer(models.Model):
     id = models.BigAutoField(primary_key=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
-    nameOffer = models.CharField(('nameOffer'), max_length=100, blank=True)
-    descriptionOffer = models.CharField(('descriptionOffer'), max_length=500, blank=True)
-    descriptionCondition = models.CharField(('descriptionCondition'), max_length=500, blank=True)
+    name = models.CharField(max_length=100)
+    start_date = models.DateField(default=date.today)
+    end_date = models.DateField(null=True, blank=True)
+    content = models.TextField(max_length=1000)
+    conditions = models.TextField(max_length=1000)
+    quantity = models.PositiveIntegerField(null=True, blank=True)
+    tags = models.CharField(max_length=100)
+    publishing_deadline = models.PositiveIntegerField(null=True, blank=True)
+    contact_approver = models.CharField(max_length=100, null=True, blank=True)
+    payment_amount = models.DecimalField(max_digits=18, decimal_places=2, null=True, blank=True)
+    payment_terms = models.TextField(null=True, blank=True)
+    cancellation_policy = models.TextField(max_length=1000, null=True, blank=True)
+    special_instructions = models.TextField(max_length=1000, null=True, blank=True)
+    exclusivity_duration = models.PositiveIntegerField(null=True, blank=True)
+    restricted_competitors = models.CharField(max_length=200, null=True, blank=True)
+    scope_exclusivity = models.TextField(max_length=500, null=True, blank=True)
+    exclusivity_type = models.CharField(max_length=50, null=True, blank=True)
+    exclusivity_specification = models.TextField(max_length=500, null=True, blank=True)
 
 class Reservation(models.Model):
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.IntegerField(('status'),blank=True)
-    dateReservation = models.DateTimeField(('dateReservation'), null=True)
+    status = models.IntegerField(blank=True)
+    date_reservation = models.DateTimeField(null=True)
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
+
+class FCMToken(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    token = models.CharField(max_length=255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)

@@ -4,7 +4,9 @@ import { LoginParam, TokenResponse, User, UserParam } from '../models/users';
 import { TokenManagerService } from './token-manager.service';
 import { ApiAuthService } from './api/api-auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { company, influencer, Role, unknow, UserRole } from '../models/role';
+import { GetTokenResult } from '@capacitor-firebase/messaging';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +36,7 @@ export class AuthService {
 
   redirection() {
     if (this.user) {
-      if (this.user.is_influencer) {
+      if (this.user.isInfluencer) {
         console.log("Redirect the user to /influencer")
         this.router.navigate(['/influencer'])
       } else {
@@ -108,18 +110,35 @@ export class AuthService {
     return this.tokenManager.isTokenSave() && this.isAuthenticated.getValue() === true
   }
 
+  getCurrentUserProfile(): UserRole {
+    if (!this.isAuth() || !this.user) {
+      return unknow;
+    }
+  
+    if (this.user.isInfluencer) {
+      return influencer;
+    }
+  
+    if (this.user.isCompany) {
+      return company;
+    }
+
+    return unknow;
+  }
 }
 
 function createUser(values: any) : User {
   return {
       id: values.id,
-      first_name: values.first_name,
-      last_name: values.last_name,
+      firstname: values.firstname,
+      lastname: values.lastname,
       username: values.username,
       instagram: values.instagram,
       tiktok: values.tiktok,
       youtube: values.youtube,
-      is_influencer: values.is_influencer 
+      isInfluencer: values.isInfluencer,
+      isCompany: values.isCompany,
+      avatar: null
   }
 }
 

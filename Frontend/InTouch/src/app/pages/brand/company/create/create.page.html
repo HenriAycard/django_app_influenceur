@@ -1,0 +1,69 @@
+<ion-content [fullscreen]="true">
+  <div class="ion-padding-horizontal">
+    <ion-item lines="none" style="--padding-start: 0">
+      <ion-button slot="start" size="large" color="white" (click)="previous()" *ngIf="isIndiceNotMinMax()" style="--box-shadow: none">
+        <ion-icon name="chevron-back-outline" slot="start" size="large" color="dark"></ion-icon>
+      </ion-button>
+      <ion-button slot="end" size="large" color="white" (click)="back()" style="--padding-end: 0; --box-shadow: none">
+        <ion-icon name="close-outline" slot="end" size="large" color="dark"></ion-icon>
+      </ion-button>
+      
+    </ion-item>
+    
+    <ion-progress-bar [value]="progress"></ion-progress-bar>
+
+    <div *ngIf="step === steps[0]">
+      <app-company-main
+        [companyEdit]="companyMainData" 
+        (companyData)="nextCompanyMain($event)">
+      </app-company-main>
+    </div>
+
+    <div *ngIf="step === steps[1]">
+      <app-company-description
+        [descriptionEdit]="companyDescription"
+        (description)="nextDescription($event)">
+      </app-company-description>
+    </div>
+
+    <div *ngIf="step === steps[2]">
+      <app-company-social-media
+        [socialMediaEdit]="companySocialMedia"
+        (socialMedia)="nextSocialMedia($event)">
+      </app-company-social-media>
+    </div>
+
+    <div *ngIf="step === steps[3]">
+      <app-company-address
+        [addressEdit]="companyAddress"
+        (address)="nextAddress($event)">
+      </app-company-address>
+    </div>
+
+    <div *ngIf="step === steps[4]">
+      <app-company-opening-day
+        [openingDayEdit]="companyOpeningDay"
+        (openingDay)="nextOpeningDay($event)">
+      </app-company-opening-day>
+    </div>
+
+    <div *ngIf="step === steps[5]">
+      <app-company-picture
+        [pictureEdit]="companyImgSrc"
+        (dataFile)="nextPicture($event)">
+      </app-company-picture>
+    </div>
+
+    <div *ngIf="step === steps[6]">
+      <h1 class="heading item-text-wrap">💾 Do you want to save your company ?</h1>
+      <ion-row class="ion-padding">
+        <ion-col size="6">
+          <ion-button expand="full" color="primary" shape="round" (click)="submit()">Yes</ion-button>
+        </ion-col>
+        <ion-col size="6">
+          <ion-button expand="full" color="danger" shape="round" (click)="back()">No</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
+</ion-content>

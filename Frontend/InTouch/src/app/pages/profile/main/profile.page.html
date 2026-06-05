@@ -1,0 +1,65 @@
+<ion-content class="ion-padding">
+  <!-- Header Section -->
+  <div class="ion-padding-top logo-section logo">
+      <ion-icon name="flash"></ion-icon>
+      <span>InTouch</span>
+  </div>
+
+  <div *ngIf="user">
+    <div class="profile-header">
+      <div class="profile-pic-container" (click)="chooseOrTakePicture()">
+        <img *ngIf="!user.avatar" src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="Profile Picture" class="profile-pic" />
+        <img *ngIf="user.avatar" [src]="user.avatar" alt="Profile Picture" class="profile-pic" />
+        <ion-icon name="pencil" class="edit-icon"></ion-icon>
+      </div>
+      <h2>{{ user.firstname }} {{ user.lastname }}</h2>
+      <p class="title" *ngIf="user.isInfluencer">Influencer</p>
+      <p class="title" *ngIf="!user.isInfluencer">Brand</p>
+      <div class="social-info">
+        <div *ngIf="user.instagram" class="social-item">
+          <ion-icon name="logo-instagram"></ion-icon>
+          <span>{{ user.instagram }}</span>
+        </div>
+        <div *ngIf="user.tiktok" class="social-item">
+          <ion-icon name="logo-tiktok"></ion-icon>
+          <span>{{ user.tiktok }}</span>
+        </div>
+        <div *ngIf="user.youtube" class="social-item">
+          <ion-icon name="logo-youtube"></ion-icon>
+          <span>{{ user.youtube }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <hr class="divider"/>
+
+    <ion-list>
+      <ion-item lines="none" [routerLink]="['edit']"><ion-icon slot="start" name="person-outline"></ion-icon><ion-label>Edit Profile</ion-label></ion-item>
+      <ion-item lines="none"><ion-icon slot="start" name="notifications-outline"></ion-icon><ion-label>Notifications</ion-label></ion-item>
+      <ion-item lines="none"><ion-icon slot="start" name="lock-closed-outline"></ion-icon><ion-label>Security</ion-label></ion-item>
+      <ion-item lines="none" (click)="openSupportEmail()">
+        <ion-icon slot="start" name="help-circle-outline"></ion-icon>
+        <ion-label>Help</ion-label>
+      </ion-item>
+      <ion-item class="logout" lines="none" (click)="showLogoutModal()">
+        <ion-icon slot="start" name="log-out-outline" color="danger"></ion-icon>
+        <ion-label color="danger">Logout</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <ion-modal [isOpen]="isLogoutModalOpen" [initialBreakpoint]="0.30" [breakpoints]="[0, 0.30]" handleBehavior="cycle" (ionModalWillDismiss)="isLogoutModalOpen = false">
+    <ng-template>
+          <ion-header>
+              <ion-toolbar>
+                  <ion-title color="danger">Logout</ion-title>
+              </ion-toolbar>
+          </ion-header>
+          <ion-content class="logout-modal">
+            <h3>Are you sure you want to log out?</h3>
+            <ion-button (click)="logout()" class="ion-padding-horizontal">Yes, Logout</ion-button>
+            <ion-button color="light" (click)="isLogoutModalOpen = false"  class="ion-padding-horizontal">Cancel</ion-button>
+          </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

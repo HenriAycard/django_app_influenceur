@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonButton, IonItem, ReactiveFormsModule, IonInput],
+  imports: [IonContent, CommonModule, FormsModule, IonButton, IonItem, ReactiveFormsModule, IonInput],
 })
 export class LoginPage implements OnInit {
 

@@ -17,15 +17,12 @@ export const routes: Routes = [
   },
   {
     path: 'influencer',
-    loadChildren: () => import('./pages/influencer/influencer-tabs/influencer-tabs.routes').then( m => m.INFLUENCER_TABS_ROUTES),
+    loadChildren: () => import('./pages/influencer/influencer-tabs.routes').then( m => m.INFLUENCER_TABS_ROUTES),
     canActivate: [authGuard]
   },
   {
-    path: 'view-search',
-    loadComponent: () => import('./pages/influencer/explorer/view-search/view-search.page').then( m => m.ViewSearchPage)
-  },
-  {
-    path: 'experience',
-    loadComponent: () => import('./pages/influencer/explorer/experience/experience.page').then( m => m.ExperiencePage)
+    path: 'brand',
+    loadChildren: () => import('./pages/brand/brand.routes').then( m => m.BRAND_TABS_ROUTES),
+    canActivate: [authGuard]
   },
 ];

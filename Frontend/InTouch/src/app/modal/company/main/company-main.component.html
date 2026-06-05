@@ -1,0 +1,35 @@
+<form [formGroup]="mainForm">
+    <h1 class="heading item-text-wrap">👋 Welcome! What's your company name ?</h1>
+    <ion-item lines="none" class="ion-item">
+        <fieldset class="input-item">
+            <legend>Brand name</legend>
+            <ion-input formControlName="nameCompany" type="text" placeholder="name" [clearInput]="true"></ion-input>
+        </fieldset>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <legend>On sit</legend>
+        <ion-toggle slot="end" [checked]="true" formControlName="isOnsit"></ion-toggle>
+    </ion-item>
+    <ion-item lines="none" class="ion-item">
+        <legend>Take away</legend>
+        <ion-toggle slot="end" [checked]="false" formControlName="isTakeaway"></ion-toggle>
+    </ion-item>
+    <ion-list>
+        <ion-item>
+            <ion-select 
+                label="Category" 
+                label-placement="floating" 
+                fill="outline" 
+                [compareWith]="compareWith"
+                placeholder="Select one category"
+                formControlName="typeCompany"
+                (ionChange)="handleChange($event)">
+                <ion-select-option *ngFor="let type of typeCompany" [value]="type">{{ type.name
+                    }}</ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+
+    <ion-button class="ion-padding-vertical" shape="round" (click)="addNewCompany()" expand="block"
+        [disabled]="!mainForm.valid">Next</ion-button>
+</form>
