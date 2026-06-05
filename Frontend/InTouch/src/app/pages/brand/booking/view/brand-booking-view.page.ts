@@ -3,11 +3,11 @@ import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow,  IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, closeCircle, create, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube } from 'ionicons/icons';
+import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
-import { ApiApplicationService } from 'src/app/features/applications/api-application.service';
+import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
-import { ReloadService } from 'src/app/services/reload.service';
 import { ModalEditReservationComponent } from 'src/app/modal/reservation/edit/modal-edit-reservation.component';
 import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
 
@@ -30,10 +30,9 @@ export class BrandBookingViewPage implements OnInit {
   public presentingElement: Element | null = null;
   public readonly ApplicationStatus = ApplicationStatus;
 
-  private apiApplication = inject(ApiApplicationService)
+  private store = inject(ApplicationStore)
   private toastService = inject(ToastService)
   private router = inject(Router)
-  private reloadService = inject(ReloadService);
 
   constructor() {
     addIcons({ logoInstagram, logoTiktok, logoYoutube, logoTwitter, logoFacebook, checkmarkCircle, create, closeCircle });
@@ -44,7 +43,7 @@ export class BrandBookingViewPage implements OnInit {
   }
 
   public loadData(): void {
-    this.apiApplication.findApplication(this.bookingId).subscribe({
+    this.store.findOne(this.bookingId).subscribe({
       next: (value: Application) => {
         this.reservation = value
         this.isLoad = true
@@ -53,17 +52,19 @@ export class BrandBookingViewPage implements OnInit {
   }
 
   public acceptReservation() {
-    const reservation: Partial<Application> = {
-      status: ApplicationStatus.Accepted
-    };
-    this.updateReservationStatus(reservation, 'Reservation confirmed!', `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is confirmed`)
+    this.applyStatusChange(
+      this.store.accept(this.reservation.id),
+      'Reservation confirmed!',
+      `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is confirmed`
+    )
   }
 
   public cancelReservation() {
-    const reservation: Partial<Application> = {
-      status: ApplicationStatus.Declined
-    };
-    this.updateReservationStatus(reservation, 'Reservation cancelled!', `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is cancelled`)
+    this.applyStatusChange(
+      this.store.decline(this.reservation.id),
+      'Reservation cancelled!',
+      `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is cancelled`
+    )
   }
 
   async editReservation() {
@@ -73,25 +74,21 @@ export class BrandBookingViewPage implements OnInit {
   async onDismissChange(isUpdated: boolean) {
     await this.modal.dismiss()
     if (isUpdated) {
-      this.loadData()
-      this.router.navigate(['brand/calendar']).then(() => {
-        this.reloadService.triggerReload();
-      });
+      // The calendar reloads itself on ionViewWillEnter once we navigate to it.
+      this.router.navigate(['brand/calendar']);
     }
   }
 
-  private updateReservationStatus(reservation: Partial<Application>, successTitle: string, successMessage: string) {
-    this.apiApplication.updateApplication(this.reservation.id, reservation).subscribe({
-      next: (value: any) => {
+  private applyStatusChange(change$: Observable<unknown>, successTitle: string, successMessage: string) {
+    change$.subscribe({
+      next: () => {
         this.toastService.toastSuccess(successTitle, successMessage);
       },
-      error: (err: any) => {
+      error: () => {
         this.toastService.toastDanger('Error', 'Sorry, we are having some issues at the moment. Please try again later.');
       },
       complete: () => {
-        this.router.navigate(['brand/calendar']).then(() => {
-          this.reloadService.triggerReload();
-        });
+        this.router.navigate(['brand/calendar']);
       }
     });
   }
@@ -99,7 +96,6 @@ export class BrandBookingViewPage implements OnInit {
   public isPastReservation(): boolean {
     if (this.reservation.status === ApplicationStatus.Accepted) {
       const today = new Date();
-      //const reservationDate = new Date(reservation.dateReservation);
       return this.reservation.dateReservation < today; // true if date is before today
     }
     return false;
