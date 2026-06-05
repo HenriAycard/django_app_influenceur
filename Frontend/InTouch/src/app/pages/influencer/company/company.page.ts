@@ -9,14 +9,14 @@ import { close, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTw
 import { combineLatest } from 'rxjs';
 import { CompanyMainViewPage } from 'src/app/modal/company/main-view/company-main-view.component';
 import { CompanySkeletonComponent } from 'src/app/modal/company/skeleton/company-skeleton.component';
-import { ContractCardComponent } from 'src/app/modal/contract/card/contract-card.component';
+import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-card.component';
 import { ModalNewReservationComponent } from 'src/app/modal/reservation/new/modal-new-reservation.component';
 import { Company } from 'src/app/models/company';
-import { Deal } from 'src/app/models/deal';
+import { Offer } from 'src/app/shared/models';
 import { ActionPayload } from 'src/app/models/role';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
-import { ApiDealService } from 'src/app/services/api/api-deal.service';
+import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 import { NavigationHistoryService } from 'src/app/services/navigation-history.service';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -25,13 +25,13 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './company.page.html',
   styleUrls: ['./company.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, IonItem, IonIcon, IonFab, IonFabButton, IonRefresher, IonRefresherContent, ReactiveFormsModule, CompanyMainViewPage, CompanySkeletonComponent, ContractCardComponent]
+  imports: [IonContent, CommonModule, FormsModule, IonItem, IonIcon, IonFab, IonFabButton, IonRefresher, IonRefresherContent, ReactiveFormsModule, CompanyMainViewPage, CompanySkeletonComponent, OfferCardComponent]
 })
 export class CompanyPage implements OnInit {
   @Input() companyId!: number;
 
   public company!: Company
-  public deals!: Deal[];
+  public deals!: Offer[];
   public canDismiss = false;
   public isModalOpen = false;
   public resaDay: any;
@@ -45,7 +45,7 @@ export class CompanyPage implements OnInit {
   private alertCtrlService = inject(AlertControllerService);
   private toastService = inject(ToastService)
   private apiCompany = inject(ApiCompanyService)
-  private apiDeal = inject(ApiDealService)
+  private apiOffer = inject(ApiOfferService)
   private navHistoService = inject(NavigationHistoryService)
   private router = inject(Router)
   private navCtrl = inject(NavController)
@@ -67,13 +67,13 @@ export class CompanyPage implements OnInit {
 
     combineLatest([
       this.apiCompany.findCompanyById(this.companyId),
-      this.apiDeal.findDealByCompanyId(this.companyId)
+      this.apiOffer.findOffersByCompanyId(this.companyId)
     ]).subscribe({
       next: ([first, second]) => {
         this.company = first as Company
         this.company.openings.sort((a, b) => a.idDay - b.idDay);
 
-        this.deals = second as Deal[]
+        this.deals = second as Offer[]
         this.loaded = true
       },
       error: (err: HttpErrorResponse) => {
@@ -101,7 +101,7 @@ export class CompanyPage implements OnInit {
     }
   }
 
-  setOpen(deal: Deal) {
+  setOpen(deal: Offer) {
     if (deal.id) {
       this.idOffer = deal.id
       this.isModalOpen = true;

@@ -35,15 +35,15 @@ export const BRAND_TABS_ROUTES: Routes = [{
         },
         {
             path: 'company/:companyId/contract/create',
-            loadComponent: () => import('../contract/create/contract-create.page').then(m => m.ContractCreatePage)
+            loadComponent: () => import('../../features/offers/pages/offer-create/offer-create.page').then(m => m.OfferCreatePage)
         },
         {
             path: 'company/:companyId/contract/:contractId',
-            loadComponent: () => import('../contract/main/contract.page').then(m => m.ContractPage)
+            loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
         },
         {
             path: 'company/:companyId/contract/:contractId/edit',
-            loadComponent: () => import('../contract/edit/contract-edit.page').then(m => m.ContractEditPage)
+            loadComponent: () => import('../../features/offers/pages/offer-edit/offer-edit.page').then(m => m.OfferEditPage)
         },
         {
             path: 'booking/:bookingId',

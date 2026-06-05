@@ -19,7 +19,7 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
     },
     {
       path: 'home/search/company/:companyId/contract/:contractId',
-      loadComponent: () => import('../contract/main/contract.page').then(m => m.ContractPage)
+      loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
     },
     {
       path: 'calendar',
@@ -39,7 +39,7 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
     },
     {
       path: 'collaboration/:bookingId/contract/:contractId',
-      loadComponent: () => import('../contract/main/contract.page').then(m => m.ContractPage)
+      loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
     },
     {
       path: '',

@@ -1,27 +1,27 @@
 import { Component, inject, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { Deal } from 'src/app/models/deal';
+import { Offer } from 'src/app/shared/models';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
-import { ApiDealService } from 'src/app/services/api/api-deal.service';
+import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { IonContent, IonTitle, IonToolbar, IonBackButton, IonHeader, IonButtons } from '@ionic/angular/standalone';
 import { ReloadService } from 'src/app/services/reload.service';
-import { ContractFormComponent } from 'src/app/modal/contract/form/contract-form.component';
+import { OfferFormComponent } from 'src/app/features/offers/ui/offer-form/offer-form.component';
 
 @Component({
-    selector: 'app-contract-create',
-    templateUrl: './contract-create.page.html',
-    styleUrls: ['./contract-create.page.scss'],
+    selector: 'app-offer-create',
+    templateUrl: './offer-create.page.html',
+    styleUrls: ['./offer-create.page.scss'],
     standalone: true,
-    imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, ContractFormComponent]
+    imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, OfferFormComponent]
 })
-export class ContractCreatePage {
+export class OfferCreatePage {
     @Input() companyId!: number;
-    public dealInput!: Partial<Deal>;
+    public dealInput!: Partial<Offer>;
 
     private alertCtrlService = inject(AlertControllerService);
     private toastService = inject(ToastService);
-    private apiDeal = inject(ApiDealService);
+    private apiOffer = inject(ApiOfferService);
     private reloadService = inject(ReloadService);
 
     constructor(
@@ -30,26 +30,26 @@ export class ContractCreatePage {
             console.log("create new page")
     }
 
-    async save(deal: Partial<Deal>) {
+    async save(offer: Partial<Offer>) {
         this.alertCtrlService.showLoading()
 
-        let newDeal: Partial<Deal> = {
+        let newOffer: Partial<Offer> = {
             company: this.companyId,
-            ...deal
+            ...offer
         }
 
-        this.apiDeal.createDeal(newDeal).subscribe({
+        this.apiOffer.createOffer(newOffer).subscribe({
             next: (value: any) => {
                 this.toastService.toastSuccess(
-                    'New Contract !',
-                    'A new contract has been saved.'
+                    'New offer !',
+                    'A new offer has been saved.'
                 )
                 this.alertCtrlService.stopLoading()
             },
             error: (err: any) => {
                 this.toastService.toastDanger(
                     'We have a little problem',
-                    'Sorry your contract failed'
+                    'Sorry your offer failed'
                 )
                 this.alertCtrlService.stopLoading()
             },
