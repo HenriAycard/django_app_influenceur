@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, tap, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, catchError, firstValueFrom, map, of, tap } from 'rxjs';
 import { LoginParam, TokenResponse, User, UserParam } from '../models/users';
 import { TokenManagerService } from './token-manager.service';
 import { ApiAuthService } from './api/api-auth.service';
@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
 import { company, influencer, Role, unknow, UserRole } from '../models/role';
 import { GetTokenResult } from '@capacitor-firebase/messaging';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthService {
 
   private tokenManager = inject(TokenManagerService)
   private apiAuth = inject(ApiAuthService)
+  private toastService = inject(ToastService)
 
   constructor(
     private router:Router) { }
@@ -32,6 +34,34 @@ export class AuthService {
       console.log("The user is not authenticated - Disconnected")
       this.isAuthenticated.next(false);
     }
+  }
+
+  /**
+   * Resolves the authentication state from a persisted token BEFORE the router
+   * runs its first navigation. Wired through `provideAppInitializer` so route
+   * guards never see a half-initialized `isAuthenticated` on a hard refresh.
+   * Always resolves (never rejects) so app bootstrap is not blocked on errors.
+   */
+  restoreSession(): Promise<void> {
+    if (!this.tokenManager.isTokenSave()) {
+      this.isAuthenticated.next(false);
+      return Promise.resolve();
+    }
+
+    return firstValueFrom(
+      this.apiAuth.findUser().pipe(
+        tap((response: User) => {
+          this.user$.next(createUser(response));
+          this.isAuthenticated.next(true);
+        }),
+        map(() => void 0),
+        catchError(() => {
+          this.user$.next(null);
+          this.isAuthenticated.next(false);
+          return of(void 0);
+        })
+      )
+    );
   }
 
   redirection() {
@@ -76,6 +106,13 @@ export class AuthService {
         this.tokenManager.setRefreshToken(response.refresh)
 
         this.fetchCurrentUser()
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error(error)
+        const message = error.status === 401
+          ? 'Invalid email or password. Please try again.'
+          : 'Unable to sign in right now. Please try again later.'
+        this.toastService.toastDanger('Login failed', message)
       }
     })
   }
