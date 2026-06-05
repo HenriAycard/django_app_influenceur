@@ -14,30 +14,30 @@
         <ion-item slot="header" color="light">
           <ion-icon name="help-outline" slot="start"></ion-icon>
           <ion-label label>Waiting for an answer</ion-label>
-          <ion-label slot="end" class="no-margin">{{countWaiting}}</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.iWaitingCount() }}</ion-label>
         </ion-item>
         <div slot="content">
-          <app-calendar-influencer [collaborations]="dataWaiting"></app-calendar-influencer>
+          <app-calendar-influencer [collaborations]="store.iWaiting()"></app-calendar-influencer>
         </div>
       </ion-accordion>
       <ion-accordion value="second">
         <ion-item slot="header" color="light">
           <ion-icon name="time-outline" slot="start"></ion-icon>
           <ion-label>Last experiences</ion-label>
-          <ion-label slot="end" class="no-margin">{{countLastExperiences}}</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.iPastCount() }}</ion-label>
         </ion-item>
         <div slot="content">
-          <app-calendar-influencer [collaborations]="dataLastExperiences"></app-calendar-influencer>
+          <app-calendar-influencer [collaborations]="store.iPast()"></app-calendar-influencer>
         </div>
       </ion-accordion>
       <ion-accordion value="third">
         <ion-item slot="header" color="light">
           <ion-icon name="close-outline" slot="start"></ion-icon>
           <ion-label>Unsuccessful</ion-label>
-          <ion-label slot="end" class="no-margin">{{countUnsuccessful}}</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.iDeclinedCount() }}</ion-label>
         </ion-item>
         <div slot="content">
-          <app-calendar-influencer [collaborations]="dataUnsuccessful"></app-calendar-influencer>
+          <app-calendar-influencer [collaborations]="store.iDeclined()"></app-calendar-influencer>
         </div>
       </ion-accordion>
     </ion-accordion-group>
@@ -47,11 +47,11 @@
     </ion-text>
     <p>
       <ion-text>
-        {{countComingSoon}} experience to come
+        {{ store.iComingSoonCount() }} experience to come
       </ion-text>
     </p>
     <div slot="content">
-      <app-calendar-influencer [collaborations]="dataComingSoon"></app-calendar-influencer>
+      <app-calendar-influencer [collaborations]="store.iComingSoon()"></app-calendar-influencer>
     </div>
   </div>  
 

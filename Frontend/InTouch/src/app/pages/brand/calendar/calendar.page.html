@@ -22,10 +22,10 @@
         <ion-item slot="header" color="light">
           <ion-icon name="help-outline" slot="start"></ion-icon>
           <ion-label label>Waiting your answer</ion-label>
-          <ion-label slot="end" class="no-margin">{{countWaiting}}</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.bWaitingCount() }}</ion-label>
         </ion-item>
         <div slot="content">
-          <app-calendar-company [collaborations]="dataWaiting"></app-calendar-company>
+          <app-calendar-company [collaborations]="store.bWaiting()"></app-calendar-company>
         </div>
       </ion-accordion>
 
@@ -33,10 +33,10 @@
         <ion-item slot="header" color="light">
           <ion-icon name="time-outline" slot="start"></ion-icon>
           <ion-label>Last experiences</ion-label>
-          <ion-label slot="end" class="no-margin">{{countLastExperiences}}</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.bPastCount() }}</ion-label>
         </ion-item>
         <div slot="content">
-          <app-calendar-company [collaborations]="dataLastExperiences"></app-calendar-company>
+          <app-calendar-company [collaborations]="store.bPast()"></app-calendar-company>
         </div>
       </ion-accordion>
 
@@ -44,10 +44,10 @@
         <ion-item slot="header" color="light">
           <ion-icon name="close-outline" slot="start"></ion-icon>
           <ion-label>Rejected</ion-label>
-          <ion-label slot="end" class="no-margin">{{countUnsuccessful}}</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.bDeclinedCount() }}</ion-label>
         </ion-item>
         <div slot="content">
-          <app-calendar-company [collaborations]="dataUnsuccessful"></app-calendar-company>
+          <app-calendar-company [collaborations]="store.bDeclined()"></app-calendar-company>
         </div>
       </ion-accordion>
     </ion-accordion-group>
@@ -57,12 +57,12 @@
     </ion-text>
     <p>
       <ion-text class="ion-padding">
-        {{countComingSoon}} experience(s) to come
+        {{ store.bComingSoonCount() }} experience(s) to come
       </ion-text>
     </p>
 
   <ion-grid color="light">
-    <ion-row *ngFor="let comingSoon of dataComingSoon">
+    <ion-row *ngFor="let comingSoon of store.bComingSoonByDate()">
       <!-- Date Column -->
       <ion-col size="2" class="date-col">
         <p class="day">{{ comingSoon.date | date:'EEE' }}</p>
