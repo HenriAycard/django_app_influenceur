@@ -48,7 +48,12 @@ export class TokenManagerService {
     localStorage.removeItem(key);
   }
 
+  /**
+   * Clears only the auth tokens. Must NOT wipe the whole origin (localStorage.clear),
+   * which would drop unrelated app/user preferences on logout or token refresh.
+   */
   clear(): void {
-    localStorage.clear();
+    this.removeItem(this.ACCESS);
+    this.removeItem(this.REFRESH);
   }
 }

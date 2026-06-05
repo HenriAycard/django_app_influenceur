@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import * as Constant from '../../config/constant';
 import { Observable } from 'rxjs/internal/Observable';
 import { BookingBrand, BookingCreateParam } from 'src/app/models/booking';
-import { retry } from 'rxjs';
 import { ApiService } from './api.service';
 
 
@@ -45,13 +44,13 @@ export class ApiBookingService extends ApiService {
 
     public createBooking(reservation: BookingCreateParam) {
         var bodyJson: string = JSON.stringify(reservation)
-        return this.http.post(this.urlBase, bodyJson, this.options).pipe(retry(3))
+        return this.http.post(this.urlBase, bodyJson, this.options)
     }
 
     public updateBooking(id: number, reservation: Partial<BookingBrand>) {
         const url = `${this.urlBase}${id}`;
         var bodyJson: string = JSON.stringify(reservation)
-        return this.http.patch(url, bodyJson, this.options).pipe(retry(3))
+        return this.http.patch(url, bodyJson, this.options)
     }
 
 }

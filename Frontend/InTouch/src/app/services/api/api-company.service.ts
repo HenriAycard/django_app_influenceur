@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import * as Constant from '../../config/constant';
 import { Observable } from 'rxjs/internal/Observable';
 import { Company, CompanyCreateDto, CompanySortDto, CompanyUpdateDto } from 'src/app/models/company';
-import { retry } from 'rxjs';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -28,11 +27,11 @@ export class ApiCompanyService extends ApiService {
 
   public create(company: CompanyCreateDto) : Observable<Company>{
     var bodyJson: string = JSON.stringify(company)
-    return this.http.post<Company>(this.urlBase, bodyJson,this.options).pipe(retry(3));
+    return this.http.post<Company>(this.urlBase, bodyJson,this.options);
   }
 
   public update(id: number, company: Partial<CompanyUpdateDto>) : Observable<Company> {
-    const url = `${this.urlBase}${id}`;    
-    return this.http.patch<Company>(url, company, this.options).pipe(retry(3));
+    const url = `${this.urlBase}${id}`;
+    return this.http.patch<Company>(url, company, this.options);
   }
 }

@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as Constant from '../../config/constant';
-import { Observable, retry } from "rxjs";
+import { Observable } from "rxjs";
 import { Address, AddressDto } from "src/app/models/address";
 import { ApiService } from "./api.service";
 import { GetTokenResult } from "@capacitor-firebase/messaging";

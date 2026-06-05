@@ -26,7 +26,12 @@ export class LoginPage implements OnInit {
     public router:Router,
     public alertController:AlertController) { }
 
-    ngOnInit() { 
+    ngOnInit() {
+      // Session is already restored at bootstrap; if the user is authenticated,
+      // send them straight to their home instead of showing the login screen.
+      if (this.authService.isAuth()) {
+        this.authService.redirection();
+      }
     }
 
     // convenience getter for easy access to form fields

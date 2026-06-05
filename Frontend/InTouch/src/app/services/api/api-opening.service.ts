@@ -1,7 +1,7 @@
 import { HttpHeaders, HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as Constant from '../../config/constant';
-import { Observable, retry } from "rxjs";
+import { Observable } from "rxjs";
 import { OpeningDate } from "src/app/models/opening-date";
 import { ApiService } from "./api.service";
 
@@ -14,12 +14,12 @@ import { ApiService } from "./api.service";
 
     public create(opening: OpeningDate) : Observable<OpeningDate>{
         var bodyJson: string = JSON.stringify(opening)
-        return this.http.post<OpeningDate>(this.urlBase, bodyJson,this.options).pipe(retry(3));
+        return this.http.post<OpeningDate>(this.urlBase, bodyJson,this.options);
     }
 
     public update(id: number, opening: Partial<OpeningDate>) : Observable<OpeningDate> {
       const url = `${this.urlBase}${id}`;
-      return this.http.patch<OpeningDate>(url, opening, this.options).pipe(retry(3))
+      return this.http.patch<OpeningDate>(url, opening, this.options)
     }
 
 }

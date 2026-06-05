@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
-import { AuthService } from './services/auth.service';
 import { ApiFCMTokenService } from './services/api/api-fcm-token.service';
 import { getToken, onMessage, getMessaging } from 'firebase/messaging';
 import { initializeApp, getApps } from 'firebase/app';
@@ -15,7 +14,6 @@ import { environment } from 'src/environments/environment';
 export class AppComponent {
   constructor(
     private platform: Platform,
-    private authService: AuthService,
     private apiFcmToken: ApiFCMTokenService,
   ) {
     // Initialize Firebase
@@ -26,8 +24,9 @@ export class AppComponent {
   }
 
   initializeApp(messaging: any) {
+    // Session is restored by provideAppInitializer (see main.ts) before routing,
+    // so we only need to initialize push notifications here.
     this.platform.ready().then(() => {
-      this.authService.fetchCurrentUser()
       this.initFirebase(messaging)
     })
   }
@@ -53,8 +52,6 @@ export class AppComponent {
             console.log('Notification received:', payload);
             alert(`${payload.notification?.title}: ${payload.notification?.body}`);
           });
-
-          this.apiFcmToken.sendNotification("ffdd4a75-21e8-433d-b519-63bd9144181e").subscribe()
         }
       });
     } catch (error) {
