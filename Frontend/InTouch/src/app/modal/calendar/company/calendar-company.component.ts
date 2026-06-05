@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, Input } from "@angular/core";
 import { IonThumbnail, IonLabel, NavController, IonItem } from "@ionic/angular/standalone";
-import { BookingBrand } from "src/app/models/booking";
+import { Application } from "src/app/shared/models";
 import { Location } from '@angular/common';
 
 @Component({
@@ -12,12 +12,12 @@ import { Location } from '@angular/common';
     imports: [CommonModule, IonLabel, IonThumbnail, IonItem]
 })
 export class CalendarCompanyComponent {
-    @Input() collaborations!: BookingBrand[];
+    @Input() collaborations!: Application[];
 
     private navCtrl = inject(NavController)
     private location = inject(Location)
 
-    public displayInfo(info: BookingBrand) {
+    public displayInfo(info: Application) {
         this.location.replaceState('/brand/calendar')
         this.navCtrl.navigateForward(['/brand/booking/', info.id])
       }

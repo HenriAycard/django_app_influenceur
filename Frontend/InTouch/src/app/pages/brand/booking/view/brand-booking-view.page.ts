@@ -3,8 +3,8 @@ import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow,  IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, closeCircle, create, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube } from 'ionicons/icons';
-import { BookingBrand } from 'src/app/models/booking';
-import { ApiBookingService } from 'src/app/services/api/api-booking.service';
+import { Application, ApplicationStatus } from 'src/app/shared/models';
+import { ApiApplicationService } from 'src/app/features/applications/api-application.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
 import { ReloadService } from 'src/app/services/reload.service';
@@ -24,12 +24,13 @@ export class BrandBookingViewPage implements OnInit {
   @Input() bookingId!: number;
   @ViewChild(IonModal) modal!: IonModal;
 
-  public reservation: BookingBrand = {} as BookingBrand
+  public reservation: Application = {} as Application
   public isLoad: boolean = false
   public isModalOpen = false;
   public presentingElement: Element | null = null;
+  public readonly ApplicationStatus = ApplicationStatus;
 
-  private apiBooking = inject(ApiBookingService)
+  private apiApplication = inject(ApiApplicationService)
   private toastService = inject(ToastService)
   private router = inject(Router)
   private reloadService = inject(ReloadService);
@@ -43,8 +44,8 @@ export class BrandBookingViewPage implements OnInit {
   }
 
   public loadData(): void {
-    this.apiBooking.findBooking(this.bookingId).subscribe({
-      next: (value: BookingBrand) => {
+    this.apiApplication.findApplication(this.bookingId).subscribe({
+      next: (value: Application) => {
         this.reservation = value
         this.isLoad = true
       }
@@ -52,15 +53,15 @@ export class BrandBookingViewPage implements OnInit {
   }
 
   public acceptReservation() {
-    const reservation: Partial<BookingBrand> = {
-      status: 1
+    const reservation: Partial<Application> = {
+      status: ApplicationStatus.Accepted
     };
     this.updateReservationStatus(reservation, 'Reservation confirmed!', `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is confirmed`)
   }
 
   public cancelReservation() {
-    const reservation: Partial<BookingBrand> = {
-      status: 2
+    const reservation: Partial<Application> = {
+      status: ApplicationStatus.Declined
     };
     this.updateReservationStatus(reservation, 'Reservation cancelled!', `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is cancelled`)
   }
@@ -79,8 +80,8 @@ export class BrandBookingViewPage implements OnInit {
     }
   }
 
-  private updateReservationStatus(reservation: Partial<BookingBrand>, successTitle: string, successMessage: string) {
-    this.apiBooking.updateBooking(this.reservation.id, reservation).subscribe({
+  private updateReservationStatus(reservation: Partial<Application>, successTitle: string, successMessage: string) {
+    this.apiApplication.updateApplication(this.reservation.id, reservation).subscribe({
       next: (value: any) => {
         this.toastService.toastSuccess(successTitle, successMessage);
       },
@@ -96,7 +97,7 @@ export class BrandBookingViewPage implements OnInit {
   }
 
   public isPastReservation(): boolean {
-    if (this.reservation.status === 1) {
+    if (this.reservation.status === ApplicationStatus.Accepted) {
       const today = new Date();
       //const reservationDate = new Date(reservation.dateReservation);
       return this.reservation.dateReservation < today; // true if date is before today

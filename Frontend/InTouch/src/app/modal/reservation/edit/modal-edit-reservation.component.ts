@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CheckboxCustomEvent, IonButton, IonButtons, IonCheckbox, IonContent, IonDatetime, IonHeader, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { AlertControllerService } from "../../../services/alert-controller.service";
 import { ToastService } from "../../../services/toast.service";
-import { BookingBrand } from "../../../models/booking";
-import { ApiBookingService } from "../../../services/api/api-booking.service";
+import { Application } from "src/app/shared/models";
+import { ApiApplicationService } from "src/app/features/applications/api-application.service";
 
 
 @Component({
@@ -17,7 +17,7 @@ import { ApiBookingService } from "../../../services/api/api-booking.service";
 })
 export class ModalEditReservationComponent implements OnInit {
 
-    @Input() reservation!: BookingBrand;
+    @Input() reservation!: Application;
     @Output() dismissChange = new EventEmitter<boolean>();
 
     public canDismiss = false;
@@ -28,7 +28,7 @@ export class ModalEditReservationComponent implements OnInit {
     public dateReservation: string = this.todayToString;
 
     private toastService = inject(ToastService)
-    private apiBooking = inject(ApiBookingService)
+    private apiApplication = inject(ApiApplicationService)
 
     ngOnInit(): void {
         // Calcul max date
@@ -64,11 +64,11 @@ export class ModalEditReservationComponent implements OnInit {
 
     private updateReservation() {
 
-        const params: Partial<BookingBrand> = {
+        const params: Partial<Application> = {
             dateReservation: new Date(this.dateReservation)
         };
 
-        this.apiBooking.updateBooking(this.reservation.id, params).subscribe({
+        this.apiApplication.updateApplication(this.reservation.id, params).subscribe({
             next: (value: any) => {
                 this.toastService.toastSuccess('New reservation !', 'A new reservation has been added to your calendar, please wait the brand confirm')
                 this.dismissChange.emit(true)

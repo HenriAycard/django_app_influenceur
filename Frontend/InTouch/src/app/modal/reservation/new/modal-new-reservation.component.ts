@@ -4,8 +4,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CheckboxCustomEvent, IonButton, IonButtons, IonCheckbox, IonContent, IonDatetime, IonHeader, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { AlertControllerService } from "../../../services/alert-controller.service";
 import { ToastService } from "../../../services/toast.service";
-import { BookingCreateParam } from "../../../models/booking";
-import { ApiBookingService } from "../../../services/api/api-booking.service";
+import { CreateApplicationDto } from "src/app/shared/models";
+import { ApiApplicationService } from "src/app/features/applications/api-application.service";
 
 
 @Component({
@@ -30,7 +30,7 @@ import { ApiBookingService } from "../../../services/api/api-booking.service";
     
 
     private alertCtrlService = inject(AlertControllerService);
-    private apiBooking = inject(ApiBookingService)
+    private apiApplication = inject(ApiApplicationService)
     private toastService = inject(ToastService)
 
     ngOnInit(): void {
@@ -46,12 +46,12 @@ import { ApiBookingService } from "../../../services/api/api-booking.service";
       console.log("New reservation on going ...")
       this.alertCtrlService.showLoading()
 
-      let newResa: BookingCreateParam = {
+      let newResa: CreateApplicationDto = {
         offerId: this.idOffer,
         dateReservation: this.dateReservation
       };
-  
-      this.apiBooking.createBooking(newResa).subscribe({
+
+      this.apiApplication.createApplication(newResa).subscribe({
         next: (value: any) => {
           this.toastService.toastSuccess(
             'New reservation !',

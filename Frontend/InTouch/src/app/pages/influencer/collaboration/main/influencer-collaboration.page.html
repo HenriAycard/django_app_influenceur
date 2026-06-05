@@ -11,7 +11,7 @@
     <div *ngIf="isLoad">
         <app-booking-view [reservation]="reservation"></app-booking-view>
   
-        <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()" *ngIf="(reservation.status === 0 || reservation.status === 1) && !isPastReservation()">
+        <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()" *ngIf="(reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()">
             <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
         </ion-button>
     </div>
