@@ -1,23 +1,4 @@
-import { CompanyBooking } from "./company";
-import { DealCompany } from "./deal";
-import { User } from "./users";
-
-export interface BookingStatus {
-    id: number;
-    offer: DealCompany;
-    status: number;
-    dateReservation: Date;
-}
-
-export interface BookingCreateParam {
-    offerId: number;
-    dateReservation: string;
-}
-
-export interface BookingBrand {
-    id: number;
-    offer: DealCompany;
-    status: number;
-    dateReservation: Date;
-    user: User;
-}
+// Moved to shared/models/booking.ts during the P1 architecture migration (Wave 0).
+// This re-export shim keeps existing imports ('src/app/models/booking') working.
+// Remove once all importers are repointed to 'shared/models'.
+export * from '../shared/models/booking';
