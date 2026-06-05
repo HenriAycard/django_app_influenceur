@@ -3,21 +3,20 @@ import { Component, EventEmitter, inject, Input, Output, ViewChild } from "@angu
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { createOutline, trashOutline, eyeOutline } from "ionicons/icons";
-import { HasRoleDirective } from "src/app/directive/has-role.directive";
-import { Deal } from "src/app/models/deal";
-import { ActionPayload, ActionType, Role } from "src/app/models/role";
+import { Offer } from "src/app/shared/models";
+import { ActionPayload, ActionType, Role } from "src/app/shared/models";
 import { AuthService } from "src/app/services/auth.service";
 
 
 @Component({
-    selector: 'app-contract-card',
-    templateUrl: './contract-card.component.html',
-    styleUrls: ['./contract-card.component.scss'],
+    selector: 'app-offer-card',
+    templateUrl: './offer-card.component.html',
+    styleUrls: ['./offer-card.component.scss'],
     standalone: true,
-    imports: [CommonModule, HasRoleDirective, IonCard, IonLabel, IonItem, IonIcon, IonContent, IonButtons, IonList, IonButton, IonTitle, IonToolbar, IonHeader, IonModal, IonCardContent, IonCardTitle, IonCardHeader, IonText]
+    imports: [CommonModule, IonCard, IonLabel, IonItem, IonIcon, IonContent, IonButtons, IonList, IonButton, IonTitle, IonToolbar, IonHeader, IonModal, IonCardContent, IonCardTitle, IonCardHeader, IonText]
 })
-export class ContractCardComponent {
-    @Input() contract!: Deal;
+export class OfferCardComponent {
+    @Input() contract!: Offer;
     @Output() actionPerformed: EventEmitter<ActionPayload<number>> = new EventEmitter();
     @ViewChild(IonModal) modal!: IonModal;
 

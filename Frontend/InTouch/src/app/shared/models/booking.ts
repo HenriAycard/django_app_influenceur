@@ -1,10 +1,10 @@
 import { CompanyBooking } from "./company";
-import { DealCompany } from "./deal";
+import { OfferWithVenue } from "./offer";
 import { User } from "./users";
 
 export interface BookingStatus {
     id: number;
-    offer: DealCompany;
+    offer: OfferWithVenue;
     status: number;
     dateReservation: Date;
 }
@@ -16,7 +16,7 @@ export interface BookingCreateParam {
 
 export interface BookingBrand {
     id: number;
-    offer: DealCompany;
+    offer: OfferWithVenue;
     status: number;
     dateReservation: Date;
     user: User;

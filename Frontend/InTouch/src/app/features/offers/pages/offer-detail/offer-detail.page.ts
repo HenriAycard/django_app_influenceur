@@ -3,22 +3,22 @@ import { Component, inject, Input, OnInit } from "@angular/core";
 import { IonicModule } from "@ionic/angular";
 import { IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar, NavController } from "@ionic/angular/standalone";
 import { HasRoleDirective } from "src/app/directive/has-role.directive";
-import { Deal } from "src/app/models/deal";
-import { ApiDealService } from "src/app/services/api/api-deal.service";
+import { Offer } from "src/app/shared/models";
+import { ApiOfferService } from "src/app/features/offers/api-offer.service";
 import { Location } from '@angular/common';
 import { ModalNewReservationComponent } from "src/app/modal/reservation/new/modal-new-reservation.component";
 
 
 @Component({
-    selector: 'app-contract',
-    templateUrl: './contract.page.html',
-    styleUrls: ['./contract.page.scss'],
+    selector: 'app-offer-detail',
+    templateUrl: './offer-detail.page.html',
+    styleUrls: ['./offer-detail.page.scss'],
     standalone: true,
     imports: [HasRoleDirective, CommonModule, IonText, IonLabel, IonItem, IonList, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonContent, IonTitle, IonBackButton, IonButtons, IonToolbar, IonHeader, ModalNewReservationComponent, IonModal, IonButton]
 })
-export class ContractPage implements OnInit {
+export class OfferDetailPage implements OnInit {
     @Input() contractId!: number;
-    public contract!: Deal;
+    public contract!: Offer;
     public isLoad: boolean = false;
 
     public noEndDate: boolean = true;
@@ -32,12 +32,12 @@ export class ContractPage implements OnInit {
     public isModalOpen = false;
     public presentingElement: Element | null = null;
 
-    private apiDeal = inject(ApiDealService);
+    private apiOffer = inject(ApiOfferService);
     private navCtrl = inject(NavController)
 
     ngOnInit(): void {
-        this.apiDeal.findDealById(this.contractId).subscribe({
-            next: (value: Deal) => {
+        this.apiOffer.findOfferById(this.contractId).subscribe({
+            next: (value: Offer) => {
                 this.contract = value
                 this.initCondition()
                 this.isLoad = true

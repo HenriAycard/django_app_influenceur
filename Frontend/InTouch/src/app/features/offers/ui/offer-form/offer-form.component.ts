@@ -5,20 +5,20 @@ import { RouterModule } from "@angular/router";
 import { IonContent, IonItem, IonTextarea, IonButton, IonInput, IonCol, IonTitle, IonGrid, IonRow, IonButtons, IonToolbar, IonHeader, IonBackButton, IonToggle, IonAccordion, IonAccordionGroup, IonDatetime, IonDatetimeButton, IonIcon, IonList, IonModal, IonSelect, IonSelectOption, IonToast } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { informationCircleOutline } from "ionicons/icons";
-import { Deal } from "src/app/models/deal";
+import { Offer } from "src/app/shared/models";
 
 
 @Component({
-    selector: 'app-contract-form',
-    templateUrl: './contract-form.component.html',
-    styleUrls: ['./contract-form.component.scss'],
+    selector: 'app-offer-form',
+    templateUrl: './offer-form.component.html',
+    styleUrls: ['./offer-form.component.scss'],
     standalone: true,
     imports: [RouterModule, ReactiveFormsModule, FormsModule, IonItem, IonTextarea, IonInput, IonCol, IonRow, IonButton, IonRow, IonCol, IonToggle, IonDatetime, IonList, CommonModule, IonDatetimeButton, IonModal, IonAccordionGroup, IonAccordion, IonSelectOption, IonSelect, IonIcon, IonToast]
 })
-export class ContractFormComponent implements OnInit {
+export class OfferFormComponent implements OnInit {
 
-    @Input() contractEdit!: Partial<Deal>;
-    @Output() contract = new EventEmitter<Partial<Deal>>();
+    @Input() contractEdit!: Partial<Offer>;
+    @Output() contract = new EventEmitter<Partial<Offer>>();
 
     public form: FormGroup;
     public today: Date = new Date()
@@ -133,11 +133,11 @@ export class ContractFormComponent implements OnInit {
             form.patchValue({ endDate: formattedDate });
         }
 
-        const deal: Partial<Deal> = {
+        const offer: Partial<Offer> = {
             ...form.value
         }
 
-        this.contract.emit(deal);
+        this.contract.emit(offer);
     }
 
     customCounterFormatter(inputLength: number, maxLength: number) {

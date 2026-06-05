@@ -37,8 +37,8 @@
                 contract</ion-button>
         </ion-item>
 
-        <app-contract-card [contract]="deal" (actionPerformed)="onActionPerformed($event)"
-            *ngFor="let deal of deals"></app-contract-card>
+        <app-offer-card [contract]="deal" (actionPerformed)="onActionPerformed($event)"
+            *ngFor="let deal of deals"></app-offer-card>
     </div>
 
     <div *ngIf="!loaded">

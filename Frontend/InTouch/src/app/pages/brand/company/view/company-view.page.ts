@@ -7,12 +7,12 @@ import { chevronDownCircle, close, closeOutline, createOutline, eyeOutline, loca
 import { combineLatest } from 'rxjs';
 import { CompanyMainViewPage } from 'src/app/modal/company/main-view/company-main-view.component';
 import { CompanySkeletonComponent } from 'src/app/modal/company/skeleton/company-skeleton.component';
-import { ContractCardComponent } from 'src/app/modal/contract/card/contract-card.component';
+import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-card.component';
 import { Company } from 'src/app/models/company';
-import { Deal } from 'src/app/models/deal';
+import { Offer } from 'src/app/shared/models';
 import { ActionPayload } from 'src/app/models/role';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
-import { ApiDealService } from 'src/app/services/api/api-deal.service';
+import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 import { ReloadService } from 'src/app/services/reload.service';
 
 
@@ -21,17 +21,17 @@ import { ReloadService } from 'src/app/services/reload.service';
     templateUrl: './company-view.page.html',
     styleUrls: ['./company-view.page.scss'],
     standalone: true,
-    imports: [IonContent, CommonModule, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, ContractCardComponent, IonButton, CompanyMainViewPage, CompanySkeletonComponent]
+    imports: [IonContent, CommonModule, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, CompanyMainViewPage, CompanySkeletonComponent]
 })
 export class CompanyViewPage implements OnInit {
   @Input() companyId!: number;
   
   public company: Company = {} as Company;
-  public deals: Deal[] = [];
+  public deals: Offer[] = [];
   public loaded : boolean = false;
 
   private apiCompany = inject(ApiCompanyService)
-  private apiDeal = inject(ApiDealService)
+  private apiOffer = inject(ApiOfferService)
   private reloadService = inject(ReloadService);
 
   constructor(
@@ -63,12 +63,12 @@ export class CompanyViewPage implements OnInit {
 
     combineLatest([
         this.apiCompany.findCompanyById(this.companyId),
-        this.apiDeal.findDealByCompanyId(this.companyId)
+        this.apiOffer.findOffersByCompanyId(this.companyId)
       ]).subscribe({
         next: ([company, deals]) => {
             this.company = company as Company
             this.company.openings.sort((a, b) => a.idDay - b.idDay);
-            this.deals = deals as Deal[];
+            this.deals = deals as Offer[];
             this.loaded = true
         },
         complete: () => {
@@ -92,12 +92,12 @@ export class CompanyViewPage implements OnInit {
     } else if (action === 'edit') {
       this.router.navigate(['contract', data, 'edit'], { relativeTo: this.route })
     } else if (action === 'delete') {
-      this.deleteDeal(data);
+      this.deleteOffer(data);
     }
   }
 
-  deleteDeal(id: number) {
-    this.apiDeal.deleteDeal(id).subscribe({
+  deleteOffer(id: number) {
+    this.apiOffer.deleteOffer(id).subscribe({
       complete: () => {
           this.reloadData();
       }

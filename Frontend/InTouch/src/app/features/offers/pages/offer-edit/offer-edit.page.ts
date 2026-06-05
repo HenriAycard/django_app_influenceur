@@ -3,29 +3,29 @@ import { Component, inject, Input, OnInit } from "@angular/core";
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { IonContent, IonLabel, IonItem, IonTextarea, IonButton, IonInput, IonCol, IonTitle, IonGrid, IonRow, IonButtons, IonToolbar, IonHeader, IonBackButton } from "@ionic/angular/standalone";
-import { ContractFormComponent } from "src/app/modal/contract/form/contract-form.component";
-import { Deal } from "src/app/models/deal";
+import { OfferFormComponent } from "src/app/features/offers/ui/offer-form/offer-form.component";
+import { Offer } from "src/app/shared/models";
 import { AlertControllerService } from "src/app/services/alert-controller.service";
-import { ApiDealService } from "src/app/services/api/api-deal.service";
+import { ApiOfferService } from "src/app/features/offers/api-offer.service";
 import { ReloadService } from "src/app/services/reload.service";
 import { ToastService } from "src/app/services/toast.service";
 
 @Component({
-    selector: 'app-contract-edit',
-    templateUrl: './contract-edit.page.html',
-    styleUrls: ['./contract-edit.page.scss'],
+    selector: 'app-offer-edit',
+    templateUrl: './offer-edit.page.html',
+    styleUrls: ['./offer-edit.page.scss'],
     standalone: true,
-    imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, ContractFormComponent, CommonModule]
+    imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, OfferFormComponent, CommonModule]
 })
-export class ContractEditPage implements OnInit {
+export class OfferEditPage implements OnInit {
     @Input() contractId!: number;
-    public dealInput!: Partial<Deal>;
+    public dealInput!: Partial<Offer>;
     public isLoad: boolean = false;
 
 
     private alertCtrlService = inject(AlertControllerService);
     private toastService = inject(ToastService);
-    private apiDeal = inject(ApiDealService);
+    private apiOffer = inject(ApiOfferService);
     private reloadService = inject(ReloadService);
 
     constructor(
@@ -34,29 +34,29 @@ export class ContractEditPage implements OnInit {
     }
     
     ngOnInit(): void {
-        this.apiDeal.findDealById(this.contractId).subscribe({
-            next: (value: Deal) => {
+        this.apiOffer.findOfferById(this.contractId).subscribe({
+            next: (value: Offer) => {
                 this.dealInput = value
                 this.isLoad = true
             }
         })
     }
 
-    async update(deal: Partial<Deal>) {
+    async update(offer: Partial<Offer>) {
 
         this.alertCtrlService.showLoading()
 
-        this.apiDeal.updateDeal(this.contractId, deal).subscribe({
+        this.apiOffer.updateOffer(this.contractId, offer).subscribe({
             next: (value: any) => {
                 this.toastService.toastSuccess(
-                    'Update Contract !',
-                    'Your contract has been saved.'
+                    'Update offer !',
+                    'Your offer has been saved.'
                 )
             },
             error: (err: any) => {
                 this.toastService.toastDanger(
                     'We have a little problem',
-                    'Sorry your contract failed'
+                    'Sorry your offer failed'
                 )
             },
             complete: () => {
