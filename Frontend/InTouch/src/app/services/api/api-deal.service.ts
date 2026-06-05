@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import * as Constant from '../../config/constant';
 import { Observable } from 'rxjs/internal/Observable';
 import { Deal } from 'src/app/models/deal';
-import { retry } from 'rxjs';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -20,7 +19,7 @@ export class ApiDealService extends ApiService {
 
   public createDeal(deal: Partial<Deal>): Observable<any> {
     var bodyJson: string = JSON.stringify(deal)
-    return this.http.post<any>(this.urlBase, bodyJson, this.options).pipe(retry(3));
+    return this.http.post<any>(this.urlBase, bodyJson, this.options);
   }
 
   public deleteDeal(id: number): Observable<any> {
@@ -35,7 +34,7 @@ export class ApiDealService extends ApiService {
   public updateDeal(id: number, deal: Partial<Deal>): Observable<any> {
     var bodyJson: string = JSON.stringify(deal)
     const url = this.urlBase + id.toString()
-    return this.http.patch<any>(url, bodyJson, this.options).pipe(retry(3));
+    return this.http.patch<any>(url, bodyJson, this.options);
   }
 
 }
