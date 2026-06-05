@@ -1,33 +1,4 @@
-export interface User {
-    id: string;
-    firstname: string
-    lastname: string
-    username: string
-    avatar: null | string
-    instagram: string
-    tiktok: string
-    youtube: string
-    isInfluencer: boolean
-    isCompany: boolean
-}
-
-export interface UserParam {
-    firstname: string
-    lastname: string
-    email: string
-    password: string
-}
-
-export interface LoginParam {
-    email: string;
-    password: string
-}
-
-export interface TokenResponse {
-    access: string;
-    refresh: string;
-}
-
-export interface RefreshTokenParam {
-    refresh: string;
-}
+// Moved to shared/models/users.ts during the P1 architecture migration (Wave 0).
+// This re-export shim keeps existing imports ('src/app/models/users') working.
+// Remove once all importers are repointed to 'shared/models'.
+export * from '../shared/models/users';

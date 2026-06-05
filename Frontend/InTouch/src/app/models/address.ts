@@ -1,19 +1,4 @@
-export interface Address {
-    id: number;
-    addressPrincipal: string;
-    addressSecondary: string;
-    city: string;
-    state: string;
-    country: string;
-    zipCode: string;
-  }
-  
-export interface AddressDto {
-    id?: number | undefined;
-    addressPrincipal: string;
-    addressSecondary: string;
-    city: string;
-    state: string;
-    country: string;
-    zipCode: string;
-}
+// Moved to shared/models/address.ts during the P1 architecture migration (Wave 0).
+// This re-export shim keeps existing imports ('src/app/models/address') working.
+// Remove once all importers are repointed to 'shared/models'.
+export * from '../shared/models/address';

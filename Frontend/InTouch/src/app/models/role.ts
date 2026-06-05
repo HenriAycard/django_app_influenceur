@@ -1,28 +1,5 @@
-export type Role = 'COMPANY' | 'INFLUENCER' | 'UNKNOW';
-
-export interface UserRole {
-    name: string;
-    roles: Role[]
-}
-
-export const company: UserRole = {
-    name: 'company',
-    roles: ['COMPANY']
-}
-
-export const influencer: UserRole = {
-    name: 'influencer',
-    roles: ['INFLUENCER']
-}
-
-export const unknow: UserRole = {
-    name: 'unknow',
-    roles: ['UNKNOW']
-}
-
-export type ActionType = 'view' | 'edit' | 'delete';
-
-export interface ActionPayload<T = any> {
-    action: ActionType;
-    data: T;
-}  
+// Moved to shared/models/role.ts during the P1 architecture migration (Wave 0).
+// This re-export shim keeps existing imports ('src/app/models/role') working,
+// including the runtime const exports (company, influencer, unknow).
+// Remove once all importers are repointed to 'shared/models'.
+export * from '../shared/models/role';
