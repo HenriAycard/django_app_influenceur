@@ -12,24 +12,24 @@
     <app-booking-view [reservation]="reservation"></app-booking-view>
 
     <!-- Action Buttons -->
-    <ion-grid class="action-buttons" *ngIf="reservation.status !== 2 && !isPastReservation()">
+    <ion-grid class="action-buttons" *ngIf="reservation.status !== ApplicationStatus.Declined && !isPastReservation()">
       <ion-row class="ion-justify-content-around">
-        <!-- Show Accept button only if status is 0 -->
-        <ion-col size="4" *ngIf="reservation.status === 0">
+        <!-- Show Accept button only if pending -->
+        <ion-col size="4" *ngIf="reservation.status === ApplicationStatus.Pending">
           <ion-button expand="full" fill="outline" (click)="acceptReservation()">
             <ion-icon name="checkmark-circle" slot="start"></ion-icon>Accept
           </ion-button>
         </ion-col>
 
-        <!-- Edit button for status 0 and 1 -->
-        <ion-col size="4" *ngIf="(reservation.status === 0 || reservation.status === 1) && !isPastReservation()">
+        <!-- Edit button for pending and accepted -->
+        <ion-col size="4" *ngIf="(reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()">
           <ion-button expand="full" fill="outline" color="warning" (click)="editReservation()">
             <ion-icon name="create" slot="start"></ion-icon>Edit
           </ion-button>
         </ion-col>
 
-        <!-- Cancel button for status 0 and 1 -->
-        <ion-col size="4" *ngIf="(reservation.status === 0 || reservation.status === 1) && !isPastReservation()">
+        <!-- Cancel button for pending and accepted -->
+        <ion-col size="4" *ngIf="(reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()">
           <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()">
             <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
           </ion-button>

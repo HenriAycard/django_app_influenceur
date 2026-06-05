@@ -1,23 +1,11 @@
-import { CompanyBooking } from "./company";
-import { OfferWithVenue } from "./offer";
-import { User } from "./users";
-
-export interface BookingStatus {
-    id: number;
-    offer: OfferWithVenue;
-    status: number;
-    dateReservation: Date;
-}
-
-export interface BookingCreateParam {
-    offerId: number;
-    dateReservation: string;
-}
-
-export interface BookingBrand {
-    id: number;
-    offer: OfferWithVenue;
-    status: number;
-    dateReservation: Date;
-    user: User;
-}
+// Compat shim: `Booking*` types were renamed to the `Application` family (Wave 2).
+//   BookingBrand       -> Application
+//   BookingStatus      -> ApplicationView
+//   BookingCreateParam -> CreateApplicationDto
+// Kept so the legacy 'src/app/models/booking' path still resolves during the migration.
+// Remove once no code imports the Booking* names.
+export {
+    Application as BookingBrand,
+    ApplicationView as BookingStatus,
+    CreateApplicationDto as BookingCreateParam,
+} from './application';

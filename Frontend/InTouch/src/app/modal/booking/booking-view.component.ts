@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonIcon, IonItem, IonList, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, closeCircle, create, logoInstagram, logoTiktok, logoYoutube } from 'ionicons/icons';
-import { BookingBrand } from 'src/app/models/booking';
+import { Application } from 'src/app/shared/models';
 import { NavigationHistoryService } from 'src/app/services/navigation-history.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { NavigationHistoryService } from 'src/app/services/navigation-history.se
   imports: [IonCardSubtitle, IonCardContent, IonCard, IonCardHeader, IonCardTitle, DatePipe, IonIcon, CommonModule, IonChip, IonText, IonItem, IonList]
 })
 export class BookingViewPage {
-  @Input() reservation!: BookingBrand;
+  @Input() reservation!: Application;
 
   private router = inject(Router)
   private activatedRoute = inject(ActivatedRoute)

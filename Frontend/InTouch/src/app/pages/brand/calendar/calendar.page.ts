@@ -2,8 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, NavController, IonThumbnail } from '@ionic/angular/standalone';
-import { BookingBrand } from 'src/app/models/booking';
-import { ApiBookingService } from 'src/app/services/api/api-booking.service';
+import { Application, ApplicationStatus } from 'src/app/shared/models';
+import { ApiApplicationService } from 'src/app/features/applications/api-application.service';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 import { addIcons } from 'ionicons';
 import { closeOutline, helpOutline, timeOutline } from 'ionicons/icons';
@@ -14,7 +14,7 @@ import { CalendarCompanyComponent } from 'src/app/modal/calendar/company/calenda
 
 export interface comingSoonDto {
   date: Date;
-  valeur: BookingBrand[];
+  valeur: Application[];
 }
 
 @Component({
@@ -26,19 +26,19 @@ export interface comingSoonDto {
 })
 export class CalendarPage implements OnInit {
 
-  dataWaiting : Array<BookingBrand> = new Array<BookingBrand>()
+  dataWaiting : Array<Application> = new Array<Application>()
   countWaiting : number = 0;
 
-  dataLastExperiences : Array<BookingBrand> = new Array<BookingBrand>()
+  dataLastExperiences : Array<Application> = new Array<Application>()
   countLastExperiences : number = 0;
 
-  dataUnsuccessful : Array<BookingBrand> = new Array<BookingBrand>()
+  dataUnsuccessful : Array<Application> = new Array<Application>()
   countUnsuccessful : number = 0;
 
   dataComingSoon : Array<comingSoonDto> = new Array<comingSoonDto>()
   countComingSoon : number = 0;
 
-  private apiBooking = inject(ApiBookingService)
+  private apiApplication = inject(ApiApplicationService)
   private alertCtrlService = inject(AlertControllerService)
   private reloadService = inject(ReloadService);
   private navCtrl = inject(NavController)
@@ -74,11 +74,11 @@ export class CalendarPage implements OnInit {
 
   public async findResaWaiting(dateObj: Date){
     
-    this.dataWaiting = new Array<BookingBrand>()
+    this.dataWaiting = new Array<Application>()
     
-    await this.apiBooking.findBooking4Brand(0, dateObj, 'from_date').subscribe({
-        next: (response: Array<BookingBrand>) => {
-          this.dataWaiting = response as BookingBrand[]
+    await this.apiApplication.findApplications4Brand(ApplicationStatus.Pending, dateObj, 'from_date').subscribe({
+        next: (response: Array<Application>) => {
+          this.dataWaiting = response as Application[]
           this.countWaiting = this.dataWaiting.length
         },
         complete: () => this.alertCtrlService.stopLoading()
@@ -87,11 +87,11 @@ export class CalendarPage implements OnInit {
 
   public async findResaLastExperiences(dateObj: Date){
     
-    this.dataLastExperiences = new Array<BookingBrand>()
+    this.dataLastExperiences = new Array<Application>()
 
-    await this.apiBooking.findBooking4Brand(1, dateObj, 'to_date').subscribe({
-      next: (response: Array<BookingBrand>) => {
-        this.dataLastExperiences = response as BookingBrand[]
+    await this.apiApplication.findApplications4Brand(ApplicationStatus.Accepted, dateObj, 'to_date').subscribe({
+      next: (response: Array<Application>) => {
+        this.dataLastExperiences = response as Application[]
         this.countLastExperiences = this.dataLastExperiences.length
       },
       complete: () => this.alertCtrlService.stopLoading()
@@ -100,11 +100,11 @@ export class CalendarPage implements OnInit {
 
   public async findResaUnsuccessful(dateObj: Date){
     
-    this.dataUnsuccessful = new Array<BookingBrand>()
+    this.dataUnsuccessful = new Array<Application>()
 
-    await this.apiBooking.findBooking4Brand(2, dateObj).subscribe({
-      next: (response: Array<BookingBrand>) => {
-        this.dataUnsuccessful = response as BookingBrand[]
+    await this.apiApplication.findApplications4Brand(ApplicationStatus.Declined, dateObj).subscribe({
+      next: (response: Array<Application>) => {
+        this.dataUnsuccessful = response as Application[]
         this.countUnsuccessful = this.dataUnsuccessful.length
       },
       complete: () => this.alertCtrlService.stopLoading()
@@ -115,10 +115,10 @@ export class CalendarPage implements OnInit {
 
     this.dataComingSoon = new Array<comingSoonDto>()
     
-    await this.apiBooking.findBooking4Brand(1, dateObj, 'from_date').subscribe({
-      next: (response: BookingBrand[]) => {
+    await this.apiApplication.findApplications4Brand(ApplicationStatus.Accepted, dateObj, 'from_date').subscribe({
+      next: (response: Application[]) => {
 
-        let data: BookingBrand[] = new Array<BookingBrand>()
+        let data: Application[] = new Array<Application>()
         for (const res of response){
           data.push(res)
         }
@@ -137,7 +137,7 @@ export class CalendarPage implements OnInit {
     });
   }
 
-  public displayInfo(waiting: BookingBrand) {
+  public displayInfo(waiting: Application) {
     this.location.replaceState('/brand/calendar')
     this.navCtrl.navigateForward(['/brand/booking/', waiting.id])
   }
