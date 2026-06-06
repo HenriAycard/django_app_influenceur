@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 import * as Constant from 'src/app/config/constant';
 import { Offer } from 'src/app/shared/models';
 import { ApiService } from 'src/app/services/api/api.service';
@@ -13,7 +14,9 @@ export class ApiOfferService extends ApiService {
 
   public findOffersByCompanyId(id: number): Observable<Offer[]> {
     const url = this.urlBase + "?company=" + id.toString()
-    return this.http.get<Offer[]>(url, this.options)
+    return this.http.get<any>(url, this.options).pipe(
+      map(response => response.results || response)
+    )
   }
 
   public createOffer(offer: Partial<Offer>): Observable<any> {

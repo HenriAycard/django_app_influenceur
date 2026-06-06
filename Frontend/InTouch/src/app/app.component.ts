@@ -41,18 +41,15 @@ export class AppComponent {
 
   async initFirebase(messaging: any) {
     try {
-      // Request notification permissions
-      Notification.requestPermission().then(async (permission) => {
-        if (permission === 'granted') {
-          const token = await getToken(messaging, { vapidKey: environment.vapidKey });
-          this.apiFcmToken.sendTokenToBackend(token).subscribe();
+      if (!('Notification' in window) || Notification.permission !== 'granted') {
+        return;
+      }
+      const token = await getToken(messaging, { vapidKey: environment.vapidKey });
+      this.apiFcmToken.sendTokenToBackend(token).subscribe();
 
-          // Listen for foreground notifications
-          onMessage(messaging, (payload) => {
-            console.log('Notification received:', payload);
-            alert(`${payload.notification?.title}: ${payload.notification?.body}`);
-          });
-        }
+      onMessage(messaging, (payload) => {
+        console.log('Notification received:', payload);
+        alert(`${payload.notification?.title}: ${payload.notification?.body}`);
       });
     } catch (error) {
       console.error('Firebase error:', error);

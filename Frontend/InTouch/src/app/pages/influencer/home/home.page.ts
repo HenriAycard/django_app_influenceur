@@ -19,7 +19,16 @@ export class HomeInfluencerPage {
   protected readonly store = inject(DiscoveryStore);
 
   public firstname = '';
-  public readonly categories = ['Sushi', 'Tacos', 'Pizza', 'Seafood', 'Spa', 'Adventure', 'Hotel', 'Event'];
+  public readonly categories = [
+    { label: 'Sushi',     emoji: '🍣' },
+    { label: 'Tacos',     emoji: '🌮' },
+    { label: 'Pizza',     emoji: '🍕' },
+    { label: 'Seafood',   emoji: '🦞' },
+    { label: 'Spa',       emoji: '💆' },
+    { label: 'Adventure', emoji: '🏕️' },
+    { label: 'Hotel',     emoji: '🏨' },
+    { label: 'Event',     emoji: '🎉' },
+  ];
 
   private authService = inject(AuthService);
   private router = inject(Router);

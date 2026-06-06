@@ -25,13 +25,19 @@ export class ApiApplicationService extends ApiService {
     }
 
     public findApplications4Influencer(status: ApplicationStatus, date?: Date, conditionalDate?: string): Observable<ApplicationView[]> {
-        return this.http.get<any[]>(this.buildListUrl(status, date, conditionalDate), this.options)
-            .pipe(map(list => list.map(dto => this.toApplication(dto))));
+        return this.http.get<any>(this.buildListUrl(status, date, conditionalDate), this.options)
+            .pipe(map(response => {
+                const list = response.results || response;
+                return list.map((dto: any) => this.toApplication(dto));
+            }));
     }
 
     public findApplications4Brand(status: ApplicationStatus, date?: Date, conditionalDate?: string): Observable<Application[]> {
-        return this.http.get<any[]>(this.buildListUrl(status, date, conditionalDate), this.options)
-            .pipe(map(list => list.map(dto => this.toApplication(dto))));
+        return this.http.get<any>(this.buildListUrl(status, date, conditionalDate), this.options)
+            .pipe(map(response => {
+                const list = response.results || response;
+                return list.map((dto: any) => this.toApplication(dto));
+            }));
     }
 
     public createApplication(application: CreateApplicationDto): Observable<any> {

@@ -16,6 +16,8 @@ from .permissions import IsCompanyOwner, IsRelatedToCompanyOwner, IsReservationP
 
 import logging
 from uuid import UUID
+from datetime import datetime
+from django.utils import timezone
 from firebase_admin import messaging
 
 logger = logging.getLogger(__name__)
@@ -84,9 +86,9 @@ class CompanyCreateView(generics.ListCreateAPIView):
         print(user)
 
         if user.is_influencer == 0:
-            queryset = Company.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, is_actif=1)
+            queryset = Company.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, is_actif=1).order_by('id')
         else:
-            queryset = Company.objects.all()
+            queryset = Company.objects.all().order_by('id')
         return queryset
 
 class CompanySearchView(generics.ListAPIView):
@@ -155,7 +157,7 @@ class OfferCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         company = self.request.query_params['company']
-        queryset = Offer.objects.filter(company_id=company)
+        queryset = Offer.objects.filter(company_id=company).order_by('id')
         return queryset
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -241,10 +243,14 @@ class ReservationCreateView(generics.ListCreateAPIView):
             filter_params['status'] = status_resa
         
         if from_date_resa:
-            filter_params['date_reservation__gte'] = from_date_resa
+            filter_params['date_reservation__gte'] = timezone.make_aware(
+                datetime.strptime(from_date_resa, '%Y-%m-%d')
+            )
 
         if to_date_resa:
-            filter_params['date_reservation__lt'] = to_date_resa
+            filter_params['date_reservation__lt'] = timezone.make_aware(
+                datetime.strptime(to_date_resa, '%Y-%m-%d')
+            )
 
         # Apply filters and return the result
         return queryset.filter(**filter_params).order_by('date_reservation')
@@ -273,7 +279,7 @@ class ImgCompanyListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = imgCompanySerializer
-    queryset = imgCompany.objects.all()
+    queryset = imgCompany.objects.all().order_by('id')
 
 class ImgCompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
@@ -283,8 +289,9 @@ class ImgCompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView)
 
 class TypeCompanyView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = TypeCompany.objects.all()
+    queryset = TypeCompany.objects.all().order_by('id')
     serializer_class = TypeCompanySerializer
+    pagination_class = None
 
 class SaveFCMTokenView(generics.UpdateAPIView):
     serializer_class = FCMTokenSerializer
