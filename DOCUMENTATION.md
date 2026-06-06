@@ -173,10 +173,76 @@ export const domainConfig = {
 
 ### Architecture Patterns
 - **Standalone components** throughout — no NgModules
-- **Signal stores** (`DiscoveryStore`, `VenueStore`) for reactive state
+- **Signal stores** (`DiscoveryStore`, `VenueStore`, `ApplicationStore`, `ProfileStore`) for reactive state
 - **JWT** tokens stored client-side; `AuthService` handles login/logout/redirection
 - `ApiService` base class extended by all API services
 - Paginated API responses are unwrapped via `.pipe(map(r => r.results ?? r))` in services
+- **`ionViewWillEnter`** is the standard refresh trigger — called every time a page enters the stack (including back-navigation). Never use `ngOnInit` for data that must stay fresh.
+
+### Directory Structure
+
+```
+src/app/
+  core/           # app-wide singletons (guards, interceptors, auth)
+  features/       # domain slices — each contains its store + API service
+    applications/ # ApplicationStore, ApiApplicationService
+    discovery/    # DiscoveryStore
+    offers/       # ApiOfferService
+    profile/      # ProfileStore
+    venues/       # VenueStore
+  pages/          # routed pages (brand/ and influencer/)
+  shared/
+    models/       # all TypeScript interfaces + enums (canonical source)
+    ui/           # reusable dumb components
+    util/         # pure functions, pipes
+  services/       # legacy — kept for ApiService base and auth/token services
+  models/         # legacy shim files that re-export from shared/models/
+```
+
+### Signal Stores
+
+Each store is `providedIn: 'root'`. All mutable state is private `signal()`; read-only surfaces are exposed via `.asReadonly()` or `computed()`.
+
+| Store | Owns | Key methods |
+|---|---|---|
+| `DiscoveryStore` | venue feed + search results | `loadFeed()`, `search(term)` |
+| `VenueStore` | single venue detail + its offers | `load(companyId)`, `deleteOffer(id)` |
+| `ApplicationStore` | all 4 influencer + 4 brand calendar groups | `loadInfluencerCalendar()`, `loadBrandCalendar()`, `accept(id)`, `decline(id)` |
+| `ProfileStore` | current user profile | `refresh()`, `updateAvatar(formData)` |
+
+### Domain Naming
+
+The domain was renamed during refactoring. If you see the old names in git history, database, or backend code:
+
+| Old name (backend / legacy) | Current frontend name | Notes |
+|---|---|---|
+| `Deal` / `Contract` | `Offer` | URL param was `:contractId` → now `:offerId` |
+| `Booking` / `Reservation` | `Application` | Backend API endpoint is still `/api/reservation/` |
+| `DealCompany` | `OfferWithVenue` | Offer hydrated with company data |
+| `BookingStatus` (0/1/2 integers) | `ApplicationStatus` enum | Adapted at the API boundary — see below |
+
+### ApplicationStatus Adapter
+
+The backend stores reservation status as integers `0/1/2`. The frontend converts these at the API boundary and never uses magic numbers internally:
+
+```ts
+// src/app/shared/models/enums/application-status.ts
+ApplicationStatus.Pending   = 'PENDING'   // backend: 0
+ApplicationStatus.Accepted  = 'ACCEPTED'  // backend: 1
+ApplicationStatus.Declined  = 'DECLINED'  // backend: 2
+
+toApiStatus(status)   // ApplicationStatus → number (for writes)
+fromApiStatus(value)  // number → ApplicationStatus (for reads)
+```
+
+`ApiApplicationService` calls these adapters — the rest of the app only sees the enum.
+
+### Auth Flow
+
+1. **Bootstrap** — `provideAppInitializer(() => inject(AuthService).restoreSession())` in `main.ts` restores the JWT from `localStorage` and fetches the current user *before* the first route navigation. Guards therefore always see initialized auth state.
+2. **Route guards** — `roleGuard(['INFLUENCER'])` / `roleGuard(['COMPANY'])` (factory in `src/app/guard/role.guard.ts`). Unauthenticated users are sent to `/login`; wrong-role users are sent to their own home.
+3. **Token refresh** — `AuthInterceptor` (in `core/`) catches 401s, queues concurrent requests, refreshes the access token once, then replays the queue.
+4. **Logout** — `TokenManagerService.clear()` removes only the two JWT keys (`access`, `refresh`) — it does **not** call `localStorage.clear()`, which would wipe unrelated data.
 
 ### User Roles
 - **Brand** (`is_influencer = 0`): creates companies, posts offers, manages reservations
@@ -184,14 +250,28 @@ export const domainConfig = {
 
 ### Routing
 - `/login` — login page
-- `/brand/...` — brand-side routes
-- `/influencer/...` — influencer-side routes (tabs)
-- `/influencer/home` — discovery feed with category grid + venue cards
+- `/brand/...` — brand-side routes (guarded: `roleGuard(['COMPANY'])`)
+- `/influencer/...` — influencer-side routes, tabs (guarded: `roleGuard(['INFLUENCER'])`)
+- `/influencer/home` — discovery feed with category grid + real venue cards
+- `/influencer/home/search?search=<term>` — search results page
+- `/influencer/home/search/company/:companyId` — venue detail (influencer view)
+- `/brand/company/:companyId` — venue detail + offer management (brand view)
+- `/brand/company/:companyId/offer/:offerId` — offer detail/edit
 
 ### Push Notifications (FCM)
 - Permission is requested in `login.page.ts → onSubmit()` (must be inside a user gesture)
 - On app init, `app.component.ts` only registers the foreground listener if permission is already granted
 - FCM token is sent to `/api/fcmtoken/` after login
+
+### Known Issues / Technical Debt
+
+| Severity | Location | Issue |
+|---|---|---|
+| P1 | `src/app/interceptors/date.interceptor.ts` | Deep-mutates every HTTP response to convert date strings — side-effectful and risky to remove without full regression testing |
+| P1 | `TokenManagerService` | JWT tokens are in `localStorage` — accessible to XSS. Should migrate to `@capacitor/preferences` (native) or `sessionStorage` for web. Needs backend coordination. |
+| P2 | `company-create.page.ts` / `company-edit.page.ts` | `this.step.length` should be `this.steps.length` in the multi-step wizard — next button broken on last step |
+| P2 | Various | Remaining `any` types in API service responses |
+| P3 | `src/app/models/*.ts` | Legacy shim files re-export from `shared/models/` — can be deleted once all imports are migrated |
 
 ---
 

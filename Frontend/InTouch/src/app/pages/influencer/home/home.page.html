@@ -17,9 +17,9 @@
   <!-- Quick categories -->
   <h2 class="greeting-2">Browse by category</h2>
   <div class="category-grid">
-    <button *ngFor="let cat of categories" class="category-tile" (click)="navigation(cat.label)">
-      <span class="category-emoji">{{ cat.emoji }}</span>
-      <span class="category-label">{{ cat.label }}</span>
+    <button *ngFor="let category of categories" class="category-tile" (click)="navigation(category.label)">
+      <span class="category-emoji">{{ category.emoji }}</span>
+      <span class="category-label">{{ category.label }}</span>
     </button>
   </div>
 
