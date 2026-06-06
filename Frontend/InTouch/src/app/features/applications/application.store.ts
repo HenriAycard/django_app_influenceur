@@ -61,7 +61,7 @@ export class ApplicationStore {
             this.api.findApplications4Influencer(ApplicationStatus.Pending, today, 'from_date').pipe(tap(r => this._iWaiting.set(r))),
             this.api.findApplications4Influencer(ApplicationStatus.Accepted, today, 'to_date').pipe(tap(r => this._iPast.set(r))),
             this.api.findApplications4Influencer(ApplicationStatus.Declined, today).pipe(tap(r => this._iDeclined.set(r))),
-            this.api.findApplications4Influencer(ApplicationStatus.Accepted, today).pipe(tap(r => this._iComingSoon.set(r))),
+            this.api.findApplications4Influencer(ApplicationStatus.Accepted, today, 'from_date').pipe(tap(r => this._iComingSoon.set(r))),
         ]);
     }
 
