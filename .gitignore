@@ -270,3 +270,8 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# SSL certificates
+*.crt
+*.key
+*.pem
