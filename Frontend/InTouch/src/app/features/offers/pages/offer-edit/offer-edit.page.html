@@ -3,14 +3,14 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>Edit Contract</ion-title>
+        <ion-title>Edit offer</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <app-offer-form
-        [contractEdit]="dealInput"
-        (contract)="update($event)"
+        [offerEdit]="offerInput"
+        (offer)="update($event)"
         *ngIf="isLoad">
     </app-offer-form>
 </ion-content>

@@ -56,9 +56,9 @@ export class CompanyViewPage {
     const { action, data } = payload;
 
     if (action === 'view') {
-      this.router.navigate(['contract', data], { relativeTo: this.route });
+      this.router.navigate(['offer', data], { relativeTo: this.route });
     } else if (action === 'edit') {
-      this.router.navigate(['contract', data, 'edit'], { relativeTo: this.route })
+      this.router.navigate(['offer', data, 'edit'], { relativeTo: this.route })
     } else if (action === 'delete') {
       this.deleteOffer(data);
     }

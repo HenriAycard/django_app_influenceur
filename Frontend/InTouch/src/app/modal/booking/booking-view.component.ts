@@ -23,8 +23,8 @@ export class BookingViewPage {
     addIcons({ logoInstagram, logoTiktok, logoYoutube, checkmarkCircle, create, closeCircle });
   }
 
-  navToContract() {
-    this.router.navigate(['contract', this.reservation.offer.id], { relativeTo: this.activatedRoute });
+  navToOffer() {
+    this.router.navigate(['offer', this.reservation.offer.id], { relativeTo: this.activatedRoute });
   }
 
   navToCompany() {

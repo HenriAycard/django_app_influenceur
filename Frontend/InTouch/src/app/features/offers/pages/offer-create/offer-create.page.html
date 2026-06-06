@@ -3,14 +3,14 @@
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
-        <ion-title>Create contract</ion-title>
+        <ion-title>Create offer</ion-title>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
     <app-offer-form
-        [contractEdit]="dealInput"
-        (contract)="save($event)">
+        [offerEdit]="offerInput"
+        (offer)="save($event)">
     </app-offer-form>
 
 </ion-content>

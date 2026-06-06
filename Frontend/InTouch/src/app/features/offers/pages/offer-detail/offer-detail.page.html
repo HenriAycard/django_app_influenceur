@@ -3,7 +3,7 @@
         <ion-buttons slot="start">
             <ion-back-button href></ion-back-button>
         </ion-buttons>
-        <ion-title *ngIf="isLoad">{{ contract.name }}</ion-title>
+        <ion-title *ngIf="isLoad">{{ offer.name }}</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -17,17 +17,17 @@
             <ion-card-content>
                 <ion-list lines="none">
                     <ion-item>
-                        <ion-label><strong>Contract Availability:</strong></ion-label>
-                        <ion-text>{{ noEndDate ? 'Available' : (contract.endDate ? ('Available until ' +
-                            (contract.endDate | date)) : 'Not specified') }}</ion-text>
+                        <ion-label><strong>Offer Availability:</strong></ion-label>
+                        <ion-text>{{ noEndDate ? 'Available' : (offer.endDate ? ('Available until ' +
+                            (offer.endDate | date)) : 'Not specified') }}</ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.quantity">
+                    <ion-item *ngIf="offer.quantity">
                         <ion-label class="inline-label"><strong>Quantity:</strong></ion-label>
-                        <span class="inline-text">{{ contract.quantity }}</span>
+                        <span class="inline-text">{{ offer.quantity }}</span>
                     </ion-item>
-                    <ion-item *ngIf="contract.publishingDeadline">
+                    <ion-item *ngIf="offer.publishingDeadline">
                         <ion-label><strong>Publishing deadline:</strong></ion-label>
-                        <ion-text>{{ contract.publishingDeadline }} days</ion-text>
+                        <ion-text>{{ offer.publishingDeadline }} days</ion-text>
                     </ion-item>
                 </ion-list>
             </ion-card-content>
@@ -42,7 +42,7 @@
                 <ion-list lines="none">
                     <ion-item>
                         <ion-text>
-                            <p>{{ contract.content }}</p>
+                            <p>{{ offer.content }}</p>
                         </ion-text>
                     </ion-item>
                 </ion-list>
@@ -59,17 +59,17 @@
                     <ion-item>
                         <ion-text>
                             <h2>Conditions:</h2>
-                            <p>{{ contract.conditions }}</p>
+                            <p>{{ offer.conditions }}</p>
                         </ion-text>
                     </ion-item>
                     <ion-item>
                         <ion-text>
-                            <p><strong>Mandatory Tags & Hashtags: </strong>{{ contract.tags }}</p>
+                            <p><strong>Mandatory Tags & Hashtags: </strong>{{ offer.tags }}</p>
                         </ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.contactApprover">
+                    <ion-item *ngIf="offer.contactApprover">
                         <ion-text>
-                            <p><strong>Contact to approve: </strong>{{ contract.contactApprover }}</p>
+                            <p><strong>Contact to approve: </strong>{{ offer.contactApprover }}</p>
                         </ion-text>
                     </ion-item>
                 </ion-list>
@@ -83,16 +83,16 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-list lines="none">
-                    <ion-item *ngIf="contract.cancellationPolicy">
+                    <ion-item *ngIf="offer.cancellationPolicy">
                         <ion-text>
                             <h2>Cancellation Policy:</h2>
-                            <p>{{ contract.cancellationPolicy }}</p>
+                            <p>{{ offer.cancellationPolicy }}</p>
                         </ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.specialInstructions">
+                    <ion-item *ngIf="offer.specialInstructions">
                         <ion-text>
                             <h2>Special Instructions:</h2>
-                            <p>{{ contract.specialInstructions }}</p>
+                            <p>{{ offer.specialInstructions }}</p>
                         </ion-text>
                     </ion-item>
                 </ion-list>
@@ -106,13 +106,13 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-list lines="none">
-                    <ion-item *ngIf="contract.paymentAmount">
+                    <ion-item *ngIf="offer.paymentAmount">
                         <ion-label><strong>Payment Amount:</strong></ion-label>
-                        <ion-text>{{ contract.paymentAmount }}</ion-text>
+                        <ion-text>{{ offer.paymentAmount }}</ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.paymentTerms">
+                    <ion-item *ngIf="offer.paymentTerms">
                         <ion-label><strong>Payment terms:</strong></ion-label>
-                        <ion-text>{{ contract.paymentTerms }} days</ion-text>
+                        <ion-text>{{ offer.paymentTerms }} days</ion-text>
                     </ion-item>
                 </ion-list>
             </ion-card-content>
@@ -125,30 +125,30 @@
             </ion-card-header>
             <ion-card-content>
                 <ion-list lines="none">
-                    <ion-item *ngIf="contract.exclusivityDuration">
+                    <ion-item *ngIf="offer.exclusivityDuration">
                         <ion-label><strong>Exclusivity Duration:</strong></ion-label>
-                        <ion-text>{{ contract.exclusivityDuration }} days</ion-text>
+                        <ion-text>{{ offer.exclusivityDuration }} days</ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.exclusivityType">
+                    <ion-item *ngIf="offer.exclusivityType">
                         <ion-label><strong>Exclusivity Type:</strong></ion-label>
-                        <ion-text>{{ contract.exclusivityType }} days</ion-text>
+                        <ion-text>{{ offer.exclusivityType }} days</ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.exclusivitySpecification">
+                    <ion-item *ngIf="offer.exclusivitySpecification">
                         <ion-text>
                             <h2>Exclusivity Specification:</h2>
-                            <p>{{ contract.exclusivitySpecification }}</p>
+                            <p>{{ offer.exclusivitySpecification }}</p>
                         </ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.restrictedCompetitors">
+                    <ion-item *ngIf="offer.restrictedCompetitors">
                         <ion-text>
                             <h2>Restricted Competitors:</h2>
-                            <p>{{ contract.restrictedCompetitors }}</p>
+                            <p>{{ offer.restrictedCompetitors }}</p>
                         </ion-text>
                     </ion-item>
-                    <ion-item *ngIf="contract.scopeExclusivity">
+                    <ion-item *ngIf="offer.scopeExclusivity">
                         <ion-text>
                             <h2>Scope of Exclusivity:</h2>
-                            <p>{{ contract.scopeExclusivity }}</p>
+                            <p>{{ offer.scopeExclusivity }}</p>
                         </ion-text>
                     </ion-item>
                 </ion-list>
@@ -162,7 +162,7 @@
 
     <ion-modal #modal [isOpen]="isModalOpen" [canDismiss]="canDismiss" [presentingElement]="presentingElement">
         <ng-template>
-            <app-modal-new-reservation [modal]="modal" [idOffer]="contractId"
+            <app-modal-new-reservation [modal]="modal" [idOffer]="offerId"
                 (dismissChange)="onDismissChange($event)"></app-modal-new-reservation>
         </ng-template>
     </ion-modal>

@@ -17,8 +17,8 @@ import { ToastService } from "src/app/services/toast.service";
     imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, OfferFormComponent, CommonModule]
 })
 export class OfferEditPage implements OnInit {
-    @Input() contractId!: number;
-    public dealInput!: Partial<Offer>;
+    @Input() offerId!: number;
+    public offerInput!: Partial<Offer>;
     public isLoad: boolean = false;
 
 
@@ -32,9 +32,9 @@ export class OfferEditPage implements OnInit {
     }
     
     ngOnInit(): void {
-        this.apiOffer.findOfferById(this.contractId).subscribe({
+        this.apiOffer.findOfferById(this.offerId).subscribe({
             next: (value: Offer) => {
-                this.dealInput = value
+                this.offerInput = value
                 this.isLoad = true
             }
         })
@@ -44,7 +44,7 @@ export class OfferEditPage implements OnInit {
 
         this.alertCtrlService.showLoading()
 
-        this.apiOffer.updateOffer(this.contractId, offer).subscribe({
+        this.apiOffer.updateOffer(this.offerId, offer).subscribe({
             next: (value: any) => {
                 this.toastService.toastSuccess(
                     'Update offer !',

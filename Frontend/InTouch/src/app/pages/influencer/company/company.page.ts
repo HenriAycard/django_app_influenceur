@@ -67,7 +67,7 @@ export class CompanyPage implements OnInit {
   onActionPerformed(payload: ActionPayload<number>) {
     const { action, data } = payload;
     if (action === 'view') {
-      this.router.navigate(['contract', data], { relativeTo: this.activatedRoute });
+      this.router.navigate(['offer', data], { relativeTo: this.activatedRoute });
     }
   }
 

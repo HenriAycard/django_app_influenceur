@@ -17,8 +17,8 @@ import { Offer } from "src/app/shared/models";
 })
 export class OfferFormComponent implements OnInit {
 
-    @Input() contractEdit!: Partial<Offer>;
-    @Output() contract = new EventEmitter<Partial<Offer>>();
+    @Input() offerEdit!: Partial<Offer>;
+    @Output() offer = new EventEmitter<Partial<Offer>>();
 
     public form: FormGroup;
     public today: Date = new Date()
@@ -60,17 +60,17 @@ export class OfferFormComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.form.patchValue(this.contractEdit)
-        if (this.contractEdit) {
-            if (this.contractEdit.endDate) this.noEndDate = false
-            if (this.contractEdit.paymentAmount ||
-                this.contractEdit.paymentTerms) this.isPaymentTerms = true
-            if (this.contractEdit.exclusivityDuration ||
-                this.contractEdit.restrictedCompetitors ||
-                this.contractEdit.scopeExclusivity ||
-                this.contractEdit.exclusivityType ||
-                this.contractEdit.exclusivitySpecification) this.isExclusivityClause = true
-            if (this.contractEdit.contactApprover) this.isApprovalRequired = true
+        this.form.patchValue(this.offerEdit)
+        if (this.offerEdit) {
+            if (this.offerEdit.endDate) this.noEndDate = false
+            if (this.offerEdit.paymentAmount ||
+                this.offerEdit.paymentTerms) this.isPaymentTerms = true
+            if (this.offerEdit.exclusivityDuration ||
+                this.offerEdit.restrictedCompetitors ||
+                this.offerEdit.scopeExclusivity ||
+                this.offerEdit.exclusivityType ||
+                this.offerEdit.exclusivitySpecification) this.isExclusivityClause = true
+            if (this.offerEdit.contactApprover) this.isApprovalRequired = true
         }
 
     }
@@ -137,7 +137,7 @@ export class OfferFormComponent implements OnInit {
             ...form.value
         }
 
-        this.contract.emit(offer);
+        this.offer.emit(offer);
     }
 
     customCounterFormatter(inputLength: number, maxLength: number) {

@@ -16,7 +16,7 @@ import { AuthService } from "src/app/services/auth.service";
     imports: [CommonModule, IonCard, IonLabel, IonItem, IonIcon, IonContent, IonButtons, IonList, IonButton, IonTitle, IonToolbar, IonHeader, IonModal, IonCardContent, IonCardTitle, IonCardHeader, IonText]
 })
 export class OfferCardComponent {
-    @Input() contract!: Offer;
+    @Input() offer!: Offer;
     @Output() actionPerformed: EventEmitter<ActionPayload<number>> = new EventEmitter();
     @ViewChild(IonModal) modal!: IonModal;
 
@@ -64,8 +64,8 @@ export class OfferCardComponent {
     }
 
     private emitAction(action: ActionType) {
-        if (this.contract && this.contract.id) {
-            const data: number = this.contract.id
+        if (this.offer && this.offer.id) {
+            const data: number = this.offer.id
             const payload: ActionPayload<number> = { action, data };
             this.actionPerformed.emit(payload);
         }
