@@ -1,9 +1,9 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonCardTitle, IonContent, IonHeader, IonSearchbar, IonTitle, IonToolbar, IonCard, IonText, IonLabel, IonCol, IonThumbnail, IonGrid, IonRow, IonIcon, IonCardContent } from '@ionic/angular/standalone';
-import { Router, ActivatedRoute, NavigationExtras, RouterModule } from '@angular/router';
+import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonIcon, IonLabel, IonRefresher, IonRefresherContent, IonSearchbar } from '@ionic/angular/standalone';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { DiscoveryStore } from 'src/app/features/discovery/discovery.store';
 import { flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
@@ -12,44 +12,52 @@ import { addIcons } from 'ionicons';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, IonCardTitle, IonCard, IonSearchbar, RouterModule, IonIcon]
+  imports: [IonContent, CommonModule, IonSearchbar, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent]
 })
-export class HomeInfluencerPage implements OnInit {
+export class HomeInfluencerPage {
 
-  infoAboutMe: any;
-  title = "Authenticated"
+  protected readonly store = inject(DiscoveryStore);
 
-  searchVal: any;//IonSearchbar;
-  firstname: string = ''
+  public firstname = '';
+  public readonly categories = ['Sushi', 'Tacos', 'Pizza', 'Seafood', 'Spa', 'Adventure', 'Hotel', 'Event'];
 
-  private authService = inject(AuthService)
-  private router = inject(Router)
-  private activatedRoute = inject(ActivatedRoute)
-
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
 
   constructor() {
-    addIcons({ flash })
+    addIcons({ flash });
+    if (this.authService.user) {
+      this.firstname = this.authService.user.firstname;
+    }
   }
 
-  ngOnInit(): void {
-    if(this.authService.user) {
-      this.firstname = this.authService.user.firstname
-    }
+  // Refresh the venue feed on every entry.
+  ionViewWillEnter(): void {
+    this.store.loadFeed().subscribe();
+  }
+
+  handleRefresh($event: any): void {
+    this.store.loadFeed().subscribe({
+      complete: () => $event.target.complete(),
+    });
   }
 
   search(event: any, val: string | null | undefined) {
     if (event.key === 'Enter' && typeof val === 'string') {
-      this.navigation(val)
+      this.navigation(val);
     }
   }
 
   navigation(val: string) {
-    let navigationExtras: NavigationExtras = {
+    const navigationExtras: NavigationExtras = {
       queryParams: { search: val },
-      relativeTo: this.activatedRoute
+      relativeTo: this.activatedRoute,
     };
     this.router.navigate(['search'], navigationExtras);
   }
 
+  openVenue(id: number) {
+    this.router.navigate(['search', 'company', id], { relativeTo: this.activatedRoute });
+  }
 }
-
