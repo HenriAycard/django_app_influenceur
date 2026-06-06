@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonToggle } from "@ionic/angular/standalone";
@@ -10,7 +10,7 @@ import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.ser
     templateUrl: './company-social-media.component.html',
     styleUrls: ['../company.component.scss', './company-social-media.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, IonButton, IonItem, ReactiveFormsModule, IonInput]
+    imports: [FormsModule, IonButton, IonItem, ReactiveFormsModule, IonInput]
 })
 export class CompanySocialMediaComponent implements OnInit {
 

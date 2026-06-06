@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow,  IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -17,7 +17,7 @@ import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
   templateUrl: './brand-booking-view.page.html',
   styleUrls: ['./brand-booking-view.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonButton, IonCol, IonRow, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonGrid, IonIcon, IonModal, ModalEditReservationComponent, BookingViewPage]
+  imports: [IonButton, IonCol, IonRow, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonGrid, IonIcon, IonModal, ModalEditReservationComponent, BookingViewPage]
 })
 export class BrandBookingViewPage implements OnInit {
 

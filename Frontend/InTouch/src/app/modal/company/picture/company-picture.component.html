@@ -1,8 +1,12 @@
 <h1 class="heading item-text-wrap">📸 Choose your more beautifull image</h1>
-<img style="height: 250px; width: 100%; object-fit: cover;" [src]="pictureEdit" *ngIf="pictureEdit !== ''"/>
+@if (pictureEdit !== '') {
+  <img style="height: 250px; width: 100%; object-fit: cover;" [src]="pictureEdit"/>
+}
 <ion-button size="full" (click)="chooseOrTakePicture()">
-    <ion-icon name="cloud-upload-outline" style="margin-right: 10px;"></ion-icon>Import a new picture
+  <ion-icon name="cloud-upload-outline" style="margin-right: 10px;"></ion-icon>Import a new picture
 </ion-button>
-<ion-button size="full" (click)="keepCurrentPicture()" *ngIf="isEditing">
-Keep current picture
-</ion-button>
+@if (isEditing) {
+  <ion-button size="full" (click)="keepCurrentPicture()">
+    Keep current picture
+  </ion-button>
+}

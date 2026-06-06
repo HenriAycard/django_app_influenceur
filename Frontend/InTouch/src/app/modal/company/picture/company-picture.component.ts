@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
 import { IonButton, IonIcon } from "@ionic/angular/standalone";
@@ -8,7 +8,7 @@ import { IonButton, IonIcon } from "@ionic/angular/standalone";
     templateUrl: './company-picture.component.html',
     styleUrls: ['../company.component.scss'],
     standalone: true,
-    imports: [CommonModule, IonButton, IonIcon]
+    imports: [IonButton, IonIcon]
 })
 export class CompanyPicturePage implements OnInit {
     @Input() isEditing: boolean = false;

@@ -1,16 +1,18 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-        <ion-title>Edit offer</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Edit offer</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  @if (isLoad) {
     <app-offer-form
-        [offerEdit]="offerInput"
-        (offer)="update($event)"
-        *ngIf="isLoad">
+      [offerEdit]="offerInput"
+      (offer)="update($event)"
+      >
     </app-offer-form>
+  }
 </ion-content>

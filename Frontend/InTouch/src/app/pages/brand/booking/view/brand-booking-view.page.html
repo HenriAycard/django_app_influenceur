@@ -8,40 +8,47 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="isLoad">
-    <app-booking-view [reservation]="reservation"></app-booking-view>
-
-    <!-- Action Buttons -->
-    <ion-grid class="action-buttons" *ngIf="reservation.status !== ApplicationStatus.Declined && !isPastReservation()">
-      <ion-row class="ion-justify-content-around">
-        <!-- Show Accept button only if pending -->
-        <ion-col size="4" *ngIf="reservation.status === ApplicationStatus.Pending">
-          <ion-button expand="full" fill="outline" (click)="acceptReservation()">
-            <ion-icon name="checkmark-circle" slot="start"></ion-icon>Accept
-          </ion-button>
-        </ion-col>
-
-        <!-- Edit button for pending and accepted -->
-        <ion-col size="4" *ngIf="(reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()">
-          <ion-button expand="full" fill="outline" color="warning" (click)="editReservation()">
-            <ion-icon name="create" slot="start"></ion-icon>Edit
-          </ion-button>
-        </ion-col>
-
-        <!-- Cancel button for pending and accepted -->
-        <ion-col size="4" *ngIf="(reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()">
-          <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()">
-            <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+  @if (isLoad) {
+    <div>
+      <app-booking-view [reservation]="reservation"></app-booking-view>
+      <!-- Action Buttons -->
+      @if (reservation.status !== ApplicationStatus.Declined && !isPastReservation()) {
+        <ion-grid class="action-buttons">
+          <ion-row class="ion-justify-content-around">
+            <!-- Show Accept button only if pending -->
+            @if (reservation.status === ApplicationStatus.Pending) {
+              <ion-col size="4">
+                <ion-button expand="full" fill="outline" (click)="acceptReservation()">
+                  <ion-icon name="checkmark-circle" slot="start"></ion-icon>Accept
+                </ion-button>
+              </ion-col>
+            }
+            <!-- Edit button for pending and accepted -->
+            @if ((reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()) {
+              <ion-col size="4">
+                <ion-button expand="full" fill="outline" color="warning" (click)="editReservation()">
+                  <ion-icon name="create" slot="start"></ion-icon>Edit
+                </ion-button>
+              </ion-col>
+            }
+            <!-- Cancel button for pending and accepted -->
+            @if ((reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()) {
+              <ion-col size="4">
+                <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()">
+                  <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
+                </ion-button>
+              </ion-col>
+            }
+          </ion-row>
+        </ion-grid>
+      }
+    </div>
+  }
 
   <ion-modal #modal [presentingElement]="presentingElement">
     <ng-template>
       <app-modal-edit-reservation [reservation]="reservation"
-        (dismissChange)="onDismissChange($event)"></app-modal-edit-reservation>
+      (dismissChange)="onDismissChange($event)"></app-modal-edit-reservation>
     </ng-template>
   </ion-modal>
 </ion-content>

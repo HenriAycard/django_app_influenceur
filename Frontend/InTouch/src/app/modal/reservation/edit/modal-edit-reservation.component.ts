@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CheckboxCustomEvent, IonButton, IonButtons, IonCheckbox, IonContent, IonDatetime, IonHeader, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/angular/standalone";
@@ -13,7 +13,7 @@ import { ApiApplicationService } from "src/app/features/applications/api-applica
     templateUrl: './modal-edit-reservation.component.html',
     styleUrls: ['./modal-edit-reservation.component.scss'],
     standalone: true,
-    imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonItem, IonCheckbox, IonButton, IonButtons, ReactiveFormsModule, IonDatetime, IonList],
+    imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonItem, IonCheckbox, IonButton, IonButtons, ReactiveFormsModule, IonDatetime, IonList],
 })
 export class ModalEditReservationComponent implements OnInit {
 

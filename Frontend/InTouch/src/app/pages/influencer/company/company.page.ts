@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,7 +19,7 @@ import { VenueStore } from 'src/app/features/venues/venue.store';
   templateUrl: './company.page.html',
   styleUrls: ['./company.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, IonItem, IonIcon, IonFab, IonFabButton, IonRefresher, IonRefresherContent, ReactiveFormsModule, CompanyMainViewPage, CompanySkeletonComponent, OfferCardComponent]
+  imports: [IonContent, FormsModule, IonItem, IonIcon, IonFab, IonFabButton, IonRefresher, IonRefresherContent, ReactiveFormsModule, CompanyMainViewPage, CompanySkeletonComponent, OfferCardComponent]
 })
 export class CompanyPage implements OnInit {
   @Input() companyId!: number;

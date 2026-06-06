@@ -1,284 +1,291 @@
 <form [formGroup]="form" (ngSubmit)="save(form)">
-    <ion-accordion-group [multiple]="true" [value]="['first', 'second', 'third']">
-        <!-- Informations -->
-        <ion-accordion value="first">
-            <ion-item slot="header">
-                <h1 class="header-font ion-margin">Informations</h1>
+  <ion-accordion-group [multiple]="true" [value]="['first', 'second', 'third']">
+    <!-- Informations -->
+    <ion-accordion value="first">
+      <ion-item slot="header">
+        <h1 class="header-font ion-margin">Informations</h1>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-list lines="none">
+          <ion-item>
+            <fieldset class="input-item">
+              <legend>Offer name *</legend>
+              <ion-input formControlName="name" type="text" [clearInput]="true" minlength="5"
+              maxlength="100" required></ion-input>
+            </fieldset>
+          </ion-item>
+
+          <ion-row>
+            <ion-col size="6">
+              <ion-item>
+                <fieldset class="input-item">
+                  <legend>Start Date</legend>
+                  <ion-datetime-button datetime="startDate"></ion-datetime-button>
+                </fieldset>
+              </ion-item>
+              <ion-modal [keepContentsMounted]="true">
+                <ng-template>
+                  <ion-datetime presentation="date" id="startDate"
+                  formControlName="startDate"></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-col>
+            <ion-col size="6">
+              @if (!noEndDate) {
+                <ion-item>
+                  <fieldset class="input-item">
+                    <legend>End Date</legend>
+                    <ion-datetime-button datetime="endDate"></ion-datetime-button>
+                  </fieldset>
+                </ion-item>
+              }
+            </ion-col>
+            <ion-modal [keepContentsMounted]="true">
+              <ng-template>
+                <ion-datetime presentation="date" id="endDate" formControlName="endDate"></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </ion-row>
+          <ion-item>
+            <ion-toggle [(ngModel)]="noEndDate" (ionChange)="toggleEndDate()"
+            [ngModelOptions]="{standalone: true}">No Expiration Date</ion-toggle>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-accordion>
+
+    <!-- Offer details -->
+    <ion-accordion value="second">
+      <ion-item slot="header">
+        <h1 class="header-font ion-margin">Offer details</h1>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-list lines="none">
+          <ion-item counter="true">
+            <fieldset class="input-item">
+              <legend>Offer *</legend>
+              <ion-textarea formControlName="content" minlength="20" maxlength="1000" row="4"
+              [autoGrow]="true" placeholder="" required></ion-textarea>
+            </fieldset>
+          </ion-item>
+          <ion-item>
+            <fieldset class="input-item">
+              <ion-toggle [(ngModel)]="isPaymentTerms" (ionChange)="togglePaymentTerms()"
+              [ngModelOptions]="{standalone: true}">Monetary value ?</ion-toggle>
+            </fieldset>
+          </ion-item>
+          <ion-item>
+            <fieldset class="input-item">
+              <legend>Quantity (Optional)</legend>
+              <ion-input type="number" formControlName="quantity" maxlength="4"></ion-input>
+            </fieldset>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-accordion>
+
+    <!-- Conditions -->
+    <ion-accordion value="third">
+      <ion-item slot="header">
+        <h1 class="header-font ion-margin">Conditions</h1>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-list lines="none">
+          <ion-item counter="true">
+            <fieldset class="input-item">
+              <legend>Content Guidelines *</legend>
+              <ion-textarea formControlName="conditions" minlength="20" maxlength="1000" row="4"
+              [autoGrow]="true" placeholder="" required></ion-textarea>
+            </fieldset>
+          </ion-item>
+          <ion-item>
+            <fieldset class="input-item">
+              <legend>Mandatory Tags & Hashtags</legend>
+              <ion-input type="text" formControlName="tags" required [clearInput]="true"
+              maxlength="100"></ion-input>
+            </fieldset>
+          </ion-item>
+          <ion-item>
+            <fieldset class="input-item">
+              <legend>Publishing deadline (Optional)</legend>
+              <ion-input type="number" formControlName="publishingDeadline" maxlength="4"></ion-input>
+            </fieldset>
+          </ion-item>
+          <ion-item>
+            <fieldset class="input-item">
+              <ion-toggle [(ngModel)]="isApprovalRequired" (ionChange)="toggleApprovalRequired()"
+              [ngModelOptions]="{standalone: true}">Approval Required ?</ion-toggle>
+            </fieldset>
+          </ion-item>
+          @if (isApprovalRequired) {
+            <ion-item>
+              <fieldset class="input-item">
+                <legend>Contact to approve it</legend>
+                <ion-input type="text" formControlName="contactApprover" [clearInput]="true"
+                maxlength="100"></ion-input>
+              </fieldset>
             </ion-item>
-            <div class="ion-padding" slot="content">
-                <ion-list lines="none">
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Offer name *</legend>
-                            <ion-input formControlName="name" type="text" [clearInput]="true" minlength="5"
-                                maxlength="100" required></ion-input>
-                        </fieldset>
-                    </ion-item>
+          }
+        </ion-list>
+      </div>
+    </ion-accordion>
 
-                    <ion-row>
-                        <ion-col size="6">
-                            <ion-item>
-                                <fieldset class="input-item">
-                                    <legend>Start Date</legend>
-                                    <ion-datetime-button datetime="startDate"></ion-datetime-button>
-                                </fieldset>
-                            </ion-item>
-                            <ion-modal [keepContentsMounted]="true">
-                                <ng-template>
-                                    <ion-datetime presentation="date" id="startDate"
-                                        formControlName="startDate"></ion-datetime>
-                                </ng-template>
-                            </ion-modal>
-                        </ion-col>
-                        <ion-col size="6">
-                            <ion-item *ngIf="!noEndDate">
-                                <fieldset class="input-item">
-                                    <legend>End Date</legend>
-                                    <ion-datetime-button datetime="endDate"></ion-datetime-button>
-                                </fieldset>
-                            </ion-item>
-                        </ion-col>
-                        <ion-modal [keepContentsMounted]="true">
-                            <ng-template>
-                                <ion-datetime presentation="date" id="endDate" formControlName="endDate"></ion-datetime>
-                            </ng-template>
-                        </ion-modal>
-                    </ion-row>
-                    <ion-item>
-                        <ion-toggle [(ngModel)]="noEndDate" (ionChange)="toggleEndDate()"
-                            [ngModelOptions]="{standalone: true}">No Expiration Date</ion-toggle>
-                    </ion-item>
-                </ion-list>
-            </div>
-        </ion-accordion>
+    <!-- Additional Informations -->
+    <ion-accordion value="fourth">
+      <ion-item slot="header">
+        <h1 class="header-font ion-margin">Additional Informations</h1>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-list lines="none">
+          <ion-item>
+            <fieldset class="input-item">
+              <ion-toggle [(ngModel)]="isExclusivityClause" (ionChange)="toggleExclusivityClause()"
+              [ngModelOptions]="{standalone: true}">Exclusivity Clause ?</ion-toggle>
+            </fieldset>
+          </ion-item>
+          <ion-item counter="true">
+            <fieldset class="input-item">
+              <legend>Cancellation Policy</legend>
+              <ion-textarea formControlName="cancellationPolicy" maxlength="1000" [autoGrow]="true"
+              placeholder=""></ion-textarea>
+            </fieldset>
+          </ion-item>
+          <ion-item counter="true">
+            <fieldset class="input-item">
+              <legend>Special Instructions</legend>
+              <ion-textarea formControlName="specialInstructions" maxlength="1000" [autoGrow]="true"
+              placeholder=""></ion-textarea>
+            </fieldset>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-accordion>
 
-        <!-- Offer details -->
-        <ion-accordion value="second">
-            <ion-item slot="header">
-                <h1 class="header-font ion-margin">Offer details</h1>
+    <!-- Payment -->
+    @if (isPaymentTerms) {
+      <ion-accordion value="fith">
+        <ion-item slot="header">
+          <h1 class="header-font ion-margin">Payment</h1>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-list lines="none">
+            <ion-item>
+              <fieldset class="input-item">
+                <legend>Payment Amount</legend>
+                <ion-input type="number" formControlName="paymentAmount" maxlength="18"></ion-input>
+              </fieldset>
             </ion-item>
-            <div class="ion-padding" slot="content">
-                <ion-list lines="none">
-                    <ion-item counter="true">
-                        <fieldset class="input-item">
-                            <legend>Offer *</legend>
-                            <ion-textarea formControlName="content" minlength="20" maxlength="1000" row="4"
-                                [autoGrow]="true" placeholder="" required></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <ion-toggle [(ngModel)]="isPaymentTerms" (ionChange)="togglePaymentTerms()"
-                                [ngModelOptions]="{standalone: true}">Monetary value ?</ion-toggle>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Quantity (Optional)</legend>
-                            <ion-input type="number" formControlName="quantity" maxlength="4"></ion-input>
-                        </fieldset>
-                    </ion-item>
-                </ion-list>
-            </div>
-        </ion-accordion>
-
-        <!-- Conditions -->
-        <ion-accordion value="third">
-            <ion-item slot="header">
-                <h1 class="header-font ion-margin">Conditions</h1>
+            <ion-item>
+              <ion-select label="Payment terms" label-placement="floating" fill="outline"
+                placeholder="Select one payment terms" formControlName="paymentTerms">
+                <ion-select-option value="upfront">Upfront</ion-select-option>
+                <ion-select-option value="after">After completion</ion-select-option>
+                <ion-select-option value="both">Both</ion-select-option>
+              </ion-select>
             </ion-item>
-            <div class="ion-padding" slot="content">
-                <ion-list lines="none">
-                    <ion-item counter="true">
-                        <fieldset class="input-item">
-                            <legend>Content Guidelines *</legend>
-                            <ion-textarea formControlName="conditions" minlength="20" maxlength="1000" row="4"
-                                [autoGrow]="true" placeholder="" required></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Mandatory Tags & Hashtags</legend>
-                            <ion-input type="text" formControlName="tags" required [clearInput]="true"
-                                maxlength="100"></ion-input>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Publishing deadline (Optional)</legend>
-                            <ion-input type="number" formControlName="publishingDeadline" maxlength="4"></ion-input>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <ion-toggle [(ngModel)]="isApprovalRequired" (ionChange)="toggleApprovalRequired()"
-                                [ngModelOptions]="{standalone: true}">Approval Required ?</ion-toggle>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item *ngIf="isApprovalRequired">
-                        <fieldset class="input-item">
-                            <legend>Contact to approve it</legend>
-                            <ion-input type="text" formControlName="contactApprover" [clearInput]="true"
-                                maxlength="100"></ion-input>
-                        </fieldset>
-                    </ion-item>
-                </ion-list>
-            </div>
-        </ion-accordion>
+          </ion-list>
+        </div>
+      </ion-accordion>
+    }
 
-        <!-- Additional Informations -->
-        <ion-accordion value="fourth">
-            <ion-item slot="header">
-                <h1 class="header-font ion-margin">Additional Informations</h1>
+    <!-- Exclusivity Clause field -->
+    @if (isExclusivityClause) {
+      <ion-accordion value="sixth">
+        <ion-item slot="header">
+          <h1 class="header-font ion-margin">Exclusivity Clause</h1>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-list lines="none">
+            <ion-item>
+              <fieldset class="input-item">
+                <legend>Exclusivity Duration (days)
+                  <ion-icon name="information-circle-outline"
+                  (click)="showInfo('excluDuration')"></ion-icon>
+                </legend>
+                <ion-input type="number" formControlName="exclusivityDuration" maxlength="4"></ion-input>
+              </fieldset>
             </ion-item>
-            <div class="ion-padding" slot="content">
-                <ion-list lines="none">
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <ion-toggle [(ngModel)]="isExclusivityClause" (ionChange)="toggleExclusivityClause()"
-                                [ngModelOptions]="{standalone: true}">Exclusivity Clause ?</ion-toggle>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item counter="true">
-                        <fieldset class="input-item">
-                            <legend>Cancellation Policy</legend>
-                            <ion-textarea formControlName="cancellationPolicy" maxlength="1000" [autoGrow]="true"
-                                placeholder=""></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item counter="true">
-                        <fieldset class="input-item">
-                            <legend>Special Instructions</legend>
-                            <ion-textarea formControlName="specialInstructions" maxlength="1000" [autoGrow]="true"
-                                placeholder=""></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                </ion-list>
-            </div>
-        </ion-accordion>
-
-        <!-- Payment -->
-        <ion-accordion value="fith" *ngIf="isPaymentTerms">
-            <ion-item slot="header">
-                <h1 class="header-font ion-margin">Payment</h1>
+            <ion-toast [isOpen]="infoType === 'excluDuration'" message="How long the exclusivity lasts in days."
+            [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
+            <ion-item>
+              <fieldset class="input-item">
+                <legend>Restricted Competitors
+                  <ion-icon name="information-circle-outline"
+                  (click)="showInfo('restrictComp')"></ion-icon>
+                </legend>
+                <ion-textarea type="text" formControlName="restrictedCompetitors" maxlength="200"
+                [autoGrow]="true"></ion-textarea>
+              </fieldset>
             </ion-item>
-            <div class="ion-padding" slot="content">
-                <ion-list lines="none">
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Payment Amount</legend>
-                            <ion-input type="number" formControlName="paymentAmount" maxlength="18"></ion-input>
-                        </fieldset>
-                    </ion-item>
-                    <ion-item>
-                        <ion-select label="Payment terms" label-placement="floating" fill="outline"
-                            placeholder="Select one payment terms" formControlName="paymentTerms">
-                            <ion-select-option value="upfront">Upfront</ion-select-option>
-                            <ion-select-option value="after">After completion</ion-select-option>
-                            <ion-select-option value="both">Both</ion-select-option>
-                        </ion-select>
-                    </ion-item>
-                </ion-list>
-            </div>
-        </ion-accordion>
-
-        <!-- Exclusivity Clause field -->
-        <ion-accordion value="sixth" *ngIf="isExclusivityClause">
-            <ion-item slot="header">
-                <h1 class="header-font ion-margin">Exclusivity Clause</h1>
+            <ion-toast [isOpen]="infoType === 'restrictComp'"
+              message="List of brands/influencers they cannot work with." [duration]="5000"
+            (didDismiss)="dismissInfo()"></ion-toast>
+            <ion-item>
+              <fieldset class="input-item">
+                <legend>Scope of Exclusivity
+                  <ion-icon name="information-circle-outline" (click)="showInfo('scopeExclu')"></ion-icon>
+                </legend>
+                <ion-textarea type="text" formControlName="scopeExclusivity" maxlength="500"
+                [autoGrow]="true"></ion-textarea>
+              </fieldset>
             </ion-item>
-            <div class="ion-padding" slot="content">
-                <ion-list lines="none">
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Exclusivity Duration (days)
-                                <ion-icon name="information-circle-outline"
-                                    (click)="showInfo('excluDuration')"></ion-icon>
-                            </legend>
-                            <ion-input type="number" formControlName="exclusivityDuration" maxlength="4"></ion-input>
-                        </fieldset>
-                    </ion-item>
-                    <ion-toast [isOpen]="infoType === 'excluDuration'" message="How long the exclusivity lasts in days."
-                        [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
-
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Restricted Competitors
-                                <ion-icon name="information-circle-outline"
-                                    (click)="showInfo('restrictComp')"></ion-icon>
-                            </legend>
-                            <ion-textarea type="text" formControlName="restrictedCompetitors" maxlength="200"
-                                [autoGrow]="true"></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-toast [isOpen]="infoType === 'restrictComp'"
-                        message="List of brands/influencers they cannot work with." [duration]="5000"
-                        (didDismiss)="dismissInfo()"></ion-toast>
-
-                    <ion-item>
-                        <fieldset class="input-item">
-                            <legend>Scope of Exclusivity
-                                <ion-icon name="information-circle-outline" (click)="showInfo('scopeExclu')"></ion-icon>
-                            </legend>
-                            <ion-textarea type="text" formControlName="scopeExclusivity" maxlength="500"
-                                [autoGrow]="true"></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-toast [isOpen]="infoType === 'scopeExclu'"
-                        message="Specify if exclusivity applies to all platforms or just specific ones (e.g., Instagram only)."
-                        [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
-
-                    <ion-item>
-                        <ion-select label="Exclusivity Type" label-placement="floating" fill="outline"
-                            placeholder="Select one exclusivity type" formControlName="exclusivityType">
-                            <ion-select-option value="full">Full exclusivity</ion-select-option>
-                            <ion-select-option value="category">Category-based exclusivity</ion-select-option>
-                            <ion-select-option value="regional">Regional exclusivity</ion-select-option>
-                        </ion-select>
-                    </ion-item>
-
-                    <ion-item *ngIf="form.get('exclusivityType')?.value === 'full'">
-                        <fieldset class="input-item">
-                            <legend>Full exclusivity specification
-                                <ion-icon name="information-circle-outline" (click)="showInfo('fullExclu')"></ion-icon>
-                            </legend>
-                            <ion-textarea type="text" formControlName="exclusivitySpecification" maxlength="500"
-                                [autoGrow]="true"></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-toast [isOpen]="infoType === 'fullExclu'" message="No deals with competitors at all."
-                        [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
-
-                    <ion-item *ngIf="form.get('exclusivityType')?.value === 'category'">
-                        <fieldset class="input-item">
-                            <legend>Category of exclusivity
-                                <ion-icon name="information-circle-outline"
-                                    (click)="showInfo('categoryExclu')"></ion-icon>
-                            </legend>
-                            <ion-textarea type="text" formControlName="exclusivitySpecification" maxlength="500"
-                                placeholder="e.g. Restaurants, Clothing" [autoGrow]="true"></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-toast [isOpen]="infoType === 'categoryExclu'" message="No deals with a certain industry."
-                        [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
-
-                    <ion-item *ngIf="form.get('exclusivityType')?.value === 'regional'">
-                        <fieldset class="input-item">
-                            <legend>Region of exclusivity
-                                <ion-icon name="information-circle-outline"
-                                    (click)="showInfo('regionExclu')"></ion-icon>
-                            </legend>
-                            <ion-textarea type="text" formControlName="exclusivitySpecification" maxlength="500"
-                                placeholder="e.g. Mexico, Europe" [autoGrow]="true"></ion-textarea>
-                        </fieldset>
-                    </ion-item>
-                    <ion-toast [isOpen]="infoType === 'regionExclu'"
-                        message="No deals within a specific country, region or state." [duration]="5000"
-                        (didDismiss)="dismissInfo()"></ion-toast>
-
-                </ion-list>
-            </div>
-        </ion-accordion>
-    </ion-accordion-group>
-    <ion-button expand="block" shape="round" class="ion-padding" type="submit" [disabled]="form.invalid" >SAVE</ion-button>
+            <ion-toast [isOpen]="infoType === 'scopeExclu'"
+              message="Specify if exclusivity applies to all platforms or just specific ones (e.g., Instagram only)."
+            [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
+            <ion-item>
+              <ion-select label="Exclusivity Type" label-placement="floating" fill="outline"
+                placeholder="Select one exclusivity type" formControlName="exclusivityType">
+                <ion-select-option value="full">Full exclusivity</ion-select-option>
+                <ion-select-option value="category">Category-based exclusivity</ion-select-option>
+                <ion-select-option value="regional">Regional exclusivity</ion-select-option>
+              </ion-select>
+            </ion-item>
+            @if (form.get('exclusivityType')?.value === 'full') {
+              <ion-item>
+                <fieldset class="input-item">
+                  <legend>Full exclusivity specification
+                    <ion-icon name="information-circle-outline" (click)="showInfo('fullExclu')"></ion-icon>
+                  </legend>
+                  <ion-textarea type="text" formControlName="exclusivitySpecification" maxlength="500"
+                  [autoGrow]="true"></ion-textarea>
+                </fieldset>
+              </ion-item>
+            }
+            <ion-toast [isOpen]="infoType === 'fullExclu'" message="No deals with competitors at all."
+            [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
+            @if (form.get('exclusivityType')?.value === 'category') {
+              <ion-item>
+                <fieldset class="input-item">
+                  <legend>Category of exclusivity
+                    <ion-icon name="information-circle-outline"
+                    (click)="showInfo('categoryExclu')"></ion-icon>
+                  </legend>
+                  <ion-textarea type="text" formControlName="exclusivitySpecification" maxlength="500"
+                  placeholder="e.g. Restaurants, Clothing" [autoGrow]="true"></ion-textarea>
+                </fieldset>
+              </ion-item>
+            }
+            <ion-toast [isOpen]="infoType === 'categoryExclu'" message="No deals with a certain industry."
+            [duration]="5000" (didDismiss)="dismissInfo()"></ion-toast>
+            @if (form.get('exclusivityType')?.value === 'regional') {
+              <ion-item>
+                <fieldset class="input-item">
+                  <legend>Region of exclusivity
+                    <ion-icon name="information-circle-outline"
+                    (click)="showInfo('regionExclu')"></ion-icon>
+                  </legend>
+                  <ion-textarea type="text" formControlName="exclusivitySpecification" maxlength="500"
+                  placeholder="e.g. Mexico, Europe" [autoGrow]="true"></ion-textarea>
+                </fieldset>
+              </ion-item>
+            }
+            <ion-toast [isOpen]="infoType === 'regionExclu'"
+              message="No deals within a specific country, region or state." [duration]="5000"
+            (didDismiss)="dismissInfo()"></ion-toast>
+          </ion-list>
+        </div>
+      </ion-accordion>
+    }
+  </ion-accordion-group>
+  <ion-button expand="block" shape="round" class="ion-padding" type="submit" [disabled]="form.invalid" >SAVE</ion-button>
 </form>

@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonToggle } from "@ionic/angular/standalone";
@@ -10,7 +10,7 @@ import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.ser
     templateUrl: './company-main.component.html',
     styleUrls: ['../company.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, IonButton, IonItem, IonList, IonSelectOption, IonSelect, ReactiveFormsModule, FormsModule, IonInput, IonToggle]
+    imports: [FormsModule, IonButton, IonItem, IonList, IonSelectOption, IonSelect, ReactiveFormsModule, FormsModule, IonInput, IonToggle]
 })
 export class CompanyMainPage implements OnInit {
 

@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonInput, IonItem } from "@ionic/angular/standalone";
@@ -9,7 +9,7 @@ import { Address, AddressDto } from "src/app/models/address";
     templateUrl: './company-address.component.html',
     styleUrls: ['../company.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, IonButton, IonItem, IonInput]
+    imports: [FormsModule, ReactiveFormsModule, IonButton, IonItem, IonInput]
 })
 export class CompanyAddressPage implements OnInit {
     @Input() addressEdit!: Partial<Address>;

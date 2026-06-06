@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject, Input, OnInit } from "@angular/core";
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
@@ -14,7 +14,7 @@ import { ToastService } from "src/app/services/toast.service";
     templateUrl: './offer-edit.page.html',
     styleUrls: ['./offer-edit.page.scss'],
     standalone: true,
-    imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, OfferFormComponent, CommonModule]
+    imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, OfferFormComponent]
 })
 export class OfferEditPage implements OnInit {
     @Input() offerId!: number;

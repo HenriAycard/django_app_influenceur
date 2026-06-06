@@ -1,10 +1,12 @@
-<ion-item  *ngFor="let collaboration of collaborations" detail="true" button (click)="displayInfo(collaboration)">
+@for (collaboration of collaborations; track collaboration) {
+  <ion-item  detail="true" button (click)="displayInfo(collaboration)">
     <ion-thumbnail slot="start">
-        <img [src]="collaboration.user.avatar || 'assets/profile/default-profile.png'" alt="Influencer avatar" />
+      <img [src]="collaboration.user.avatar || 'assets/profile/default-profile.png'" alt="Influencer avatar" />
     </ion-thumbnail>
     <ion-label>
-        <h3 class="bold">{{ collaboration.user.firstname }} {{ collaboration.user.lastname }}</h3>
-        <p>{{ collaboration.offer.company.nameCompany }}</p>
-        <p class="blueColor">{{ collaboration.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
+      <h3 class="bold">{{ collaboration.user.firstname }} {{ collaboration.user.lastname }}</h3>
+      <p>{{ collaboration.offer.company.nameCompany }}</p>
+      <p class="blueColor">{{ collaboration.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
     </ion-label>
-</ion-item>
+  </ion-item>
+}

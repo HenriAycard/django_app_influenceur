@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -13,7 +13,7 @@ import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.ser
     templateUrl: './profile-edit.page.html',
     styleUrls: ['./profile-edit.page.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, IonButton, IonItem,  ReactiveFormsModule, FormsModule, IonInput,IonContent, IonTitle, IonBackButton, IonButtons, IonToolbar, IonHeader]
+    imports: [FormsModule, IonButton, IonItem, ReactiveFormsModule, FormsModule, IonInput, IonContent, IonTitle, IonBackButton, IonButtons, IonToolbar, IonHeader]
 })
 export class ProfileEditPage implements OnInit {
 

@@ -1,169 +1,196 @@
 <ion-header>
-    <ion-toolbar>
-        <ion-buttons slot="start">
-            <ion-back-button href></ion-back-button>
-        </ion-buttons>
-        <ion-title *ngIf="isLoad">{{ offer.name }}</ion-title>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button href></ion-back-button>
+    </ion-buttons>
+    @if (isLoad) {
+      <ion-title>{{ offer.name }}</ion-title>
+    }
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <div *ngIf="isLoad">
-        <!-- Informations -->
-        <ion-card *hasRole="['COMPANY']">
-            <ion-card-header>
-                <ion-card-title>Informations</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-list lines="none">
-                    <ion-item>
-                        <ion-label><strong>Offer Availability:</strong></ion-label>
-                        <ion-text>{{ noEndDate ? 'Available' : (offer.endDate ? ('Available until ' +
-                            (offer.endDate | date)) : 'Not specified') }}</ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.quantity">
-                        <ion-label class="inline-label"><strong>Quantity:</strong></ion-label>
-                        <span class="inline-text">{{ offer.quantity }}</span>
-                    </ion-item>
-                    <ion-item *ngIf="offer.publishingDeadline">
-                        <ion-label><strong>Publishing deadline:</strong></ion-label>
-                        <ion-text>{{ offer.publishingDeadline }} days</ion-text>
-                    </ion-item>
-                </ion-list>
-            </ion-card-content>
-        </ion-card>
-
-        <!-- Offer details -->
+  @if (isLoad) {
+    <div>
+      <!-- Informations -->
+      <ion-card *hasRole="['COMPANY']">
+        <ion-card-header>
+          <ion-card-title>Informations</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list lines="none">
+            <ion-item>
+              <ion-label><strong>Offer Availability:</strong></ion-label>
+              <ion-text>{{ noEndDate ? 'Available' : (offer.endDate ? ('Available until ' +
+              (offer.endDate | date)) : 'Not specified') }}</ion-text>
+            </ion-item>
+            @if (offer.quantity) {
+              <ion-item>
+                <ion-label class="inline-label"><strong>Quantity:</strong></ion-label>
+                <span class="inline-text">{{ offer.quantity }}</span>
+              </ion-item>
+            }
+            @if (offer.publishingDeadline) {
+              <ion-item>
+                <ion-label><strong>Publishing deadline:</strong></ion-label>
+                <ion-text>{{ offer.publishingDeadline }} days</ion-text>
+              </ion-item>
+            }
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <!-- Offer details -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Offer details</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list lines="none">
+            <ion-item>
+              <ion-text>
+                <p>{{ offer.content }}</p>
+              </ion-text>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <!-- Conditions -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Conditions</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-list lines="none">
+            <ion-item>
+              <ion-text>
+                <h2>Conditions:</h2>
+                <p>{{ offer.conditions }}</p>
+              </ion-text>
+            </ion-item>
+            <ion-item>
+              <ion-text>
+                <p><strong>Mandatory Tags & Hashtags: </strong>{{ offer.tags }}</p>
+              </ion-text>
+            </ion-item>
+            @if (offer.contactApprover) {
+              <ion-item>
+                <ion-text>
+                  <p><strong>Contact to approve: </strong>{{ offer.contactApprover }}</p>
+                </ion-text>
+              </ion-item>
+            }
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <!-- Additional Informations -->
+      @if (isAdditionalInfos) {
         <ion-card>
-            <ion-card-header>
-                <ion-card-title>Offer details</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-list lines="none">
-                    <ion-item>
-                        <ion-text>
-                            <p>{{ offer.content }}</p>
-                        </ion-text>
-                    </ion-item>
-                </ion-list>
-            </ion-card-content>
+          <ion-card-header>
+            <ion-card-title>Additional Informations</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none">
+              @if (offer.cancellationPolicy) {
+                <ion-item>
+                  <ion-text>
+                    <h2>Cancellation Policy:</h2>
+                    <p>{{ offer.cancellationPolicy }}</p>
+                  </ion-text>
+                </ion-item>
+              }
+              @if (offer.specialInstructions) {
+                <ion-item>
+                  <ion-text>
+                    <h2>Special Instructions:</h2>
+                    <p>{{ offer.specialInstructions }}</p>
+                  </ion-text>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-card-content>
         </ion-card>
-
-        <!-- Conditions -->
+      }
+      <!-- Payment -->
+      @if (isPaymentTerms) {
         <ion-card>
-            <ion-card-header>
-                <ion-card-title>Conditions</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-list lines="none">
-                    <ion-item>
-                        <ion-text>
-                            <h2>Conditions:</h2>
-                            <p>{{ offer.conditions }}</p>
-                        </ion-text>
-                    </ion-item>
-                    <ion-item>
-                        <ion-text>
-                            <p><strong>Mandatory Tags & Hashtags: </strong>{{ offer.tags }}</p>
-                        </ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.contactApprover">
-                        <ion-text>
-                            <p><strong>Contact to approve: </strong>{{ offer.contactApprover }}</p>
-                        </ion-text>
-                    </ion-item>
-                </ion-list>
-            </ion-card-content>
+          <ion-card-header>
+            <ion-card-title>Payment</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none">
+              @if (offer.paymentAmount) {
+                <ion-item>
+                  <ion-label><strong>Payment Amount:</strong></ion-label>
+                  <ion-text>{{ offer.paymentAmount }}</ion-text>
+                </ion-item>
+              }
+              @if (offer.paymentTerms) {
+                <ion-item>
+                  <ion-label><strong>Payment terms:</strong></ion-label>
+                  <ion-text>{{ offer.paymentTerms }} days</ion-text>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-card-content>
         </ion-card>
-
-        <!-- Additional Informations -->
-        <ion-card *ngIf="isAdditionalInfos">
-            <ion-card-header>
-                <ion-card-title>Additional Informations</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-list lines="none">
-                    <ion-item *ngIf="offer.cancellationPolicy">
-                        <ion-text>
-                            <h2>Cancellation Policy:</h2>
-                            <p>{{ offer.cancellationPolicy }}</p>
-                        </ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.specialInstructions">
-                        <ion-text>
-                            <h2>Special Instructions:</h2>
-                            <p>{{ offer.specialInstructions }}</p>
-                        </ion-text>
-                    </ion-item>
-                </ion-list>
-            </ion-card-content>
+      }
+      <!-- Exclusivity Clause -->
+      @if (isExclusivityClause) {
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Exclusivity Clause</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none">
+              @if (offer.exclusivityDuration) {
+                <ion-item>
+                  <ion-label><strong>Exclusivity Duration:</strong></ion-label>
+                  <ion-text>{{ offer.exclusivityDuration }} days</ion-text>
+                </ion-item>
+              }
+              @if (offer.exclusivityType) {
+                <ion-item>
+                  <ion-label><strong>Exclusivity Type:</strong></ion-label>
+                  <ion-text>{{ offer.exclusivityType }} days</ion-text>
+                </ion-item>
+              }
+              @if (offer.exclusivitySpecification) {
+                <ion-item>
+                  <ion-text>
+                    <h2>Exclusivity Specification:</h2>
+                    <p>{{ offer.exclusivitySpecification }}</p>
+                  </ion-text>
+                </ion-item>
+              }
+              @if (offer.restrictedCompetitors) {
+                <ion-item>
+                  <ion-text>
+                    <h2>Restricted Competitors:</h2>
+                    <p>{{ offer.restrictedCompetitors }}</p>
+                  </ion-text>
+                </ion-item>
+              }
+              @if (offer.scopeExclusivity) {
+                <ion-item>
+                  <ion-text>
+                    <h2>Scope of Exclusivity:</h2>
+                    <p>{{ offer.scopeExclusivity }}</p>
+                  </ion-text>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-card-content>
         </ion-card>
-
-        <!-- Payment -->
-        <ion-card *ngIf="isPaymentTerms">
-            <ion-card-header>
-                <ion-card-title>Payment</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-list lines="none">
-                    <ion-item *ngIf="offer.paymentAmount">
-                        <ion-label><strong>Payment Amount:</strong></ion-label>
-                        <ion-text>{{ offer.paymentAmount }}</ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.paymentTerms">
-                        <ion-label><strong>Payment terms:</strong></ion-label>
-                        <ion-text>{{ offer.paymentTerms }} days</ion-text>
-                    </ion-item>
-                </ion-list>
-            </ion-card-content>
-        </ion-card>
-
-        <!-- Exclusivity Clause -->
-        <ion-card *ngIf="isExclusivityClause">
-            <ion-card-header>
-                <ion-card-title>Exclusivity Clause</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-                <ion-list lines="none">
-                    <ion-item *ngIf="offer.exclusivityDuration">
-                        <ion-label><strong>Exclusivity Duration:</strong></ion-label>
-                        <ion-text>{{ offer.exclusivityDuration }} days</ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.exclusivityType">
-                        <ion-label><strong>Exclusivity Type:</strong></ion-label>
-                        <ion-text>{{ offer.exclusivityType }} days</ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.exclusivitySpecification">
-                        <ion-text>
-                            <h2>Exclusivity Specification:</h2>
-                            <p>{{ offer.exclusivitySpecification }}</p>
-                        </ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.restrictedCompetitors">
-                        <ion-text>
-                            <h2>Restricted Competitors:</h2>
-                            <p>{{ offer.restrictedCompetitors }}</p>
-                        </ion-text>
-                    </ion-item>
-                    <ion-item *ngIf="offer.scopeExclusivity">
-                        <ion-text>
-                            <h2>Scope of Exclusivity:</h2>
-                            <p>{{ offer.scopeExclusivity }}</p>
-                        </ion-text>
-                    </ion-item>
-                </ion-list>
-            </ion-card-content>
-        </ion-card>
-
-        <ion-button *hasRole="['INFLUENCER']" expand="block" shape="round" class="ion-padding"
-            (click)="openModal()">ACCEPT</ion-button>
-
+      }
+      <ion-button *hasRole="['INFLUENCER']" expand="block" shape="round" class="ion-padding"
+      (click)="openModal()">ACCEPT</ion-button>
     </div>
+  }
 
-    <ion-modal #modal [isOpen]="isModalOpen" [canDismiss]="canDismiss" [presentingElement]="presentingElement">
-        <ng-template>
-            <app-modal-new-reservation [modal]="modal" [idOffer]="offerId"
-                (dismissChange)="onDismissChange($event)"></app-modal-new-reservation>
-        </ng-template>
-    </ion-modal>
+  <ion-modal #modal [isOpen]="isModalOpen" [canDismiss]="canDismiss" [presentingElement]="presentingElement">
+    <ng-template>
+      <app-modal-new-reservation [modal]="modal" [idOffer]="offerId"
+      (dismissChange)="onDismissChange($event)"></app-modal-new-reservation>
+    </ng-template>
+  </ion-modal>
 </ion-content>

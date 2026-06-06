@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonButton, IonCol, IonContent, IonIcon, IonItem, IonProgressBar, IonRow } from '@ionic/angular/standalone';
@@ -24,7 +24,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './create.page.html',
   styleUrls: ['./create.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, IonButton, IonItem, IonIcon, IonProgressBar, IonRow, IonCol, CompanyMainPage, CompanyDescriptionPage, CompanyAddressPage, CompanyOpeningDayPage, CompanyPicturePage, CompanySocialMediaComponent]
+  imports: [IonContent, IonButton, IonItem, IonIcon, IonProgressBar, IonRow, IonCol, CompanyMainPage, CompanyDescriptionPage, CompanyAddressPage, CompanyOpeningDayPage, CompanyPicturePage, CompanySocialMediaComponent]
 })
 export class CreatePage {
 

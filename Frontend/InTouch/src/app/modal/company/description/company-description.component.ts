@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonItem, IonLabel, IonTextarea } from "@ionic/angular/standalone";
@@ -8,7 +8,7 @@ import { IonButton, IonItem, IonLabel, IonTextarea } from "@ionic/angular/standa
     templateUrl: './company-description.component.html',
     styleUrls: ['../company.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, IonButton, IonItem, IonLabel, IonTextarea]
+    imports: [FormsModule, ReactiveFormsModule, IonButton, IonItem, IonLabel, IonTextarea]
 })
 export class CompanyDescriptionPage implements OnInit {
     @Input() descriptionEdit!: string;
