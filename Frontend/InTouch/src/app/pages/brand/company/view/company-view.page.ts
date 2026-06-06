@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController } from '@ionic/angular/standalone';
@@ -16,7 +16,7 @@ import { VenueStore } from 'src/app/features/venues/venue.store';
     templateUrl: './company-view.page.html',
     styleUrls: ['./company-view.page.scss'],
     standalone: true,
-    imports: [IonContent, CommonModule, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, CompanyMainViewPage, CompanySkeletonComponent]
+    imports: [IonContent, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, CompanyMainViewPage, CompanySkeletonComponent]
 })
 export class CompanyViewPage {
   @Input() companyId!: number;

@@ -10,80 +10,83 @@
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
+
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Calendar</ion-title>
     </ion-toolbar>
   </ion-header>
-    
-    <ion-accordion-group class="ion-padding">
-      <ion-accordion value="first">
-        <ion-item slot="header" color="light">
-          <ion-icon name="help-outline" slot="start"></ion-icon>
-          <ion-label label>Waiting your answer</ion-label>
-          <ion-label slot="end" class="no-margin">{{ store.bWaitingCount() }}</ion-label>
-        </ion-item>
-        <div slot="content">
-          <app-calendar-company [collaborations]="store.bWaiting()"></app-calendar-company>
-        </div>
-      </ion-accordion>
 
-      <ion-accordion value="second">
-        <ion-item slot="header" color="light">
-          <ion-icon name="time-outline" slot="start"></ion-icon>
-          <ion-label>Last experiences</ion-label>
-          <ion-label slot="end" class="no-margin">{{ store.bPastCount() }}</ion-label>
-        </ion-item>
-        <div slot="content">
-          <app-calendar-company [collaborations]="store.bPast()"></app-calendar-company>
-        </div>
-      </ion-accordion>
+  <ion-accordion-group class="ion-padding">
+    <ion-accordion value="first">
+      <ion-item slot="header" color="light">
+        <ion-icon name="help-outline" slot="start"></ion-icon>
+        <ion-label label>Waiting your answer</ion-label>
+        <ion-label slot="end" class="no-margin">{{ store.bWaitingCount() }}</ion-label>
+      </ion-item>
+      <div slot="content">
+        <app-calendar-company [collaborations]="store.bWaiting()"></app-calendar-company>
+      </div>
+    </ion-accordion>
 
-      <ion-accordion value="third">
-        <ion-item slot="header" color="light">
-          <ion-icon name="close-outline" slot="start"></ion-icon>
-          <ion-label>Rejected</ion-label>
-          <ion-label slot="end" class="no-margin">{{ store.bDeclinedCount() }}</ion-label>
-        </ion-item>
-        <div slot="content">
-          <app-calendar-company [collaborations]="store.bDeclined()"></app-calendar-company>
-        </div>
-      </ion-accordion>
-    </ion-accordion-group>
+    <ion-accordion value="second">
+      <ion-item slot="header" color="light">
+        <ion-icon name="time-outline" slot="start"></ion-icon>
+        <ion-label>Last experiences</ion-label>
+        <ion-label slot="end" class="no-margin">{{ store.bPastCount() }}</ion-label>
+      </ion-item>
+      <div slot="content">
+        <app-calendar-company [collaborations]="store.bPast()"></app-calendar-company>
+      </div>
+    </ion-accordion>
 
-    <ion-text>
-      <h2 class="ion-padding">Coming soon</h2>
+    <ion-accordion value="third">
+      <ion-item slot="header" color="light">
+        <ion-icon name="close-outline" slot="start"></ion-icon>
+        <ion-label>Rejected</ion-label>
+        <ion-label slot="end" class="no-margin">{{ store.bDeclinedCount() }}</ion-label>
+      </ion-item>
+      <div slot="content">
+        <app-calendar-company [collaborations]="store.bDeclined()"></app-calendar-company>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-text>
+    <h2 class="ion-padding">Coming soon</h2>
+  </ion-text>
+  <p>
+    <ion-text class="ion-padding">
+      {{ store.bComingSoonCount() }} experience(s) to come
     </ion-text>
-    <p>
-      <ion-text class="ion-padding">
-        {{ store.bComingSoonCount() }} experience(s) to come
-      </ion-text>
-    </p>
+  </p>
 
   <ion-grid color="light">
-    <ion-row *ngFor="let comingSoon of store.bComingSoonByDate()">
-      <!-- Date Column -->
-      <ion-col size="2" class="date-col">
-        <p class="day">{{ comingSoon.date | date:'EEE' }}</p>
-        <p class="date">{{ comingSoon.date | date:'d' }}</p>
-      </ion-col>
-
-      <!-- Events Column -->
-      <ion-col size="10">
-        <div *ngFor="let valComingSoon of comingSoon.valeur">
-          <ion-card class="event-card" button (click)="displayInfo(valComingSoon)">
-            <ion-card-header>
-              <ion-card-title>{{ valComingSoon.user.firstname }} {{ valComingSoon.user.lastname }}</ion-card-title>
-              <ion-card-subtitle>{{ valComingSoon.offer.company.nameCompany }}</ion-card-subtitle>
-            </ion-card-header>
-            <ion-card-content>
-              <span class="event-info">{{ valComingSoon.offer.name }} at {{ valComingSoon.dateReservation | date:'h:mm a'}}</span>
-            </ion-card-content>
-          </ion-card>
-        </div>
-      </ion-col>
-    </ion-row>
+    @for (comingSoon of store.bComingSoonByDate(); track comingSoon) {
+      <ion-row>
+        <!-- Date Column -->
+        <ion-col size="2" class="date-col">
+          <p class="day">{{ comingSoon.date | date:'EEE' }}</p>
+          <p class="date">{{ comingSoon.date | date:'d' }}</p>
+        </ion-col>
+        <!-- Events Column -->
+        <ion-col size="10">
+          @for (valComingSoon of comingSoon.valeur; track valComingSoon) {
+            <div>
+              <ion-card class="event-card" button (click)="displayInfo(valComingSoon)">
+                <ion-card-header>
+                  <ion-card-title>{{ valComingSoon.user.firstname }} {{ valComingSoon.user.lastname }}</ion-card-title>
+                  <ion-card-subtitle>{{ valComingSoon.offer.company.nameCompany }}</ion-card-subtitle>
+                </ion-card-header>
+                <ion-card-content>
+                  <span class="event-info">{{ valComingSoon.offer.name }} at {{ valComingSoon.dateReservation | date:'h:mm a'}}</span>
+                </ion-card-content>
+              </ion-card>
+            </div>
+          }
+        </ion-col>
+      </ion-row>
+    }
   </ion-grid>
 
 </ion-content>

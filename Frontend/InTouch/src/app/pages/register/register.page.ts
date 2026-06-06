@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { UserParam } from 'src/app/models/users';
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, IonItem, IonButton, IonInput, ReactiveFormsModule]
+  imports: [IonContent, FormsModule, IonItem, IonButton, IonInput, ReactiveFormsModule]
 })
 export class RegisterPage {
 

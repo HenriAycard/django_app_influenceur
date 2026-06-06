@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
@@ -13,7 +13,7 @@ import { Offer } from "src/app/shared/models";
     templateUrl: './offer-form.component.html',
     styleUrls: ['./offer-form.component.scss'],
     standalone: true,
-    imports: [RouterModule, ReactiveFormsModule, FormsModule, IonItem, IonTextarea, IonInput, IonCol, IonRow, IonButton, IonRow, IonCol, IonToggle, IonDatetime, IonList, CommonModule, IonDatetimeButton, IonModal, IonAccordionGroup, IonAccordion, IonSelectOption, IonSelect, IonIcon, IonToast]
+    imports: [RouterModule, ReactiveFormsModule, FormsModule, IonItem, IonTextarea, IonInput, IonCol, IonRow, IonButton, IonRow, IonCol, IonToggle, IonDatetime, IonList, IonDatetimeButton, IonModal, IonAccordionGroup, IonAccordion, IonSelectOption, IonSelect, IonIcon, IonToast]
 })
 export class OfferFormComponent implements OnInit {
 

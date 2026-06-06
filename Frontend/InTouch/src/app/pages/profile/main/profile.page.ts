@@ -1,5 +1,5 @@
 import { Component, ViewChild, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
@@ -14,7 +14,7 @@ import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, IonItem, IonIcon, IonLabel, IonList, FormsModule, ReactiveFormsModule, IonButton, IonModal, IonTitle, IonToolbar, IonHeader, RouterLink]
+  imports: [IonContent, FormsModule, IonItem, IonIcon, IonLabel, IonList, FormsModule, ReactiveFormsModule, IonButton, IonModal, IonTitle, IonToolbar, IonHeader, RouterLink]
 })
 export class ProfilePage {
 
@@ -88,7 +88,8 @@ export class ProfilePage {
       byteArrays.push(byteArray);
     }
 
-    return new Blob(byteArrays, { type: contentType });
+    const blobParts: BlobPart[] = byteArrays.map(b => new Uint8Array(b));
+    return new Blob(blobParts, { type: contentType });
   }
 
 }

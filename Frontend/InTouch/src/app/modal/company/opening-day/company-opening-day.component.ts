@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonText, IonTitle, IonToggle, IonToolbar } from "@ionic/angular/standalone";
@@ -10,7 +10,7 @@ import { PickerOpeningDay } from "../../picker/opening-day/picker-opening-day.co
     templateUrl: './company-opening-day.component.html',
     styleUrls: ['../company.component.scss'],
     standalone: true,
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, IonButton, IonItem, IonLabel, IonItemOption, IonItemSliding, IonList, IonToggle, IonChip, IonText, IonContent, IonItemOptions, IonButtons, IonTitle, IonToolbar, IonIcon, IonHeader, IonModal, PickerOpeningDay]
+    imports: [FormsModule, ReactiveFormsModule, IonButton, IonItem, IonLabel, IonItemOption, IonItemSliding, IonList, IonToggle, IonChip, IonText, IonContent, IonItemOptions, IonButtons, IonTitle, IonToolbar, IonIcon, IonHeader, IonModal, PickerOpeningDay]
 })
 export class CompanyOpeningDayPage implements OnInit {
     @ViewChild(IonModal) modal!: IonModal;

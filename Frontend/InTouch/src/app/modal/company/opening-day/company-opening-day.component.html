@@ -1,101 +1,109 @@
 <h1 class="heading item-text-wrap">📅 When are you open ?</h1>
 <ion-button id="open-modal" expand="block">
-    <ion-icon name="add-circle-outline" style="margin-right: 10px;"></ion-icon>ADD OPENING DAY
+  <ion-icon name="add-circle-outline" style="margin-right: 10px;"></ion-icon>ADD OPENING DAY
 </ion-button>
 <ion-modal trigger="open-modal" (willPresent)="onWillPresent()">
-    <ng-template>
-        <ion-header>
-            <ion-toolbar>
-                <ion-buttons slot="start">
-                    <ion-button (click)="cancel()">Cancel</ion-button>
-                </ion-buttons>
-                <ion-title>New opening date</ion-title>
-                <ion-buttons slot="end">
-                    <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
-                </ion-buttons>
-            </ion-toolbar>
-        </ion-header>
-        <ion-content class="ion-padding">
-            <ion-text>
-                <p>Select the days open</p>
-            </ion-text>
-            <ion-label>
-                <ion-chip [id]="day.id" [color]="tagDefaultColor[i]" (click)="changeTagColor(i)"
-                    *ngFor="let day of daysChip;let i = index">
-                    <ion-label>{{day.name}}</ion-label>
-                </ion-chip>
-            </ion-label>
-            <ion-item>
-                <ion-label>Open</ion-label>
-                <ion-button id="open-picker-startDate">{{ opening.get(openingDayEnum.START_DATE) }}</ion-button>
-                <ion-modal trigger="open-picker-startDate" class="picker-modal">
-                    <ng-template>
-                        <app-picker-opening-day
-                            [openingEdit]="opening.get(openingDayEnum.START_DATE)"
-                            [value]="openingDayEnum.START_DATE"
-                            (opening)="onTimeSelected($event)"
-                            ></app-picker-opening-day>
-                    </ng-template>
-                </ion-modal>
-            </ion-item>
-            <ion-item>
-                <ion-label>Close</ion-label>
-                <ion-button id="open-picker-endDate">{{ opening.get(openingDayEnum.END_DATE) }}</ion-button>
-                <ion-modal trigger="open-picker-endDate" class="picker-modal">
-                    <ng-template>
-                        <app-picker-opening-day
-                            [openingEdit]="opening.get(openingDayEnum.END_DATE)"
-                            [value]="openingDayEnum.END_DATE"
-                            (opening)="onTimeSelected($event)"
-                            ></app-picker-opening-day>
-                    </ng-template>
-                </ion-modal>
-            </ion-item>
-            <ion-item lines="inset">
-                <ion-label>Break hours</ion-label>
-                <ion-toggle slot="end" [checked]="isBreak" [(ngModel)]="isBreak" [ngModelOptions]="{standalone: true}"
-                    (ionChange)="setBreak()"></ion-toggle>
-            </ion-item>
-            <ion-item *ngIf="isBreak">
-                <ion-label>Break start</ion-label>
-                <ion-button id="open-picker-pauseStart">{{ opening.get(openingDayEnum.PAUSE_START) }}</ion-button>
-                <ion-modal trigger="open-picker-pauseStart" class="picker-modal">
-                    <ng-template>
-                        <app-picker-opening-day
-                            [openingEdit]="opening.get(openingDayEnum.PAUSE_START)"
-                            [value]="openingDayEnum.PAUSE_START"
-                            (opening)="onTimeSelected($event)"
-                            ></app-picker-opening-day>
-                    </ng-template>
-                </ion-modal>
-            </ion-item>
-            <ion-item *ngIf="isBreak">
-                <ion-label>Break end</ion-label>
-                <ion-button id="open-picker-pauseEnd">{{ opening.get(openingDayEnum.PAUSE_END) }}</ion-button>
-                <ion-modal trigger="open-picker-pauseEnd" class="picker-modal">
-                    <ng-template>
-                        <app-picker-opening-day
-                            [openingEdit]="opening.get(openingDayEnum.PAUSE_END)"
-                            [value]="openingDayEnum.PAUSE_END"
-                            (opening)="onTimeSelected($event)"
-                            ></app-picker-opening-day>
-                    </ng-template>
-                </ion-modal>
-            </ion-item>
-        </ion-content>
-    </ng-template>
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+        </ion-buttons>
+        <ion-title>New opening date</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-text>
+        <p>Select the days open</p>
+      </ion-text>
+      <ion-label>
+        @for (day of daysChip; track day; let i = $index) {
+          <ion-chip [id]="day.id" [color]="tagDefaultColor[i]" (click)="changeTagColor(i)"
+            >
+            <ion-label>{{day.name}}</ion-label>
+          </ion-chip>
+        }
+      </ion-label>
+      <ion-item>
+        <ion-label>Open</ion-label>
+        <ion-button id="open-picker-startDate">{{ opening.get(openingDayEnum.START_DATE) }}</ion-button>
+        <ion-modal trigger="open-picker-startDate" class="picker-modal">
+          <ng-template>
+            <app-picker-opening-day
+              [openingEdit]="opening.get(openingDayEnum.START_DATE)"
+              [value]="openingDayEnum.START_DATE"
+              (opening)="onTimeSelected($event)"
+            ></app-picker-opening-day>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <ion-item>
+        <ion-label>Close</ion-label>
+        <ion-button id="open-picker-endDate">{{ opening.get(openingDayEnum.END_DATE) }}</ion-button>
+        <ion-modal trigger="open-picker-endDate" class="picker-modal">
+          <ng-template>
+            <app-picker-opening-day
+              [openingEdit]="opening.get(openingDayEnum.END_DATE)"
+              [value]="openingDayEnum.END_DATE"
+              (opening)="onTimeSelected($event)"
+            ></app-picker-opening-day>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <ion-item lines="inset">
+        <ion-label>Break hours</ion-label>
+        <ion-toggle slot="end" [checked]="isBreak" [(ngModel)]="isBreak" [ngModelOptions]="{standalone: true}"
+        (ionChange)="setBreak()"></ion-toggle>
+      </ion-item>
+      @if (isBreak) {
+        <ion-item>
+          <ion-label>Break start</ion-label>
+          <ion-button id="open-picker-pauseStart">{{ opening.get(openingDayEnum.PAUSE_START) }}</ion-button>
+          <ion-modal trigger="open-picker-pauseStart" class="picker-modal">
+            <ng-template>
+              <app-picker-opening-day
+                [openingEdit]="opening.get(openingDayEnum.PAUSE_START)"
+                [value]="openingDayEnum.PAUSE_START"
+                (opening)="onTimeSelected($event)"
+              ></app-picker-opening-day>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+      }
+      @if (isBreak) {
+        <ion-item>
+          <ion-label>Break end</ion-label>
+          <ion-button id="open-picker-pauseEnd">{{ opening.get(openingDayEnum.PAUSE_END) }}</ion-button>
+          <ion-modal trigger="open-picker-pauseEnd" class="picker-modal">
+            <ng-template>
+              <app-picker-opening-day
+                [openingEdit]="opening.get(openingDayEnum.PAUSE_END)"
+                [value]="openingDayEnum.PAUSE_END"
+                (opening)="onTimeSelected($event)"
+              ></app-picker-opening-day>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+      }
+    </ion-content>
+  </ng-template>
 </ion-modal>
 
 <ion-list>
-    <ion-item-sliding lines="inset" *ngFor="let data of openingDayEdit;let i = index">
-        <ion-item>
-            <ion-label>{{ data.day }}:</ion-label>
-            <ion-label>{{ data.openHour }}-{{ data.closeHour }}</ion-label>
-        </ion-item>
-        <ion-item-options side="end">
-            <ion-item-option color="danger" (click)="deleteOpeningDate(data.idDay)">Delete</ion-item-option>
-        </ion-item-options>
+  @for (data of openingDayEdit; track data; let i = $index) {
+    <ion-item-sliding lines="inset">
+      <ion-item>
+        <ion-label>{{ data.day }}:</ion-label>
+        <ion-label>{{ data.openHour }}-{{ data.closeHour }}</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="deleteOpeningDate(data.idDay)">Delete</ion-item-option>
+      </ion-item-options>
     </ion-item-sliding>
+  }
 </ion-list>
 
 <ion-button class="ion-padding-vertical" shape="round" (click)="addNewOpeningDay()" expand="block">NEXT</ion-button>

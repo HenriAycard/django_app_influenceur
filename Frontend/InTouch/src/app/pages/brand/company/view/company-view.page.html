@@ -1,49 +1,52 @@
 <ion-content>
-    <!-- Pull-to-refresh -->
-    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+  <!-- Pull-to-refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-    <!-- Floating Action Buttons -->
-    <ion-fab slot="fixed" vertical="top" horizontal="start">
-        <ion-fab-button (click)="back()" fill="clear" class="fab-bg">
-            <ion-icon name="close" color="light"></ion-icon>
+  <!-- Floating Action Buttons -->
+  <ion-fab slot="fixed" vertical="top" horizontal="start">
+    <ion-fab-button (click)="back()" fill="clear" class="fab-bg">
+      <ion-icon name="close" color="light"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  @if (store.loaded()) {
+    <div>
+      <app-company-main-view [company]="store.company()!"></app-company-main-view>
+      <ion-fab slot="fixed" vertical="top" horizontal="end">
+        <ion-fab-button>
+          <ion-icon name="chevron-down-circle"></ion-icon>
         </ion-fab-button>
-    </ion-fab>
-
-    <div *ngIf="store.loaded()">
-        <app-company-main-view [company]="store.company()!"></app-company-main-view>
-
-        <ion-fab slot="fixed" vertical="top" horizontal="end">
-            <ion-fab-button>
-                <ion-icon name="chevron-down-circle"></ion-icon>
-            </ion-fab-button>
-            <ion-fab-list side="bottom">
-                <ion-fab-button (click)="editCompany()">
-                    <ion-icon name="create-outline"></ion-icon>
-                </ion-fab-button>
-                <ion-fab-button>
-                    <ion-icon name="trash-outline"></ion-icon>
-                </ion-fab-button>
-            </ion-fab-list>
-        </ion-fab>
-
-        <ion-item lines="none">
-            <ion-label class="ion-text-wrap">
-                <h1 class="header-font">Collaborations</h1>
-                <p>List of collaborations that you propose</p>
-            </ion-label>
-            <ion-button slot="end" size="default" fill="solid" [routerLink]="['offer/create']">New
-                offer</ion-button>
-        </ion-item>
-
+        <ion-fab-list side="bottom">
+          <ion-fab-button (click)="editCompany()">
+            <ion-icon name="create-outline"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button>
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-fab-button>
+        </ion-fab-list>
+      </ion-fab>
+      <ion-item lines="none">
+        <ion-label class="ion-text-wrap">
+          <h1 class="header-font">Collaborations</h1>
+          <p>List of collaborations that you propose</p>
+        </ion-label>
+        <ion-button slot="end" size="default" fill="solid" [routerLink]="['offer/create']">New
+        offer</ion-button>
+      </ion-item>
+      @for (deal of store.offers(); track deal) {
         <app-offer-card [offer]="deal" (actionPerformed)="onActionPerformed($event)"
-            *ngFor="let deal of store.offers()"></app-offer-card>
+        ></app-offer-card>
+      }
     </div>
+  }
 
-    <div *ngIf="!store.loaded()">
-        <app-company-skeleton></app-company-skeleton>
+  @if (!store.loaded()) {
+    <div>
+      <app-company-skeleton></app-company-skeleton>
     </div>
+  }
 
 
 </ion-content>

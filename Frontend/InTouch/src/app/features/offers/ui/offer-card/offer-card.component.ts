@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, inject, Input, Output, ViewChild } from "@angular/core";
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
@@ -13,7 +13,7 @@ import { AuthService } from "src/app/services/auth.service";
     templateUrl: './offer-card.component.html',
     styleUrls: ['./offer-card.component.scss'],
     standalone: true,
-    imports: [CommonModule, IonCard, IonLabel, IonItem, IonIcon, IonContent, IonButtons, IonList, IonButton, IonTitle, IonToolbar, IonHeader, IonModal, IonCardContent, IonCardTitle, IonCardHeader, IonText]
+    imports: [IonCard, IonLabel, IonItem, IonIcon, IonContent, IonButtons, IonList, IonButton, IonTitle, IonToolbar, IonHeader, IonModal, IonCardContent, IonCardTitle, IonCardHeader, IonText]
 })
 export class OfferCardComponent {
     @Input() offer!: Offer;

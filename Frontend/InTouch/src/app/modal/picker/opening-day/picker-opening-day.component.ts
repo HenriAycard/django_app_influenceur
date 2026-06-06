@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonPicker, IonPickerColumn, IonPickerColumnOption, IonRadio, IonToolbar, ModalController } from "@ionic/angular/standalone";
 
@@ -7,7 +7,7 @@ import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonPicker, IonPic
     templateUrl: './picker-opening-day.component.html',
     styleUrls: ['./picker-opening-day.component.scss'],
     standalone: true,
-    imports: [CommonModule, IonButton, IonButtons, IonPicker, IonPickerColumn, IonToolbar, IonPickerColumnOption]
+    imports: [IonButton, IonButtons, IonPicker, IonPickerColumn, IonToolbar, IonPickerColumnOption]
 })
 export class PickerOpeningDay implements OnInit {
     optionHours: any[] = [];

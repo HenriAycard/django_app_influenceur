@@ -1,46 +1,54 @@
 <ion-content class="ion-padding">
-    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-    <!-- Header Section -->
-    <div class="header ion-margin-horizontal">
-        <div class="logo-section logo">
-            <ion-icon name="flash"></ion-icon>
-            <span>InTouch</span>
-        </div>
-
-        <div class="icons">
-            <ion-button fill="clear" [routerLink]="['../company/create']" class="ion-no-padding">
-                <ion-icon name="add-circle-outline"></ion-icon>
-            </ion-button>
-        </div>
+  <!-- Header Section -->
+  <div class="header ion-margin-horizontal">
+    <div class="logo-section logo">
+      <ion-icon name="flash"></ion-icon>
+      <span>InTouch</span>
     </div>
 
-    <h1 class="greeting ion-margin-horizontal">Home</h1>
-    <h3 class="ion-margin-horizontal">Manage all your brand 👋</h3>
-    <p class="text-justify ion-margin-horizontal">Boots your company's communication with influencer by an easy way to
-        collaborate.</p>
+    <div class="icons">
+      <ion-button fill="clear" [routerLink]="['../company/create']" class="ion-no-padding">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
 
-    <ion-card button *ngFor="let company_card of lstCompanys" [routerLink]="['../company/', company_card.id]">
-        <img *ngIf="getPrincipalImage(company_card)"
-            [src]="getPrincipalImage(company_card)"
-            style="height: 200px; width: 100%; object-fit: cover;"
-            alt="Company image" />
-       
-        <ion-card-header style="text-align: left;">
-            <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
-            <ion-card-subtitle *ngIf="company_card.typeCompany">{{ company_card.typeCompany.name
-                }}</ion-card-subtitle>
-            <ion-label>
-                <ion-chip *ngIf="company_card['isOnsit']" class="chip-padding">On sit</ion-chip>
-                <ion-chip *ngIf="company_card['isTakeaway']" class="chip-padding">Take away</ion-chip>
-            </ion-label>
-        </ion-card-header>
+  <h1 class="greeting ion-margin-horizontal">Home</h1>
+  <h3 class="ion-margin-horizontal">Manage all your brand 👋</h3>
+  <p class="text-justify ion-margin-horizontal">Boots your company's communication with influencer by an easy way to
+  collaborate.</p>
 
-        <ion-card-content class="ion-text-justify">
-            {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
-        </ion-card-content>
+  @for (company_card of lstCompanys; track company_card) {
+    <ion-card button [routerLink]="['../company/', company_card.id]">
+      @if (getPrincipalImage(company_card)) {
+        <img
+          [src]="getPrincipalImage(company_card)"
+          style="height: 200px; width: 100%; object-fit: cover;"
+          alt="Company image" />
+      }
+      <ion-card-header style="text-align: left;">
+        <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
+        @if (company_card.typeCompany) {
+          <ion-card-subtitle>{{ company_card.typeCompany.name
+          }}</ion-card-subtitle>
+        }
+        <ion-label>
+          @if (company_card['isOnsit']) {
+            <ion-chip class="chip-padding">On sit</ion-chip>
+          }
+          @if (company_card['isTakeaway']) {
+            <ion-chip class="chip-padding">Take away</ion-chip>
+          }
+        </ion-label>
+      </ion-card-header>
+      <ion-card-content class="ion-text-justify">
+        {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
+      </ion-card-content>
     </ion-card>
+  }
 
 </ion-content>

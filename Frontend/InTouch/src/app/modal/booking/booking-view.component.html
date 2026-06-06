@@ -1,64 +1,70 @@
 <ion-card (click)="navToCompany()">
-    <img [src]="reservation.offer.company.imgCompany[0].file" alt="Company Image" class="company-image" />
-    <ion-card-header>
-        <ion-card-title>{{ reservation.offer.company.nameCompany }}</ion-card-title>
-        <ion-card-subtitle>{{ reservation.offer.company.typeCompany.name }}</ion-card-subtitle>
-    </ion-card-header>
+  <img [src]="reservation.offer.company.imgCompany[0].file" alt="Company Image" class="company-image" />
+  <ion-card-header>
+    <ion-card-title>{{ reservation.offer.company.nameCompany }}</ion-card-title>
+    <ion-card-subtitle>{{ reservation.offer.company.typeCompany.name }}</ion-card-subtitle>
+  </ion-card-header>
 </ion-card>
 
 
 <ion-card (click)="navToOffer()">
-    <ion-card-header>
-        <ion-card-title>{{ reservation.offer.name }}</ion-card-title>
-        <ion-card-subtitle>Offer</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-        <ion-list lines="none">
-            <ion-item>
-                <ion-text>
-                    <h3>Description</h3>
-                    <p>{{reservation.offer.content}}</p>
-                </ion-text>
-            </ion-item>
-            <ion-item class="ion-padding-top">
-                <ion-text>
-                    <h3>Conditions</h3>
-                    <p>{{reservation.offer.conditions}}</p>
-                </ion-text>
-            </ion-item>
-            <ion-item class="ion-padding-top">
-                <ion-text>
-                    <p><strong>Date: </strong>{{ reservation.dateReservation | date:'medium' }}</p>
-                </ion-text>
-            </ion-item>
-        </ion-list>
-    </ion-card-content>
+  <ion-card-header>
+    <ion-card-title>{{ reservation.offer.name }}</ion-card-title>
+    <ion-card-subtitle>Offer</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list lines="none">
+      <ion-item>
+        <ion-text>
+          <h3>Description</h3>
+          <p>{{reservation.offer.content}}</p>
+        </ion-text>
+      </ion-item>
+      <ion-item class="ion-padding-top">
+        <ion-text>
+          <h3>Conditions</h3>
+          <p>{{reservation.offer.conditions}}</p>
+        </ion-text>
+      </ion-item>
+      <ion-item class="ion-padding-top">
+        <ion-text>
+          <p><strong>Date: </strong>{{ reservation.dateReservation | date:'medium' }}</p>
+        </ion-text>
+      </ion-item>
+    </ion-list>
+  </ion-card-content>
 </ion-card>
 
 <!-- User Info -->
 <ion-card>
-    <ion-card-header>
-        <ion-card-title>{{ reservation.user.firstname }} {{ reservation.user.lastname }}</ion-card-title>
-        <ion-card-subtitle>Influencer</ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-        <ion-chip *ngIf="reservation.user.instagram" class="social-chip instagram">
-            <ion-icon name="logo-instagram" class="social-icon"></ion-icon>
-            <a [href]="'https://instagram.com/' + reservation.user.instagram" target="_blank" class="social-link">
-                {{ '@' + reservation.user.instagram }}
-            </a>
-        </ion-chip>
-        <ion-chip *ngIf="reservation.user.tiktok" class="social-chip tiktok">
-            <ion-icon name="logo-tiktok" class="social-icon"></ion-icon>
-            <a [href]="'https://tiktok.com/@' + reservation.user.tiktok" target="_blank" class="social-link">
-                {{ '@' + reservation.user.tiktok }}
-            </a>
-        </ion-chip>
-        <ion-chip *ngIf="reservation.user.youtube" class="social-chip youtube">
-            <ion-icon name="logo-youtube" class="social-icon"></ion-icon>
-            <a [href]="'https://youtube.com/@' + reservation.user.youtube" target="_blank" class="social-link">
-                YouTube
-            </a>
-        </ion-chip>
-    </ion-card-content>
+  <ion-card-header>
+    <ion-card-title>{{ reservation.user.firstname }} {{ reservation.user.lastname }}</ion-card-title>
+    <ion-card-subtitle>Influencer</ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    @if (reservation.user.instagram) {
+      <ion-chip class="social-chip instagram">
+        <ion-icon name="logo-instagram" class="social-icon"></ion-icon>
+        <a [href]="'https://instagram.com/' + reservation.user.instagram" target="_blank" class="social-link">
+          {{ '@' + reservation.user.instagram }}
+        </a>
+      </ion-chip>
+    }
+    @if (reservation.user.tiktok) {
+      <ion-chip class="social-chip tiktok">
+        <ion-icon name="logo-tiktok" class="social-icon"></ion-icon>
+        <a [href]="'https://tiktok.com/@' + reservation.user.tiktok" target="_blank" class="social-link">
+          {{ '@' + reservation.user.tiktok }}
+        </a>
+      </ion-chip>
+    }
+    @if (reservation.user.youtube) {
+      <ion-chip class="social-chip youtube">
+        <ion-icon name="logo-youtube" class="social-icon"></ion-icon>
+        <a [href]="'https://youtube.com/@' + reservation.user.youtube" target="_blank" class="social-link">
+          YouTube
+        </a>
+      </ion-chip>
+    }
+  </ion-card-content>
 </ion-card>

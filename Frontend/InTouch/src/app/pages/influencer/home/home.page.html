@@ -12,38 +12,50 @@
 
   <!-- Search -->
   <ion-searchbar class="searchbar-padding" #searchVal placeholder="Try 'Cancun' or 'Sushi'"
-    (keyup)="search($event, searchVal.value)" autocapitalize="on"></ion-searchbar>
+  (keyup)="search($event, searchVal.value)" autocapitalize="on"></ion-searchbar>
 
   <!-- Quick categories -->
   <h2 class="greeting-2">Browse by category</h2>
   <div class="category-grid">
-    <button *ngFor="let cat of categories" class="category-tile" (click)="navigation(cat.label)">
-      <span class="category-emoji">{{ cat.emoji }}</span>
-      <span class="category-label">{{ cat.label }}</span>
-    </button>
+    @for (category of categories; track category) {
+      <button class="category-tile" (click)="navigation(category.label)">
+        <span class="category-emoji">{{ category.emoji }}</span>
+        <span class="category-label">{{ category.label }}</span>
+      </button>
+    }
   </div>
 
   <!-- Real venue feed -->
   <h2 class="ion-margin-top greeting-2">Discover venues</h2>
 
-  <ion-card button *ngFor="let venue of store.feed()" (click)="openVenue(venue.id)">
-    <img *ngFor="let image of venue.imgCompany" style="height: 200px; width: 100%; object-fit: cover;"
-      [src]="image.file" alt="" />
-    <ion-card-header style="text-align: left;">
-      <ion-card-title>{{ venue.nameCompany }}</ion-card-title>
-      <ion-card-subtitle>{{ venue.typeCompany.name }}</ion-card-subtitle>
-      <ion-label>
-        <ion-chip *ngIf="venue.isOnsit" class="chip-padding">On sit</ion-chip>
-        <ion-chip *ngIf="venue.isTakeaway" class="chip-padding">Take away</ion-chip>
-      </ion-label>
-    </ion-card-header>
-    <ion-card-content class="ion-text-justify">
-      {{ venue.description | slice:0:200 }}{{ (venue.description && venue.description.length > 200) ? '...' : '' }}
-    </ion-card-content>
-  </ion-card>
+  @for (venue of store.feed(); track venue) {
+    <ion-card button (click)="openVenue(venue.id)">
+      @for (image of venue.imgCompany; track image) {
+        <img style="height: 200px; width: 100%; object-fit: cover;"
+          [src]="image.file" alt="" />
+      }
+      <ion-card-header style="text-align: left;">
+        <ion-card-title>{{ venue.nameCompany }}</ion-card-title>
+        <ion-card-subtitle>{{ venue.typeCompany.name }}</ion-card-subtitle>
+        <ion-label>
+          @if (venue.isOnsit) {
+            <ion-chip class="chip-padding">On sit</ion-chip>
+          }
+          @if (venue.isTakeaway) {
+            <ion-chip class="chip-padding">Take away</ion-chip>
+          }
+        </ion-label>
+      </ion-card-header>
+      <ion-card-content class="ion-text-justify">
+        {{ venue.description | slice:0:200 }}{{ (venue.description && venue.description.length > 200) ? '...' : '' }}
+      </ion-card-content>
+    </ion-card>
+  }
 
   <!-- Empty state -->
-  <p *ngIf="store.feedEmpty()" class="ion-text-center ion-padding">
-    No venues available yet. Check back soon.
-  </p>
+  @if (store.feedEmpty()) {
+    <p class="ion-text-center ion-padding">
+      No venues available yet. Check back soon.
+    </p>
+  }
 </ion-content>

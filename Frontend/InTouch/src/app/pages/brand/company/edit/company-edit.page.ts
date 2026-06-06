@@ -1,4 +1,4 @@
-import { CommonModule } from "@angular/common";
+
 import { Component, inject, Input, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { IonButton, IonCol, IonContent, IonIcon, IonItem, IonProgressBar, IonRow } from "@ionic/angular/standalone";
@@ -27,7 +27,7 @@ import { ToastService } from "src/app/services/toast.service";
     templateUrl: './company-edit.page.html',
     styleUrls: ['./company-edit.page.scss'],
     standalone: true,
-    imports: [CompanyMainPage, CompanyDescriptionPage, CompanyAddressPage, CompanyOpeningDayPage, CompanyPicturePage, CompanySocialMediaComponent, IonProgressBar, IonIcon, IonButton, IonItem, IonContent, CommonModule, IonCol, IonRow]
+    imports: [CompanyMainPage, CompanyDescriptionPage, CompanyAddressPage, CompanyOpeningDayPage, CompanyPicturePage, CompanySocialMediaComponent, IonProgressBar, IonIcon, IonButton, IonItem, IonContent, IonCol, IonRow]
 })
 export class CompanyEditPage implements OnInit {
     @Input() companyId!: number;
