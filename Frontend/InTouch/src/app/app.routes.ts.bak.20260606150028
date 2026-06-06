@@ -12,11 +12,6 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/login/login.page').then( m => m.LoginPage)
   },
   {
-    // SSO landing for the InTouch portal — see pages/sso/sso.page.ts
-    path: 'sso',
-    loadComponent: () => import('./pages/sso/sso.page').then( m => m.SsoPage)
-  },
-  {
     path: 'register',
     loadComponent: () => import('./pages/register/register.page').then( m => m.RegisterPage)
   },

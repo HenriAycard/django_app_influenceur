@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButtons, IonBackButton, IonLabel } from '@ionic/angular/standalone';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { DiscoveryStore } from 'src/app/features/discovery/discovery.store';
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonCard, IonCardTitle, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButtons, IonBackButton, IonLabel]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonCardTitle, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButtons, IonBackButton, IonLabel, SlicePipe]
 })
 export class SearchPage {
 

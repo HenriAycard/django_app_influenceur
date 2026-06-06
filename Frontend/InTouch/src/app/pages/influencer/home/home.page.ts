@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonIcon, IonLabel, IonRefresher, IonRefresherContent, IonSearchbar } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,7 +12,7 @@ import { addIcons } from 'ionicons';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, IonSearchbar, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent]
+  imports: [IonContent, IonSearchbar, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent, SlicePipe]
 })
 export class HomeInfluencerPage {
 
