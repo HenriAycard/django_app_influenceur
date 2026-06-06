@@ -1,44 +1,33 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButton, IonButtons, IonBackButton, IonLabel } from '@ionic/angular/standalone';
-import { CompanySortDto } from 'src/app/models/company';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { ApiCompanyService } from 'src/app/services/api/api-company.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButtons, IonBackButton, IonLabel } from '@ionic/angular/standalone';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DiscoveryStore } from 'src/app/features/discovery/discovery.store';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule, IonCard, IonCardTitle, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButtons, IonBackButton, IonLabel]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, IonCard, IonCardTitle, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButtons, IonBackButton, IonLabel]
 })
-export class SearchPage implements OnInit {
+export class SearchPage {
 
-  public parameters: Params | undefined
-  public datas: Array<CompanySortDto> = new Array<CompanySortDto>();
+  protected readonly store = inject(DiscoveryStore);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
-  private apiCompany = inject(ApiCompanyService)
-  private router = inject(Router)
-  private activatedRoute = inject(ActivatedRoute)
-
-  constructor() { }
-
-  ngOnInit() {
-    const navigation = this.router.getCurrentNavigation();
-    this.parameters = navigation?.extractedUrl.queryParams
-    this.findCompanyBySearch();
-  }
-
-  public findCompanyBySearch() {
-    this.apiCompany.findCompanyBySearch(this.parameters?.['search']).subscribe({
-      next: (response: CompanySortDto[]) => {
-        this.datas = response as CompanySortDto[];
-      }
-    })
+  constructor() {
+    // Read the search term reactively from the route. Unlike getCurrentNavigation()
+    // (which is null on a direct navigation / refresh / deep link), queryParamMap
+    // always emits, so the search works however the page is reached.
+    this.route.queryParamMap.pipe(takeUntilDestroyed()).subscribe(params => {
+      this.store.search(params.get('search') ?? '');
+    });
   }
 
   navToCompany(id: number) {
-    this.router.navigate(['company', id], { relativeTo: this.activatedRoute });
+    this.router.navigate(['company', id], { relativeTo: this.route });
   }
 }

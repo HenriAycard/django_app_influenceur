@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card button *ngFor="let data of datas" (click)="navToCompany(data.id)">
+  <ion-card button *ngFor="let data of store.results()" (click)="navToCompany(data.id)">
     <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" *ngFor="let company_image of data.imgCompany" [src]="company_image.file" />
     <ion-card-header style="text-align: left;">
       <ion-card-title>{{ data['nameCompany'] }}</ion-card-title>
@@ -23,4 +23,8 @@
       {{ data.description | slice:0:250 }}{{data.description.length > 250 ? '...' : ''}}
     </ion-card-content>
   </ion-card>
+
+  <p *ngIf="store.noResults()" class="ion-text-center ion-padding">
+    No results for "{{ store.query() }}".
+  </p>
 </ion-content>
