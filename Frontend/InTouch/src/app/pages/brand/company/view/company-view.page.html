@@ -33,11 +33,11 @@
                 <h1 class="header-font">Collaborations</h1>
                 <p>List of collaborations that you propose</p>
             </ion-label>
-            <ion-button slot="end" size="default" fill="solid" [routerLink]="['contract/create']">New
-                contract</ion-button>
+            <ion-button slot="end" size="default" fill="solid" [routerLink]="['offer/create']">New
+                offer</ion-button>
         </ion-item>
 
-        <app-offer-card [contract]="deal" (actionPerformed)="onActionPerformed($event)"
+        <app-offer-card [offer]="deal" (actionPerformed)="onActionPerformed($event)"
             *ngFor="let deal of store.offers()"></app-offer-card>
     </div>
 

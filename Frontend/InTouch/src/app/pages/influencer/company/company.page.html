@@ -18,7 +18,7 @@
       <h1 class="header-font header-margin">Collaborations</h1>
     </ion-item>
 
-    <app-offer-card [contract]="deal" (actionPerformed)="onActionPerformed($event)"
+    <app-offer-card [offer]="deal" (actionPerformed)="onActionPerformed($event)"
             *ngFor="let deal of store.offers()"></app-offer-card>
 
   </div>

@@ -17,8 +17,8 @@ import { ModalNewReservationComponent } from "src/app/modal/reservation/new/moda
     imports: [HasRoleDirective, CommonModule, IonText, IonLabel, IonItem, IonList, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonContent, IonTitle, IonBackButton, IonButtons, IonToolbar, IonHeader, ModalNewReservationComponent, IonModal, IonButton]
 })
 export class OfferDetailPage implements OnInit {
-    @Input() contractId!: number;
-    public contract!: Offer;
+    @Input() offerId!: number;
+    public offer!: Offer;
     public isLoad: boolean = false;
 
     public noEndDate: boolean = true;
@@ -36,9 +36,9 @@ export class OfferDetailPage implements OnInit {
     private navCtrl = inject(NavController)
 
     ngOnInit(): void {
-        this.apiOffer.findOfferById(this.contractId).subscribe({
+        this.apiOffer.findOfferById(this.offerId).subscribe({
             next: (value: Offer) => {
-                this.contract = value
+                this.offer = value
                 this.initCondition()
                 this.isLoad = true
             }
@@ -47,17 +47,17 @@ export class OfferDetailPage implements OnInit {
     }
 
     initCondition() {
-        if (this.contract.endDate) this.noEndDate = false
-        if (this.contract.paymentAmount ||
-            this.contract.paymentTerms) this.isPaymentTerms = true
-        if (this.contract.exclusivityDuration ||
-            this.contract.restrictedCompetitors ||
-            this.contract.scopeExclusivity ||
-            this.contract.exclusivityType ||
-            this.contract.exclusivitySpecification) this.isExclusivityClause = true
-        if (this.contract.contactApprover) this.isApprovalRequired = true
-        if (this.contract.cancellationPolicy ||
-            this.contract.specialInstructions) this.isAdditionalInfos = true
+        if (this.offer.endDate) this.noEndDate = false
+        if (this.offer.paymentAmount ||
+            this.offer.paymentTerms) this.isPaymentTerms = true
+        if (this.offer.exclusivityDuration ||
+            this.offer.restrictedCompetitors ||
+            this.offer.scopeExclusivity ||
+            this.offer.exclusivityType ||
+            this.offer.exclusivitySpecification) this.isExclusivityClause = true
+        if (this.offer.contactApprover) this.isApprovalRequired = true
+        if (this.offer.cancellationPolicy ||
+            this.offer.specialInstructions) this.isAdditionalInfos = true
     }
 
     openModal() {

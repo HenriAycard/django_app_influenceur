@@ -16,7 +16,7 @@ import { OfferFormComponent } from 'src/app/features/offers/ui/offer-form/offer-
 })
 export class OfferCreatePage {
     @Input() companyId!: number;
-    public dealInput!: Partial<Offer>;
+    public offerInput!: Partial<Offer>;
 
     private alertCtrlService = inject(AlertControllerService);
     private toastService = inject(ToastService);

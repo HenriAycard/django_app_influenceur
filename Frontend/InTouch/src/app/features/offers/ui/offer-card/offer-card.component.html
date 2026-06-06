@@ -1,6 +1,6 @@
 <ion-card (click)="onCardDealClick()">
     <ion-card-header>
-        <ion-card-title>{{ contract.name }}</ion-card-title>
+        <ion-card-title>{{ offer.name }}</ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
@@ -8,13 +8,13 @@
             <ion-item>
                 <ion-text>
                     <h3>Offer</h3>
-                    <p>{{contract.content}}</p>
+                    <p>{{offer.content}}</p>
                 </ion-text>
             </ion-item>
             <ion-item class="ion-padding-top">
                 <ion-text>
                     <h3>Conditions</h3>
-                    <p>{{contract.conditions}}</p>
+                    <p>{{offer.conditions}}</p>
                 </ion-text>
             </ion-item>
         </ion-list>

@@ -18,7 +18,7 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
       loadComponent: () => import('./company/company.page').then(m => m.CompanyPage)
     },
     {
-      path: 'home/search/company/:companyId/contract/:contractId',
+      path: 'home/search/company/:companyId/offer/:offerId',
       loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
     },
     {
@@ -38,7 +38,7 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
       loadComponent: () => import('./collaboration/main/influencer-collaboration.page').then(m => m.InfluencerCollaborationPage)
     },
     {
-      path: 'collaboration/:bookingId/contract/:contractId',
+      path: 'collaboration/:bookingId/offer/:offerId',
       loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
     },
     {
