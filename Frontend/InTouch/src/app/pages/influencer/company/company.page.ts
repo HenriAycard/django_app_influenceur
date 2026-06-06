@@ -17,7 +17,6 @@ import { ActionPayload } from 'src/app/models/role';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
 import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
-import { NavigationHistoryService } from 'src/app/services/navigation-history.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
@@ -46,7 +45,6 @@ export class CompanyPage implements OnInit {
   private toastService = inject(ToastService)
   private apiCompany = inject(ApiCompanyService)
   private apiOffer = inject(ApiOfferService)
-  private navHistoService = inject(NavigationHistoryService)
   private router = inject(Router)
   private navCtrl = inject(NavController)
   private activatedRoute = inject(ActivatedRoute)
@@ -115,7 +113,7 @@ export class CompanyPage implements OnInit {
   }
 
   goBack() {
-    this.navCtrl.navigateBack(this.navHistoService.getPreviousUrl())
+    this.navCtrl.back()
   }
 
   

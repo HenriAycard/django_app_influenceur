@@ -17,7 +17,6 @@ import { ApiAddressService } from 'src/app/services/api/api-address.service';
 import { ApiCompanyImgService } from 'src/app/services/api/api-company-img.service';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
 import { ApiOpeningService } from 'src/app/services/api/api-opening.service';
-import { ReloadService } from 'src/app/services/reload.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
@@ -52,7 +51,6 @@ export class CreatePage {
   private apiAddress = inject(ApiAddressService);
   private apiOpening = inject(ApiOpeningService);
   private toastService = inject(ToastService);
-  private reloadService = inject(ReloadService);
 
   constructor(
     private router: Router,
@@ -184,8 +182,6 @@ export class CreatePage {
   }
 
   back() {
-    this.router.navigate(['../../home'], { relativeTo: this.route }).then(() => {
-      this.reloadService.triggerReload();
-    })
+    this.router.navigate(['../../home'], { relativeTo: this.route })
   }
 }

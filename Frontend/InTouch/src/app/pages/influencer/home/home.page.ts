@@ -6,7 +6,6 @@ import { Router, ActivatedRoute, NavigationExtras, RouterModule } from '@angular
 import { AuthService } from 'src/app/services/auth.service';
 import { flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
-import { NavigationHistoryService } from 'src/app/services/navigation-history.service';
 
 @Component({
   selector: 'app-home-influencer',
