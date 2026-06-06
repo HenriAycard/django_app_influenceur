@@ -88,7 +88,8 @@ export class ProfilePage {
       byteArrays.push(byteArray);
     }
 
-    return new Blob(byteArrays, { type: contentType });
+    const blobParts: BlobPart[] = byteArrays.map(b => new Uint8Array(b));
+    return new Blob(blobParts, { type: contentType });
   }
 
 }

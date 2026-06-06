@@ -233,6 +233,7 @@ packages/react-router/test/build/
 # Ionic
 /.ionic
 /www
+www/
 /platforms
 /plugins
 
