@@ -1,15 +1,13 @@
 import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
-import { User } from 'src/app/models/users';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { ApiAuthService } from 'src/app/services/api/api-auth.service';
+import { ProfileStore } from 'src/app/features/profile/profile.store';
 import { addIcons } from 'ionicons';
 import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, notificationsOutline, pencil, personOutline } from 'ionicons/icons';
 import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { HttpEvent } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -20,9 +18,8 @@ import { HttpEvent } from '@angular/common/http';
 })
 export class ProfilePage {
 
-  private apiAuth = inject(ApiAuthService)
+  protected readonly store = inject(ProfileStore)
   private authService = inject(AuthService)
-  public user!: User
   public isLogoutModalOpen: boolean = false;
   @ViewChild(IonModal) modal!: IonModal;
 
@@ -31,18 +28,9 @@ export class ProfilePage {
     addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil })
   }
 
-  // Reloads on every entry (incl. returning from profile edit), replacing the
-  // old ReloadService refresh coupling.
+  // Reloads on every entry (incl. returning from profile edit).
   ionViewWillEnter(): void {
-    this.reloadData();
-  }
-
-  public reloadData() {
-    this.apiAuth.findUser().subscribe({
-      next: (response: User) => {
-        this.user = response as User
-      }
-    })
+    this.store.refresh();
   }
 
   public showLogoutModal() {
@@ -62,7 +50,6 @@ export class ProfilePage {
   }
 
   public async chooseOrTakePicture() {
-    console.log("Opening camera to choose or take picture...");
     const photo: Photo = await Camera.getPhoto({
       quality: 90,
       allowEditing: true,
@@ -70,15 +57,11 @@ export class ProfilePage {
       source: CameraSource.Photos,
     })
 
-    console.log("New Picture Triggered");
     if (photo) {
-      console.log("Photo found:", photo);
-
       const mimeType = `image/${photo.format}`;
       const blob = this.b64toBlob(photo.base64String!, mimeType);
-      console.log("Blob created:", blob);
 
-      //Generate a fake filename
+      // Generate a random filename
       const name =
         Math.random().toString(36).substring(2, 15) +
         Math.random().toString(36).substring(2, 10);
@@ -86,20 +69,10 @@ export class ProfilePage {
       const formData = new FormData();
       formData.append("avatar", blob, `${name}.${photo.format}`);
 
-      this.apiAuth.updateAvatar(this.user.id, formData).subscribe({
-        next: (value: HttpEvent<User>) => {
-          if (value.type === 4) { // HttpResponse
-            this.user = value.body as User
-          }
-        },
-        complete: () => {
-
-        }
-      })
-
+      this.store.updateAvatar(formData).subscribe();
     }
   };
-  
+
   public b64toBlob(b64Data: string, contentType = '', sliceSize = 512): Blob {
     const byteCharacters = atob(b64Data);
     const byteArrays: Uint8Array[] = [];
