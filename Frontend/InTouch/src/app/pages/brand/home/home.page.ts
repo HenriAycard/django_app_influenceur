@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonListHeader, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras, RouterModule } from '@angular/router';
@@ -13,7 +13,7 @@ import { addIcons } from 'ionicons';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, CommonModule, FormsModule, IonCard, IonCardContent, IonChip, IonCardTitle, IonCardSubtitle, IonCardHeader, IonIcon, IonButton, IonLabel, IonRefresher, IonRefresherContent, RouterModule]
+  imports: [IonContent, FormsModule, IonCard, IonCardContent, IonChip, IonCardTitle, IonCardSubtitle, IonCardHeader, IonIcon, IonButton, IonLabel, IonRefresher, IonRefresherContent, RouterModule, SlicePipe]
 })
 export class HomePage implements OnInit{
 

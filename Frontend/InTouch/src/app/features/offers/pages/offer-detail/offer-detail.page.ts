@@ -1,5 +1,5 @@
-import { CommonModule } from "@angular/common";
 import { Component, inject, Input, OnInit } from "@angular/core";
+import { DatePipe } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 import { IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar, NavController } from "@ionic/angular/standalone";
 import { HasRoleDirective } from "src/app/directive/has-role.directive";
@@ -14,7 +14,7 @@ import { ModalNewReservationComponent } from "src/app/modal/reservation/new/moda
     templateUrl: './offer-detail.page.html',
     styleUrls: ['./offer-detail.page.scss'],
     standalone: true,
-    imports: [HasRoleDirective, CommonModule, IonText, IonLabel, IonItem, IonList, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonContent, IonTitle, IonBackButton, IonButtons, IonToolbar, IonHeader, ModalNewReservationComponent, IonModal, IonButton]
+    imports: [HasRoleDirective, IonText, IonLabel, IonItem, IonList, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonContent, IonTitle, IonBackButton, IonButtons, IonToolbar, IonHeader, ModalNewReservationComponent, IonModal, IonButton, DatePipe]
 })
 export class OfferDetailPage implements OnInit {
     @Input() offerId!: number;
