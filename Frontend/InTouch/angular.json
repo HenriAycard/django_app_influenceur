@@ -73,10 +73,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "ssl": true,
-            "sslKey": "/home/ubuntu/intouch.key",
-            "sslCert": "/home/ubuntu/intouch.crt",
-            "port": 8100
+            "port": 8100,
+            "allowedHosts": ["frontend.intouch.ovh"]
           },
           "configurations": {
             "production": {

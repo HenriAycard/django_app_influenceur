@@ -14,10 +14,13 @@
   <ion-searchbar class="searchbar-padding" #searchVal placeholder="Try 'Cancun' or 'Sushi'"
     (keyup)="search($event, searchVal.value)" autocapitalize="on"></ion-searchbar>
 
-  <!-- Quick categories (functional shortcuts -> search) -->
+  <!-- Quick categories -->
   <h2 class="greeting-2">Browse by category</h2>
-  <div class="scrolling-wrapper">
-    <ion-chip *ngFor="let category of categories" (click)="navigation(category)">{{ category }}</ion-chip>
+  <div class="category-grid">
+    <button *ngFor="let cat of categories" class="category-tile" (click)="navigation(cat.label)">
+      <span class="category-emoji">{{ cat.emoji }}</span>
+      <span class="category-label">{{ cat.label }}</span>
+    </button>
   </div>
 
   <!-- Real venue feed -->

@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as Constant from '../../config/constant';
 import { Observable } from 'rxjs/internal/Observable';
+import { map } from 'rxjs/operators';
 import { Company, CompanyCreateDto, CompanySortDto, CompanyUpdateDto } from 'src/app/models/company';
 import { ApiService } from './api.service';
 
@@ -9,12 +10,14 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class ApiCompanyService extends ApiService {
-  
+
   urlBase: string = Constant.domainConfig.virtual_host + Constant.domainConfig.apiPrefix + "/company/";
 
   public findCompanyBySearch(search: string): Observable<CompanySortDto[]>{
     const url = this.urlBase + 'search/?search=' + search
-    return this.http.get<CompanySortDto[]>(url, this.options);
+    return this.http.get<any>(url, this.options).pipe(
+      map(response => response.results || response)
+    );
   }
 
   public findCompanyById(id: number) : Observable<Company>{
@@ -22,7 +25,9 @@ export class ApiCompanyService extends ApiService {
   }
 
   public findCompany() : Observable<CompanySortDto[]> {
-    return this.http.get<CompanySortDto[]>(this.urlBase, this.options);
+    return this.http.get<any>(this.urlBase, this.options).pipe(
+      map(response => response.results || response)
+    );
   }
 
   public create(company: CompanyCreateDto) : Observable<Company>{

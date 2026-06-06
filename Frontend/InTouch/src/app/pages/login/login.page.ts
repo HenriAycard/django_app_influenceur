@@ -43,17 +43,19 @@ export class LoginPage implements OnInit {
       if (this.form.invalid) {
         return;
       }
-      
-      
-      //this.apiService.showLoading();
-      // Check email
+
+      // Request notification permission here — must be inside a user gesture handler
+      if ('Notification' in window && Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+
       let params: LoginParam = {
         "email": this.f['email'].value,
         "password": this.f['password'].value,
       }
 
       this.authService.login(params)
-      
+
   }
  
 
