@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonItemDivider, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
@@ -8,7 +8,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ApiAuthService } from 'src/app/services/api/api-auth.service';
 import { addIcons } from 'ionicons';
 import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, notificationsOutline, pencil, personOutline } from 'ionicons/icons';
-import { ReloadService } from 'src/app/services/reload.service';
 import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { HttpEvent } from '@angular/common/http';
 
@@ -19,7 +18,7 @@ import { HttpEvent } from '@angular/common/http';
   standalone: true,
   imports: [IonContent, CommonModule, FormsModule, IonItem, IonIcon, IonLabel, IonList, FormsModule, ReactiveFormsModule, IonButton, IonModal, IonTitle, IonToolbar, IonHeader, RouterLink]
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage {
 
   private apiAuth = inject(ApiAuthService)
   private authService = inject(AuthService)
@@ -27,18 +26,14 @@ export class ProfilePage implements OnInit {
   public isLogoutModalOpen: boolean = false;
   @ViewChild(IonModal) modal!: IonModal;
 
-  private reloadService = inject(ReloadService);
-
   constructor(
     private router: Router) {
     addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil })
   }
 
-
-  ngOnInit(): void {
-    this.reloadService.reload$.subscribe(() => {
-      this.reloadData();
-    });
+  // Reloads on every entry (incl. returning from profile edit), replacing the
+  // old ReloadService refresh coupling.
+  ionViewWillEnter(): void {
     this.reloadData();
   }
 

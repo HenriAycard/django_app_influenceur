@@ -5,7 +5,6 @@ import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, 
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, closeCircle, create, logoInstagram, logoTiktok, logoYoutube } from 'ionicons/icons';
 import { Application } from 'src/app/shared/models';
-import { NavigationHistoryService } from 'src/app/services/navigation-history.service';
 
 @Component({
   selector: 'app-booking-view',
@@ -19,7 +18,6 @@ export class BookingViewPage {
 
   private router = inject(Router)
   private activatedRoute = inject(ActivatedRoute)
-  private navHistoService = inject(NavigationHistoryService)
 
   constructor() {
     addIcons({ logoInstagram, logoTiktok, logoYoutube, checkmarkCircle, create, closeCircle });
@@ -30,7 +28,6 @@ export class BookingViewPage {
   }
 
   navToCompany() {
-    this.navHistoService.addToHistory(this.router.url);
     this.router.navigate(['influencer/home/search/company', this.reservation.offer.company.id]);
   }
 }

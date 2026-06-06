@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IonButton, IonCard, IonContent, IonFab, IonFabButton, IonFabList, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonRefresher, IonRefresherContent, IonTitle, IonToolbar, LoadingController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -13,7 +13,6 @@ import { Offer } from 'src/app/shared/models';
 import { ActionPayload } from 'src/app/models/role';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
 import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
-import { ReloadService } from 'src/app/services/reload.service';
 
 
 @Component({
@@ -23,16 +22,15 @@ import { ReloadService } from 'src/app/services/reload.service';
     standalone: true,
     imports: [IonContent, CommonModule, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, CompanyMainViewPage, CompanySkeletonComponent]
 })
-export class CompanyViewPage implements OnInit {
+export class CompanyViewPage {
   @Input() companyId!: number;
-  
+
   public company: Company = {} as Company;
   public deals: Offer[] = [];
   public loaded : boolean = false;
 
   private apiCompany = inject(ApiCompanyService)
   private apiOffer = inject(ApiOfferService)
-  private reloadService = inject(ReloadService);
 
   constructor(
     private router: Router,
@@ -41,20 +39,17 @@ export class CompanyViewPage implements OnInit {
         addIcons({createOutline, trashOutline, close, chevronDownCircle, locationOutline, logoInstagram, logoYoutube, logoTiktok, logoTwitter, logoFacebook, closeOutline});
     }
 
-  ngOnInit() {
-    // Event to reload data
-    this.reloadService.reload$.subscribe(() => {
-      this.reloadData();
-    });
-
-    this.callApiService()
+  // Reloads on every entry (incl. returning from the edit/offer pages), which
+  // replaces the old ReloadService refresh coupling.
+  ionViewWillEnter() {
+    this.callApiService();
   }
 
   public reloadData() {
     this.callApiService();
   }
 
-  public async callApiService(){
+  public async callApiService(onDone?: () => void){
     const loading = await this.loadingController.create({
       message: 'Loading, please wait ...',
       duration: 2000
@@ -73,15 +68,13 @@ export class CompanyViewPage implements OnInit {
         },
         complete: () => {
             loading.dismiss();
+            onDone?.();
         }
     });
   }
 
   public handleRefresh($event: any){
-    setTimeout(() => {
-        this.reloadData()
-        $event.target.complete();        
-      }, 2000);
+    this.callApiService(() => $event.target.complete());
   }
 
   onActionPerformed(payload: ActionPayload<number>) {

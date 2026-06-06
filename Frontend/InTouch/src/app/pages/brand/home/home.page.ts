@@ -7,7 +7,6 @@ import { CompanySortDto, ImgCompanyDto } from 'src/app/models/company';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
 import { addCircleOutline, flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
-import { ReloadService } from 'src/app/services/reload.service';
 
 @Component({
   selector: 'app-home',

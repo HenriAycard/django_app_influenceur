@@ -20,7 +20,6 @@ import { ApiCompanyImgService } from "src/app/services/api/api-company-img.servi
 import { ApiCompanyService } from "src/app/services/api/api-company.service";
 import { ApiOpeningService } from "src/app/services/api/api-opening.service";
 import { HelperService } from "src/app/services/helper.service";
-import { ReloadService } from "src/app/services/reload.service";
 import { ToastService } from "src/app/services/toast.service";
 
 @Component({
@@ -63,7 +62,6 @@ export class CompanyEditPage implements OnInit {
     private helper = inject(HelperService);
     private alertCtrlService = inject(AlertControllerService);
     private toastService = inject(ToastService);
-    private reloadService = inject(ReloadService);
 
     constructor(
         private router: Router, 
@@ -175,9 +173,7 @@ export class CompanyEditPage implements OnInit {
                     },
                     complete: () => {
                         this.alertCtrlService.stopLoading()
-                        this.router.navigate(['..'], { relativeTo: this.route }).then(() => {
-                            this.reloadService.triggerReload();
-                        })
+                        this.router.navigate(['..'], { relativeTo: this.route })
                     },
                 }
             )
@@ -263,9 +259,7 @@ export class CompanyEditPage implements OnInit {
 
     back() {
         this.alertCtrlService.stopLoading()
-        this.router.navigate(['..'], { relativeTo: this.route}).then(() => {
-            this.reloadService.triggerReload();
-        })
+        this.router.navigate(['..'], { relativeTo: this.route})
      }
 
     public isIndiceNotMinMax() {

@@ -7,7 +7,6 @@ import { OfferFormComponent } from "src/app/features/offers/ui/offer-form/offer-
 import { Offer } from "src/app/shared/models";
 import { AlertControllerService } from "src/app/services/alert-controller.service";
 import { ApiOfferService } from "src/app/features/offers/api-offer.service";
-import { ReloadService } from "src/app/services/reload.service";
 import { ToastService } from "src/app/services/toast.service";
 
 @Component({
@@ -26,7 +25,6 @@ export class OfferEditPage implements OnInit {
     private alertCtrlService = inject(AlertControllerService);
     private toastService = inject(ToastService);
     private apiOffer = inject(ApiOfferService);
-    private reloadService = inject(ReloadService);
 
     constructor(
         private router: Router,
@@ -62,9 +60,7 @@ export class OfferEditPage implements OnInit {
             complete: () => {
                 this.alertCtrlService.stopLoading()
 
-                this.router.navigate(['../../..'], { relativeTo: this.route }).then(() => {
-                    this.reloadService.triggerReload();
-                })
+                this.router.navigate(['../../..'], { relativeTo: this.route })
             },
         })
         

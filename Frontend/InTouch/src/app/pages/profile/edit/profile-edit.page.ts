@@ -7,7 +7,6 @@ import { CompanyMainDto, typeCompanyDto } from "src/app/models/company";
 import { User } from "src/app/models/users";
 import { ApiAuthService } from "src/app/services/api/api-auth.service";
 import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.service";
-import { ReloadService } from "src/app/services/reload.service";
 
 @Component({
     selector: 'app-profile-edit',
@@ -23,7 +22,6 @@ export class ProfileEditPage implements OnInit {
     public isInfluencer: boolean = false;
 
     private apiAuth = inject(ApiAuthService);
-    private reloadService = inject(ReloadService);
 
     constructor(
         private fb: FormBuilder,
@@ -55,9 +53,7 @@ export class ProfileEditPage implements OnInit {
         }
         this.apiAuth.update(this.userId, values).subscribe({
             complete: () => {
-                this.router.navigate(['..'], { relativeTo: this.route}).then(() => {
-                    this.reloadService.triggerReload();
-                })
+                this.router.navigate(['..'], { relativeTo: this.route})
             }
         })
     }

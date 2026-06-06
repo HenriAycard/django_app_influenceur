@@ -5,7 +5,6 @@ import { IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, Ion
 import { CompanySortDto } from 'src/app/models/company';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
-import { NavigationHistoryService } from 'src/app/services/navigation-history.service';
 
 @Component({
   selector: 'app-search',
@@ -20,7 +19,6 @@ export class SearchPage implements OnInit {
   public datas: Array<CompanySortDto> = new Array<CompanySortDto>();
 
   private apiCompany = inject(ApiCompanyService)
-  private navHistoService = inject(NavigationHistoryService)
   private router = inject(Router)
   private activatedRoute = inject(ActivatedRoute)
 
@@ -41,7 +39,6 @@ export class SearchPage implements OnInit {
   }
 
   navToCompany(id: number) {
-    this.navHistoService.addToHistory(this.router.url);
     this.router.navigate(['company', id], { relativeTo: this.activatedRoute });
   }
 }

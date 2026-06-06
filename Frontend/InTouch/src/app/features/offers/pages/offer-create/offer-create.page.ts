@@ -5,7 +5,6 @@ import { AlertControllerService } from 'src/app/services/alert-controller.servic
 import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { IonContent, IonTitle, IonToolbar, IonBackButton, IonHeader, IonButtons } from '@ionic/angular/standalone';
-import { ReloadService } from 'src/app/services/reload.service';
 import { OfferFormComponent } from 'src/app/features/offers/ui/offer-form/offer-form.component';
 
 @Component({
@@ -22,7 +21,6 @@ export class OfferCreatePage {
     private alertCtrlService = inject(AlertControllerService);
     private toastService = inject(ToastService);
     private apiOffer = inject(ApiOfferService);
-    private reloadService = inject(ReloadService);
 
     constructor(
         private router: Router,
@@ -54,9 +52,7 @@ export class OfferCreatePage {
                 this.alertCtrlService.stopLoading()
             },
             complete: () => {
-                this.router.navigate(['../..'], { relativeTo: this.route }).then(() => {
-                    this.reloadService.triggerReload();
-                })
+                this.router.navigate(['../..'], { relativeTo: this.route })
             },
         })
 
