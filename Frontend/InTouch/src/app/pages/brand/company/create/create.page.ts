@@ -176,7 +176,7 @@ export class CreatePage {
   }
 
   public isIndiceNotMinMax() {
-    return this.indice > 0 && this.indice <= this.steps.length ? true : false
+    return this.indice > 0 && this.indice < this.steps.length - 1 ? true : false
   }
 
   back() {
