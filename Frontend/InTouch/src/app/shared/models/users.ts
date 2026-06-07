@@ -23,11 +23,8 @@ export interface LoginParam {
     password: string
 }
 
+// The refresh token is no longer returned in the body — it is set by the backend
+// as an httpOnly cookie. Only the (in-memory) access token comes back to JS.
 export interface TokenResponse {
     access: string;
-    refresh: string;
-}
-
-export interface RefreshTokenParam {
-    refresh: string;
 }

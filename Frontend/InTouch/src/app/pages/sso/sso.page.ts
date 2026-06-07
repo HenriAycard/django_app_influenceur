@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/cor
 import { Router } from '@angular/router';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
-import { TokenManagerService } from 'src/app/services/token-manager.service';
 
 /**
  * SSO landing page used by the InTouch portal (intouch.ovh) to open the dev
@@ -11,9 +10,9 @@ import { TokenManagerService } from 'src/app/services/token-manager.service';
  *
  *   https://frontend.intouch.ovh/sso#access=<jwt>&refresh=<jwt>
  *
- * The fragment is never sent to a server. We persist the tokens through the
- * same TokenManagerService the normal login uses, then let AuthService load the
- * user and redirect to /influencer or /brand by role.
+ * We hand the refresh token to the backend, which moves it into an httpOnly
+ * cookie and returns a fresh access token; AuthService then loads the user and
+ * redirects to /influencer or /brand by role.
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -38,27 +37,24 @@ export class SsoPage implements OnInit {
   message = 'Signing you in…';
 
   private auth = inject(AuthService);
-  private tokens = inject(TokenManagerService);
   private router = inject(Router);
 
   ngOnInit() {
     const raw = window.location.hash.replace(/^#/, '');
     const params = new URLSearchParams(raw);
-    const access = params.get('access');
     const refresh = params.get('refresh');
 
     // Strip the tokens out of the URL so they do not linger in history.
     history.replaceState(null, '', window.location.pathname);
 
-    if (!access || !refresh) {
+    if (!refresh) {
       this.message = 'Invalid sign-in link. Redirecting…';
       this.router.navigateByUrl('/login');
       return;
     }
 
-    this.tokens.setAccessToken(access);
-    this.tokens.setRefreshToken(refresh);
-    // Loads /auth/users/me/, populates auth state, then redirects by role.
-    this.auth.fetchCurrentUser();
+    // Exchanges the refresh token for an httpOnly cookie + access token, loads
+    // /auth/users/me/, then redirects by role.
+    this.auth.loginWithSsoRefresh(refresh);
   }
 }

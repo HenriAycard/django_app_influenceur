@@ -23,6 +23,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const router = inject(Router);
 
     const accessToken = tokenManager.getAccessToken();
+    // The auth endpoints carry the refresh cookie and mint tokens themselves; a
+    // 401 from one of them must never trigger another refresh (it would recurse).
+    const isAuthEndpoint = req.url.includes('/auth/jwt/');
 
     const logoutAndRedirect = (err: unknown): Observable<HttpEvent<unknown>> => {
         authService.logout();
@@ -41,6 +44,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                     // repeat failed request with new token
                     return next(addAuthorizationHeader(request, res.access));
                 }),
+                // refresh cookie missing/expired -> end the session cleanly
+                catchError((err: unknown) => logoutAndRedirect(err)),
                 finalize(() => (refreshingInProgress = false))
             );
         }
@@ -55,9 +60,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(addAuthorizationHeader(req, accessToken)).pipe(
         catchError((err: unknown) => {
             if (err instanceof HttpErrorResponse && err.status === 401) {
-                const refresh = tokenManager.getRefreshToken();
-                // if there are tokens then send refresh token request
-                if (refresh && accessToken) {
+                // Don't try to refresh a failed auth call (login/refresh/etc.).
+                if (isAuthEndpoint) {
+                    return throwError(() => err);
+                }
+                // We had an access token (the user was logged in): try to mint a
+                // new one from the httpOnly refresh cookie, then retry.
+                if (accessToken) {
                     return refreshToken(req);
                 }
                 // otherwise logout and redirect to login page

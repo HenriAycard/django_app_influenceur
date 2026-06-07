@@ -1,7 +1,7 @@
-import { HttpClient, HttpEvent } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { HttpEvent } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User, LoginParam, RefreshTokenParam, TokenResponse, UserParam } from 'src/app/shared/models';
+import { User, LoginParam, TokenResponse, UserParam } from 'src/app/shared/models';
 import * as Constant from '../../config/constant';
 import { ApiService } from './api.service';
 
@@ -10,15 +10,28 @@ import { ApiService } from './api.service';
   providedIn: 'root'
 })
 export class ApiAuthService extends ApiService {
-  
+
   urlBase: string = Constant.domainConfig.virtual_host + "auth/";
 
+  // `withCredentials` lets the browser store/return the httpOnly refresh cookie
+  // the backend sets on these endpoints.
   login(params: LoginParam) : Observable<TokenResponse> {
-    return this.http.post<any>(this.urlBase + "jwt/create/", params);
+    return this.http.post<any>(this.urlBase + "jwt/create/", params, { withCredentials: true });
   }
 
-  refreshToken(param: RefreshTokenParam) : Observable<TokenResponse> {
-    return this.http.post<any>(this.urlBase + "jwt/refresh/", param);
+  // No body: the refresh token is read from the httpOnly cookie by the backend.
+  refreshToken() : Observable<TokenResponse> {
+    return this.http.post<any>(this.urlBase + "jwt/refresh/", {}, { withCredentials: true });
+  }
+
+  // SSO bridge: hand a fragment-delivered refresh token to the backend so it can
+  // store it as the httpOnly cookie and return a fresh access token.
+  exchangeRefreshForCookie(refresh: string) : Observable<TokenResponse> {
+    return this.http.post<any>(this.urlBase + "jwt/cookie/", { refresh }, { withCredentials: true });
+  }
+
+  logout() : Observable<any> {
+    return this.http.post<any>(this.urlBase + "jwt/logout/", {}, { withCredentials: true });
   }
 
   findUser() : Observable<User> {
