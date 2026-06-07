@@ -235,7 +235,7 @@ export class CompanyEditPage implements OnInit {
 
 
     public next() {
-        if (this.indice + 1 < this.step.length) {
+        if (this.indice + 1 < this.steps.length) {
             this.indice += 1;
             this.step = this.steps[this.indice]
             this.progress = (this.indice + 1) / this.steps.length
@@ -261,6 +261,6 @@ export class CompanyEditPage implements OnInit {
      }
 
     public isIndiceNotMinMax() {
-        return this.indice > 0 && this.indice <= this.step.length ? true : false
+        return this.indice > 0 && this.indice <= this.steps.length ? true : false
     }
 }
