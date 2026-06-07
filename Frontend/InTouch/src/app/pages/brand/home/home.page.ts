@@ -3,8 +3,8 @@ import { SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonListHeader, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras, RouterModule } from '@angular/router';
-import { CompanySortDto, ImgCompanyDto } from 'src/app/shared/models';
-import { ApiCompanyService } from 'src/app/services/api/api-company.service';
+import { VenueSortDto, ImgVenueDto } from 'src/app/shared/models';
+import { ApiVenueService } from 'src/app/services/api/api-venue.service';
 import { addCircleOutline, flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
@@ -18,9 +18,9 @@ import { addIcons } from 'ionicons';
 })
 export class HomePage {
 
-  readonly lstCompanys = signal<CompanySortDto[]>([])
+  readonly lstVenues = signal<VenueSortDto[]>([])
 
-  private apiCompany = inject(ApiCompanyService);
+  private apiVenue = inject(ApiVenueService);
 
   constructor(
     public router:Router,
@@ -44,19 +44,19 @@ export class HomePage {
 
   public callApiService(): void {
     //Get info 
-    this.apiCompany.findCompany().subscribe({
-      next: (data: CompanySortDto[]) => {
-        this.lstCompanys.set(data)
+    this.apiVenue.findVenue().subscribe({
+      next: (data: VenueSortDto[]) => {
+        this.lstVenues.set(data)
       }
     });
   }
 
-  getPrincipalImage(company: CompanySortDto): string | null {
-    if (!company?.imgCompany?.length) {
+  getPrincipalImage(venue: VenueSortDto): string | null {
+    if (!venue?.imgVenue?.length) {
       return null; // No images
     }
   
-    const principalImage = company.imgCompany.find((img: ImgCompanyDto) => img.isPrincipal);
+    const principalImage = venue.imgVenue.find((img: ImgVenueDto) => img.isPrincipal);
     return principalImage?.file || null; // Return file or null if not found
   }
 

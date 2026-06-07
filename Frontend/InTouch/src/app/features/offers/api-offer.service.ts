@@ -12,8 +12,8 @@ export class ApiOfferService extends ApiService {
 
   urlBase: string = Constant.domainConfig.virtual_host + Constant.domainConfig.apiPrefix + "/offer/";
 
-  public findOffersByCompanyId(id: number): Observable<Offer[]> {
-    const url = this.urlBase + "?company=" + id.toString()
+  public findOffersByVenueId(id: number): Observable<Offer[]> {
+    const url = this.urlBase + "?venue=" + id.toString()
     return this.http.get<any>(url, this.options).pipe(
       map(response => response.results || response)
     )

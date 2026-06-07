@@ -3,9 +3,9 @@ import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonTitle, IonToggle, IonToolbar } from "@ionic/angular/standalone";
-import { CompanyMainDto, typeCompanyDto, User } from "src/app/shared/models";
+import { VenueMainDto, typeVenueDto, User } from "src/app/shared/models";
 import { ApiAuthService } from "src/app/services/api/api-auth.service";
-import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.service";
+import { ApiVenueTypeService } from "src/app/services/api/api-venue-type.service";
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,

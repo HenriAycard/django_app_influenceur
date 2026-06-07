@@ -1,7 +1,7 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, catchError, of, tap } from 'rxjs';
-import { CompanySortDto } from 'src/app/shared/models';
-import { ApiCompanyService } from 'src/app/services/api/api-company.service';
+import { VenueSortDto } from 'src/app/shared/models';
+import { ApiVenueService } from 'src/app/services/api/api-venue.service';
 
 /**
  * Backs influencer discovery: the home venue feed plus free-text venue search.
@@ -9,13 +9,13 @@ import { ApiCompanyService } from 'src/app/services/api/api-company.service';
  */
 @Injectable({ providedIn: 'root' })
 export class DiscoveryStore {
-    private readonly api = inject(ApiCompanyService);
+    private readonly api = inject(ApiVenueService);
 
     private readonly _query = signal('');
-    private readonly _results = signal<CompanySortDto[]>([]);
+    private readonly _results = signal<VenueSortDto[]>([]);
     private readonly _loading = signal(false);
 
-    private readonly _feed = signal<CompanySortDto[]>([]);
+    private readonly _feed = signal<VenueSortDto[]>([]);
     private readonly _feedLoading = signal(false);
 
     readonly query = this._query.asReadonly();
@@ -32,7 +32,7 @@ export class DiscoveryStore {
     /** Loads the venue feed for the discovery home. Completes when done. */
     loadFeed(): Observable<unknown> {
         this._feedLoading.set(true);
-        return this.api.findCompany().pipe(
+        return this.api.findVenue().pipe(
             tap(venues => {
                 this._feed.set(venues);
                 this._feedLoading.set(false);
@@ -55,7 +55,7 @@ export class DiscoveryStore {
         }
 
         this._loading.set(true);
-        this.api.findCompanyBySearch(value).subscribe({
+        this.api.findVenueBySearch(value).subscribe({
             next: results => {
                 this._results.set(results);
                 this._loading.set(false);

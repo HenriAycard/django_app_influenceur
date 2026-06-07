@@ -16,7 +16,7 @@ import { OfferFormComponent } from 'src/app/features/offers/ui/offer-form/offer-
     imports: [RouterModule, IonContent, IonTitle, IonBackButton, IonToolbar, IonHeader, IonButtons, OfferFormComponent]
 })
 export class OfferCreatePage {
-    @Input() companyId!: number;
+    @Input() venueId!: number;
     public offerInput!: Partial<Offer>;
 
     private alertCtrlService = inject(AlertControllerService);
@@ -33,7 +33,7 @@ export class OfferCreatePage {
         this.alertCtrlService.showLoading()
 
         let newOffer: Partial<Offer> = {
-            company: this.companyId,
+            venue: this.venueId,
             ...offer
         }
 

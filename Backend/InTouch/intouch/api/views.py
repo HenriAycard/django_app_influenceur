@@ -12,7 +12,7 @@ from rest_framework.response import Response
 
 from .models import *
 from .serializers import *
-from .permissions import IsCompanyOwner, IsRelatedToCompanyOwner, IsReservationParty
+from .permissions import IsVenueOwner, IsRelatedToVenueOwner, IsReservationParty
 
 import logging
 from uuid import UUID
@@ -64,13 +64,13 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         queryset = User.objects.filter(pk=user.id)
         return queryset
 
-class CompanyCreateView(generics.ListCreateAPIView):
+class VenueCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
-            return CompanyCreateSerializer
-        return CompanySerializer
+            return VenueCreateSerializer
+        return VenueSerializer
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -86,14 +86,14 @@ class CompanyCreateView(generics.ListCreateAPIView):
         print(user)
 
         if user.is_influencer == 0:
-            queryset = Company.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, is_actif=1).order_by('id')
+            queryset = Venue.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, is_actif=1).order_by('id')
         else:
-            queryset = Company.objects.all().order_by('id')
+            queryset = Venue.objects.all().order_by('id')
         return queryset
 
-class CompanySearchView(generics.ListAPIView):
+class VenueSearchView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    serializer_class = CompanySerializer
+    serializer_class = VenueSerializer
     swagger_schema = None
 
     def get_queryset(self):
@@ -101,9 +101,9 @@ class CompanySearchView(generics.ListAPIView):
         query = "|".join(query.split(' ')) #joining the space separated words with | for OR condition
 
         search_query = SearchQuery(query, search_type='raw')
-        search_vector = SearchVector('name_company', weight='A') + SearchVector('description', weight='B') + SearchVector('address__city', weight='C')
+        search_vector = SearchVector('name_venue', weight='A') + SearchVector('description', weight='B') + SearchVector('address__city', weight='C')
 
-        brands = Company.objects.annotate(
+        brands = Venue.objects.annotate(
             search=search_vector,
             rank=SearchVector(search_vector, search_query)
         ).filter(search=search_query).order_by("-rank")
@@ -111,10 +111,10 @@ class CompanySearchView(generics.ListAPIView):
         return brands
 
 
-class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsCompanyOwner]
-    queryset = Company.objects.all()
-    serializer_class = CompanyDetailsSerializer
+class VenueDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated, IsVenueOwner]
+    queryset = Venue.objects.all()
+    serializer_class = VenueDetailsSerializer
     pagination_class = None
 
     def get_queryset(self):
@@ -122,9 +122,9 @@ class CompanyDetail(generics.RetrieveUpdateDestroyAPIView):
         print(user)
 
         if user.is_influencer == 0:
-            queryset = Company.objects.filter(user_id=user.id)
+            queryset = Venue.objects.filter(user_id=user.id)
         else:
-            queryset = Company.objects.all()
+            queryset = Venue.objects.all()
         return queryset
 
 
@@ -134,7 +134,7 @@ class AddressCreate(generics.CreateAPIView):
     serializer_class = AddressSerializer
 
 class AddressDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
 
@@ -144,7 +144,7 @@ class OpeningCreate(generics.CreateAPIView):
     serializer_class = OpeningSerializer
 
 class OpeningDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
     queryset = Opening.objects.all()
     serializer_class = OpeningSerializer
 
@@ -156,12 +156,12 @@ class OfferCreateView(generics.ListCreateAPIView):
         return OfferSerializer
 
     def get_queryset(self):
-        company = self.request.query_params['company']
-        queryset = Offer.objects.filter(company_id=company).order_by('id')
+        venue = self.request.query_params['venue']
+        queryset = Offer.objects.filter(venue_id=venue).order_by('id')
         return queryset
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
@@ -236,7 +236,7 @@ class ReservationCreateView(generics.ListCreateAPIView):
         if user.is_influencer:
             filter_params = {'user': user.id}
         else:
-            filter_params = {'offer__company__user_id': user.id}
+            filter_params = {'offer__venue__user_id': user.id}
         
         # Apply filters based on status and date range
         if status_resa:
@@ -261,13 +261,13 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ReservationSerializer
 
 
-#class imgCompanyView(APIView):
+#class imgVenueView(APIView):
 #    permission_classes = [permissions.IsAuthenticated]
 #    parser_class = (MultiPartParser, FormParser)
-#    serializer_class = imgCompanySerializer
+#    serializer_class = imgVenueSerializer
 
 #    def post(self, request, *args, **kwargs):
-#      file_serializer = imgCompanySerializer(data=request.data)
+#      file_serializer = imgVenueSerializer(data=request.data)
 #      if file_serializer.is_valid():
 #          file_serializer.save()
 #          return Response(file_serializer.data, status=status.HTTP_201_CREATED)
@@ -275,22 +275,22 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
 #          print(file_serializer.errors)
 #          return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class ImgCompanyListCreateView(generics.ListCreateAPIView):
+class ImgVenueListCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
-    serializer_class = imgCompanySerializer
-    queryset = imgCompany.objects.all().order_by('id')
+    serializer_class = imgVenueSerializer
+    queryset = imgVenue.objects.all().order_by('id')
 
-class ImgCompanyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated, IsRelatedToCompanyOwner]
+class ImgVenueRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
     parser_classes = (MultiPartParser, FormParser)
-    serializer_class = imgCompanySerializer
-    queryset = imgCompany.objects.all()
+    serializer_class = imgVenueSerializer
+    queryset = imgVenue.objects.all()
 
-class TypeCompanyView(generics.ListAPIView):
+class TypeVenueView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = TypeCompany.objects.all().order_by('id')
-    serializer_class = TypeCompanySerializer
+    queryset = TypeVenue.objects.all().order_by('id')
+    serializer_class = TypeVenueSerializer
     pagination_class = None
 
 class SaveFCMTokenView(generics.UpdateAPIView):

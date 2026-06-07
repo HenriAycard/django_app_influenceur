@@ -1,24 +1,24 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, combineLatest, tap } from 'rxjs';
-import { Company, Offer } from 'src/app/shared/models';
-import { ApiCompanyService } from 'src/app/services/api/api-company.service';
+import { Venue, Offer } from 'src/app/shared/models';
+import { ApiVenueService } from 'src/app/services/api/api-venue.service';
 import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 
 /**
- * Single source of truth for a venue (company) and its offers — shared by the
+ * Single source of truth for a venue (venue) and its offers — shared by the
  * brand venue overview and the influencer venue detail, which previously each
  * duplicated the same combineLatest fetch.
  */
 @Injectable({ providedIn: 'root' })
 export class VenueStore {
-    private readonly apiCompany = inject(ApiCompanyService);
+    private readonly apiVenue = inject(ApiVenueService);
     private readonly apiOffer = inject(ApiOfferService);
 
-    private readonly _company = signal<Company | null>(null);
+    private readonly _venue = signal<Venue | null>(null);
     private readonly _offers = signal<Offer[]>([]);
     private readonly _loaded = signal(false);
 
-    readonly company = this._company.asReadonly();
+    readonly venue = this._venue.asReadonly();
     readonly offers = this._offers.asReadonly();
     readonly loaded = this._loaded.asReadonly();
 
@@ -27,17 +27,17 @@ export class VenueStore {
      * pull-to-refresh can dismiss when done. Switching to a different venue clears
      * `loaded` first (so the skeleton shows); a same-venue refresh keeps the data.
      */
-    load(companyId: number): Observable<unknown> {
-        if (this._company()?.id !== companyId) {
+    load(venueId: number): Observable<unknown> {
+        if (this._venue()?.id !== venueId) {
             this._loaded.set(false);
         }
         return combineLatest([
-            this.apiCompany.findCompanyById(companyId),
-            this.apiOffer.findOffersByCompanyId(companyId),
+            this.apiVenue.findVenueById(venueId),
+            this.apiOffer.findOffersByVenueId(venueId),
         ]).pipe(
-            tap(([company, offers]) => {
-                company.openings.sort((a, b) => a.idDay - b.idDay);
-                this._company.set(company);
+            tap(([venue, offers]) => {
+                venue.openings.sort((a, b) => a.idDay - b.idDay);
+                this._venue.set(venue);
                 this._offers.set(offers);
                 this._loaded.set(true);
             })

@@ -7,7 +7,7 @@ export interface OpeningDate {
     breakStart: string
     breakEnd: string
     isOpen: boolean
-    company: number
+    venue: number
 }
 
 export interface dataOpeningDate {

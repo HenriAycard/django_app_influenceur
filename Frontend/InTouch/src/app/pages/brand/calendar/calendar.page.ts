@@ -5,7 +5,7 @@ import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem
 import { Application } from 'src/app/shared/models';
 import { addIcons } from 'ionicons';
 import { closeOutline, helpOutline, timeOutline } from 'ionicons/icons';
-import { CalendarCompanyComponent } from 'src/app/modal/calendar/company/calendar-company.component';
+import { CalendarVenueComponent } from 'src/app/modal/calendar/venue/calendar-venue.component';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 
@@ -15,7 +15,7 @@ import { AlertControllerService } from 'src/app/services/alert-controller.servic
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonLabel, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, CalendarCompanyComponent, DatePipe]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonLabel, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, CalendarVenueComponent, DatePipe]
 })
 export class CalendarPage {
 

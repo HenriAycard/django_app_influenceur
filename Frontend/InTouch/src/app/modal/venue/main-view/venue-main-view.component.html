@@ -1,0 +1,100 @@
+<!-- Image Carousel -->
+<swiper-container slides-per-view="1" space-between="10" pagination="true" navigation="true">
+  @for (venue_image of venue.imgVenue; track venue_image) {
+    <swiper-slide>
+      <img [src]="venue_image.file" class="venue-image" />
+    </swiper-slide>
+  }
+</swiper-container>
+
+<ion-list>
+  <ion-item>
+    <ion-label>
+      <h1 class="header-font">{{ venue.nameVenue }}</h1>
+      @if (venue.typeVenue) {
+        <p>{{ venue.typeVenue.name}}</p>
+      }
+      @if (venue.isOnsit) {
+        <ion-chip class="chip-padding">On sit</ion-chip>
+      }
+      @if (venue.isTakeaway) {
+        <ion-chip class="chip-padding">Take away</ion-chip>
+      }
+    </ion-label>
+  </ion-item>
+  <ion-item button (click)="openMap()">
+    <ion-icon name="location-outline" size="default" slot="start"></ion-icon>
+    @if (venue.address) {
+      <ion-label>
+        <h3>{{ venue.address.addressPrincipal }} {{ venue.address.addressSecondary }}</h3>
+        <h3>{{ venue.address.city }} {{ venue.address.zipCode }}</h3>
+      </ion-label>
+    }
+  </ion-item>
+  @if (venue.instagram) {
+    <ion-item button>
+      <ion-icon name="logo-instagram" size="default" slot="start"></ion-icon>
+      <p>&#64;{{ venue.instagram }}</p>
+    </ion-item>
+  }
+  @if (venue.tiktok) {
+    <ion-item button>
+      <ion-icon name="logo-tiktok" size="default" slot="start"></ion-icon>
+      <p>{{ venue.tiktok }}</p>
+    </ion-item>
+  }
+  @if (venue.youtube) {
+    <ion-item button>
+      <ion-icon name="logo-youtube" size="default" slot="start"></ion-icon>
+      <p>{{ venue.youtube }}</p>
+    </ion-item>
+  }
+  @if (venue.twitter) {
+    <ion-item button>
+      <ion-icon name="logo-twitter" size="default" slot="start"></ion-icon>
+      <p>{{ venue.twitter }}</p>
+    </ion-item>
+  }
+  @if (venue.facebook) {
+    <ion-item button>
+      <ion-icon name="logo-facebook" size="default" slot="start"></ion-icon>
+      <p>{{ venue.facebook }}</p>
+    </ion-item>
+  }
+</ion-list>
+
+<ion-item lines="none">
+  <ion-label class="ion-no-margin">
+    <h1 class="header-font header-margin">Description</h1>
+    <ion-label class="ion-text-wrap text-justify">
+      {{ showFullDescription ? venue.description : (venue.description | slice:0:300) }}
+      @if (venue.description.length > 300) {
+        <span>
+          @if (!showFullDescription) {
+            ... <button ion-button fill="clear" size="small" (click)="toggleDescription()" class="background-white">Read more</button>
+          }
+          @if (showFullDescription) {
+            <button ion-button fill="clear" size="small" (click)="toggleDescription()" class="background-white">Show less</button>
+          }
+        </span>
+      }
+    </ion-label>
+  </ion-label>
+</ion-item>
+
+
+<ion-item lines="none">
+  <ion-label class="ion-no-margin">
+    <h1 class="header-font header-margin">Opening Hours</h1>
+    @for (open of venue.openings; track open) {
+      <div class="opening-row">
+        <div class="opening-day">
+          <strong>{{ open.day }}</strong>
+        </div>
+        <div class="opening-hours">
+          <span>{{ open.openHour }} - {{ open.closeHour }}</span>
+        </div>
+      </div>
+    }
+  </ion-label>
+</ion-item>

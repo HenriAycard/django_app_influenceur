@@ -28,7 +28,7 @@ export class BookingViewPage {
     this.router.navigate(['offer', this.reservation.offer.id], { relativeTo: this.activatedRoute });
   }
 
-  navToCompany() {
-    this.router.navigate(['influencer/home/search/company', this.reservation.offer.company.id]);
+  navToVenue() {
+    this.router.navigate(['influencer/home/search/venue', this.reservation.offer.venue.id]);
   }
 }

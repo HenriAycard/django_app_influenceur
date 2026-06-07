@@ -22,27 +22,27 @@ export const BRAND_TABS_ROUTES: Routes = [{
           loadComponent: () => import('../profile/edit/profile-edit.page').then(m => m.ProfileEditPage)
         },
         {
-            path: 'company/create',
-            loadComponent: () => import('./company/create/create.page').then(m => m.CreatePage)
+            path: 'venue/create',
+            loadComponent: () => import('./venue/create/create.page').then(m => m.CreatePage)
         },
         {
-            path: 'company/:companyId',
-            loadComponent: () => import('./company/view/company-view.page').then(m => m.CompanyViewPage)
+            path: 'venue/:venueId',
+            loadComponent: () => import('./venue/view/venue-view.page').then(m => m.VenueViewPage)
         },
         {
-            path: 'company/:companyId/edit',
-            loadComponent: () => import('./company/edit/company-edit.page').then(m => m.CompanyEditPage)
+            path: 'venue/:venueId/edit',
+            loadComponent: () => import('./venue/edit/venue-edit.page').then(m => m.VenueEditPage)
         },
         {
-            path: 'company/:companyId/offer/create',
+            path: 'venue/:venueId/offer/create',
             loadComponent: () => import('../../features/offers/pages/offer-create/offer-create.page').then(m => m.OfferCreatePage)
         },
         {
-            path: 'company/:companyId/offer/:offerId',
+            path: 'venue/:venueId/offer/:offerId',
             loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
         },
         {
-            path: 'company/:companyId/offer/:offerId/edit',
+            path: 'venue/:venueId/offer/:offerId/edit',
             loadComponent: () => import('../../features/offers/pages/offer-edit/offer-edit.page').then(m => m.OfferEditPage)
         },
         {

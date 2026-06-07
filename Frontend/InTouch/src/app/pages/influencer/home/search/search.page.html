@@ -9,13 +9,13 @@
 
 <ion-content>
   @for (data of store.results(); track data) {
-    <ion-card button (click)="navToCompany(data.id)">
-      @for (company_image of data.imgCompany; track company_image) {
-        <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" [src]="company_image.file" />
+    <ion-card button (click)="navToVenue(data.id)">
+      @for (venue_image of data.imgVenue; track venue_image) {
+        <img style="height: 200px; width: 100%; object-fit: cover;" alt="Silhouette of mountains" [src]="venue_image.file" />
       }
       <ion-card-header style="text-align: left;">
-        <ion-card-title>{{ data['nameCompany'] }}</ion-card-title>
-        <ion-card-subtitle>{{ data.typeCompany.name }}</ion-card-subtitle>
+        <ion-card-title>{{ data['nameVenue'] }}</ion-card-title>
+        <ion-card-subtitle>{{ data.typeVenue.name }}</ion-card-subtitle>
         <ion-label>
           @if (data['isOnsit']) {
             <ion-chip class="chip-padding">On sit</ion-chip>

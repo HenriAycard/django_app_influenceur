@@ -28,7 +28,7 @@ export class SearchPage {
     });
   }
 
-  navToCompany(id: number) {
-    this.router.navigate(['company', id], { relativeTo: this.route });
+  navToVenue(id: number) {
+    this.router.navigate(['venue', id], { relativeTo: this.route });
   }
 }

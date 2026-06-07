@@ -1,9 +1,9 @@
-import { CompanyBooking } from "./company";
+import { VenueBooking } from "./venue";
 
 /** An offer as returned nested inside other resources (carries its venue). */
 export interface OfferWithVenue {
     id: number;
-    company: CompanyBooking;
+    venue: VenueBooking;
     name: string;
     startDate: Date;
     endDate: Date | null;
@@ -24,10 +24,10 @@ export interface OfferWithVenue {
     exclusivitySpecification: string | null;
 }
 
-/** A published collaboration opportunity created by a company/brand. */
+/** A published collaboration opportunity created by a venue/brand. */
 export interface Offer {
     id?: number;
-    company: number;
+    venue: number;
     name: string;
     startDate: Date;
     endDate: Date | null;

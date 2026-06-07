@@ -68,6 +68,6 @@ export class HomeInfluencerPage {
   }
 
   openVenue(id: number) {
-    this.router.navigate(['search', 'company', id], { relativeTo: this.activatedRoute });
+    this.router.navigate(['search', 'venue', id], { relativeTo: this.activatedRoute });
   }
 }

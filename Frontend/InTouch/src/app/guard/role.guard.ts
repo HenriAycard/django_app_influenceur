@@ -9,7 +9,7 @@ import { Role } from 'src/app/shared/models';
  * Guard factory that protects a route by role.
  *
  * - Not authenticated  -> redirect to /login
- * - Wrong role         -> redirect to the user's own home (prevents a company
+ * - Wrong role         -> redirect to the user's own home (prevents a venue
  *                         from loading /influencer/* and vice-versa)
  * - Allowed role       -> activate
  */

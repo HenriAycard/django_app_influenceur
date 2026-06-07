@@ -11,7 +11,7 @@
     </div>
 
     <div class="icons">
-      <ion-button fill="clear" [routerLink]="['../company/create']" class="ion-no-padding">
+      <ion-button fill="clear" [routerLink]="['../venue/create']" class="ion-no-padding">
         <ion-icon name="add-circle-outline"></ion-icon>
       </ion-button>
     </div>
@@ -19,34 +19,34 @@
 
   <h1 class="greeting ion-margin-horizontal">Home</h1>
   <h3 class="ion-margin-horizontal">Manage all your brand 👋</h3>
-  <p class="text-justify ion-margin-horizontal">Boots your company's communication with influencer by an easy way to
+  <p class="text-justify ion-margin-horizontal">Boots your venue's communication with influencer by an easy way to
   collaborate.</p>
 
-  @for (company_card of lstCompanys(); track company_card) {
-    <ion-card button [routerLink]="['../company/', company_card.id]">
-      @if (getPrincipalImage(company_card)) {
+  @for (venue_card of lstVenues(); track venue_card) {
+    <ion-card button [routerLink]="['../venue/', venue_card.id]">
+      @if (getPrincipalImage(venue_card)) {
         <img
-          [src]="getPrincipalImage(company_card)"
+          [src]="getPrincipalImage(venue_card)"
           style="height: 200px; width: 100%; object-fit: cover;"
-          alt="Company image" />
+          alt="Venue image" />
       }
       <ion-card-header style="text-align: left;">
-        <ion-card-title>{{ company_card['nameCompany'] }}</ion-card-title>
-        @if (company_card.typeCompany) {
-          <ion-card-subtitle>{{ company_card.typeCompany.name
+        <ion-card-title>{{ venue_card['nameVenue'] }}</ion-card-title>
+        @if (venue_card.typeVenue) {
+          <ion-card-subtitle>{{ venue_card.typeVenue.name
           }}</ion-card-subtitle>
         }
         <ion-label>
-          @if (company_card['isOnsit']) {
+          @if (venue_card['isOnsit']) {
             <ion-chip class="chip-padding">On sit</ion-chip>
           }
-          @if (company_card['isTakeaway']) {
+          @if (venue_card['isTakeaway']) {
             <ion-chip class="chip-padding">Take away</ion-chip>
           }
         </ion-label>
       </ion-card-header>
       <ion-card-content class="ion-text-justify">
-        {{ company_card.description | slice:0:250 }}{{company_card.description.length > 250 ? '...' : ''}}
+        {{ venue_card.description | slice:0:250 }}{{venue_card.description.length > 250 ? '...' : ''}}
       </ion-card-content>
     </ion-card>
   }

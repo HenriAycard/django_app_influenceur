@@ -14,11 +14,11 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
       loadComponent: () => import('./home/search/search.page').then(m => m.SearchPage)
     },
     {
-      path: 'home/search/company/:companyId',
-      loadComponent: () => import('./company/company.page').then(m => m.CompanyPage)
+      path: 'home/search/venue/:venueId',
+      loadComponent: () => import('./venue/venue.page').then(m => m.VenuePage)
     },
     {
-      path: 'home/search/company/:companyId/offer/:offerId',
+      path: 'home/search/venue/:venueId/offer/:offerId',
       loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
     },
     {

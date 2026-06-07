@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Company, Address, TypeCompany, Opening, Offer, Reservation, imgCompany, FCMToken
+from .models import User, Venue, Address, TypeVenue, Opening, Offer, Reservation, imgVenue, FCMToken
 
 
 @admin.register(User)
@@ -10,18 +10,18 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ('-created',)
 
 
-@admin.register(Company)
-class CompanyAdmin(admin.ModelAdmin):
-    list_display = ('name_company', 'user', 'type_company', 'is_actif')
-    list_filter = ('is_actif', 'type_company')
-    search_fields = ('name_company', 'user__email')
+@admin.register(Venue)
+class VenueAdmin(admin.ModelAdmin):
+    list_display = ('name_venue', 'user', 'type_venue', 'is_actif')
+    list_filter = ('is_actif', 'type_venue')
+    search_fields = ('name_venue', 'user__email')
 
 
 @admin.register(Offer)
 class OfferAdmin(admin.ModelAdmin):
-    list_display = ('name', 'company', 'start_date', 'end_date', 'quantity')
+    list_display = ('name', 'venue', 'start_date', 'end_date', 'quantity')
     list_filter = ('start_date',)
-    search_fields = ('name', 'company__name_company')
+    search_fields = ('name', 'venue__name_venue')
 
 
 @admin.register(Reservation)
@@ -37,20 +37,20 @@ class AddressAdmin(admin.ModelAdmin):
     search_fields = ('address_principal', 'city')
 
 
-@admin.register(TypeCompany)
-class TypeCompanyAdmin(admin.ModelAdmin):
+@admin.register(TypeVenue)
+class TypeVenueAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
 
 @admin.register(Opening)
 class OpeningAdmin(admin.ModelAdmin):
-    list_display = ('company', 'day', 'open_hour', 'close_hour', 'is_open')
+    list_display = ('venue', 'day', 'open_hour', 'close_hour', 'is_open')
     list_filter = ('is_open',)
 
 
-@admin.register(imgCompany)
-class ImgCompanyAdmin(admin.ModelAdmin):
-    list_display = ('id', 'company', 'is_principal')
+@admin.register(imgVenue)
+class ImgVenueAdmin(admin.ModelAdmin):
+    list_display = ('id', 'venue', 'is_principal')
     list_filter = ('is_principal',)
 
 

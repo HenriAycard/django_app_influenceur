@@ -1,8 +1,8 @@
-<ion-card (click)="navToCompany()">
-  <img [src]="reservation.offer.company.imgCompany[0].file" alt="Company Image" class="company-image" />
+<ion-card (click)="navToVenue()">
+  <img [src]="reservation.offer.venue.imgVenue[0].file" alt="Venue Image" class="venue-image" />
   <ion-card-header>
-    <ion-card-title>{{ reservation.offer.company.nameCompany }}</ion-card-title>
-    <ion-card-subtitle>{{ reservation.offer.company.typeCompany.name }}</ion-card-subtitle>
+    <ion-card-title>{{ reservation.offer.venue.nameVenue }}</ion-card-title>
+    <ion-card-subtitle>{{ reservation.offer.venue.typeVenue.name }}</ion-card-subtitle>
   </ion-card-header>
 </ion-card>
 

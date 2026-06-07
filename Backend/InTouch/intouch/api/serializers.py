@@ -32,35 +32,35 @@ class OpeningSerializer(ModelSerializer):
         model = Opening
         fields = '__all__'
 
-class TypeCompanySerializer(ModelSerializer):
+class TypeVenueSerializer(ModelSerializer):
 
     class Meta:
-        model = TypeCompany
+        model = TypeVenue
         fields = '__all__'
 
 
-class imgCompanySerializer(ModelSerializer):
+class imgVenueSerializer(ModelSerializer):
     
     class Meta:
-        model = imgCompany
+        model = imgVenue
         fields = '__all__'
 
-class CompanySerializer(ModelSerializer):
+class VenueSerializer(ModelSerializer):
     user = UserSerializer(many=False, read_only=True)
-    type_company = TypeCompanySerializer(many=False, read_only=True)
-    imgCompany = imgCompanySerializer(many=True, read_only=True)
+    type_venue = TypeVenueSerializer(many=False, read_only=True)
+    imgVenue = imgVenueSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Company
-        fields = ('id', 'name_company', 'is_takeaway', 'is_onsit', 'description', 'type_company', 'imgCompany', 'user')
+        model = Venue
+        fields = ('id', 'name_venue', 'is_takeaway', 'is_onsit', 'description', 'type_venue', 'imgVenue', 'user')
 
 
-class CompanyDetailsSerializer(ModelSerializer):
+class VenueDetailsSerializer(ModelSerializer):
     address = AddressSerializer(many=False, read_only=True)
-    type_company = TypeCompanySerializer(many=False, read_only=True)
-    type_company_id = PrimaryKeyRelatedField(
-        queryset=TypeCompany.objects.all(),
-        source='typeCompany',
+    type_venue = TypeVenueSerializer(many=False, read_only=True)
+    type_venue_id = PrimaryKeyRelatedField(
+        queryset=TypeVenue.objects.all(),
+        source='typeVenue',
         write_only=True,
     )
     address_id = PrimaryKeyRelatedField(
@@ -69,19 +69,19 @@ class CompanyDetailsSerializer(ModelSerializer):
         write_only=True,
     )
     openings = OpeningSerializer(many=True)
-    imgCompany = imgCompanySerializer(many=True, read_only=True)
+    imgVenue = imgVenueSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Company
-        fields = ('id', 'name_company', 'is_takeaway', 'is_onsit', 'description', 'address', 'address_id', 'type_company', 'type_company_id', 'openings', 'imgCompany', 'is_actif', 'facebook', 'tiktok', 'instagram', 'youtube', 'twitter')
+        model = Venue
+        fields = ('id', 'name_venue', 'is_takeaway', 'is_onsit', 'description', 'address', 'address_id', 'type_venue', 'type_venue_id', 'openings', 'imgVenue', 'is_actif', 'facebook', 'tiktok', 'instagram', 'youtube', 'twitter')
 
 
-class CompanyCreateSerializer(ModelSerializer):
+class VenueCreateSerializer(ModelSerializer):
     user = PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True, required=False)
 
 
     class Meta:
-        model = Company
+        model = Venue
         fields = '__all__'
 
 class OfferCreateSerializer(ModelSerializer):
@@ -96,17 +96,17 @@ class OfferSerializer(ModelSerializer):
         model = Offer
         fields = '__all__'
 
-class ReservationCompanySerializer(ModelSerializer):
-    imgCompany = imgCompanySerializer(many=True, read_only=True)
-    type_company = TypeCompanySerializer(many=False, read_only=True)
+class ReservationVenueSerializer(ModelSerializer):
+    imgVenue = imgVenueSerializer(many=True, read_only=True)
+    type_venue = TypeVenueSerializer(many=False, read_only=True)
 
     class Meta:
-        model = Company
+        model = Venue
         fields = '__all__'
 
 
-class OfferCompanySerializer(ModelSerializer):
-    company = ReservationCompanySerializer(many=False, read_only=True)
+class OfferVenueSerializer(ModelSerializer):
+    venue = ReservationVenueSerializer(many=False, read_only=True)
     class Meta:
         model = Offer
         fields = '__all__'
@@ -115,7 +115,7 @@ class ReservationSerializer(ModelSerializer):
     offer_id = PrimaryKeyRelatedField(
         queryset=Offer.objects.all(), source="offer", write_only=True
     )
-    offer = OfferCompanySerializer(many=False, read_only=True) # Keep for reading
+    offer = OfferVenueSerializer(many=False, read_only=True) # Keep for reading
     user = UserSerializer(many=False, read_only=True)
 
     class Meta:
@@ -123,14 +123,14 @@ class ReservationSerializer(ModelSerializer):
         fields = ('id', 'offer', 'offer_id', 'status', 'date_reservation', 'user')
 
 class InfluenceurReservationSerializer(ModelSerializer):
-    offer = OfferCompanySerializer(many=False, read_only=True)
+    offer = OfferVenueSerializer(many=False, read_only=True)
 
     class Meta:
         model = Reservation
         fields = ('id', 'offer', 'status', 'date_reservation')
 
 class BrandReservationSerializer(ModelSerializer):
-    offer = OfferCompanySerializer(many=False, read_only=True)
+    offer = OfferVenueSerializer(many=False, read_only=True)
     user = UserSerializer(many=False, read_only=True)
 
     class Meta:

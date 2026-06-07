@@ -30,13 +30,13 @@
 
   @for (venue of store.feed(); track venue) {
     <ion-card button (click)="openVenue(venue.id)">
-      @for (image of venue.imgCompany; track image) {
+      @for (image of venue.imgVenue; track image) {
         <img style="height: 200px; width: 100%; object-fit: cover;"
           [src]="image.file" alt="" />
       }
       <ion-card-header style="text-align: left;">
-        <ion-card-title>{{ venue.nameCompany }}</ion-card-title>
-        <ion-card-subtitle>{{ venue.typeCompany.name }}</ion-card-subtitle>
+        <ion-card-title>{{ venue.nameVenue }}</ion-card-title>
+        <ion-card-subtitle>{{ venue.typeVenue.name }}</ion-card-subtitle>
         <ion-label>
           @if (venue.isOnsit) {
             <ion-chip class="chip-padding">On sit</ion-chip>

@@ -64,13 +64,14 @@ export class PickerOpeningDay implements OnInit {
         }
     }
 
-    onIonChange(event: CustomEvent<{ value: string }>, type: string) {
+    onIonChange(event: CustomEvent, type: string) {
+        const value = String(event.detail.value ?? '');
         if (type === 'Hours') {
-            this.selectedHours = event.detail.value;
+            this.selectedHours = value;
         } else if (type === 'Minutes') {
-            this.selectedMinutes = event.detail.value;
+            this.selectedMinutes = value;
         } else if (type === 'Clock') {
-            this.selectedClock = event.detail.value;
+            this.selectedClock = value;
         }
     }
 

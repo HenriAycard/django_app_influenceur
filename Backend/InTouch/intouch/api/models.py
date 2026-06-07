@@ -110,7 +110,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def is_staff(self):
         return self.is_admin
 
-class TypeCompany(models.Model):
+class TypeVenue(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=True)
 
@@ -123,10 +123,10 @@ class Address(models.Model):
     country = models.CharField(max_length=30, blank=True)
     zip_code = models.CharField(max_length=5, blank=True)
 
-class Company(models.Model):
+class Venue(models.Model):
     id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name_company = models.CharField(max_length=50, blank=True)
+    name_venue = models.CharField(max_length=50, blank=True)
     is_takeaway = models.BooleanField(default=False)
     is_onsit = models.BooleanField(default=False)
     description = models.CharField(max_length=800, blank=True)
@@ -135,19 +135,19 @@ class Company(models.Model):
     tiktok = models.CharField(max_length=100, null=True, blank=True)
     twitter = models.CharField(max_length=100, null=True, blank=True)
     youtube = models.CharField(max_length=100, null=True, blank=True)
-    type_company = models.ForeignKey(TypeCompany, on_delete=models.CASCADE, null=True)
+    type_venue = models.ForeignKey(TypeVenue, on_delete=models.CASCADE, null=True)
     address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
     is_actif = models.BooleanField(default=True)
 
-class imgCompany(models.Model):
+class imgVenue(models.Model):
     id = models.BigAutoField(primary_key=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='imgCompany')
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='imgVenue')
     file = models.ImageField(upload_to=upload_to, blank=True, null=True)
     is_principal = models.BooleanField(default=False)
 
 class Opening(models.Model):
     id = models.BigAutoField(primary_key=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='openings', null=True)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='openings', null=True)
     id_day = models.IntegerField(blank=True)
     day = models.CharField(max_length=15, blank=True)
     open_hour = models.CharField(max_length=15, blank=True)
@@ -159,7 +159,7 @@ class Opening(models.Model):
 
 class Offer(models.Model):
     id = models.BigAutoField(primary_key=True)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE, null=True)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=100)
     start_date = models.DateField(default=date.today)
     end_date = models.DateField(null=True, blank=True)

@@ -1,10 +1,10 @@
 @for (collaboration of collaborations; track collaboration) {
   <ion-item  detail="true" button (click)="displayInfo(collaboration)">
     <ion-thumbnail slot="start">
-      <img [src]="collaboration.offer.company.imgCompany[0].file || 'assets/profile/default-profile.png'" alt="Brand image" />
+      <img [src]="collaboration.offer.venue.imgVenue[0].file || 'assets/profile/default-profile.png'" alt="Brand image" />
     </ion-thumbnail>
     <ion-label>
-      <h3 class="bold">{{ collaboration.offer.company.nameCompany }}</h3>
+      <h3 class="bold">{{ collaboration.offer.venue.nameVenue }}</h3>
       <p>{{ collaboration.offer.name }}</p>
       <p class="blueColor">{{ collaboration.dateReservation | date:'EEEE, MMMM d, y, h:mm a'}}</p>
     </ion-label>

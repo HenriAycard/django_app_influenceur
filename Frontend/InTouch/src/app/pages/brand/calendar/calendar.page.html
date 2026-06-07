@@ -25,7 +25,7 @@
         <ion-label slot="end" class="no-margin">{{ store.bWaitingCount() }}</ion-label>
       </ion-item>
       <div slot="content">
-        <app-calendar-company [collaborations]="store.bWaiting()"></app-calendar-company>
+        <app-calendar-venue [collaborations]="store.bWaiting()"></app-calendar-venue>
       </div>
     </ion-accordion>
 
@@ -36,7 +36,7 @@
         <ion-label slot="end" class="no-margin">{{ store.bPastCount() }}</ion-label>
       </ion-item>
       <div slot="content">
-        <app-calendar-company [collaborations]="store.bPast()"></app-calendar-company>
+        <app-calendar-venue [collaborations]="store.bPast()"></app-calendar-venue>
       </div>
     </ion-accordion>
 
@@ -47,7 +47,7 @@
         <ion-label slot="end" class="no-margin">{{ store.bDeclinedCount() }}</ion-label>
       </ion-item>
       <div slot="content">
-        <app-calendar-company [collaborations]="store.bDeclined()"></app-calendar-company>
+        <app-calendar-venue [collaborations]="store.bDeclined()"></app-calendar-venue>
       </div>
     </ion-accordion>
   </ion-accordion-group>
@@ -76,7 +76,7 @@
               <ion-card class="event-card" button (click)="displayInfo(valComingSoon)">
                 <ion-card-header>
                   <ion-card-title>{{ valComingSoon.user.firstname }} {{ valComingSoon.user.lastname }}</ion-card-title>
-                  <ion-card-subtitle>{{ valComingSoon.offer.company.nameCompany }}</ion-card-subtitle>
+                  <ion-card-subtitle>{{ valComingSoon.offer.venue.nameVenue }}</ion-card-subtitle>
                 </ion-card-header>
                 <ion-card-content>
                   <span class="event-info">{{ valComingSoon.offer.name }} at {{ valComingSoon.dateReservation | date:'h:mm a'}}</span>
