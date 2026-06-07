@@ -1,5 +1,5 @@
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonButton, IonCol, IonContent, IonIcon, IonItem, IonProgressBar, IonRow } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -18,6 +18,7 @@ import { ApiOpeningService } from 'src/app/services/api/api-opening.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-create',
   templateUrl: './create.page.html',
   styleUrls: ['./create.page.scss'],
