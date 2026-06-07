@@ -8,10 +8,10 @@
 </ion-header>
 
 <ion-content>
-  @if (isLoad) {
+  @if (isLoad()) {
     <div>
-      <app-booking-view [reservation]="reservation"></app-booking-view>
-      @if ((reservation.status === ApplicationStatus.Pending || reservation.status === ApplicationStatus.Accepted) && !isPastReservation()) {
+      <app-booking-view [reservation]="reservation()"></app-booking-view>
+      @if ((reservation().status === ApplicationStatus.Pending || reservation().status === ApplicationStatus.Accepted) && !isPastReservation()) {
         <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()">
           <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
         </ion-button>

@@ -1,5 +1,5 @@
 
-import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow,  IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, closeCircle, create, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube } from 'ionicons/icons';
@@ -13,6 +13,7 @@ import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
 
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-brand-booking-view',
   templateUrl: './brand-booking-view.page.html',
   styleUrls: ['./brand-booking-view.page.scss'],
@@ -24,8 +25,8 @@ export class BrandBookingViewPage implements OnInit {
   @Input() bookingId!: number;
   @ViewChild(IonModal) modal!: IonModal;
 
-  public reservation: Application = {} as Application
-  public isLoad: boolean = false
+  readonly reservation = signal<Application>({} as Application)
+  readonly isLoad = signal(false)
   public isModalOpen = false;
   public presentingElement: Element | null = null;
   public readonly ApplicationStatus = ApplicationStatus;
@@ -45,25 +46,25 @@ export class BrandBookingViewPage implements OnInit {
   public loadData(): void {
     this.store.findOne(this.bookingId).subscribe({
       next: (value: Application) => {
-        this.reservation = value
-        this.isLoad = true
+        this.reservation.set(value)
+        this.isLoad.set(true)
       }
     })
   }
 
   public acceptReservation() {
     this.applyStatusChange(
-      this.store.accept(this.reservation.id),
+      this.store.accept(this.reservation().id),
       'Reservation confirmed!',
-      `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is confirmed`
+      `The reservation of ${this.reservation().user.firstname} ${this.reservation().user.lastname} is confirmed`
     )
   }
 
   public cancelReservation() {
     this.applyStatusChange(
-      this.store.decline(this.reservation.id),
+      this.store.decline(this.reservation().id),
       'Reservation cancelled!',
-      `The reservation of ${this.reservation.user.firstname} ${this.reservation.user.lastname} is cancelled`
+      `The reservation of ${this.reservation().user.firstname} ${this.reservation().user.lastname} is cancelled`
     )
   }
 
@@ -94,9 +95,9 @@ export class BrandBookingViewPage implements OnInit {
   }
 
   public isPastReservation(): boolean {
-    if (this.reservation.status === ApplicationStatus.Accepted) {
+    if (this.reservation().status === ApplicationStatus.Accepted) {
       const today = new Date();
-      return this.reservation.dateReservation < today; // true if date is before today
+      return this.reservation().dateReservation < today; // true if date is before today
     }
     return false;
   }
