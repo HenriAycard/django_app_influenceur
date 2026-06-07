@@ -1,5 +1,5 @@
 
-import { Component, inject, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from "@angular/core";
 import { ReactiveFormsModule, FormsModule, FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { IonContent, IonLabel, IonItem, IonTextarea, IonButton, IonInput, IonCol, IonTitle, IonGrid, IonRow, IonButtons, IonToolbar, IonHeader, IonBackButton } from "@ionic/angular/standalone";
@@ -10,6 +10,7 @@ import { ApiOfferService } from "src/app/features/offers/api-offer.service";
 import { ToastService } from "src/app/services/toast.service";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-offer-edit',
     templateUrl: './offer-edit.page.html',
     styleUrls: ['./offer-edit.page.scss'],
@@ -19,7 +20,7 @@ import { ToastService } from "src/app/services/toast.service";
 export class OfferEditPage implements OnInit {
     @Input() offerId!: number;
     public offerInput!: Partial<Offer>;
-    public isLoad: boolean = false;
+    readonly isLoad = signal(false);
 
 
     private alertCtrlService = inject(AlertControllerService);
@@ -35,7 +36,7 @@ export class OfferEditPage implements OnInit {
         this.apiOffer.findOfferById(this.offerId).subscribe({
             next: (value: Offer) => {
                 this.offerInput = value
-                this.isLoad = true
+                this.isLoad.set(true)
             }
         })
     }

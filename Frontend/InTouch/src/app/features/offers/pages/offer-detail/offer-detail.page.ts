@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
 import { IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar, NavController } from "@ionic/angular/standalone";
@@ -10,6 +10,7 @@ import { ModalNewReservationComponent } from "src/app/modal/reservation/new/moda
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-offer-detail',
     templateUrl: './offer-detail.page.html',
     styleUrls: ['./offer-detail.page.scss'],
@@ -19,7 +20,7 @@ import { ModalNewReservationComponent } from "src/app/modal/reservation/new/moda
 export class OfferDetailPage implements OnInit {
     @Input() offerId!: number;
     public offer!: Offer;
-    public isLoad: boolean = false;
+    readonly isLoad = signal(false);
 
     public noEndDate: boolean = true;
     public isPaymentTerms: boolean = false;
@@ -40,7 +41,7 @@ export class OfferDetailPage implements OnInit {
             next: (value: Offer) => {
                 this.offer = value
                 this.initCondition()
-                this.isLoad = true
+                this.isLoad.set(true)
             }
         })
         this.presentingElement = document.querySelector('.ion-page');

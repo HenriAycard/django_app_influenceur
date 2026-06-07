@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Offer } from 'src/app/shared/models';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
@@ -8,6 +8,7 @@ import { IonContent, IonTitle, IonToolbar, IonBackButton, IonHeader, IonButtons 
 import { OfferFormComponent } from 'src/app/features/offers/ui/offer-form/offer-form.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-offer-create',
     templateUrl: './offer-create.page.html',
     styleUrls: ['./offer-create.page.scss'],
