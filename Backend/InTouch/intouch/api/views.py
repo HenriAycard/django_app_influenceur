@@ -9,6 +9,9 @@ from rest_framework.decorators import api_view
 from rest_framework import generics, permissions, filters, status
 from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from rest_framework.response import Response
+from rest_framework.exceptions import PermissionDenied, ValidationError as DRFValidationError
+
+from django.db.models import F
 
 from .models import *
 from .serializers import *
@@ -292,6 +295,45 @@ class TypeVenueView(generics.ListAPIView):
     queryset = TypeVenue.objects.all().order_by('id')
     serializer_class = TypeVenueSerializer
     pagination_class = None
+
+class ReviewListCreateView(generics.ListCreateAPIView):
+    """List reviews for a venue (?venue=) or an influencer (?influencer=),
+    and create a review for a completed collaboration the user took part in."""
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = None
+
+    def get_serializer_class(self):
+        return ReviewCreateSerializer if self.request.method == 'POST' else ReviewSerializer
+
+    def get_queryset(self):
+        qs = Review.objects.select_related('author').order_by('-created')
+        venue = self.request.query_params.get('venue')
+        influencer = self.request.query_params.get('influencer')
+        if venue:
+            return qs.filter(reservation__offer__venue_id=venue, author=F('reservation__user'))
+        if influencer:
+            return qs.filter(reservation__user_id=influencer).exclude(author=F('reservation__user'))
+        return qs.none()
+
+    def perform_create(self, serializer):
+        reservation = serializer.validated_data['reservation']
+        user = self.request.user
+
+        is_party = reservation.user_id == user.id or reservation.offer.venue.user_id == user.id
+        completed = (
+            reservation.status == 1
+            and reservation.date_reservation is not None
+            and reservation.date_reservation < timezone.now()
+        )
+        if not is_party:
+            raise PermissionDenied('You are not part of this collaboration.')
+        if not completed:
+            raise DRFValidationError('You can only review a completed collaboration.')
+        if Review.objects.filter(reservation=reservation, author=user).exists():
+            raise DRFValidationError('You have already reviewed this collaboration.')
+
+        serializer.save(author=user)
+
 
 class SaveFCMTokenView(generics.UpdateAPIView):
     serializer_class = FCMTokenSerializer

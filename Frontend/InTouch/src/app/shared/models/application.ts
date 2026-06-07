@@ -1,6 +1,7 @@
 import { OfferWithVenue } from "./offer";
 import { User } from "./users";
 import { ApplicationStatus } from "./enums/application-status";
+import { Review } from "./review";
 
 /** An influencer's application to an offer, as seen in list/status views. */
 export interface ApplicationView {
@@ -23,4 +24,8 @@ export interface Application {
     status: ApplicationStatus;
     dateReservation: Date;
     user: User;
+    /** The review the current viewer left for this collaboration, if any. */
+    myReview?: Review | null;
+    /** True when the viewer may leave a review (completed, party, not yet reviewed). */
+    canReview?: boolean;
 }

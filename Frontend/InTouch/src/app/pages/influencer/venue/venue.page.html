@@ -21,6 +21,7 @@
           <app-offer-card [offer]="deal" (actionPerformed)="onActionPerformed($event)"
           ></app-offer-card>
         }
+        <app-venue-reviews [venueId]="venueId"></app-venue-reviews>
       </div>
     }
     @if (!store.loaded()) {

@@ -186,6 +186,24 @@ class Reservation(models.Model):
     date_reservation = models.DateTimeField(null=True)
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
 
+class Review(models.Model):
+    """A rating left after a completed collaboration (an ACCEPTED reservation
+    whose date has passed). Direction is inferred from the author:
+    - author == reservation.user        -> the influencer rating the venue
+    - author == reservation.offer.venue.user -> the brand rating the influencer
+    One review per party per collaboration (unique reservation+author)."""
+    id = models.BigAutoField(primary_key=True)
+    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE, related_name='reviews')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews_written')
+    rating = models.PositiveSmallIntegerField()
+    comment = models.TextField(max_length=1000, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['reservation', 'author'], name='unique_review_per_party'),
+        ]
+
 class FCMToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=255, unique=True)

@@ -12,6 +12,7 @@ import { Application, Offer, ActionPayload } from 'src/app/shared/models';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { VenueStore } from 'src/app/features/venues/venue.store';
+import { VenueReviewsComponent } from 'src/app/features/reviews/ui/venue-reviews/venue-reviews.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,7 +20,7 @@ import { VenueStore } from 'src/app/features/venues/venue.store';
   templateUrl: './venue.page.html',
   styleUrls: ['./venue.page.scss'],
   standalone: true,
-  imports: [IonContent, FormsModule, IonItem, IonIcon, IonFab, IonFabButton, IonRefresher, IonRefresherContent, ReactiveFormsModule, VenueMainViewPage, VenueSkeletonComponent, OfferCardComponent]
+  imports: [IonContent, FormsModule, IonItem, IonIcon, IonFab, IonFabButton, IonRefresher, IonRefresherContent, ReactiveFormsModule, VenueMainViewPage, VenueSkeletonComponent, OfferCardComponent, VenueReviewsComponent]
 })
 export class VenuePage implements OnInit {
   @Input() venueId!: number;

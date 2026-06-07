@@ -42,6 +42,7 @@
           </ion-row>
         </ion-grid>
       }
+      <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
     </div>
   }
 

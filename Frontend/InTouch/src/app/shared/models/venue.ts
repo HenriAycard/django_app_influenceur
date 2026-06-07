@@ -23,6 +23,8 @@ export interface VenueSortDto {
     user: User;
     typeVenue: typeVenueDto;
     imgVenue: Array<ImgVenueDto>;
+    averageRating: number | null;
+    reviewCount: number;
 }
 
 export interface VenueBooking {
@@ -51,6 +53,8 @@ export interface Venue {
     typeVenue: typeVenueDto
     openings: OpeningDate[]
     imgVenue: ImgVenueDto[]
+    averageRating: number | null
+    reviewCount: number
 }
 
 export interface VenueCreateDto {

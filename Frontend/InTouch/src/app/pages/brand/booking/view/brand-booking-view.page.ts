@@ -10,6 +10,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
 import { ModalEditReservationComponent } from 'src/app/modal/reservation/edit/modal-edit-reservation.component';
 import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
+import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-section/review-section.component';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
   templateUrl: './brand-booking-view.page.html',
   styleUrls: ['./brand-booking-view.page.scss'],
   standalone: true,
-  imports: [IonButton, IonCol, IonRow, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonGrid, IonIcon, IonModal, ModalEditReservationComponent, BookingViewPage]
+  imports: [IonButton, IonCol, IonRow, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonGrid, IonIcon, IonModal, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
 })
 export class BrandBookingViewPage implements OnInit {
 

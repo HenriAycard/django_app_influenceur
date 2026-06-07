@@ -9,6 +9,7 @@ import { VenueSkeletonComponent } from 'src/app/modal/venue/skeleton/venue-skele
 import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-card.component';
 import { ActionPayload } from 'src/app/shared/models';
 import { VenueStore } from 'src/app/features/venues/venue.store';
+import { VenueReviewsComponent } from 'src/app/features/reviews/ui/venue-reviews/venue-reviews.component';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { VenueStore } from 'src/app/features/venues/venue.store';
     templateUrl: './venue-view.page.html',
     styleUrls: ['./venue-view.page.scss'],
     standalone: true,
-    imports: [IonContent, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, VenueMainViewPage, VenueSkeletonComponent]
+    imports: [IonContent, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, VenueMainViewPage, VenueSkeletonComponent, VenueReviewsComponent]
 })
 export class VenueViewPage {
   @Input() venueId!: number;

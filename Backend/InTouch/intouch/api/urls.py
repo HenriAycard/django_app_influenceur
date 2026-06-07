@@ -21,6 +21,7 @@ urlpatterns = [
     path('offer/<int:pk>', OfferDetail.as_view(), name='offer_detail'),
     path('reservation/', ReservationCreateView.as_view(), name='reservation_list'),
     path('reservation/<int:pk>', ReservationDetail.as_view(), name='reservation_detail'),
+    path('review/', ReviewListCreateView.as_view(), name='review_list'),
     path('typeVenue/', TypeVenueView.as_view(), name='typeVenue_list'),
     path('save-fcm-token/', SaveFCMTokenView.as_view(), name='save_fcm_token'),
     path('send-notification', send_push_notification, name='send_push_notification'),

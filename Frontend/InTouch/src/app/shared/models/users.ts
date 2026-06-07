@@ -9,6 +9,8 @@ export interface User {
     youtube: string
     isInfluencer: boolean
     isCompany: boolean
+    averageRating?: number | null
+    reviewCount?: number
 }
 
 export interface UserParam {

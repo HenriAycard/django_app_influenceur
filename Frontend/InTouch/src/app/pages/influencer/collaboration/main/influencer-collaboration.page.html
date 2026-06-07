@@ -16,6 +16,7 @@
           <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
         </ion-button>
       }
+      <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
     </div>
   }
 </ion-content>

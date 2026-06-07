@@ -8,6 +8,7 @@ import { ApplicationStore } from 'src/app/features/applications/application.stor
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
 import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
+import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-section/review-section.component';
 
 
 @Component({
@@ -16,7 +17,7 @@ import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
   templateUrl: './influencer-collaboration.page.html',
   styleUrls: ['./influencer-collaboration.page.scss'],
   standalone: true,
-  imports: [IonButton, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonIcon, BookingViewPage]
+  imports: [IonButton, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonIcon, BookingViewPage, ReviewSectionComponent]
 })
 export class InfluencerCollaborationPage implements OnInit {
 

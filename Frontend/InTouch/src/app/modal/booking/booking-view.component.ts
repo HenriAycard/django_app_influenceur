@@ -5,6 +5,7 @@ import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, 
 import { addIcons } from 'ionicons';
 import { checkmarkCircle, closeCircle, create, logoInstagram, logoTiktok, logoYoutube } from 'ionicons/icons';
 import { Application } from 'src/app/shared/models';
+import { RatingStarsComponent } from 'src/app/features/reviews/ui/rating-stars/rating-stars.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,7 +13,7 @@ import { Application } from 'src/app/shared/models';
   templateUrl: './booking-view.component.html',
   styleUrls: ['./booking-view.component.scss'],
   standalone: true,
-  imports: [IonCardSubtitle, IonCardContent, IonCard, IonCardHeader, IonCardTitle, DatePipe, IonIcon, CommonModule, IonChip, IonText, IonItem, IonList]
+  imports: [IonCardSubtitle, IonCardContent, IonCard, IonCardHeader, IonCardTitle, DatePipe, IonIcon, CommonModule, IonChip, IonText, IonItem, IonList, RatingStarsComponent]
 })
 export class BookingViewPage {
   @Input() reservation!: Application;

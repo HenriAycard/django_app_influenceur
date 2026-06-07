@@ -8,3 +8,4 @@ export * from './offer';
 export * from './opening-date';
 export * from './role';
 export * from './users';
+export * from './review';
