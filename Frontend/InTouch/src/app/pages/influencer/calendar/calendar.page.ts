@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
@@ -9,6 +9,7 @@ import { ApplicationStore } from 'src/app/features/applications/application.stor
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-calendar',
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],

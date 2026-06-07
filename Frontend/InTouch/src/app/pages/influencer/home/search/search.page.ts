@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { IonCardTitle, IonContent, IonHeader, IonTitle, IonToolbar, IonCard, IonChip, IonCardContent, IonCardSubtitle, IonCardHeader, IonButtons, IonBackButton, IonLabel } from '@ionic/angular/standalone';
@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DiscoveryStore } from 'src/app/features/discovery/discovery.store';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],

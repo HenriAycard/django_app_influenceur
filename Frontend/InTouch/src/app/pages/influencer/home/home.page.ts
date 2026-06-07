@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonIcon, IonLabel, IonRefresher, IonRefresherContent, IonSearchbar } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
@@ -8,6 +8,7 @@ import { flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-home-influencer',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],

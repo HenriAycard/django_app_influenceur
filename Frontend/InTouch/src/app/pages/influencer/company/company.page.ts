@@ -1,5 +1,5 @@
 
-import { Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonModal, IonRefresher, IonRefresherContent, NavController } from '@ionic/angular/standalone';
@@ -14,6 +14,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { VenueStore } from 'src/app/features/venues/venue.store';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-company',
   templateUrl: './company.page.html',
   styleUrls: ['./company.page.scss'],

@@ -1,5 +1,5 @@
 
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -12,6 +12,7 @@ import { VenueStore } from 'src/app/features/venues/venue.store';
 
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-company-view',
     templateUrl: './company-view.page.html',
     styleUrls: ['./company-view.page.scss'],

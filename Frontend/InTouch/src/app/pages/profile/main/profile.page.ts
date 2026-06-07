@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
@@ -10,6 +10,7 @@ import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok,
 import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
