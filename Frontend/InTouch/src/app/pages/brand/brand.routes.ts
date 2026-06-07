@@ -50,6 +50,13 @@ export const BRAND_TABS_ROUTES: Routes = [{
             loadComponent: () => import('./booking/view/brand-booking-view.page').then(m => m.BrandBookingViewPage)
         },
         {
+            // Mirrors the influencer 'collaboration/:bookingId/offer/:offerId' route:
+            // app-booking-view navigates relatively to the offer, so the booking
+            // detail needs this child route (was missing on the brand side).
+            path: 'booking/:bookingId/offer/:offerId',
+            loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
+        },
+        {
             path: '',
             redirectTo: '/brand/home',
             pathMatch: 'full'
