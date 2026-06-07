@@ -54,6 +54,18 @@ SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
 
 X_FRAME_OPTIONS = 'DENY'
 CORS_ALLOWED_ORIGINS = [o for o in os.getenv("CORS_ALLOWED_ORIGINS", "").split(",") if o]
+# The SPA sends withCredentials on auth calls so the browser stores/returns the
+# httpOnly refresh cookie; cross-subdomain credentialed CORS requires this.
+CORS_ALLOW_CREDENTIALS = True
+
+# --- httpOnly refresh-token cookie (see intouch/api/jwt_cookie_views.py) ---
+# Scoped to /auth/jwt/ so it is sent only to the refresh/logout endpoints, never
+# to the rest of the API. SameSite=Lax keeps it off cross-site requests (CSRF).
+# Secure/SameSite are env-overridable for local http development.
+REFRESH_COOKIE_NAME = os.getenv("REFRESH_COOKIE_NAME", "refresh_token")
+REFRESH_COOKIE_SECURE = os.getenv("REFRESH_COOKIE_SECURE", "True") == "True"
+REFRESH_COOKIE_SAMESITE = os.getenv("REFRESH_COOKIE_SAMESITE", "Lax")
+REFRESH_COOKIE_PATH = "/auth/jwt/"
 
 # Application definition
 DJANGO_CORE_APPS = [
