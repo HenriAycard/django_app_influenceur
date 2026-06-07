@@ -24,7 +24,7 @@
         placeholder="Select one category"
         formControlName="typeCompany"
         (ionChange)="handleChange($event)">
-        @for (type of typeCompany; track type) {
+        @for (type of typeCompany(); track type) {
           <ion-select-option [value]="type">{{ type.name
           }}</ion-select-option>
         }

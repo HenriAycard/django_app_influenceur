@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CheckboxCustomEvent, IonButton, IonButtons, IonCheckbox, IonContent, IonDatetime, IonHeader, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { AlertControllerService } from "../../../services/alert-controller.service";
@@ -9,6 +9,7 @@ import { ApiApplicationService } from "src/app/features/applications/api-applica
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-modal-new-reservation',
     templateUrl: './modal-new-reservation.component.html',
     styleUrls: ['./modal-new-reservation.component.scss'],
