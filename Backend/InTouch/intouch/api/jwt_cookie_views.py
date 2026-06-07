@@ -45,13 +45,19 @@ def _delete_refresh_cookie(response: Response) -> None:
 
 
 class CookieTokenObtainPairView(TokenObtainPairView):
-    """Login. Returns the access token; moves the refresh token into a cookie."""
+    """Login. Sets the refresh token as an httpOnly cookie.
+
+    The refresh token is intentionally LEFT in the JSON body as well: the InTouch
+    SSO portal mints tokens through this endpoint server-side and reads `refresh`
+    from the body to build its `/sso#access=...&refresh=...` redirect. The browser
+    SPA ignores the body `refresh` (it never persists it) and relies on the
+    cookie, so leaving it in the body does not reintroduce localStorage exposure.
+    """
 
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == status.HTTP_200_OK and "refresh" in response.data:
-            refresh = response.data.pop("refresh")
-            _set_refresh_cookie(response, refresh)
+            _set_refresh_cookie(response, response.data["refresh"])
         return response
 
 
