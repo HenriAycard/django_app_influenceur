@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, forwardRef, inject } from '@angular/core';
 
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertController, IonButton, IonContent, IonHeader, IonInput, IonItem, IonTitle, IonToolbar } from '@ionic/angular/standalone';
@@ -7,6 +7,7 @@ import { LoginParam } from 'src/app/shared/models';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
