@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { IonLabel, IonTabButton, IonTab, IonIcon, IonTabBar, IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { searchOutline, calendarOutline, personCircleOutline } from 'ionicons/icons';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-influencer-tabs',
   templateUrl: './influencer-tabs.page.html',
   styleUrls: ['./influencer-tabs.page.scss'],

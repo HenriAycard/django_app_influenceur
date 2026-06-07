@@ -1,5 +1,5 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonIcon, IonItem, IonList, IonText } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -7,6 +7,7 @@ import { checkmarkCircle, closeCircle, create, logoInstagram, logoTiktok, logoYo
 import { Application } from 'src/app/shared/models';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-booking-view',
   templateUrl: './booking-view.component.html',
   styleUrls: ['./booking-view.component.scss'],

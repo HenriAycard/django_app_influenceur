@@ -1,10 +1,11 @@
 
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonInput, IonItem } from "@ionic/angular/standalone";
 import { Address, AddressDto } from "src/app/shared/models";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-company-address',
     templateUrl: './company-address.component.html',
     styleUrls: ['../company.component.scss'],

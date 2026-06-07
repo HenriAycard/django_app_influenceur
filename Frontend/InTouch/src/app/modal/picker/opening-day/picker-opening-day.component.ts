@@ -1,8 +1,9 @@
 
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonPicker, IonPickerColumn, IonPickerColumnOption, IonRadio, IonToolbar, ModalController } from "@ionic/angular/standalone";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-picker-opening-day',
     templateUrl: './picker-opening-day.component.html',
     styleUrls: ['./picker-opening-day.component.scss'],

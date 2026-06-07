@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
 import { AuthService } from 'src/app/services/auth.service';
@@ -16,6 +16,7 @@ import { TokenManagerService } from 'src/app/services/token-manager.service';
  * user and redirect to /influencer or /brand by role.
  */
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-sso',
   standalone: true,
   imports: [IonContent, IonSpinner],

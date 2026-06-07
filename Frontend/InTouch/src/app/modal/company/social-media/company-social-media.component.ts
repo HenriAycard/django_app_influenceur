@@ -1,11 +1,12 @@
 
-import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonToggle } from "@ionic/angular/standalone";
 import { CompanyMainDto, SocialMedia, typeCompanyDto } from "src/app/shared/models";
 import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.service";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-company-social-media',
     templateUrl: './company-social-media.component.html',
     styleUrls: ['../company.component.scss', './company-social-media.component.scss'],

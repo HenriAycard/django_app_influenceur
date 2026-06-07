@@ -1,9 +1,10 @@
 
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
 import { IonButton, IonIcon } from "@ionic/angular/standalone";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-company-picture',
     templateUrl: './company-picture.component.html',
     styleUrls: ['../company.component.scss'],

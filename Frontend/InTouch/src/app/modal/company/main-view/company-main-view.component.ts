@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnInit, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { IonChip, IonIcon, IonItem, IonLabel, IonList } from "@ionic/angular/standalone";
 import { Company } from "src/app/shared/models";
 import { AppLauncher } from '@capacitor/app-launcher';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-company-main-view',
     templateUrl: './company-main-view.component.html',
     styleUrls: ['./company-main-view.component.scss'],

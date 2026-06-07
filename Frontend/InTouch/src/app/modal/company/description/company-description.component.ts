@@ -1,9 +1,10 @@
 
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonItem, IonLabel, IonTextarea } from "@ionic/angular/standalone";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-company-description',
     templateUrl: './company-description.component.html',
     styleUrls: ['../company.component.scss'],

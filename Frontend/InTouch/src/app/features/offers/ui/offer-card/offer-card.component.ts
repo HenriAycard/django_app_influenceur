@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, inject, Input, Output, ViewChild } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, ViewChild } from "@angular/core";
 import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { createOutline, trashOutline, eyeOutline } from "ionicons/icons";
@@ -8,6 +8,7 @@ import { AuthService } from "src/app/services/auth.service";
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-offer-card',
     templateUrl: './offer-card.component.html',
     styleUrls: ['./offer-card.component.scss'],
