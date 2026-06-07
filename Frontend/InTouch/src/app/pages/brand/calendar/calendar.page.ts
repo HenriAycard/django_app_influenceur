@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Location, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, NavController } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, NavController, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { Application } from 'src/app/shared/models';
 import { addIcons } from 'ionicons';
 import { closeOutline, helpOutline, timeOutline } from 'ionicons/icons';
@@ -32,7 +32,7 @@ export class CalendarPage {
     this.load();
   }
 
-  public handleRefresh($event: any): void {
+  public handleRefresh($event: RefresherCustomEvent): void {
     this.load(() => $event.target.complete());
   }
 

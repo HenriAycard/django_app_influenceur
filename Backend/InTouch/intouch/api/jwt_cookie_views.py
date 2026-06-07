@@ -5,10 +5,9 @@ as a `Bearer` header). The long-lived refresh token is never exposed to
 JavaScript: it is set as an httpOnly, SameSite cookie scoped to the auth
 endpoints, so an XSS payload cannot read or exfiltrate it.
 
-Note: server-side invalidation on logout (blacklisting) requires the
-`rest_framework_simplejwt.token_blacklist` app, which is not installed here, so
-logout only clears the cookie. Adding that app (plus its migration) would let
-`CookieLogoutView` blacklist the token as well.
+Server-side invalidation: `rest_framework_simplejwt.token_blacklist` is installed.
+Logout blacklists the refresh token; `ROTATE_REFRESH_TOKENS + BLACKLIST_AFTER_ROTATION`
+automatically blacklists rotated tokens on every refresh.
 """
 from django.conf import settings
 from rest_framework import status
@@ -129,11 +128,17 @@ class RefreshCookieFromTokenView(APIView):
 
 
 class CookieLogoutView(APIView):
-    """Logout. Clears the refresh cookie (see module note on blacklisting)."""
+    """Logout. Blacklists the refresh token and clears the cookie."""
 
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
+        refresh = request.COOKIES.get(settings.REFRESH_COOKIE_NAME)
+        if refresh:
+            try:
+                RefreshToken(refresh).blacklist()
+            except TokenError:
+                pass  # already expired/invalid — clearing the cookie is sufficient
         response = Response(status=status.HTTP_205_RESET_CONTENT)
         _delete_refresh_cookie(response)
         return response

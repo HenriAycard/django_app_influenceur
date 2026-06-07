@@ -1,7 +1,7 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output, signal } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonToggle } from "@ionic/angular/standalone";
+import { IonButton, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonToggle, SelectCustomEvent } from "@ionic/angular/standalone";
 import { CompanyMainDto, typeCompanyDto } from "src/app/shared/models";
 import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.service";
 
@@ -56,7 +56,7 @@ export class CompanyMainPage implements OnInit {
         return o1 && o2 ? o1.id === o2.id : o1 === o2;
     }
 
-    public handleChange(event: any): void {
+    public handleChange(event: SelectCustomEvent<typeCompanyDto>): void {
         const selectedType = event.detail.value; // The selected value from the ion-select
 
         // Update the form control value if needed

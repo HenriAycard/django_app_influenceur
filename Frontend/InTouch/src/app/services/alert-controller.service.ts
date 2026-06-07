@@ -7,7 +7,7 @@ import { AlertController, LoadingController } from '@ionic/angular/standalone';
 export class AlertControllerService {
 
   isShowingLoader = false;
-  loader: any;
+  loader: HTMLIonLoadingElement | null = null;
 
   constructor(
     private alertCtrl: AlertController,

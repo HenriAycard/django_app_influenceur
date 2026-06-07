@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 import { BehaviorSubject, Observable, catchError, filter, finalize, switchMap, take, throwError } from "rxjs";
 import { AuthService } from "./auth.service";
 import { TokenManagerService } from "./token-manager.service";
+import { TokenResponse } from "src/app/shared/models";
 
 // Shared single-flight refresh state. Module-level so it is shared across every
 // request the way the previous root-singleton interceptor service was.
@@ -39,7 +40,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             accessTokenSubject.next("");
 
             return authService.refreshToken().pipe(
-                switchMap((res: any) => {
+                switchMap((res: TokenResponse) => {
                     accessTokenSubject.next(res.access);
                     // repeat failed request with new token
                     return next(addAuthorizationHeader(request, res.access));

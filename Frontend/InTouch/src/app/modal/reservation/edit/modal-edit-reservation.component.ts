@@ -70,11 +70,11 @@ export class ModalEditReservationComponent implements OnInit {
         };
 
         this.apiApplication.updateApplication(this.reservation.id, params).subscribe({
-            next: (value: any) => {
+            next: (_value: unknown) => {
                 this.toastService.toastSuccess('New reservation !', 'A new reservation has been added to your calendar, please wait the brand confirm')
                 this.dismissChange.emit(true)
             },
-            error: (err: any) => {
+            error: (_err: unknown) => {
                 this.toastService.toastDanger('We have a little problem', 'Sorry your reservation failed')
                 this.dismissChange.emit(false)
             }

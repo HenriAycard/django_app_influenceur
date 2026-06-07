@@ -12,6 +12,11 @@ import {
 } from 'src/app/shared/models';
 import { ApiService } from 'src/app/services/api/api.service';
 
+type ApplicationDto = Omit<Application, 'status' | 'dateReservation'> & {
+    status: number;
+    dateReservation: string | null;
+};
+
 @Injectable({
     providedIn: 'root'
 })
@@ -20,37 +25,37 @@ export class ApiApplicationService extends ApiService {
     urlBase: string = Constant.domainConfig.virtual_host + Constant.domainConfig.apiPrefix + "/reservation/";
 
     public findApplication(id: number): Observable<Application> {
-        return this.http.get<any>(`${this.urlBase}${id}`, this.options)
+        return this.http.get<ApplicationDto>(`${this.urlBase}${id}`, this.options)
             .pipe(map(dto => this.toApplication(dto)));
     }
 
     public findApplications4Influencer(status: ApplicationStatus, date?: Date, conditionalDate?: string): Observable<ApplicationView[]> {
-        return this.http.get<any>(this.buildListUrl(status, date, conditionalDate), this.options)
+        return this.http.get<{ results?: ApplicationDto[] } | ApplicationDto[]>(this.buildListUrl(status, date, conditionalDate), this.options)
             .pipe(map(response => {
-                const list = response.results || response;
-                return list.map((dto: any) => this.toApplication(dto));
+                const list = Array.isArray(response) ? response : (response.results ?? []);
+                return list.map(dto => this.toApplication(dto));
             }));
     }
 
     public findApplications4Brand(status: ApplicationStatus, date?: Date, conditionalDate?: string): Observable<Application[]> {
-        return this.http.get<any>(this.buildListUrl(status, date, conditionalDate), this.options)
+        return this.http.get<{ results?: ApplicationDto[] } | ApplicationDto[]>(this.buildListUrl(status, date, conditionalDate), this.options)
             .pipe(map(response => {
-                const list = response.results || response;
-                return list.map((dto: any) => this.toApplication(dto));
+                const list = Array.isArray(response) ? response : (response.results ?? []);
+                return list.map(dto => this.toApplication(dto));
             }));
     }
 
-    public createApplication(application: CreateApplicationDto): Observable<any> {
+    public createApplication(application: CreateApplicationDto): Observable<Application> {
         var bodyJson: string = JSON.stringify(application)
-        return this.http.post(this.urlBase, bodyJson, this.options)
+        return this.http.post<Application>(this.urlBase, bodyJson, this.options)
     }
 
-    public updateApplication(id: number, changes: Partial<Application>): Observable<any> {
-        const body: any = { ...changes };
+    public updateApplication(id: number, changes: Partial<Application>): Observable<Application> {
+        const body: Record<string, unknown> = { ...changes };
         if (changes.status !== undefined) {
-            body.status = toApiStatus(changes.status);
+            body['status'] = toApiStatus(changes.status);
         }
-        return this.http.patch(`${this.urlBase}${id}`, JSON.stringify(body), this.options)
+        return this.http.patch<Application>(`${this.urlBase}${id}`, JSON.stringify(body), this.options)
     }
 
     private buildListUrl(status: ApplicationStatus, date?: Date, conditionalDate?: string): string {
@@ -68,11 +73,11 @@ export class ApiApplicationService extends ApiService {
      * (the calendar groups by `dateReservation.toDateString()` and compares it
      * against `new Date()`, so it must be a Date, not a string).
      */
-    private toApplication(dto: any): any {
+    private toApplication(dto: ApplicationDto): Application {
         return {
             ...dto,
             status: fromApiStatus(dto.status),
-            dateReservation: dto.dateReservation ? new Date(dto.dateReservation) : dto.dateReservation,
+            dateReservation: dto.dateReservation ? new Date(dto.dateReservation) : null as unknown as Date,
         };
     }
 

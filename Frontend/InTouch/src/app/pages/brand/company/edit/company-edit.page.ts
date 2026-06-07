@@ -158,13 +158,13 @@ export class CompanyEditPage implements OnInit {
         if (this.listRequestHttp.length > 0) {
             forkJoin([...this.listRequestHttp]).subscribe(
                 {
-                    next: (value: any) => {
+                    next: (_value: unknown) => {
                         this.toastService.toastSuccess(
                             'Changes have been saved successfully !',
                             'The information of your company has been saved.'
                         )
                     },
-                    error: (err: any) => {
+                    error: (_err: unknown) => {
                         this.toastService.toastDanger(
                             'Failed to save changes.',
                             'Please try again.'

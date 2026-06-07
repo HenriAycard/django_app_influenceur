@@ -11,8 +11,8 @@ import { IonButton, IonButtons, IonContent, IonItem, IonLabel, IonPicker, IonPic
     imports: [IonButton, IonButtons, IonPicker, IonPickerColumn, IonToolbar, IonPickerColumnOption]
 })
 export class PickerOpeningDay implements OnInit {
-    optionHours: any[] = [];
-    optionMinutes: any[] = [];
+    optionHours: { value: string; text: string }[] = [];
+    optionMinutes: { value: string; text: string }[] = [];
     selectedHours: string = '00';
     selectedMinutes: string = '00';
     selectedClock: string = 'AM'; // Default is AM
@@ -64,7 +64,7 @@ export class PickerOpeningDay implements OnInit {
         }
     }
 
-    onIonChange(event: any, type: string) {
+    onIonChange(event: CustomEvent<{ value: string }>, type: string) {
         if (type === 'Hours') {
             this.selectedHours = event.detail.value;
         } else if (type === 'Minutes') {

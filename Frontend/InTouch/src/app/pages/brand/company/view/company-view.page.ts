@@ -1,7 +1,7 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronDownCircle, close, closeOutline, createOutline, eyeOutline, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube, trashOutline } from 'ionicons/icons';
 import { CompanyMainViewPage } from 'src/app/modal/company/main-view/company-main-view.component';
@@ -36,7 +36,7 @@ export class CompanyViewPage {
     this.load();
   }
 
-  public handleRefresh($event: any){
+  public handleRefresh($event: RefresherCustomEvent) {
     this.load(() => $event.target.complete());
   }
 

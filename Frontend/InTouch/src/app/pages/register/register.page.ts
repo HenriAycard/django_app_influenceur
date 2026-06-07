@@ -56,7 +56,7 @@ export class RegisterPage {
     this.alertCtrlService.loadingPresent();
     // Création du compte.
     this.authService.registerUser(params).subscribe({
-      next: (response: any) => {
+      next: (_response: unknown) => {
         this.alertCtrlService.stopLoading();
         this.alertCtrlService.showMessage("Thanks", "Account created.")
         this.router.navigateByUrl("/login")

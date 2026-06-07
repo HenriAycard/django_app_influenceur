@@ -46,13 +46,13 @@ export class OfferEditPage implements OnInit {
         this.alertCtrlService.showLoading()
 
         this.apiOffer.updateOffer(this.offerId, offer).subscribe({
-            next: (value: any) => {
+            next: (_value: unknown) => {
                 this.toastService.toastSuccess(
                     'Update offer !',
                     'Your offer has been saved.'
                 )
             },
-            error: (err: any) => {
+            error: (_err: unknown) => {
                 this.toastService.toastDanger(
                     'We have a little problem',
                     'Sorry your offer failed'

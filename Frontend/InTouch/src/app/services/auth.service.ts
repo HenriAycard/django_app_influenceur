@@ -180,7 +180,7 @@ export class AuthService {
   }
 }
 
-function createUser(values: any) : User {
+function createUser(values: User) : User {
   return {
       id: values.id,
       firstname: values.firstname,

@@ -2,13 +2,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonModal, IonRefresher, IonRefresherContent, NavController } from '@ionic/angular/standalone';
+import { IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonModal, IonRefresher, IonRefresherContent, NavController, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube } from 'ionicons/icons';
 import { CompanyMainViewPage } from 'src/app/modal/company/main-view/company-main-view.component';
 import { CompanySkeletonComponent } from 'src/app/modal/company/skeleton/company-skeleton.component';
 import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-card.component';
-import { Offer, ActionPayload } from 'src/app/shared/models';
+import { Application, Offer, ActionPayload } from 'src/app/shared/models';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { VenueStore } from 'src/app/features/venues/venue.store';
@@ -28,7 +28,7 @@ export class CompanyPage implements OnInit {
 
   public canDismiss = false;
   public isModalOpen = false;
-  public resaDay: any;
+  public resaDay: Application | null = null;
   public idOffer : number = 0;
   public presentingElement: Element | null = null;
 
@@ -60,7 +60,7 @@ export class CompanyPage implements OnInit {
     })
   }
 
-  public handleRefresh($event: any){
+  public handleRefresh($event: RefresherCustomEvent) {
     this.load(() => $event.target.complete());
   }
 

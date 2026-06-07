@@ -53,13 +53,13 @@ import { ApiApplicationService } from "src/app/features/applications/api-applica
       };
 
       this.apiApplication.createApplication(newResa).subscribe({
-        next: (value: any) => {
+        next: (_value: unknown) => {
           this.toastService.toastSuccess(
             'New reservation !',
             'A new reservation has been added to your calendar, please wait the brand confirm'
           )
         },
-        error: (err: any) => {
+        error: (_err: unknown) => {
             this.toastService.toastDanger(
               'We have a little problem',
               'Sorry your reservation failed'

@@ -38,14 +38,14 @@ export class OfferCreatePage {
         }
 
         this.apiOffer.createOffer(newOffer).subscribe({
-            next: (value: any) => {
+            next: (_value: unknown) => {
                 this.toastService.toastSuccess(
                     'New offer !',
                     'A new offer has been saved.'
                 )
                 this.alertCtrlService.stopLoading()
             },
-            error: (err: any) => {
+            error: (_err: unknown) => {
                 this.toastService.toastDanger(
                     'We have a little problem',
                     'Sorry your offer failed'

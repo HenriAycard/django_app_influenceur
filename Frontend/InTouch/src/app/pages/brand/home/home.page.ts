@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonListHeader, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonListHeader, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras, RouterModule } from '@angular/router';
 import { CompanySortDto, ImgCompanyDto } from 'src/app/shared/models';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
@@ -35,7 +35,7 @@ export class HomePage {
     this.callApiService()
   }
 
-  public handleRefresh($event: any): void{
+  public handleRefresh($event: RefresherCustomEvent): void {
     setTimeout(() => {
         this.callApiService()
         $event.target.complete();  
@@ -51,7 +51,7 @@ export class HomePage {
     });
   }
 
-  getPrincipalImage(company: any): string | null {
+  getPrincipalImage(company: CompanySortDto): string | null {
     if (!company?.imgCompany?.length) {
       return null; // No images
     }

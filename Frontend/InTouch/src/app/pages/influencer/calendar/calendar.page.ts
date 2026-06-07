@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { closeOutline, helpOutline, timeOutline } from 'ionicons/icons';
 import { CalendarInfluencerComponent } from 'src/app/modal/calendar/influencer/calendar-influencer.component';
@@ -31,7 +31,7 @@ export class CalendarPage {
     this.load();
   }
 
-  public handleRefresh($event: any): void {
+  public handleRefresh($event: RefresherCustomEvent): void {
     this.load(() => $event.target.complete());
   }
 
