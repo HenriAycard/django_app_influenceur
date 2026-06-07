@@ -7,7 +7,7 @@ import { chevronDownCircle, close, closeOutline, createOutline, eyeOutline, loca
 import { CompanyMainViewPage } from 'src/app/modal/company/main-view/company-main-view.component';
 import { CompanySkeletonComponent } from 'src/app/modal/company/skeleton/company-skeleton.component';
 import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-card.component';
-import { ActionPayload } from 'src/app/models/role';
+import { ActionPayload } from 'src/app/shared/models';
 import { VenueStore } from 'src/app/features/venues/venue.store';
 
 

@@ -1,11 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, catchError, firstValueFrom, map, of, tap } from 'rxjs';
-import { LoginParam, TokenResponse, User, UserParam } from '../models/users';
+import { LoginParam, TokenResponse, User, UserParam } from 'src/app/shared/models';
 import { TokenManagerService } from './token-manager.service';
 import { ApiAuthService } from './api/api-auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router, RouterLink } from '@angular/router';
-import { company, influencer, Role, unknow, UserRole } from '../models/role';
+import { company, influencer, Role, unknow, UserRole } from 'src/app/shared/models';
 import { GetTokenResult } from '@capacitor-firebase/messaging';
 import { ToastService } from './toast.service';
 

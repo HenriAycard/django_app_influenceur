@@ -10,9 +10,7 @@ import { CompanyMainPage } from 'src/app/modal/company/main/company-main.compone
 import { CompanyOpeningDayPage } from 'src/app/modal/company/opening-day/company-opening-day.component';
 import { CompanyPicturePage } from 'src/app/modal/company/picture/company-picture.component';
 import { CompanySocialMediaComponent } from 'src/app/modal/company/social-media/company-social-media.component';
-import { Address } from 'src/app/models/address';
-import { Company, CompanyCreateDto, CompanyMainDto, SocialMedia } from 'src/app/models/company';
-import { Day, DAYS, OpeningDate } from 'src/app/models/opening-date';
+import { Address, Company, CompanyCreateDto, CompanyMainDto, SocialMedia, Day, DAYS, OpeningDate } from 'src/app/shared/models';
 import { ApiAddressService } from 'src/app/services/api/api-address.service';
 import { ApiCompanyImgService } from 'src/app/services/api/api-company-img.service';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';

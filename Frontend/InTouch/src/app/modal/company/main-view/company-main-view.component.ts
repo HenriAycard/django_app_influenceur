@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, Input, OnInit, CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { IonChip, IonIcon, IonItem, IonLabel, IonList } from "@ionic/angular/standalone";
-import { Company } from "src/app/models/company";
+import { Company } from "src/app/shared/models";
 import { AppLauncher } from '@capacitor/app-launcher';
 
 @Component({

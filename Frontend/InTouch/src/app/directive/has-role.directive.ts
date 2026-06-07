@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Role } from '../models/role';
+import { Role } from 'src/app/shared/models';
 
 @Directive({
     selector: '[hasRole]',

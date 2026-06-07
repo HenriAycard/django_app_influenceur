@@ -2,7 +2,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { IonButton, IonButtons, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList, IonModal, IonText, IonTitle, IonToggle, IonToolbar } from "@ionic/angular/standalone";
-import { OpeningDate, OpeningDayEnum } from "src/app/models/opening-date";
+import { OpeningDate, OpeningDayEnum } from "src/app/shared/models";
 import { PickerOpeningDay } from "../../picker/opening-day/picker-opening-day.component";
 
 @Component({

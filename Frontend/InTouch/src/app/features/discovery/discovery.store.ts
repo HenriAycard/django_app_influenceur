@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { Observable, catchError, of, tap } from 'rxjs';
-import { CompanySortDto } from 'src/app/models/company';
+import { CompanySortDto } from 'src/app/shared/models';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
 
 /**

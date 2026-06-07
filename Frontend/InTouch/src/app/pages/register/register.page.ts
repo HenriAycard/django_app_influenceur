@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UserParam } from 'src/app/models/users';
+import { UserParam } from 'src/app/shared/models';
 
 @Component({
   selector: 'app-register',

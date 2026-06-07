@@ -1,7 +1,7 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User, LoginParam, RefreshTokenParam, TokenResponse, UserParam } from 'src/app/models/users';
+import { User, LoginParam, RefreshTokenParam, TokenResponse, UserParam } from 'src/app/shared/models';
 import * as Constant from '../../config/constant';
 import { ApiService } from './api.service';
 

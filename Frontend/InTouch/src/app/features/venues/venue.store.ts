@@ -1,7 +1,6 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, combineLatest, tap } from 'rxjs';
-import { Company } from 'src/app/models/company';
-import { Offer } from 'src/app/shared/models';
+import { Company, Offer } from 'src/app/shared/models';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
 import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 

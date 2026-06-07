@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import * as Constant from '../../config/constant';
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
-import { typeCompanyDto } from "src/app/models/company";
+import { typeCompanyDto } from "src/app/shared/models";
 import { ApiService } from "./api.service";
 
 @Injectable({

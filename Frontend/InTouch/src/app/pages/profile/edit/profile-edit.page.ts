@@ -3,8 +3,7 @@ import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonTitle, IonToggle, IonToolbar } from "@ionic/angular/standalone";
-import { CompanyMainDto, typeCompanyDto } from "src/app/models/company";
-import { User } from "src/app/models/users";
+import { CompanyMainDto, typeCompanyDto, User } from "src/app/shared/models";
 import { ApiAuthService } from "src/app/services/api/api-auth.service";
 import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.service";
 

@@ -2,7 +2,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonButton, IonInput, IonItem } from "@ionic/angular/standalone";
-import { Address, AddressDto } from "src/app/models/address";
+import { Address, AddressDto } from "src/app/shared/models";
 
 @Component({
     selector: 'app-company-address',

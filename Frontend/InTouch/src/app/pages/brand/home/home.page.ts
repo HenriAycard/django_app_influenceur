@@ -3,7 +3,7 @@ import { SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonListHeader, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras, RouterModule } from '@angular/router';
-import { CompanySortDto, ImgCompanyDto } from 'src/app/models/company';
+import { CompanySortDto, ImgCompanyDto } from 'src/app/shared/models';
 import { ApiCompanyService } from 'src/app/services/api/api-company.service';
 import { addCircleOutline, flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';

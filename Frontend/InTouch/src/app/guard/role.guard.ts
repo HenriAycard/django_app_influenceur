@@ -3,7 +3,7 @@ import { CanActivateFn } from '@angular/router';
 import { NavController } from '@ionic/angular/standalone';
 
 import { AuthService } from '../services/auth.service';
-import { Role } from '../models/role';
+import { Role } from 'src/app/shared/models';
 
 /**
  * Guard factory that protects a route by role.

@@ -3,7 +3,7 @@ import { Component, OnInit, forwardRef, inject } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertController, IonButton, IonContent, IonHeader, IonInput, IonItem, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-import { LoginParam } from 'src/app/models/users';
+import { LoginParam } from 'src/app/shared/models';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
