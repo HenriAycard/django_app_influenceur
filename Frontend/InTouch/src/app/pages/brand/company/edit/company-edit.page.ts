@@ -1,5 +1,5 @@
 
-import { Component, inject, Input, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
 import { IonButton, IonCol, IonContent, IonIcon, IonItem, IonProgressBar, IonRow } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
@@ -21,6 +21,7 @@ import { HelperService } from "src/app/services/helper.service";
 import { ToastService } from "src/app/services/toast.service";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-company-edit',
     templateUrl: './company-edit.page.html',
     styleUrls: ['./company-edit.page.scss'],
@@ -47,7 +48,7 @@ export class CompanyEditPage implements OnInit {
 
     public listRequestHttp: Observable<any>[] = []
 
-    public isLoad: boolean = false;
+    readonly isLoad = signal(false);
     public steps: String[] = ['MAIN', 'DESCRIPTION', 'SOCIAL_MEDIA', 'ADDRESS', 'OPENING_DAY', 'PICTURE', 'END']
     public progress = 1 / this.steps.length
     public indice: number = 0
@@ -98,7 +99,7 @@ export class CompanyEditPage implements OnInit {
 
                     this.companyImgSrc = company?.imgCompany?.length ? company.imgCompany[0].file : "";
                 },
-                complete: () => this.isLoad = true
+                complete: () => this.isLoad.set(true)
             })
     }
 

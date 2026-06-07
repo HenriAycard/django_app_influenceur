@@ -21,7 +21,7 @@
         <ion-input formControlName="lastname" type="text" autocapitalize="on" [clearInput]="true"></ion-input>
       </fieldset>
     </ion-item>
-    @if (isInfluencer) {
+    @if (isInfluencer()) {
       <ion-item lines="none" class="ion-item">
         <fieldset class="input-item">
           <legend>Instagram</legend>
@@ -29,7 +29,7 @@
         </fieldset>
       </ion-item>
     }
-    @if (isInfluencer) {
+    @if (isInfluencer()) {
       <ion-item lines="none" class="ion-item">
         <fieldset class="input-item">
           <legend>Tiktok</legend>
@@ -37,7 +37,7 @@
         </fieldset>
       </ion-item>
     }
-    @if (isInfluencer) {
+    @if (isInfluencer()) {
       <ion-item lines="none" class="ion-item">
         <fieldset class="input-item">
           <legend>Youtube</legend>

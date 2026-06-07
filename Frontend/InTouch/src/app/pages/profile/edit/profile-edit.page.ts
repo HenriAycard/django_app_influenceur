@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, inject, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output, signal } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonInput, IonItem, IonList, IonSelect, IonSelectOption, IonTitle, IonToggle, IonToolbar } from "@ionic/angular/standalone";
@@ -8,6 +8,7 @@ import { ApiAuthService } from "src/app/services/api/api-auth.service";
 import { ApiCompanyTypeService } from "src/app/services/api/api-company-type.service";
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-profile-edit',
     templateUrl: './profile-edit.page.html',
     styleUrls: ['./profile-edit.page.scss'],
@@ -18,7 +19,7 @@ export class ProfileEditPage implements OnInit {
 
     public profileForm: FormGroup;
     public userId: string = '';
-    public isInfluencer: boolean = false;
+    readonly isInfluencer = signal(false);
 
     private apiAuth = inject(ApiAuthService);
 
@@ -40,7 +41,7 @@ export class ProfileEditPage implements OnInit {
         this.apiAuth.findUser().subscribe({
             next: (response: User) => {
                 this.userId = response.id
-                this.isInfluencer = response.isInfluencer
+                this.isInfluencer.set(response.isInfluencer)
                 this.profileForm.patchValue(response)
             }
         });

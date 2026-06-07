@@ -15,7 +15,7 @@
 
     <ion-progress-bar [value]="progress"></ion-progress-bar>
 
-    @if (step === steps[0] && isLoad) {
+    @if (step === steps[0] && isLoad()) {
       <div>
         <app-company-main
           [companyEdit]="companyMainData"
