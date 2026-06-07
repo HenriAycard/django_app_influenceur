@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject, Input } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, Input } from "@angular/core";
 import { IonThumbnail, IonLabel, NavController, IonItem } from "@ionic/angular/standalone";
 import { ApplicationView } from "src/app/shared/models";
 import { Location } from '@angular/common';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-calendar-influencer',
     templateUrl: './calendar-influencer.component.html',
     styleUrls: ['../calendar.component.scss'],

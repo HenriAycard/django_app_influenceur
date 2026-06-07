@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, catchError, firstValueFrom, map, of, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
 import { LoginParam, TokenResponse, User, UserParam } from 'src/app/shared/models';
 import { TokenManagerService } from './token-manager.service';
 import { ApiAuthService } from './api/api-auth.service';
@@ -28,7 +28,7 @@ export class AuthService {
   get userAsObservale(): Observable<User|null> { return this.user$.asObservable(); }
 
   initialize() {
-    if (this.tokenManager.isTokenSave()){
+    if (this.tokenManager.hasAccessToken()){
       this.fetchCurrentUser()
     } else {
       console.log("The user is not authenticated - Disconnected")
@@ -37,25 +37,26 @@ export class AuthService {
   }
 
   /**
-   * Resolves the authentication state from a persisted token BEFORE the router
-   * runs its first navigation. Wired through `provideAppInitializer` so route
-   * guards never see a half-initialized `isAuthenticated` on a hard refresh.
-   * Always resolves (never rejects) so app bootstrap is not blocked on errors.
+   * Resolves the authentication state BEFORE the router runs its first
+   * navigation. Wired through `provideAppInitializer` so route guards never see
+   * a half-initialized `isAuthenticated` on a hard refresh.
+   *
+   * The access token only lives in memory, so after a reload we have none. We
+   * silently mint a fresh one from the httpOnly refresh cookie: if that succeeds
+   * the session is restored; any failure (no/expired cookie) resolves as
+   * unauthenticated. Always resolves (never rejects) so bootstrap is not blocked.
    */
   restoreSession(): Promise<void> {
-    if (!this.tokenManager.isTokenSave()) {
-      this.isAuthenticated.next(false);
-      return Promise.resolve();
-    }
-
     return firstValueFrom(
-      this.apiAuth.findUser().pipe(
+      this.refreshToken().pipe(
+        switchMap(() => this.apiAuth.findUser()),
         tap((response: User) => {
           this.user$.next(createUser(response));
           this.isAuthenticated.next(true);
         }),
         map(() => void 0),
         catchError(() => {
+          this.tokenManager.clear();
           this.user$.next(null);
           this.isAuthenticated.next(false);
           return of(void 0);
@@ -102,8 +103,8 @@ export class AuthService {
     this.apiAuth.login(params).subscribe({
       next: (response: TokenResponse) => {
         console.log("The token is correctly settle")
+        // Access token kept in memory; the refresh token was set as an httpOnly cookie.
         this.tokenManager.setAccessToken(response.access)
-        this.tokenManager.setRefreshToken(response.refresh)
 
         this.fetchCurrentUser()
       },
@@ -117,26 +118,41 @@ export class AuthService {
     })
   }
 
+  /**
+   * SSO entry: the portal hands us a refresh token in the URL fragment. We send
+   * it to the backend, which validates it, stores it as the httpOnly cookie, and
+   * returns a fresh access token — so the refresh token leaves JS-reachable
+   * storage immediately. Then load the user and redirect by role.
+   */
+  loginWithSsoRefresh(refresh: string) {
+    this.apiAuth.exchangeRefreshForCookie(refresh).subscribe({
+      next: (response: TokenResponse) => {
+        this.tokenManager.setAccessToken(response.access)
+        this.fetchCurrentUser()
+      },
+      error: (error: HttpErrorResponse) => {
+        console.error(error)
+        this.toastService.toastDanger('Sign-in failed', 'This sign-in link is invalid or expired.')
+        this.router.navigateByUrl('/login')
+      }
+    })
+  }
+
   logout() {
+    // Best-effort: clear the server-side refresh cookie. Local state is dropped
+    // regardless of the call's outcome.
+    this.apiAuth.logout().subscribe({ error: () => {} })
     this.tokenManager.clear()
     this.isAuthenticated.next(false)
     this.user$.next(null)
   }
 
   refreshToken(): Observable<TokenResponse> {
-    const refreshToken = this.tokenManager.getRefreshToken();
-    if(refreshToken) {
-      return this.apiAuth.refreshToken({
-        refresh: refreshToken
-      }).pipe(
-        tap(response => {
-          this.tokenManager.clear()
-          this.tokenManager.setAccessToken(response.access)
-          this.tokenManager.setRefreshToken(response.refresh)
-        })
-      )
-    }
-    return EMPTY
+    // The refresh token is read from the httpOnly cookie by the backend; we only
+    // receive (and store in memory) the new access token.
+    return this.apiAuth.refreshToken().pipe(
+      tap(response => this.tokenManager.setAccessToken(response.access))
+    )
   }
 
   registerUser(params: UserParam): Observable<any> {
@@ -144,7 +160,7 @@ export class AuthService {
   }
 
   isAuth() {
-    return this.tokenManager.isTokenSave() && this.isAuthenticated.getValue() === true
+    return this.tokenManager.hasAccessToken() && this.isAuthenticated.getValue() === true
   }
 
   getCurrentUserProfile(): UserRole {

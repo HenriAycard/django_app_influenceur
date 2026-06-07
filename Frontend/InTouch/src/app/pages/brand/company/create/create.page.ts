@@ -156,7 +156,7 @@ export class CreatePage {
   }
 
   public next(): void {
-    if (this.indice + 1 < this.step.length) {
+    if (this.indice + 1 < this.steps.length) {
       this.indice += 1;
       this.step = this.steps[this.indice]
       this.progress = (this.indice + 1) / this.steps.length
@@ -176,7 +176,7 @@ export class CreatePage {
   }
 
   public isIndiceNotMinMax() {
-    return this.indice > 0 && this.indice <= this.step.length ? true : false
+    return this.indice > 0 && this.indice < this.steps.length - 1 ? true : false
   }
 
   back() {

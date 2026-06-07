@@ -62,9 +62,18 @@ export class ApiApplicationService extends ApiService {
         return url;
     }
 
-    /** Converts the backend's integer status into the typed enum at the boundary. */
+    /**
+     * Normalizes a backend DTO at the boundary: maps the integer status into the
+     * typed enum and parses the ISO `dateReservation` string into a real Date
+     * (the calendar groups by `dateReservation.toDateString()` and compares it
+     * against `new Date()`, so it must be a Date, not a string).
+     */
     private toApplication(dto: any): any {
-        return { ...dto, status: fromApiStatus(dto.status) };
+        return {
+            ...dto,
+            status: fromApiStatus(dto.status),
+            dateReservation: dto.dateReservation ? new Date(dto.dateReservation) : dto.dateReservation,
+        };
     }
 
 }

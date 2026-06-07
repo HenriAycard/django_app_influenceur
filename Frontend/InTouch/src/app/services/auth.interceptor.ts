@@ -1,95 +1,82 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
-import { Injectable, inject } from "@angular/core";
-import { BehaviorSubject, Observable, catchError, filter, finalize, switchMap, take, throwError } from "rxjs";
-import { TokenManagerService } from "./token-manager.service";
-import { AuthService } from "./auth.service";
+import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from "@angular/common/http";
+import { inject } from "@angular/core";
 import { Router } from "@angular/router";
+import { BehaviorSubject, Observable, catchError, filter, finalize, switchMap, take, throwError } from "rxjs";
+import { AuthService } from "./auth.service";
+import { TokenManagerService } from "./token-manager.service";
 
-@Injectable({
-    providedIn: 'root'
-})
-export class AuthInterceptor implements HttpInterceptor {
+// Shared single-flight refresh state. Module-level so it is shared across every
+// request the way the previous root-singleton interceptor service was.
+let refreshingInProgress = false;
+const accessTokenSubject = new BehaviorSubject<string>("");
 
-    private tokenManager = inject(TokenManagerService)
-    private authService = inject(AuthService)
-    private router = inject(Router)
-
-    private refreshingInProgress: boolean = false;
-    private accessTokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>("");
-
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        // Get the auth token from the service
-        const accessToken = this.tokenManager.getAccessToken()
-
-        return next.handle(this.addAuthorizationHeader(req, accessToken)).pipe(
-            catchError(err => {
-                // in case of 401 http error
-                if (err instanceof HttpErrorResponse && err.status === 401) {
-                    // get refresh tokens
-                    console.log("[TokenInterceptor] - intercept - ERROR 401")
-                    const refreshToken = this.tokenManager.getRefreshToken();
-
-                    // if there are tokens then send refresh token request
-                    if (refreshToken && accessToken) {
-                        console.log("[TokenInterceptor] - intercept - call refreshToken")
-                        return this.refreshToken(req, next);
-                    }
-
-                    // otherwise logout and redirect to login page
-                    return this.logoutAndRedirect(err);
-                } else if (err instanceof HttpErrorResponse && err.status === 403) {
-                    // in case of 403 http error (refresh token failed)
-                  // logout and redirect to login page
-                  return this.logoutAndRedirect(err);
-                }
-
-                // if error has status neither 401 nor 403 then just return this error
-                return throwError(err);
-            })
-        )
+function addAuthorizationHeader(request: HttpRequest<unknown>, token: string | null): HttpRequest<unknown> {
+    if (token) {
+        return request.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
     }
+    return request;
+}
 
-    private addAuthorizationHeader(request: HttpRequest<any>, token: string|null): HttpRequest<any> {
-        if (token) {
-            return request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+    const tokenManager = inject(TokenManagerService);
+    const authService = inject(AuthService);
+    const router = inject(Router);
+
+    const accessToken = tokenManager.getAccessToken();
+    // The auth endpoints carry the refresh cookie and mint tokens themselves; a
+    // 401 from one of them must never trigger another refresh (it would recurse).
+    const isAuthEndpoint = req.url.includes('/auth/jwt/');
+
+    const logoutAndRedirect = (err: unknown): Observable<HttpEvent<unknown>> => {
+        authService.logout();
+        router.navigateByUrl('/login');
+        return throwError(() => err);
+    };
+
+    const refreshToken = (request: HttpRequest<unknown>): Observable<HttpEvent<unknown>> => {
+        if (!refreshingInProgress) {
+            refreshingInProgress = true;
+            accessTokenSubject.next("");
+
+            return authService.refreshToken().pipe(
+                switchMap((res: any) => {
+                    accessTokenSubject.next(res.access);
+                    // repeat failed request with new token
+                    return next(addAuthorizationHeader(request, res.access));
+                }),
+                // refresh cookie missing/expired -> end the session cleanly
+                catchError((err: unknown) => logoutAndRedirect(err)),
+                finalize(() => (refreshingInProgress = false))
+            );
         }
-        return request;
-    }
-
-    private logoutAndRedirect(err: any): Observable<HttpEvent<any>> {
-        this.authService.logout();
-        this.router.navigateByUrl('/login');
-    
-        return throwError(err);
-    }
-
-    private refreshToken(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (!this.refreshingInProgress) {
-          this.refreshingInProgress = true;
-          this.accessTokenSubject.next("");
-    
-          return this.authService.refreshToken().pipe(
-            switchMap((res: any) => {
-              this.accessTokenSubject.next(res.access);
-              // repeat failed request with new token
-              return next.handle(this.addAuthorizationHeader(request, res.access));
-            }),
-            finalize(() => (this.refreshingInProgress = false))
-          );
-        } else {
-          // wait while getting new token
-          return this.accessTokenSubject.pipe(
+        // wait while getting new token
+        return accessTokenSubject.pipe(
             filter(token => token !== ""),
             take(1),
-            switchMap(token => {
-              // repeat failed request with new token
-              return next.handle(this.addAuthorizationHeader(request, token!));
-            }));
-        }
-      }
+            switchMap(token => next(addAuthorizationHeader(request, token)))
+        );
+    };
 
-}
+    return next(addAuthorizationHeader(req, accessToken)).pipe(
+        catchError((err: unknown) => {
+            if (err instanceof HttpErrorResponse && err.status === 401) {
+                // Don't try to refresh a failed auth call (login/refresh/etc.).
+                if (isAuthEndpoint) {
+                    return throwError(() => err);
+                }
+                // We had an access token (the user was logged in): try to mint a
+                // new one from the httpOnly refresh cookie, then retry.
+                if (accessToken) {
+                    return refreshToken(req);
+                }
+                // otherwise logout and redirect to login page
+                return logoutAndRedirect(err);
+            } else if (err instanceof HttpErrorResponse && err.status === 403) {
+                // 403 means the refresh token failed: logout and redirect to login
+                return logoutAndRedirect(err);
+            }
+            // neither 401 nor 403: just rethrow
+            return throwError(() => err);
+        })
+    );
+};

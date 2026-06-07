@@ -1,5 +1,5 @@
 
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { IonContent, IonItem, IonTextarea, IonButton, IonInput, IonCol, IonTitle, IonGrid, IonRow, IonButtons, IonToolbar, IonHeader, IonBackButton, IonToggle, IonAccordion, IonAccordionGroup, IonDatetime, IonDatetimeButton, IonIcon, IonList, IonModal, IonSelect, IonSelectOption, IonToast } from "@ionic/angular/standalone";
@@ -9,6 +9,7 @@ import { Offer } from "src/app/shared/models";
 
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-offer-form',
     templateUrl: './offer-form.component.html',
     styleUrls: ['./offer-form.component.scss'],
