@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonListHeader, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar } from '@ionic/angular/standalone';
@@ -9,6 +9,7 @@ import { addCircleOutline, flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-home',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
@@ -17,7 +18,7 @@ import { addIcons } from 'ionicons';
 })
 export class HomePage {
 
-  lstCompanys: CompanySortDto[] = []
+  readonly lstCompanys = signal<CompanySortDto[]>([])
 
   private apiCompany = inject(ApiCompanyService);
 
@@ -45,7 +46,7 @@ export class HomePage {
     //Get info 
     this.apiCompany.findCompany().subscribe({
       next: (data: CompanySortDto[]) => {
-        this.lstCompanys = data
+        this.lstCompanys.set(data)
       }
     });
   }

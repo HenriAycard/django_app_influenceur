@@ -22,7 +22,7 @@
   <p class="text-justify ion-margin-horizontal">Boots your company's communication with influencer by an easy way to
   collaborate.</p>
 
-  @for (company_card of lstCompanys; track company_card) {
+  @for (company_card of lstCompanys(); track company_card) {
     <ion-card button [routerLink]="['../company/', company_card.id]">
       @if (getPrincipalImage(company_card)) {
         <img
