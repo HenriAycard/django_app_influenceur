@@ -51,3 +51,13 @@ ion-modal {
   --height: auto;
   align-items: end;
 }
+
+/* Primary step CTA ("Next", upload, …) — premium indigo */
+ion-button[expand="block"] {
+  --background: var(--p-accent, #6c5ce7);
+  --background-activated: #5a4bd4;
+  --color: #fff;
+  --box-shadow: 0 8px 22px rgba(108, 92, 231, .35);
+  font-weight: 700;
+  margin-top: 24px;
+}

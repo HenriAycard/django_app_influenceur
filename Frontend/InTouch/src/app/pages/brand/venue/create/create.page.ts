@@ -1,7 +1,7 @@
 
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonButton, IonCol, IonContent, IonIcon, IonItem, IonProgressBar, IonRow } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonIcon, IonProgressBar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { addCircleOutline, chevronBackOutline, closeOutline, cloudUploadOutline } from 'ionicons/icons';
 import { VenueAddressPage } from 'src/app/modal/venue/address/venue-address.component';
@@ -23,7 +23,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './create.page.html',
   styleUrls: ['./create.page.scss'],
   standalone: true,
-  imports: [IonContent, IonButton, IonItem, IonIcon, IonProgressBar, IonRow, IonCol, VenueMainPage, VenueDescriptionPage, VenueAddressPage, VenueOpeningDayPage, VenuePicturePage, VenueSocialMediaComponent]
+  imports: [IonContent, IonButton, IonIcon, IonProgressBar, VenueMainPage, VenueDescriptionPage, VenueAddressPage, VenueOpeningDayPage, VenuePicturePage, VenueSocialMediaComponent]
 })
 export class CreatePage {
 

@@ -1,18 +1,16 @@
 <ion-content [fullscreen]="true">
   <div class="ion-padding-horizontal">
-    <ion-item lines="none" style="--padding-start: 0">
-      @if (isIndiceNotMinMax()) {
-        <ion-button slot="start" size="large" color="white" (click)="previous()" style="--box-shadow: none">
-          <ion-icon name="chevron-back-outline" slot="start" size="large" color="dark"></ion-icon>
-        </ion-button>
-      }
-      <ion-button slot="end" size="large" color="white" (click)="back()" style="--padding-end: 0; --box-shadow: none">
-        <ion-icon name="close-outline" slot="end" size="large" color="dark"></ion-icon>
-      </ion-button>
+    <div class="wiz-top">
+      <button type="button" class="wiz-icon" [class.hidden]="!isIndiceNotMinMax()" (click)="previous()" aria-label="Back">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+      </button>
+      <span class="wiz-step">Step {{ indice + 1 }} of {{ steps.length }}</span>
+      <button type="button" class="wiz-icon" (click)="back()" aria-label="Close">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+    </div>
 
-    </ion-item>
-
-    <ion-progress-bar [value]="progress"></ion-progress-bar>
+    <ion-progress-bar class="wiz-progress" [value]="progress"></ion-progress-bar>
 
     @if (step === steps[0]) {
       <div>
@@ -69,16 +67,13 @@
     }
 
     @if (step === steps[6]) {
-      <div>
-        <h1 class="heading item-text-wrap">💾 Do you want to save your venue ?</h1>
-        <ion-row class="ion-padding">
-          <ion-col size="6">
-            <ion-button expand="full" color="primary" shape="round" (click)="submit()">Yes</ion-button>
-          </ion-col>
-          <ion-col size="6">
-            <ion-button expand="full" color="danger" shape="round" (click)="back()">No</ion-button>
-          </ion-col>
-        </ion-row>
+      <div class="wiz-final">
+        <h1 class="heading">💾 Save your venue?</h1>
+        <p class="wiz-final-sub">Everything looks good — create your venue now.</p>
+        <div class="wiz-final-actions">
+          <ion-button class="wiz-no" expand="block" (click)="back()">Not yet</ion-button>
+          <ion-button class="wiz-yes" expand="block" (click)="submit()">Save venue</ion-button>
+        </div>
       </div>
     }
   </div>
