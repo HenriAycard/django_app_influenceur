@@ -1,17 +1,15 @@
-<ion-header class="collab-header ion-no-border" [translucent]="true">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/brand/calendar" text=""></ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
+  <ion-fab slot="fixed" vertical="top" horizontal="start" class="back-fab">
+    <ion-fab-button (click)="goBack()" aria-label="Back">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
   @if (isLoad()) {
     <app-booking-view [reservation]="reservation()"></app-booking-view>
     <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
 
-    @if (reservation().status !== ApplicationStatus.Declined && !isPastReservation()) {
+    @if (reservation().status !== ApplicationStatus.Declined && isFuture()) {
       <div class="action-bar">
         @if (reservation().status === ApplicationStatus.Pending) {
           <ion-button class="act act-ghost" (click)="cancelReservation()">Decline</ion-button>

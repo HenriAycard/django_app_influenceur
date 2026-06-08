@@ -1,8 +1,8 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSpinner, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { closeCircleOutline } from 'ionicons/icons';
+import { arrowBack, closeCircleOutline } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { ToastService } from 'src/app/services/toast.service';
@@ -17,7 +17,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   templateUrl: './influencer-collaboration.page.html',
   styleUrls: ['./influencer-collaboration.page.scss'],
   standalone: true,
-  imports: [IonButton, IonButtons, IonContent, IonBackButton, IonHeader, IonToolbar, IonIcon, IonSpinner, BookingViewPage, ReviewSectionComponent]
+  imports: [IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner, BookingViewPage, ReviewSectionComponent]
 })
 export class InfluencerCollaborationPage implements OnInit {
 
@@ -30,9 +30,14 @@ export class InfluencerCollaborationPage implements OnInit {
   private store = inject(ApplicationStore)
   private toastService = inject(ToastService)
   private router = inject(Router)
+  private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ closeCircleOutline });
+    addIcons({ arrowBack, closeCircleOutline });
+  }
+
+  goBack(): void {
+    this.navCtrl.back();
   }
 
   ngOnInit(): void {
@@ -66,12 +71,10 @@ export class InfluencerCollaborationPage implements OnInit {
     });
   }
 
-  public isPastReservation(): boolean {
-    if (this.reservation().status === ApplicationStatus.Accepted) {
-      const today = new Date();
-      return this.reservation().dateReservation < today; // true if date is before today
-    }
-    return false;
+  /** True when the reservation date is still in the future (actions allowed). */
+  public isFuture(): boolean {
+    const d = this.reservation().dateReservation;
+    return !!d && new Date(d) > new Date();
   }
 
 }

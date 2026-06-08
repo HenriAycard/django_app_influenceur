@@ -1,8 +1,8 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonSpinner, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { checkmarkCircleOutline, closeCircleOutline, createOutline } from 'ionicons/icons';
+import { arrowBack, checkmarkCircleOutline, closeCircleOutline, createOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
@@ -19,7 +19,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   templateUrl: './brand-booking-view.page.html',
   styleUrls: ['./brand-booking-view.page.scss'],
   standalone: true,
-  imports: [IonButton, IonButtons, IonContent, IonBackButton, IonHeader, IonToolbar, IonIcon, IonModal, IonSpinner, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
+  imports: [IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
 })
 export class BrandBookingViewPage implements OnInit {
 
@@ -35,9 +35,14 @@ export class BrandBookingViewPage implements OnInit {
   private store = inject(ApplicationStore)
   private toastService = inject(ToastService)
   private router = inject(Router)
+  private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ checkmarkCircleOutline, createOutline, closeCircleOutline });
+    addIcons({ arrowBack, checkmarkCircleOutline, createOutline, closeCircleOutline });
+  }
+
+  goBack(): void {
+    this.navCtrl.back();
   }
 
   ngOnInit(): void {
@@ -95,12 +100,10 @@ export class BrandBookingViewPage implements OnInit {
     });
   }
 
-  public isPastReservation(): boolean {
-    if (this.reservation().status === ApplicationStatus.Accepted) {
-      const today = new Date();
-      return this.reservation().dateReservation < today; // true if date is before today
-    }
-    return false;
+  /** True when the reservation date is still in the future (actions allowed). */
+  public isFuture(): boolean {
+    const d = this.reservation().dateReservation;
+    return !!d && new Date(d) > new Date();
   }
 
 }

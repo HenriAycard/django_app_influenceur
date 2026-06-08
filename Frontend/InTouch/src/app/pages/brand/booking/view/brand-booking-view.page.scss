@@ -1,16 +1,15 @@
-.collab-header ion-toolbar {
-  --background: transparent;
-  --border-width: 0;
-  --color: #fff;
+.back-fab {
+  margin-top: calc(env(safe-area-inset-top) + 4px);
+  margin-inline-start: 4px;
 }
-.collab-header ion-back-button {
+.back-fab ion-fab-button {
+  --background: rgba(20, 20, 30, .42);
+  --background-activated: rgba(20, 20, 30, .62);
+  --background-hover: rgba(20, 20, 30, .52);
   --color: #fff;
-  --icon-font-size: 26px;
-  --background: rgba(0, 0, 0, .32);
-  --border-radius: 50%;
-  --padding-start: 7px;
-  --padding-end: 7px;
-  margin-inline-start: 6px;
+  --box-shadow: 0 4px 14px rgba(0, 0, 0, .28);
+  width: 44px;
+  height: 44px;
 }
 
 .loading {
