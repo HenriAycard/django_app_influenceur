@@ -1,54 +1,54 @@
-<ion-card (click)="onCardDealClick()">
-    <ion-card-header>
-        <ion-card-title>{{ offer.name }}</ion-card-title>
-    </ion-card-header>
+<article class="ocard" (click)="onCardDealClick()">
+  <div class="ocard-head">
+    <span class="ocard-eyebrow">Collaboration</span>
+    <ion-icon class="ocard-chev" name="chevron-forward"></ion-icon>
+  </div>
+  <h3 class="ocard-title">{{ offer.name }}</h3>
 
-    <ion-card-content>
-        <ion-list lines="none">
-            <ion-item>
-                <ion-text>
-                    <h3>Offer</h3>
-                    <p>{{offer.content}}</p>
-                </ion-text>
-            </ion-item>
-            <ion-item class="ion-padding-top">
-                <ion-text>
-                    <h3>Conditions</h3>
-                    <p>{{offer.conditions}}</p>
-                </ion-text>
-            </ion-item>
-        </ion-list>
-    </ion-card-content>
-</ion-card>
+  @if (offer.paymentAmount) {
+    <span class="ocard-pay"><ion-icon name="cash-outline"></ion-icon>{{ offer.paymentAmount }} €</span>
+  }
 
-<ion-modal [isOpen]="isModalOpen" [initialBreakpoint]="0.25" [breakpoints]="[0, 0.25, 0.5, 0.75]" handleBehavior="cycle"
+  @if (offer.content) {
+    <div class="ocard-block">
+      <span class="ocard-label">Offer</span>
+      <p>{{ offer.content }}</p>
+    </div>
+  }
+  @if (offer.conditions) {
+    <div class="ocard-block">
+      <span class="ocard-label">Conditions</span>
+      <p>{{ offer.conditions }}</p>
+    </div>
+  }
+</article>
+
+<ion-modal class="actions-sheet" [isOpen]="isModalOpen" [initialBreakpoint]="0.35" [breakpoints]="[0, 0.35, 0.6]" handle="true"
     (ionModalWillDismiss)="closeModal()">
     <ng-template>
-        <div class="block">
-            <ion-header>
-                <ion-toolbar>
-                    <ion-title>Actions</ion-title>
-                    <ion-buttons slot="end">
-                        <ion-button (click)="closeModal()">Close</ion-button>
-                    </ion-buttons>
-                </ion-toolbar>
-            </ion-header>
-            <ion-content>
-                <ion-list lines="none">
-                    <ion-item button (click)="onView()">
-                        <ion-icon aria-hidden="true" name="eye-outline" slot="start"></ion-icon>
-                        <ion-label>View</ion-label>
-                    </ion-item>
-                    <ion-item button (click)="onEdit()">
-                        <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
-                        <ion-label>Edit</ion-label>
-                    </ion-item>
-                    <ion-item button (click)="onDelete()">
-                        <ion-icon aria-hidden="true" name="trash-outline" slot="start"></ion-icon>
-                        <ion-label>Delete</ion-label>
-                    </ion-item>
-                </ion-list>
-            </ion-content>
-        </div>
+        <ion-header class="ion-no-border">
+            <ion-toolbar>
+                <ion-title>Actions</ion-title>
+                <ion-buttons slot="end">
+                    <ion-button (click)="closeModal()">Close</ion-button>
+                </ion-buttons>
+            </ion-toolbar>
+        </ion-header>
+        <ion-content>
+            <ion-list lines="none" class="actions-list">
+                <ion-item button (click)="onView()">
+                    <ion-icon aria-hidden="true" name="eye-outline" slot="start"></ion-icon>
+                    <ion-label>View</ion-label>
+                </ion-item>
+                <ion-item button (click)="onEdit()">
+                    <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
+                    <ion-label>Edit</ion-label>
+                </ion-item>
+                <ion-item button (click)="onDelete()" class="danger">
+                    <ion-icon aria-hidden="true" name="trash-outline" slot="start"></ion-icon>
+                    <ion-label>Delete</ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-content>
     </ng-template>
 </ion-modal>

@@ -1,44 +1,49 @@
+ion-header ion-toolbar {
+  --background: var(--p-surface);
+  --border-width: 0;
+}
+ion-header ion-title { font-weight: 800; letter-spacing: -.01em; }
+ion-content { --background: var(--p-surface); }
+
+/* Section cards */
+ion-card {
+  margin: 0 16px 14px;
+  border-radius: var(--p-radius);
+  border: 1px solid var(--p-hairline);
+  box-shadow: var(--p-shadow-sm);
+  background: var(--p-card);
+}
+ion-card:first-of-type { margin-top: 8px; }
+ion-card-header { padding-bottom: 4px; }
+ion-card-title {
+  font-size: .8rem; font-weight: 800; letter-spacing: .6px;
+  text-transform: uppercase; color: var(--p-accent);
+}
+ion-card-content { color: var(--p-ink); }
 ion-card-content ion-item {
-    --padding-start: 0;
+  --padding-start: 0;
+  --background: transparent;
+  --inner-padding-end: 0;
 }
+ion-card-content ion-label strong,
+ion-card-content ion-text strong { color: var(--p-ink); }
 
-.tags-label {
-    display: block;
-    /* Makes the label take a new line */
-}
+.tags-label { display: block; }
+.tags-text { white-space: pre-line; word-wrap: break-word; }
+.inline-label { display: inline-block; width: auto; }
+.inline-text { display: inline-block; white-space: normal; word-wrap: break-word; word-break: break-word; }
 
-.tags-text {
-    white-space: pre-line;
-    /* Preserve any line breaks in contract.tags */
-    word-wrap: break-word;
-    /* Ensures long words break properly */
-}
+h2 { font-weight: 800; color: var(--p-ink); font-size: .95rem; margin: 0 0 4px; }
+p { margin: 0; white-space: pre-line; word-wrap: break-word; text-align: justify; line-height: 1.5; color: var(--p-ink); }
 
-.inline-label {
-    display: inline-block;
-    /* Keeps the label on the same line */
-    width: auto;
-}
-
-.inline-text {
-    display: inline-block;
-    /* Keeps text on the same line as the label when short */
-    white-space: normal;
-    /* Allows the text to wrap */
-    word-wrap: break-word;
-    /* Ensures that long words break properly */
-    word-break: break-word;
-    /* Ensures that the text breaks at the right places */
-}
-
- h2 {
-    font-weight: bold;
-}
-
- p {
-    margin: 0;
-    white-space: pre-line;
-    /* Wrap long text */
-    word-wrap: break-word;
-    text-align: justify;
+/* Apply CTA (influencer) */
+.apply-cta {
+  margin: 8px 16px calc(16px + env(safe-area-inset-bottom));
+  --background: var(--p-accent);
+  --background-activated: #5a4bd4;
+  --color: #fff;
+  --border-radius: 14px;
+  --box-shadow: 0 8px 22px rgba(108, 92, 231, .35);
+  font-weight: 700;
+  height: 50px;
 }

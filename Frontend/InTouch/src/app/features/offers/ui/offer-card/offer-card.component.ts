@@ -1,8 +1,8 @@
 
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, ViewChild } from "@angular/core";
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar } from "@ionic/angular/standalone";
+import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
-import { createOutline, trashOutline, eyeOutline } from "ionicons/icons";
+import { createOutline, trashOutline, eyeOutline, chevronForward, cashOutline } from "ionicons/icons";
 import { Offer, ActionPayload, ActionType, Role } from "src/app/shared/models";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -13,7 +13,7 @@ import { AuthService } from "src/app/services/auth.service";
     templateUrl: './offer-card.component.html',
     styleUrls: ['./offer-card.component.scss'],
     standalone: true,
-    imports: [IonCard, IonLabel, IonItem, IonIcon, IonContent, IonButtons, IonList, IonButton, IonTitle, IonToolbar, IonHeader, IonModal, IonCardContent, IonCardTitle, IonCardHeader, IonText]
+    imports: [IonLabel, IonItem, IonIcon, IonContent, IonButtons, IonList, IonButton, IonTitle, IonToolbar, IonHeader, IonModal]
 })
 export class OfferCardComponent {
     @Input() offer!: Offer;
@@ -25,7 +25,7 @@ export class OfferCardComponent {
     private authService = inject(AuthService)
 
     constructor() {
-        addIcons({createOutline, trashOutline, eyeOutline});
+        addIcons({createOutline, trashOutline, eyeOutline, chevronForward, cashOutline});
     }
 
     checkUserRole(requiredRoles: Role[]): boolean {

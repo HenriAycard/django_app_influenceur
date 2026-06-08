@@ -12,27 +12,39 @@ ion-modal {
 }
 
 .heading {
-  font-size: 32px;
-  font-weight: bold;
-  padding-left: 20px;
-  margin-top: 40px;
-  margin-bottom: 40px;
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--p-ink, #16161d);
+  padding: 0 20px;
+  margin-top: 32px;
+  margin-bottom: 28px;
 }
 
 .input-item {
-  padding-left: 20px;
+  padding: 6px 16px 8px;
   width: 100%;
-  border-radius: 12px;
-  border: 2px solid #e2e2e2;
-  height: 70px;
+  border-radius: 14px;
+  border: 1.5px solid var(--p-hairline, #ececf1);
+  background: var(--p-surface, #fff);
+  transition: border-color .15s ease, box-shadow .15s ease;
 
-  ion-input {
-    margin-top: -12px;
+  legend {
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .4px;
+    text-transform: uppercase;
+    color: var(--p-sub, #6b6b76);
+  }
+
+  &:focus-within {
+    border-color: var(--p-accent, #6c5ce7);
+    box-shadow: 0 0 0 3px var(--p-accent-soft, rgba(108,92,231,.1));
   }
 }
 
 .ion-item {
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .picker-modal {

@@ -1,31 +1,51 @@
-.block {
-    width: 100%;
-    height: 300px;
+:host { display: block; }
+
+.ocard {
+  display: block;
+  margin: 0 16px 14px;
+  padding: 16px 18px;
+  background: var(--p-card, #fbfbfd);
+  border: 1px solid var(--p-hairline, #ececf1);
+  border-radius: var(--p-radius, 20px);
+  box-shadow: var(--p-shadow, 0 8px 30px rgba(20,20,40,.08));
+  cursor: pointer;
+  transition: transform .12s ease;
+}
+.ocard:active { transform: scale(.985); }
+
+.ocard-head { display: flex; align-items: center; justify-content: space-between; }
+.ocard-eyebrow {
+  font-size: .68rem; font-weight: 800; letter-spacing: .6px;
+  text-transform: uppercase; color: var(--p-accent, #6c5ce7);
+}
+.ocard-chev { color: var(--p-sub, #6b6b76); font-size: 1.2rem; }
+.ocard-title {
+  margin: 4px 0 0; font-size: 1.2rem; font-weight: 800;
+  letter-spacing: -.01em; color: var(--p-ink, #16161d);
 }
 
+.ocard-pay {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px; padding: 5px 11px;
+  background: var(--p-accent-soft, rgba(108,92,231,.1)); color: var(--p-accent, #6c5ce7);
+  border-radius: 999px; font-weight: 800; font-size: .9rem;
+}
+.ocard-pay ion-icon { font-size: 1rem; }
 
-ion-card-content ion-item {
-    --padding-start: 0;
+.ocard-block { margin-top: 14px; }
+.ocard-label {
+  display: block; font-size: .7rem; font-weight: 800; letter-spacing: .5px;
+  text-transform: uppercase; color: var(--p-sub, #6b6b76); margin-bottom: 3px;
+}
+.ocard-block p {
+  margin: 0; color: var(--p-ink, #16161d); line-height: 1.5;
+  white-space: pre-line; word-wrap: break-word;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 
-p {
-    text-align: justify;
-    white-space: pre-line;
-    word-wrap: break-word;
-}
-
-h3 {
-    --color: var(--ion-color-step-600, var(--ion-text-color-step-400, #666666));
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
-}
+/* Action sheet */
+.actions-sheet ion-toolbar { --background: transparent; }
+.actions-list ion-item { --padding-start: 16px; font-weight: 600; }
+.actions-list ion-item ion-icon { color: var(--p-accent, #6c5ce7); }
+.actions-list ion-item.danger { --color: #e5484d; }
+.actions-list ion-item.danger ion-icon { color: #e5484d; }
