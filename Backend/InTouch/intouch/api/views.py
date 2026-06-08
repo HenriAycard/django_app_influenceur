@@ -26,6 +26,22 @@ from firebase_admin import messaging
 
 logger = logging.getLogger(__name__)
 
+
+def _notify(user_id, title, body):
+    """Best-effort FCM push. Never raises: a missing token or a send failure
+    must not break the action (reservation create/update) that triggered it."""
+    try:
+        fcm = FCMToken.objects.filter(user_id=user_id).first()
+        if not fcm:
+            return
+        messaging.send(messaging.Message(
+            notification=messaging.Notification(title=title, body=body),
+            token=fcm.token,
+        ))
+    except Exception as e:
+        logger.warning("FCM push to %s failed: %s", user_id, e)
+
+
 # Create your views here.
 
 class UserListCreateView(generics.ListCreateAPIView):
@@ -197,33 +213,15 @@ class ReservationCreateView(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)  # Validate properly
         self.perform_create(serializer)
 
-        # Retrieve the user who made the reservation
-        user = self.request.user  # Assuming user is a field in the reservation model
+        # Best-effort: alert the venue owner (brand) that a new application came
+        # in. A missing token must never fail the application itself (the old
+        # code returned 400 here, discarding an already-created reservation).
+        reservation = serializer.instance
+        _notify(reservation.offer.venue.user_id, "New application",
+                "An influencer applied to one of your offers.")
 
-        # Get the FCMToken object for the user
-        try:
-            fcm_token_object = FCMToken.objects.get(user=user.id)
-            fcm_token = fcm_token_object.token
-        except FCMToken.DoesNotExist:
-            return Response({"error": f"FCM token not found for user {user.id}"}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Prepare the notification message
-        message = messaging.Message(
-            notification=messaging.Notification(
-                title="Reservation Confirmed",
-                body="Your reservation has been successfully confirmed!",
-            ),
-            token=fcm_token,  # Send notification to the user's FCM token
-        )
-
-        # Send the notification to the user
-        try:
-            response = messaging.send(message)
-            print('Successfully sent message:', response)
-        except Exception as e:
-            print(f"Error sending notification: {e}")
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
@@ -263,6 +261,18 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsReservationParty]
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
+
+    def perform_update(self, serializer):
+        previous_status = serializer.instance.status
+        reservation = serializer.save()
+        # When the brand accepts/declines, tell the influencer (best-effort).
+        if reservation.status != previous_status:
+            if reservation.status == 1:
+                _notify(reservation.user_id, "Application accepted",
+                        "Your collaboration was accepted!")
+            elif reservation.status == 2:
+                _notify(reservation.user_id, "Application declined",
+                        "Your application was not selected this time.")
 
 
 #class imgVenueView(APIView):
