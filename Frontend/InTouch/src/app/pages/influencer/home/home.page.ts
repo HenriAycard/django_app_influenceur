@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { SlicePipe } from '@angular/common';
-import { IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonIcon, IonLabel, IonRefresher, IonRefresherContent, IonSearchbar, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { IonContent, IonIcon, IonRefresher, IonRefresherContent, IonSearchbar, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DiscoveryStore } from 'src/app/features/discovery/discovery.store';
@@ -14,7 +14,7 @@ import { RatingBadgeComponent } from 'src/app/features/reviews/ui/rating-badge/r
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, IonSearchbar, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent, SlicePipe, RatingBadgeComponent]
+  imports: [IonContent, IonSearchbar, IonIcon, IonRefresher, IonRefresherContent, SlicePipe, RatingBadgeComponent]
 })
 export class HomeInfluencerPage {
 

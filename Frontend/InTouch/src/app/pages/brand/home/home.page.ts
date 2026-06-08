@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { SlicePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonChip, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonListHeader, IonRefresher, IonRefresherContent, IonText, IonTitle, IonToolbar, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { IonContent, IonIcon, IonRefresher, IonRefresherContent, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { Router, ActivatedRoute, NavigationExtras, RouterModule } from '@angular/router';
 import { VenueSortDto, ImgVenueDto } from 'src/app/shared/models';
 import { ApiVenueService } from 'src/app/services/api/api-venue.service';
-import { addCircleOutline, flash } from 'ionicons/icons';
+import { add, addCircleOutline, flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { RatingBadgeComponent } from 'src/app/features/reviews/ui/rating-badge/rating-badge.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,7 +15,7 @@ import { addIcons } from 'ionicons';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, FormsModule, IonCard, IonCardContent, IonChip, IonCardTitle, IonCardSubtitle, IonCardHeader, IonIcon, IonButton, IonLabel, IonRefresher, IonRefresherContent, RouterModule, SlicePipe]
+  imports: [IonContent, FormsModule, IonIcon, IonRefresher, IonRefresherContent, RouterModule, SlicePipe, RatingBadgeComponent]
 })
 export class HomePage {
 
@@ -25,7 +26,7 @@ export class HomePage {
   constructor(
     public router:Router,
     public activatedRoute: ActivatedRoute) {
-      addIcons({addCircleOutline, flash});
+      addIcons({add, addCircleOutline, flash});
   }
 
   // Load on every entry (not ngOnInit): like the sibling brand pages, this

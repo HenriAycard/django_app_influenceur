@@ -1,51 +1,62 @@
-.header-font {
-    font-weight: bold;
+:host { display: block; }
+
+/* Hero carousel */
+swiper-container { display: block; }
+.venue-image {
+  height: 300px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 0;
 }
 
+/* Identity + contact list */
+ion-list { background: transparent; padding: 16px; }
+ion-list ion-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 40px;
+}
+ion-list ion-item ion-icon { color: var(--p-accent); }
+
+.header-font { font-weight: 800; letter-spacing: -.01em; color: var(--p-ink); }
+h1.header-font { font-size: 1.6rem; margin: 0 0 4px; }
+
 .header-margin {
-  margin: 16px 0;
+  margin: 22px 16px 12px;
+  font-size: 1.2rem;
 }
 
 .chip-padding {
-  margin-left: 0px;
-  margin-right: 8px;
+  margin: 6px 8px 0 0;
+  --background: var(--p-accent-soft);
+  color: var(--p-accent);
+  font-weight: 700;
 }
 
 .text-justify {
   text-align: justify;
+  color: var(--p-ink);
+  line-height: 1.55;
 }
 
 .background-white {
-  background-color: white;
-  color: green;
+  background: transparent;
+  color: var(--p-accent);
+  font-weight: 700;
 }
 
-.venue-image {
-    height: 250px;
-    width: 100%;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.fab-bg {
-    --background: rgba(0, 0, 0, 0.5);
-}
-
+/* Opening hours */
 .opening-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px; /* Add spacing between items */
-  }
-  
-  .opening-day {
-    font-weight: bold;
-    font-size: 1rem;
-    flex: 1; /* Ensures the day is aligned to the left */
-  }
-  
-  .opening-hours {
-    font-size: 1rem;
-    color: #666;
-    text-align: right; /* Aligns the hours to the right */
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  margin: 0;
+  border-bottom: 1px solid var(--p-hairline);
+}
+.opening-row:last-child { border-bottom: 0; }
+.opening-day { font-weight: 700; font-size: .95rem; color: var(--p-ink); flex: 1; }
+.opening-hours { font-size: .95rem; color: var(--p-sub); text-align: right; }
+
+.fab-bg { --background: rgba(0, 0, 0, .5); }

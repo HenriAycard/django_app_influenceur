@@ -1,54 +1,50 @@
-<ion-content class="ion-padding">
+<ion-content [fullscreen]="true" class="home">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <!-- Header Section -->
-  <div class="header ion-margin-horizontal">
-    <div class="logo-section logo">
-      <ion-icon name="flash"></ion-icon>
-      <span>InTouch</span>
+  <div class="wrap">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="logo"><ion-icon name="flash"></ion-icon><span>InTouch</span></div>
+      <button type="button" class="add" [routerLink]="['../venue/create']" aria-label="Add a venue">
+        <ion-icon name="add"></ion-icon>
+      </button>
     </div>
 
-    <div class="icons">
-      <ion-button fill="clear" [routerLink]="['../venue/create']" class="ion-no-padding">
+    <h1 class="greeting">Your venues</h1>
+    <p class="subtitle">Manage your venues and collaborations</p>
+
+    @for (venue_card of lstVenues(); track venue_card.id) {
+      <article class="vcard" [routerLink]="['../venue/', venue_card.id]">
+        <div class="vcard-media">
+          @if (getPrincipalImage(venue_card)) {
+            <img [src]="getPrincipalImage(venue_card)" alt="{{ venue_card.nameVenue }}" />
+          }
+          <div class="vcard-scrim"></div>
+          @if (venue_card.averageRating != null) {
+            <span class="vcard-rating">
+              <app-rating-badge [average]="venue_card.averageRating" [count]="venue_card.reviewCount"></app-rating-badge>
+            </span>
+          }
+        </div>
+        <div class="vcard-body">
+          <h3 class="vcard-title">{{ venue_card.nameVenue }}</h3>
+          @if (venue_card.typeVenue) { <span class="vcard-type">{{ venue_card.typeVenue.name }}</span> }
+          <div class="vcard-chips">
+            @if (venue_card.isOnsit) { <span class="vchip">On site</span> }
+            @if (venue_card.isTakeaway) { <span class="vchip">Take away</span> }
+          </div>
+          <p class="vcard-desc">{{ venue_card.description | slice:0:140 }}{{ (venue_card.description && venue_card.description.length > 140) ? '…' : '' }}</p>
+        </div>
+      </article>
+    }
+
+    @if (!lstVenues().length) {
+      <button type="button" class="empty-add" [routerLink]="['../venue/create']">
         <ion-icon name="add-circle-outline"></ion-icon>
-      </ion-button>
-    </div>
+        <span>Create your first venue</span>
+      </button>
+    }
   </div>
-
-  <h1 class="greeting ion-margin-horizontal">Home</h1>
-  <h3 class="ion-margin-horizontal">Manage all your venues 👋</h3>
-  <p class="text-justify ion-margin-horizontal">Boots your venue's communication with influencer by an easy way to
-  collaborate.</p>
-
-  @for (venue_card of lstVenues(); track venue_card) {
-    <ion-card button [routerLink]="['../venue/', venue_card.id]">
-      @if (getPrincipalImage(venue_card)) {
-        <img
-          [src]="getPrincipalImage(venue_card)"
-          style="height: 200px; width: 100%; object-fit: cover;"
-          alt="Venue image" />
-      }
-      <ion-card-header style="text-align: left;">
-        <ion-card-title>{{ venue_card['nameVenue'] }}</ion-card-title>
-        @if (venue_card.typeVenue) {
-          <ion-card-subtitle>{{ venue_card.typeVenue.name
-          }}</ion-card-subtitle>
-        }
-        <ion-label>
-          @if (venue_card['isOnsit']) {
-            <ion-chip class="chip-padding">On sit</ion-chip>
-          }
-          @if (venue_card['isTakeaway']) {
-            <ion-chip class="chip-padding">Take away</ion-chip>
-          }
-        </ion-label>
-      </ion-card-header>
-      <ion-card-content class="ion-text-justify">
-        {{ venue_card.description | slice:0:250 }}{{venue_card.description.length > 250 ? '...' : ''}}
-      </ion-card-content>
-    </ion-card>
-  }
-
 </ion-content>

@@ -1,41 +1,62 @@
-.logo-section {
-    display: flex;
-    align-items: center;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 24px;
-    font-weight: 600;
-    color: green;
-  }
-  
-  .greeting {
-    font-size: 28px;
-    font-weight: 700;
-  }
+.home { --background: var(--p-surface); }
+.wrap { padding: calc(env(safe-area-inset-top) + 8px) 16px 24px; }
 
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .icons ion-icon {
-    font-size: 1.5rem;
-    margin-left: 1rem;
-  }
+/* Top bar */
+.topbar { display: flex; align-items: center; justify-content: space-between; }
+.logo {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; color: var(--p-accent);
+}
+.logo ion-icon { font-size: 1.3rem; }
+.add {
+  width: 42px; height: 42px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--p-accent); color: #fff; border: 0; cursor: pointer;
+  box-shadow: 0 6px 16px rgba(108, 92, 231, .35);
+}
+.add ion-icon { font-size: 1.4rem; }
+.add:active { transform: scale(.92); }
 
-  .text-justify {
-    text-align: justify;
-  }
+.greeting { margin: 14px 0 2px; font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; color: var(--p-ink); }
+.subtitle { margin: 0 0 18px; color: var(--p-sub); font-size: .95rem; }
 
-  .btn-align-right {
-    padding-right: 0px;
-  }
+/* Venue cards (shared premium pattern) */
+.vcard {
+  display: block; margin-bottom: 18px;
+  background: var(--p-card); border: 1px solid var(--p-hairline);
+  border-radius: var(--p-radius-lg); overflow: hidden;
+  box-shadow: var(--p-shadow); cursor: pointer;
+  transition: transform .12s ease;
+}
+.vcard:active { transform: scale(.985); }
+.vcard-media { position: relative; height: 200px; background: var(--p-hairline); }
+.vcard-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.vcard-scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,.18) 0%, rgba(0,0,0,0) 40%); }
+.vcard-rating {
+  position: absolute; top: 12px; right: 12px;
+  padding: 5px 10px; border-radius: 999px;
+  background: rgba(255,255,255,.94); backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.vcard-body { padding: 14px 16px 16px; }
+.vcard-title { margin: 0; font-size: 1.2rem; font-weight: 800; letter-spacing: -.01em; color: var(--p-ink); }
+.vcard-type { font-size: .85rem; color: var(--p-sub); }
+.vcard-chips { display: flex; gap: 8px; margin: 10px 0; }
+.vchip {
+  font-size: .72rem; font-weight: 700; color: var(--p-accent);
+  background: var(--p-accent-soft); padding: 5px 10px; border-radius: 999px;
+}
+.vcard-desc { margin: 6px 0 0; color: var(--p-sub); line-height: 1.5; font-size: .9rem; }
 
-  .chip-padding {
-    margin-left: 0px;
-    margin-right: 8px;
-  }
+/* Empty state CTA */
+.empty-add {
+  width: 100%; padding: 28px; margin-top: 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  background: var(--p-card); border: 1px dashed var(--p-hairline); border-radius: var(--p-radius-lg);
+  color: var(--p-accent); font-weight: 700; cursor: pointer;
+}
+.empty-add ion-icon { font-size: 2.2rem; }
+
+@media (min-width: 768px) {
+  .wrap { max-width: 720px; margin: 0 auto; }
+}

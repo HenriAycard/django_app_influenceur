@@ -1,66 +1,65 @@
-<ion-content class="ion-padding">
+<ion-content [fullscreen]="true" class="home">
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <!-- Header -->
-  <div class="ion-padding-top logo-section logo">
-    <ion-icon name="flash"></ion-icon>
-    <span>InTouch</span>
-  </div>
-  <h1 class="greeting">Hello, {{ firstname }} 👋</h1>
+  <div class="wrap">
+    <!-- Top bar -->
+    <div class="topbar">
+      <div class="logo"><ion-icon name="flash"></ion-icon><span>InTouch</span></div>
+    </div>
 
-  <!-- Search -->
-  <ion-searchbar class="searchbar-padding" #searchVal placeholder="Try 'Cancun' or 'Sushi'"
-  (keyup)="search($event, searchVal.value)" autocapitalize="on"></ion-searchbar>
+    <h1 class="greeting">Hello, {{ firstname }} 👋</h1>
+    <p class="subtitle">Find venues to collaborate with</p>
 
-  <!-- Quick categories -->
-  <h2 class="greeting-2">Browse by category</h2>
-  <div class="category-grid">
-    @for (category of categories; track category) {
-      <button class="category-tile" (click)="navigation(category.label)">
-        <span class="category-emoji">{{ category.emoji }}</span>
-        <span class="category-label">{{ category.label }}</span>
-      </button>
+    <!-- Search -->
+    <ion-searchbar class="search" #searchVal placeholder="Try ‘Cancun’ or ‘Sushi’"
+      (keyup)="search($event, searchVal.value)" autocapitalize="on"></ion-searchbar>
+
+    <!-- Categories -->
+    <h2 class="section">Browse by category</h2>
+    <div class="cats">
+      @for (category of categories; track category.label) {
+        <button type="button" class="cat" (click)="navigation(category.label)">
+          <span class="cat-emoji">{{ category.emoji }}</span>
+          <span class="cat-label">{{ category.label }}</span>
+        </button>
+      }
+    </div>
+
+    <!-- Feed -->
+    <h2 class="section">Discover venues</h2>
+
+    @for (venue of store.feed(); track venue.id) {
+      <article class="vcard" (click)="openVenue(venue.id)">
+        <div class="vcard-media">
+          @if (venue.imgVenue.length) {
+            <img [src]="venue.imgVenue[0].file" alt="{{ venue.nameVenue }}" />
+          }
+          <div class="vcard-scrim"></div>
+          @if (venue.averageRating != null) {
+            <span class="vcard-rating">
+              <app-rating-badge [average]="venue.averageRating" [count]="venue.reviewCount"></app-rating-badge>
+            </span>
+          }
+        </div>
+        <div class="vcard-body">
+          <h3 class="vcard-title">{{ venue.nameVenue }}</h3>
+          <span class="vcard-type">{{ venue.typeVenue.name }}</span>
+          <div class="vcard-chips">
+            @if (venue.isOnsit) { <span class="vchip">On site</span> }
+            @if (venue.isTakeaway) { <span class="vchip">Take away</span> }
+          </div>
+          <p class="vcard-desc">{{ venue.description | slice:0:140 }}{{ (venue.description && venue.description.length > 140) ? '…' : '' }}</p>
+        </div>
+      </article>
+    }
+
+    @if (store.feedEmpty()) {
+      <div class="empty">
+        <ion-icon name="flash"></ion-icon>
+        <p>No venues available yet. Check back soon.</p>
+      </div>
     }
   </div>
-
-  <!-- Real venue feed -->
-  <h2 class="ion-margin-top greeting-2">Discover venues</h2>
-
-  @for (venue of store.feed(); track venue) {
-    <ion-card button (click)="openVenue(venue.id)">
-      @for (image of venue.imgVenue; track image) {
-        <img style="height: 200px; width: 100%; object-fit: cover;"
-          [src]="image.file" alt="" />
-      }
-      <ion-card-header style="text-align: left;">
-        <ion-card-title>{{ venue.nameVenue }}</ion-card-title>
-        <ion-card-subtitle>{{ venue.typeVenue.name }}</ion-card-subtitle>
-        @if (venue.averageRating !== null) {
-          <ion-label>
-            <app-rating-badge [average]="venue.averageRating" [count]="venue.reviewCount"></app-rating-badge>
-          </ion-label>
-        }
-        <ion-label>
-          @if (venue.isOnsit) {
-            <ion-chip class="chip-padding">On sit</ion-chip>
-          }
-          @if (venue.isTakeaway) {
-            <ion-chip class="chip-padding">Take away</ion-chip>
-          }
-        </ion-label>
-      </ion-card-header>
-      <ion-card-content class="ion-text-justify">
-        {{ venue.description | slice:0:200 }}{{ (venue.description && venue.description.length > 200) ? '...' : '' }}
-      </ion-card-content>
-    </ion-card>
-  }
-
-  <!-- Empty state -->
-  @if (store.feedEmpty()) {
-    <p class="ion-text-center ion-padding">
-      No venues available yet. Check back soon.
-    </p>
-  }
 </ion-content>

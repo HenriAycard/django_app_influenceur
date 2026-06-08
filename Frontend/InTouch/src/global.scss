@@ -49,3 +49,23 @@
 .review-alert-modal::part(content) {
   border-radius: 14px;
 }
+
+/* ---------------------------------------------------------------------------
+   Premium design tokens — shared accent/typography/elevation language.
+   Scoped via the --p-* namespace so it never collides with Ionic defaults.
+--------------------------------------------------------------------------- */
+:root {
+  --p-accent: #6c5ce7;
+  --p-accent-2: #8e7bff;
+  --p-accent-soft: rgba(108, 92, 231, .1);
+  --p-ink: var(--ion-text-color, #16161d);
+  --p-sub: var(--ion-color-medium, #6b6b76);
+  --p-surface: var(--ion-background-color, #fff);
+  --p-card: var(--ion-color-step-50, #fbfbfd);
+  --p-hairline: var(--ion-color-step-100, #ececf1);
+  --p-radius: 20px;
+  --p-radius-lg: 26px;
+  --p-shadow: 0 8px 30px rgba(20, 20, 40, .08);
+  --p-shadow-sm: 0 2px 10px rgba(20, 20, 40, .05);
+  --p-gold: #ffb400;
+}
