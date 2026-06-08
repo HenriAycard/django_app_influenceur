@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { AlertController, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { IonButton, IonIcon, ModalController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { star } from 'ionicons/icons';
 import { Application, CreateReviewDto } from 'src/app/shared/models';
@@ -7,20 +7,12 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ApiReviewService } from 'src/app/features/reviews/api-review.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { RatingStarsComponent } from 'src/app/features/reviews/ui/rating-stars/rating-stars.component';
-
-const RATING_OPTIONS = [
-    { value: 5, label: '⭐⭐⭐⭐⭐  Excellent' },
-    { value: 4, label: '⭐⭐⭐⭐  Very good' },
-    { value: 3, label: '⭐⭐⭐  Good' },
-    { value: 2, label: '⭐⭐  Fair' },
-    { value: 1, label: '⭐  Poor' },
-];
+import { ReviewDialogComponent } from 'src/app/features/reviews/ui/review-dialog/review-dialog.component';
 
 /**
  * Drop-in block for a collaboration detail page. Shows the viewer's existing
- * review, or — when `reservation.canReview` — a CTA that opens a native
- * ion-alert flow (rating radios, then an optional comment). Emits `reviewed`
- * after a successful submit so the parent reloads.
+ * review, or — when `reservation.canReview` — a CTA opening an iOS-style rating
+ * dialog (ReviewDialogComponent). Emits `reviewed` after a successful submit.
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +31,7 @@ const RATING_OPTIONS = [
         }
       </div>
     } @else if (reservation.canReview) {
-      <ion-button class="cta" expand="block" shape="round" (click)="openRating()">
+      <ion-button class="cta" expand="block" shape="round" (click)="openDialog()">
         <ion-icon name="star" slot="start"></ion-icon>
         Rate this collaboration
       </ion-button>
@@ -66,7 +58,7 @@ export class ReviewSectionComponent {
     @Output() reviewed = new EventEmitter<void>();
 
     private auth = inject(AuthService);
-    private alertCtrl = inject(AlertController);
+    private modalCtrl = inject(ModalController);
     private api = inject(ApiReviewService);
     private toast = inject(ToastService);
 
@@ -74,61 +66,25 @@ export class ReviewSectionComponent {
         addIcons({ star });
     }
 
-    private isBrand(): boolean {
-        return !!this.auth.user?.isCompany;
+    private title(): string {
+        return this.auth.user?.isCompany
+            ? `How was ${this.reservation.user?.firstname ?? 'the influencer'}?`
+            : `How was ${this.reservation.offer?.venue?.nameVenue ?? 'this venue'}?`;
     }
 
-    /** Step 1 — pick a star rating. */
-    async openRating(): Promise<void> {
-        const alert = await this.alertCtrl.create({
-            header: this.isBrand()
-                ? `Rate ${this.reservation.user?.firstname ?? 'the influencer'}`
-                : `Rate ${this.reservation.offer?.venue?.nameVenue ?? 'this venue'}`,
-            message: this.isBrand()
-                ? 'How was working with this influencer?'
-                : 'How was your experience at this venue?',
-            inputs: RATING_OPTIONS.map((o, idx) => ({
-                type: 'radio' as const,
-                label: o.label,
-                value: o.value,
-                checked: idx === 0,
-            })),
-            buttons: [
-                { text: 'Cancel', role: 'cancel' },
-                {
-                    text: 'Continue',
-                    handler: (rating: number) => {
-                        if (!rating) {
-                            this.toast.toastWarn('Almost there', 'Please pick a rating.');
-                            return false;
-                        }
-                        // Defer so this alert finishes dismissing before the next opens.
-                        setTimeout(() => this.askComment(rating), 150);
-                        return true;
-                    },
-                },
-            ],
+    async openDialog(): Promise<void> {
+        const modal = await this.modalCtrl.create({
+            component: ReviewDialogComponent,
+            cssClass: 'review-alert-modal',
+            backdropDismiss: true,
+            componentProps: { title: this.title() },
         });
-        await alert.present();
-    }
+        await modal.present();
 
-    /** Step 2 — optional comment, then submit. */
-    private async askComment(rating: number): Promise<void> {
-        const alert = await this.alertCtrl.create({
-            header: 'Add a note',
-            message: 'Optional — tell others how it went.',
-            inputs: [{
-                type: 'textarea',
-                name: 'comment',
-                placeholder: 'Share what went well…',
-                attributes: { maxlength: 1000, rows: 4 },
-            }],
-            buttons: [
-                { text: 'Skip', handler: () => { this.submit(rating, ''); } },
-                { text: 'Post', handler: (data: { comment?: string }) => { this.submit(rating, (data?.comment ?? '').trim()); } },
-            ],
-        });
-        await alert.present();
+        const { data, role } = await modal.onWillDismiss<{ rating: number; comment: string }>();
+        if (role === 'submit' && data) {
+            this.submit(data.rating, data.comment);
+        }
     }
 
     private submit(rating: number, comment: string): void {

@@ -37,3 +37,15 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
  @import "@ionic/angular/css/palettes/dark.class.css"; 
 /* @import '@ionic/angular/css/palettes/dark.system.css'; */
+
+/* Small centered "alert card" modal used by the review dialog */
+.review-alert-modal {
+  --width: 280px;
+  --max-width: 88%;
+  --height: auto;
+  --border-radius: 14px;
+  --box-shadow: 0 10px 40px rgba(0, 0, 0, .2);
+}
+.review-alert-modal::part(content) {
+  border-radius: 14px;
+}
