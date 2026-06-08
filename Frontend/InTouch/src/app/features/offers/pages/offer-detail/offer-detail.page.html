@@ -1,7 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button href></ion-back-button>
+      <ion-button (click)="goBack()" aria-label="Back">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     @if (isLoad()) {
       <ion-title>{{ offer.name }}</ion-title>

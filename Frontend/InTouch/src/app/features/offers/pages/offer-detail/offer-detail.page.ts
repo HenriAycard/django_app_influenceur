@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from "@angular/core";
 import { DatePipe } from "@angular/common";
 import { IonicModule } from "@ionic/angular";
-import { IonBackButton, IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar, NavController } from "@ionic/angular/standalone";
+import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonText, IonTitle, IonToolbar } from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
+import { arrowBack } from "ionicons/icons";
 import { HasRoleDirective } from "src/app/directive/has-role.directive";
 import { Offer } from "src/app/shared/models";
 import { ApiOfferService } from "src/app/features/offers/api-offer.service";
@@ -15,7 +17,7 @@ import { ModalNewReservationComponent } from "src/app/modal/reservation/new/moda
     templateUrl: './offer-detail.page.html',
     styleUrls: ['./offer-detail.page.scss'],
     standalone: true,
-    imports: [HasRoleDirective, IonText, IonLabel, IonItem, IonList, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonContent, IonTitle, IonBackButton, IonButtons, IonToolbar, IonHeader, ModalNewReservationComponent, IonModal, IonButton, DatePipe]
+    imports: [HasRoleDirective, IonText, IonLabel, IonItem, IonList, IonCard, IonCardContent, IonCardTitle, IonCardHeader, IonContent, IonTitle, IonButtons, IonToolbar, IonHeader, IonIcon, ModalNewReservationComponent, IonModal, IonButton, DatePipe]
 })
 export class OfferDetailPage implements OnInit {
     @Input() offerId!: number;
@@ -43,7 +45,11 @@ export class OfferDetailPage implements OnInit {
     public presentingElement: Element | null = null;
 
     private apiOffer = inject(ApiOfferService);
-    private navCtrl = inject(NavController)
+    private location = inject(Location);
+
+    constructor() {
+        addIcons({ arrowBack });
+    }
 
     ngOnInit(): void {
         this.apiOffer.findOfferById(this.offerId).subscribe({
@@ -81,7 +87,8 @@ export class OfferDetailPage implements OnInit {
     }
 
     goBack() {
-        //this.location.back(); // Goes back to the last route
-        this.navCtrl.back()
+        // History-based pop so we don't push a duplicate entry (which caused the
+        // venue -> offer -> back loop). Returns to the venue / collaboration / search.
+        this.location.back()
     }
 }

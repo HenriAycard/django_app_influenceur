@@ -1,8 +1,9 @@
 
 import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonModal, IonRefresher, IonRefresherContent, NavController, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonModal, IonRefresher, IonRefresherContent, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { close, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube } from 'ionicons/icons';
 import { VenueMainViewPage } from 'src/app/modal/venue/main-view/venue-main-view.component';
@@ -38,7 +39,7 @@ export class VenuePage implements OnInit {
   private alertCtrlService = inject(AlertControllerService);
   private toastService = inject(ToastService)
   private router = inject(Router)
-  private navCtrl = inject(NavController)
+  private location = inject(Location)
   private activatedRoute = inject(ActivatedRoute)
 
   constructor() {
@@ -86,7 +87,9 @@ export class VenuePage implements OnInit {
   }
 
   goBack() {
-    this.navCtrl.back()
+    // History-based pop: returns to wherever we came from (home feed OR search),
+    // and avoids the Ionic nav-stack desync that looped back into the offer.
+    this.location.back()
   }
 
 }
