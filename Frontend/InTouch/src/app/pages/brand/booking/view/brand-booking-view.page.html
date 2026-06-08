@@ -1,49 +1,35 @@
-<ion-header>
+<ion-header class="collab-header ion-no-border" [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/brand/calendar"></ion-back-button>
+      <ion-back-button defaultHref="/brand/calendar" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Reservation</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
   @if (isLoad()) {
-    <div>
-      <app-booking-view [reservation]="reservation()"></app-booking-view>
-      <!-- Action Buttons -->
-      @if (reservation().status !== ApplicationStatus.Declined && !isPastReservation()) {
-        <ion-grid class="action-buttons">
-          <ion-row class="ion-justify-content-around">
-            <!-- Show Accept button only if pending -->
-            @if (reservation().status === ApplicationStatus.Pending) {
-              <ion-col size="4">
-                <ion-button expand="full" fill="outline" (click)="acceptReservation()">
-                  <ion-icon name="checkmark-circle" slot="start"></ion-icon>Accept
-                </ion-button>
-              </ion-col>
-            }
-            <!-- Edit button for pending and accepted -->
-            @if ((reservation().status === ApplicationStatus.Pending || reservation().status === ApplicationStatus.Accepted) && !isPastReservation()) {
-              <ion-col size="4">
-                <ion-button expand="full" fill="outline" color="warning" (click)="editReservation()">
-                  <ion-icon name="create" slot="start"></ion-icon>Edit
-                </ion-button>
-              </ion-col>
-            }
-            <!-- Cancel button for pending and accepted -->
-            @if ((reservation().status === ApplicationStatus.Pending || reservation().status === ApplicationStatus.Accepted) && !isPastReservation()) {
-              <ion-col size="4">
-                <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()">
-                  <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
-                </ion-button>
-              </ion-col>
-            }
-          </ion-row>
-        </ion-grid>
-      }
-      <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
-    </div>
+    <app-booking-view [reservation]="reservation()"></app-booking-view>
+    <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
+
+    @if (reservation().status !== ApplicationStatus.Declined && !isPastReservation()) {
+      <div class="action-bar">
+        @if (reservation().status === ApplicationStatus.Pending) {
+          <ion-button class="act act-ghost" (click)="cancelReservation()">Decline</ion-button>
+          <ion-button class="act act-primary" (click)="acceptReservation()">
+            <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Accept
+          </ion-button>
+        } @else {
+          <ion-button class="act act-ghost" (click)="editReservation()">
+            <ion-icon name="create-outline" slot="start"></ion-icon>Edit date
+          </ion-button>
+          <ion-button class="act act-danger" (click)="cancelReservation()">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>Cancel
+          </ion-button>
+        }
+      </div>
+    }
+  } @else {
+    <div class="loading"><ion-spinner name="crescent"></ion-spinner></div>
   }
 
   <ion-modal #modal [presentingElement]="presentingElement">

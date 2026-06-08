@@ -1,8 +1,8 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
-import { IonBackButton, IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonModal, IonRow,  IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonModal, IonSpinner, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { checkmarkCircle, closeCircle, create, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube } from 'ionicons/icons';
+import { checkmarkCircleOutline, closeCircleOutline, createOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
@@ -19,7 +19,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   templateUrl: './brand-booking-view.page.html',
   styleUrls: ['./brand-booking-view.page.scss'],
   standalone: true,
-  imports: [IonButton, IonCol, IonRow, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonGrid, IonIcon, IonModal, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
+  imports: [IonButton, IonButtons, IonContent, IonBackButton, IonHeader, IonToolbar, IonIcon, IonModal, IonSpinner, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
 })
 export class BrandBookingViewPage implements OnInit {
 
@@ -37,7 +37,7 @@ export class BrandBookingViewPage implements OnInit {
   private router = inject(Router)
 
   constructor() {
-    addIcons({ logoInstagram, logoTiktok, logoYoutube, logoTwitter, logoFacebook, checkmarkCircle, create, closeCircle });
+    addIcons({ checkmarkCircleOutline, createOutline, closeCircleOutline });
   }
 
   ngOnInit(): void {

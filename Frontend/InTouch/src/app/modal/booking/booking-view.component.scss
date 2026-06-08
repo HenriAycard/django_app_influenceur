@@ -1,68 +1,177 @@
-.venue-image {
-    height: 200px;
-    width: 100%;
-    object-fit: cover;
+:host {
+  /* Premium, theme-independent palette (scoped to this view) */
+  --ink: var(--ion-text-color, #16161d);
+  --sub: var(--ion-color-medium, #6b6b76);
+  --accent: #6c5ce7;
+  --surface: var(--ion-background-color, #fff);
+  --card: var(--ion-color-step-50, #fbfbfd);
+  --hairline: var(--ion-color-step-100, #ececf1);
+  --shadow: 0 8px 30px rgba(20, 20, 40, .08);
+  display: block;
 }
 
-.offer-description,
-.offer-condition,
-.reservation-date {
-    margin-top: 5px;
+.collab { position: relative; }
+
+/* ---------- HERO ---------- */
+.hero {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  padding: 0;
+  border: 0;
+  background: #000;
+  cursor: pointer;
+  overflow: hidden;
+}
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 32%, rgba(0,0,0,.72) 100%);
+}
+.hero-body {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 46px;       /* clears the sheet overlap */
+  text-align: left;
+  color: #fff;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  backdrop-filter: blur(8px);
+  margin-bottom: 10px;
+}
+.hero-title {
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0,0,0,.4);
 }
 
-/* General styles for social media chips */
-.social-chip {
-    margin: 5px;
-    border-radius: 20px;
-    padding: 5px 10px;
-    display: inline-flex;
-    align-items: center;
-    font-weight: bold;
-    background-color: white;
-    border: 2px solid black;
+/* ---------- CONTENT SHEET ---------- */
+.sheet {
+  position: relative;
+  margin-top: -28px;
+  padding: 22px 16px calc(16px + env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -10px 30px rgba(0,0,0,.06);
 }
 
-.social-icon {
-    margin-right: 5px;
-    color: black;
-    font-size: 20px;
-    /* Ensure icons are large enough */
+/* status + date */
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .8rem;
+  font-weight: 700;
+  padding: 7px 13px;
+  border-radius: 999px;
+}
+.status ion-icon { font-size: 1rem; }
+.is-confirmed { color: #0f7b4f; background: rgba(31,170,89,.12); }
+.is-completed { color: var(--accent); background: rgba(108,92,231,.12); }
+.is-pending   { color: #9a6a00; background: rgba(245,166,35,.15); }
+.is-declined  { color: #c0303a; background: rgba(229,72,77,.12); }
+.when {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sub);
+  font-size: .85rem;
+  font-weight: 500;
+}
+.when ion-icon { font-size: 1rem; }
+
+/* generic block / card */
+.block {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
 }
 
-/* Styling the links to remove the default blue color */
-.social-link {
-    color: black;
-    text-decoration: none;
+/* offer */
+.offer { cursor: pointer; }
+.block-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.block-head-text { min-width: 0; }
+.eyebrow {
+  font-size: .68rem; font-weight: 800; letter-spacing: .6px;
+  text-transform: uppercase; color: var(--accent);
 }
-
-.social-link:hover {
-    text-decoration: none
-        /* Optional: underline on hover */
+.block-head h2 {
+  margin: 4px 0 0; font-size: 1.2rem; font-weight: 800;
+  letter-spacing: -.01em; color: var(--ink);
 }
+.chev { color: var(--sub); font-size: 1.25rem; flex: 0 0 auto; margin-top: 2px; }
 
-ion-card-content ion-item {
-    --padding-start: 0;
-    --padding-top: 0;
+.pay {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px; padding: 6px 12px;
+  background: rgba(108,92,231,.1); color: var(--accent);
+  border-radius: 999px; font-weight: 800; font-size: .95rem;
 }
+.pay ion-icon { font-size: 1.05rem; }
 
-p {
-    text-align: justify;
-    white-space: pre-line;
-    word-wrap: break-word;
+.row { display: flex; gap: 12px; margin-top: 16px; }
+.row > ion-icon { color: var(--accent); font-size: 1.15rem; flex: 0 0 auto; margin-top: 2px; }
+.row-label {
+  display: block; font-size: .7rem; font-weight: 800; letter-spacing: .5px;
+  text-transform: uppercase; color: var(--sub); margin-bottom: 3px;
 }
+.row p { margin: 0; color: var(--ink); line-height: 1.5; white-space: pre-line; word-wrap: break-word; }
 
-h3 {
-    --color: var(--ion-color-step-600, var(--ion-text-color-step-400, #666666));
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 4px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.4px;
-    text-transform: uppercase;
+/* person */
+.person { display: flex; align-items: center; gap: 14px; }
+.avatar {
+  flex: 0 0 56px; width: 56px; height: 56px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: linear-gradient(135deg, #6c5ce7, #8e7bff);
+  color: #fff; font-weight: 800; font-size: 1.2rem; text-transform: uppercase;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+.person-info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.person-info h3 { margin: 0; font-size: 1.05rem; font-weight: 800; color: var(--ink); }
+.person-role { font-size: .8rem; color: var(--sub); }
+.socials { display: flex; gap: 8px; }
+.soc {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--surface); border: 1px solid var(--hairline); color: var(--ink);
+}
+.soc ion-icon { font-size: 1.2rem; }
+
+/* tablets: keep content readable, not stretched */
+@media (min-width: 768px) {
+  .sheet { max-width: 680px; margin-left: auto; margin-right: auto; }
+  .hero { height: 360px; }
 }

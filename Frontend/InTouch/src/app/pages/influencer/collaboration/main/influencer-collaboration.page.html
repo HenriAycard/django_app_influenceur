@@ -1,22 +1,24 @@
-<ion-header>
+<ion-header class="collab-header ion-no-border" [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/influencer/calendar"></ion-back-button>
+      <ion-back-button defaultHref="/influencer/calendar" text=""></ion-back-button>
     </ion-buttons>
-    <ion-title>Collaboration</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
   @if (isLoad()) {
-    <div>
-      <app-booking-view [reservation]="reservation()"></app-booking-view>
-      @if ((reservation().status === ApplicationStatus.Pending || reservation().status === ApplicationStatus.Accepted) && !isPastReservation()) {
-        <ion-button expand="full" fill="outline" color="danger" (click)="cancelReservation()">
-          <ion-icon name="close-circle" slot="start"></ion-icon>Cancel
+    <app-booking-view [reservation]="reservation()"></app-booking-view>
+    <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
+
+    @if ((reservation().status === ApplicationStatus.Pending || reservation().status === ApplicationStatus.Accepted) && !isPastReservation()) {
+      <div class="action-bar">
+        <ion-button class="act act-danger" (click)="cancelReservation()">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>Cancel collaboration
         </ion-button>
-      }
-      <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
-    </div>
+      </div>
+    }
+  } @else {
+    <div class="loading"><ion-spinner name="crescent"></ion-spinner></div>
   }
 </ion-content>

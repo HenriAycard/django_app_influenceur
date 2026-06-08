@@ -1,8 +1,8 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
-import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonBackButton, IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonSpinner, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { checkmarkCircle, closeCircle, create, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube } from 'ionicons/icons';
+import { closeCircleOutline } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { ToastService } from 'src/app/services/toast.service';
@@ -17,7 +17,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   templateUrl: './influencer-collaboration.page.html',
   styleUrls: ['./influencer-collaboration.page.scss'],
   standalone: true,
-  imports: [IonButton, IonButtons, IonContent, IonBackButton, IonTitle, IonHeader, IonToolbar, IonIcon, BookingViewPage, ReviewSectionComponent]
+  imports: [IonButton, IonButtons, IonContent, IonBackButton, IonHeader, IonToolbar, IonIcon, IonSpinner, BookingViewPage, ReviewSectionComponent]
 })
 export class InfluencerCollaborationPage implements OnInit {
 
@@ -32,7 +32,7 @@ export class InfluencerCollaborationPage implements OnInit {
   private router = inject(Router)
 
   constructor() {
-    addIcons({ logoInstagram, logoTiktok, logoYoutube, logoTwitter, logoFacebook, checkmarkCircle, create, closeCircle });
+    addIcons({ closeCircleOutline });
   }
 
   ngOnInit(): void {
