@@ -31,9 +31,8 @@ h1.header-font { font-size: 1.6rem; margin: 0 0 4px; }
 }
 .vsection-title {
   margin: 0 0 14px;
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -.01em;
+  font-size: 1.625rem;   /* matches the default Ionic h1 used by "Collaborations" */
+  font-weight: bold;     /* 700, same as .header-font */
   color: var(--p-ink);
 }
 
