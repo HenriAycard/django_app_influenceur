@@ -10,7 +10,7 @@ swiper-container { display: block; }
 }
 
 /* Identity + contact list */
-ion-list { background: transparent; padding: 16px; }
+ion-list { background: transparent; padding: 16px 16px 0; }
 ion-list ion-item {
   --background: transparent;
   --padding-start: 0;
@@ -27,7 +27,7 @@ h1.header-font { font-size: 1.6rem; margin: 0 0 4px; }
 /* Description / Opening Hours sections */
 .vsection {
   padding: 0 16px;
-  margin-top: 34px;
+  margin-top: 22px;
 }
 .vsection-title {
   margin: 0 0 14px;
