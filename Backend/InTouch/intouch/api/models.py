@@ -208,3 +208,13 @@ class FCMToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=255, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class VenueView(models.Model):
+    """A single visit of a venue page by an influencer (for venue analytics).
+
+    `user` is kept nullable so a view survives the visitor's account deletion;
+    the venue owner's own visits are not recorded (see VenueViewLogView)."""
+    id = models.BigAutoField(primary_key=True)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='views')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)

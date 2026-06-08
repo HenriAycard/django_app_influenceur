@@ -14,6 +14,7 @@ import { AlertControllerService } from 'src/app/services/alert-controller.servic
 import { ToastService } from 'src/app/services/toast.service';
 import { VenueStore } from 'src/app/features/venues/venue.store';
 import { VenueReviewsComponent } from 'src/app/features/reviews/ui/venue-reviews/venue-reviews.component';
+import { ApiAnalyticsService } from 'src/app/features/analytics/api-analytics.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -41,6 +42,7 @@ export class VenuePage implements OnInit {
   private router = inject(Router)
   private location = inject(Location)
   private activatedRoute = inject(ActivatedRoute)
+  private analytics = inject(ApiAnalyticsService)
 
   constructor() {
     addIcons({ logoInstagram, logoYoutube, logoTiktok, logoTwitter, logoFacebook, close, locationOutline })
@@ -48,6 +50,8 @@ export class VenuePage implements OnInit {
 
   ngOnInit() {
     this.load()
+    // Fire-and-forget visit log for the venue's analytics (chantier #5).
+    this.analytics.logVenueView(this.venueId).subscribe({ error: () => {} })
     this.presentingElement = document.querySelector('.ion-page');
   }
 

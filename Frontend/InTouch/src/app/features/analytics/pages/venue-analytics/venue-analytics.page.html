@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Venue analytics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (loading()) {
+    <div class="centered"><ion-spinner></ion-spinner></div>
+  } @else if (stats(); as s) {
+    <!-- Headline outcomes -->
+    <div class="stat-grid hero">
+      <div class="stat accent">
+        <span class="value">{{ s.partnershipsCompleted }}</span>
+        <span class="label">Partnerships realized</span>
+      </div>
+      <div class="stat">
+        <span class="value">{{ s.influencersReceived }}</span>
+        <span class="label">Influencers received</span>
+      </div>
+      <div class="stat">
+        <span class="value">{{ s.pageViews }}</span>
+        <span class="label">Page views</span>
+      </div>
+    </div>
+
+    <p class="section">Applications</p>
+    <div class="stat-grid">
+      <div class="stat"><span class="value">{{ s.applicationsTotal }}</span><span class="label">Total</span></div>
+      <div class="stat"><span class="value">{{ s.pending }}</span><span class="label">Pending</span></div>
+      <div class="stat"><span class="value">{{ s.accepted }}</span><span class="label">Accepted</span></div>
+      <div class="stat"><span class="value">{{ s.declined }}</span><span class="label">Declined</span></div>
+    </div>
+    <div class="bar">
+      <span class="bar-label">Acceptance rate</span>
+      <span class="bar-value">{{ s.acceptanceRate === null ? '—' : s.acceptanceRate + '%' }}</span>
+    </div>
+
+    <p class="section">Audience &amp; reputation</p>
+    <div class="stat-grid">
+      <div class="stat"><span class="value">{{ s.upcoming }}</span><span class="label">Upcoming</span></div>
+      <div class="stat"><span class="value">{{ s.activeOffers }}</span><span class="label">Active offers</span></div>
+      <div class="stat"><span class="value">{{ s.uniqueVisitors }}</span><span class="label">Unique visitors</span></div>
+      <div class="stat">
+        <span class="value">{{ s.averageRating === null ? '—' : s.averageRating }}</span>
+        <span class="label">Rating ({{ s.reviewCount }})</span>
+      </div>
+    </div>
+  } @else {
+    <div class="centered"><p class="muted">No analytics available.</p></div>
+  }
+</ion-content>

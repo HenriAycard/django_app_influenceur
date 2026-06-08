@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import FilterSet, DateTimeFilter
 from django.contrib.postgres.search import SearchVector, SearchQuery
@@ -11,10 +11,11 @@ from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ValidationError as DRFValidationError
 
-from django.db.models import F
+from django.db.models import F, Q
 
 from .models import *
 from .serializers import *
+from .serializers import _venue_rating, _influencer_rating  # underscore names skip `import *`
 from .permissions import IsVenueOwner, IsRelatedToVenueOwner, IsReservationParty
 
 import logging
@@ -399,3 +400,90 @@ def send_push_notification(request):
             return Response({"error": "Invalid UUID format for user_id"}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ---------------------------------------------------------------------------
+# Analytics — venue (chantier #5) & influencer (chantier #6)
+# ---------------------------------------------------------------------------
+
+def _acceptance_rate(accepted, declined):
+    """Accepted share of decided (accepted + declined) applications, 0-100 int."""
+    decided = accepted + declined
+    return round(accepted / decided * 100) if decided else None
+
+
+class VenueAnalyticsView(APIView):
+    """Per-venue stats for the owning brand: applications funnel, partnerships
+    realized, distinct influencers received, page views, rating."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        venue = get_object_or_404(Venue, pk=pk)
+        if venue.user_id != request.user.id:
+            raise PermissionDenied('You do not own this venue.')
+
+        now = timezone.now()
+        reservations = Reservation.objects.filter(offer__venue_id=pk)
+        accepted = reservations.filter(status=1).count()
+        declined = reservations.filter(status=2).count()
+        completed = reservations.filter(status=1, date_reservation__lt=now)
+        avg_rating, review_count = _venue_rating(venue)
+
+        return Response({
+            'applications_total': reservations.count(),
+            'pending': reservations.filter(status=0).count(),
+            'accepted': accepted,
+            'declined': declined,
+            'acceptance_rate': _acceptance_rate(accepted, declined),
+            'partnerships_completed': completed.count(),
+            'upcoming': reservations.filter(status=1, date_reservation__gte=now).count(),
+            'influencers_received': completed.values('user').distinct().count(),
+            'active_offers': Offer.objects.filter(venue_id=pk).filter(
+                Q(end_date__gte=now.date()) | Q(end_date__isnull=True)
+            ).count(),
+            'page_views': VenueView.objects.filter(venue_id=pk).count(),
+            'unique_visitors': VenueView.objects.filter(venue_id=pk)
+                .exclude(user__isnull=True).values('user').distinct().count(),
+            'average_rating': avg_rating,
+            'review_count': review_count,
+        })
+
+
+class InfluencerAnalyticsView(APIView):
+    """Stats for the authenticated influencer: applications funnel, realized
+    collaborations, distinct venues visited, rating received."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        now = timezone.now()
+        reservations = Reservation.objects.filter(user=user)
+        accepted = reservations.filter(status=1).count()
+        declined = reservations.filter(status=2).count()
+        completed = reservations.filter(status=1, date_reservation__lt=now)
+        avg_rating, review_count = _influencer_rating(user)
+
+        return Response({
+            'applications_sent': reservations.count(),
+            'pending': reservations.filter(status=0).count(),
+            'accepted': accepted,
+            'declined': declined,
+            'acceptance_rate': _acceptance_rate(accepted, declined),
+            'collaborations_realized': completed.count(),
+            'upcoming': reservations.filter(status=1, date_reservation__gte=now).count(),
+            'venues_visited': completed.values('offer__venue').distinct().count(),
+            'average_rating': avg_rating,
+            'review_count': review_count,
+        })
+
+
+class VenueViewLogView(APIView):
+    """Records one influencer visit of a venue page (the owner's own visits are
+    skipped). Fire-and-forget from the venue page; always returns 204."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        venue = get_object_or_404(Venue, pk=pk)
+        if venue.user_id != request.user.id:
+            VenueView.objects.create(venue=venue, user=request.user)
+        return Response(status=status.HTTP_204_NO_CONTENT)

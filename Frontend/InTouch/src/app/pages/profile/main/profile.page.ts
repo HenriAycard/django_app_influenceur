@@ -6,7 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProfileStore } from 'src/app/features/profile/profile.store';
 import { addIcons } from 'ionicons';
-import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, notificationsOutline, pencil, personOutline } from 'ionicons/icons';
+import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, notificationsOutline, pencil, personOutline, statsChartOutline } from 'ionicons/icons';
 import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
@@ -26,7 +26,7 @@ export class ProfilePage {
 
   constructor(
     private router: Router) {
-    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil })
+    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil, statsChartOutline })
   }
 
   // Reloads on every entry (incl. returning from profile edit).
