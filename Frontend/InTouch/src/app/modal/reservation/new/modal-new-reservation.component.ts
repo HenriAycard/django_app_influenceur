@@ -59,10 +59,12 @@ import { ApiApplicationService } from "src/app/features/applications/api-applica
             'A new reservation has been added to your calendar, please wait the brand confirm'
           )
         },
-        error: (_err: unknown) => {
+        error: (err: { error?: { detail?: string } }) => {
+            // Surface the backend reason when present (e.g. the min-followers gate).
+            const detail = err?.error?.detail;
             this.toastService.toastDanger(
               'We have a little problem',
-              'Sorry your reservation failed'
+              typeof detail === 'string' ? detail : 'Sorry your reservation failed'
             )
         },
         complete: () => this.alertCtrlService.stopLoading()

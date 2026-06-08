@@ -22,6 +22,10 @@ export interface OfferWithVenue {
     scopeExclusivity: string | null;
     exclusivityType: string | null;
     exclusivitySpecification: string | null;
+    guests: number | null;
+    minFollowersInstagram: number | null;
+    minFollowersTiktok: number | null;
+    minFollowersYoutube: number | null;
 }
 
 /** A published collaboration opportunity created by a venue/brand. */
@@ -46,4 +50,8 @@ export interface Offer {
     scopeExclusivity: string | null;
     exclusivityType: string | null;
     exclusivitySpecification: string | null;
+    guests: number | null;
+    minFollowersInstagram: number | null;
+    minFollowersTiktok: number | null;
+    minFollowersYoutube: number | null;
 }

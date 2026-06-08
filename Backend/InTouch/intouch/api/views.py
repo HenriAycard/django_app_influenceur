@@ -211,6 +211,23 @@ class ReservationCreateView(generics.ListCreateAPIView):
         request.data['status'] = 0  # Default status
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)  # Validate properly
+
+        # Eligibility gate: an offer may require a minimum follower count per
+        # network (#4). The influencer must meet every requirement the offer sets.
+        offer = serializer.validated_data['offer']
+        user = request.user
+        requirements = [
+            ('Instagram', offer.min_followers_instagram, user.instagram_followers),
+            ('TikTok', offer.min_followers_tiktok, user.tiktok_followers),
+            ('YouTube', offer.min_followers_youtube, user.youtube_followers),
+        ]
+        unmet = [f"{name} ({req:,})" for name, req, have in requirements if req and (have or 0) < req]
+        if unmet:
+            return Response(
+                {"detail": "This collaboration requires at least: " + ", ".join(unmet) + " followers."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         self.perform_create(serializer)
 
         # Best-effort: alert the venue owner (brand) that a new application came

@@ -38,6 +38,12 @@
                 <ion-text>{{ offer.publishingDeadline }} days</ion-text>
               </ion-item>
             }
+            @if (offer.guests) {
+              <ion-item>
+                <ion-label><strong>Number of guests:</strong></ion-label>
+                <ion-text>{{ offer.guests }}</ion-text>
+              </ion-item>
+            }
           </ion-list>
         </ion-card-content>
       </ion-card>
@@ -74,6 +80,27 @@
                 <p><strong>Mandatory Tags & Hashtags: </strong>{{ offer.tags }}</p>
               </ion-text>
             </ion-item>
+            @if (offer.minFollowersInstagram) {
+              <ion-item>
+                <ion-text>
+                  <p><strong>Min. Instagram followers: </strong>{{ offer.minFollowersInstagram }}</p>
+                </ion-text>
+              </ion-item>
+            }
+            @if (offer.minFollowersTiktok) {
+              <ion-item>
+                <ion-text>
+                  <p><strong>Min. TikTok followers: </strong>{{ offer.minFollowersTiktok }}</p>
+                </ion-text>
+              </ion-item>
+            }
+            @if (offer.minFollowersYoutube) {
+              <ion-item>
+                <ion-text>
+                  <p><strong>Min. YouTube followers: </strong>{{ offer.minFollowersYoutube }}</p>
+                </ion-text>
+              </ion-item>
+            }
             @if (offer.contactApprover) {
               <ion-item>
                 <ion-text>
