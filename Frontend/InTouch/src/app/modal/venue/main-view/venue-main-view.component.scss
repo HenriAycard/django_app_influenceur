@@ -15,10 +15,11 @@ ion-list ion-item {
   --background: transparent;
   --padding-start: 0;
   --inner-padding-end: 0;
-  --min-height: 40px;
-  --border-width: 0;
-  --inner-border-width: 0;
+  --min-height: 44px;
+  --border-color: var(--p-hairline);
 }
+/* keep separators between items, but not a trailing line before Description */
+ion-list ion-item:last-child { --inner-border-width: 0; }
 ion-list ion-item ion-icon { color: var(--p-accent); }
 
 .header-font { font-weight: 800; letter-spacing: -.01em; color: var(--p-ink); }
