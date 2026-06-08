@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DiscoveryStore } from 'src/app/features/discovery/discovery.store';
 import { flash } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
-import { RatingStarsComponent } from 'src/app/features/reviews/ui/rating-stars/rating-stars.component';
+import { RatingBadgeComponent } from 'src/app/features/reviews/ui/rating-badge/rating-badge.component';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,7 +14,7 @@ import { RatingStarsComponent } from 'src/app/features/reviews/ui/rating-stars/r
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
   standalone: true,
-  imports: [IonContent, IonSearchbar, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent, SlicePipe, RatingStarsComponent]
+  imports: [IonContent, IonSearchbar, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, IonLabel, IonChip, IonIcon, IonRefresher, IonRefresherContent, SlicePipe, RatingBadgeComponent]
 })
 export class HomeInfluencerPage {
 

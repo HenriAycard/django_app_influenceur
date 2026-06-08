@@ -5,7 +5,8 @@ import { star, starHalf, starOutline } from 'ionicons/icons';
 
 /**
  * Renders a 1–5 star rating. Read-only by default (shows half stars for
- * fractional averages); set `editable` to let the user pick a whole-star value.
+ * fractional averages); set `editable` to let the user pick a whole-star value
+ * with a comfortable tap target and a tactile press animation.
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,17 +16,28 @@ import { star, starHalf, starOutline } from 'ionicons/icons';
     template: `
     <span class="stars" [class.editable]="editable">
       @for (i of [1,2,3,4,5]; track i) {
-        <ion-icon
-          [name]="iconFor(i)"
-          (click)="pick(i)"
-          [style.font-size.px]="size"
-          color="warning"></ion-icon>
+        <button type="button" class="star-btn" [disabled]="!editable" (click)="pick(i)"
+          [style.--s.px]="size">
+          <ion-icon [name]="iconFor(i)" [class.filled]="rating >= i - 0.5"></ion-icon>
+        </button>
       }
     </span>
   `,
     styles: [`
     .stars { display: inline-flex; align-items: center; gap: 2px; vertical-align: middle; }
-    .stars.editable ion-icon { cursor: pointer; }
+    .star-btn {
+      --s: 18px;
+      background: none; border: 0; padding: 0; margin: 0; line-height: 0;
+      display: inline-flex;
+    }
+    .star-btn ion-icon {
+      font-size: var(--s);
+      color: #d7d7db;
+      transition: transform .12s ease, color .12s ease;
+    }
+    .star-btn ion-icon.filled { color: #ffc409; }
+    .editable .star-btn { cursor: pointer; padding: 4px; }
+    .editable .star-btn:active ion-icon { transform: scale(1.25); }
   `],
 })
 export class RatingStarsComponent {

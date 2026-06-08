@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, CUSTOM_ELEMENTS_SCHE
 import { IonChip, IonIcon, IonItem, IonLabel, IonList } from "@ionic/angular/standalone";
 import { Venue } from "src/app/shared/models";
 import { AppLauncher } from '@capacitor/app-launcher';
-import { RatingStarsComponent } from 'src/app/features/reviews/ui/rating-stars/rating-stars.component';
+import { RatingBadgeComponent } from 'src/app/features/reviews/ui/rating-badge/rating-badge.component';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,7 +12,7 @@ import { RatingStarsComponent } from 'src/app/features/reviews/ui/rating-stars/r
     styleUrls: ['./venue-main-view.component.scss'],
     standalone: true,
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [CommonModule, IonLabel, IonItem, IonChip, IonIcon, IonList, RatingStarsComponent]
+    imports: [CommonModule, IonLabel, IonItem, IonChip, IonIcon, IonList, RatingBadgeComponent]
 })
 export class VenueMainViewPage {
     @Input() venue!: Venue;

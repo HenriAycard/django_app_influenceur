@@ -41,8 +41,7 @@
     <ion-card-title>{{ reservation.user.firstname }} {{ reservation.user.lastname }}</ion-card-title>
     <ion-card-subtitle>Influencer</ion-card-subtitle>
     @if (reservation.user.averageRating != null) {
-      <app-rating-stars [rating]="reservation.user.averageRating" [size]="16"></app-rating-stars>
-      <span class="rating-count">{{ reservation.user.averageRating }} ({{ reservation.user.reviewCount }})</span>
+      <app-rating-badge [average]="reservation.user.averageRating" [count]="reservation.user.reviewCount ?? 0"></app-rating-badge>
     }
   </ion-card-header>
   <ion-card-content>

@@ -12,10 +12,7 @@
     <ion-label>
       <h1 class="header-font">{{ venue.nameVenue }}</h1>
       @if (venue.averageRating != null) {
-        <p>
-          <app-rating-stars [rating]="venue.averageRating" [size]="18"></app-rating-stars>
-          <span class="rating-count">{{ venue.averageRating }} ({{ venue.reviewCount }})</span>
-        </p>
+        <p><app-rating-badge [average]="venue.averageRating" [count]="venue.reviewCount"></app-rating-badge></p>
       }
       @if (venue.typeVenue) {
         <p>{{ venue.typeVenue.name}}</p>

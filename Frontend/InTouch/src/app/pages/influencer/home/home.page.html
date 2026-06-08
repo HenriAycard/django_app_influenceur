@@ -39,8 +39,7 @@
         <ion-card-subtitle>{{ venue.typeVenue.name }}</ion-card-subtitle>
         @if (venue.averageRating !== null) {
           <ion-label>
-            <app-rating-stars [rating]="venue.averageRating" [size]="16"></app-rating-stars>
-            <span class="rating-count">{{ venue.averageRating }} ({{ venue.reviewCount }})</span>
+            <app-rating-badge [average]="venue.averageRating" [count]="venue.reviewCount"></app-rating-badge>
           </ion-label>
         }
         <ion-label>
