@@ -66,6 +66,8 @@ import { star } from 'ionicons/icons';
 })
 export class ReviewDialogComponent {
     @Input() title = 'Leave a review';
+    /** Pre-selected rating (e.g. the star the user tapped to open the dialog). */
+    @Input() set initialRating(value: number) { if (value) this.rating.set(value); }
     readonly rating = signal(0);
     public comment = '';
     readonly labels = ['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent'];

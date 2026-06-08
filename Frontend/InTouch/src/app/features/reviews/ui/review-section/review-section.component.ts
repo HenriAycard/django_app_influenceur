@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { IonButton, IonIcon, ModalController } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { star } from 'ionicons/icons';
+import { ModalController } from '@ionic/angular/standalone';
 import { Application, CreateReviewDto } from 'src/app/shared/models';
 import { AuthService } from 'src/app/services/auth.service';
 import { ApiReviewService } from 'src/app/features/reviews/api-review.service';
@@ -11,46 +9,52 @@ import { ReviewDialogComponent } from 'src/app/features/reviews/ui/review-dialog
 
 /**
  * Drop-in block for a collaboration detail page. Shows the viewer's existing
- * review, or — when `reservation.canReview` — a CTA opening an iOS-style rating
- * dialog (ReviewDialogComponent). Emits `reviewed` after a successful submit.
+ * review, or — when `reservation.canReview` — an elegant inline "tap a star"
+ * prompt that opens the rating dialog (pre-filled with the tapped star).
+ * Emits `reviewed` after a successful submit.
  */
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-review-section',
     standalone: true,
-    imports: [IonButton, IonIcon, RatingStarsComponent],
+    imports: [RatingStarsComponent],
     template: `
     @if (reservation.myReview) {
-      <div class="my-review">
+      <div class="card my-review">
         <div class="mr-head">
           <span class="mr-label">Your review</span>
-          <app-rating-stars [rating]="reservation.myReview.rating" [size]="20"></app-rating-stars>
+          <app-rating-stars [rating]="reservation.myReview.rating" [size]="18"></app-rating-stars>
         </div>
         @if (reservation.myReview.comment) {
-          <p class="mr-comment">{{ reservation.myReview.comment }}</p>
+          <p class="mr-comment">“{{ reservation.myReview.comment }}”</p>
         }
       </div>
     } @else if (reservation.canReview) {
-      <ion-button class="cta" expand="block" shape="round" (click)="openDialog()">
-        <ion-icon name="star" slot="start"></ion-icon>
-        Rate this collaboration
-      </ion-button>
+      <div class="card rate-prompt">
+        <p class="rp-title">How was this collaboration?</p>
+        <app-rating-stars [rating]="0" [editable]="true" [size]="36"
+          (ratingChange)="openDialog($event)"></app-rating-stars>
+        <p class="rp-sub">Tap a star to leave a review</p>
+      </div>
     }
   `,
     styles: [`
-    .cta {
+    .card {
       margin: 16px;
-      --background: #ffc409;
-      --background-activated: #e6b008;
-      --color: #1f1300;
-      --border-radius: 14px;
-      --box-shadow: 0 6px 18px rgba(255, 196, 9, .35);
-      font-weight: 700;
+      padding: 20px 18px;
+      border-radius: 18px;
+      background: var(--ion-background-color, #fff);
+      border: 1px solid var(--ion-color-step-100, #ececec);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
     }
-    .my-review { margin: 16px; padding: 16px; border-radius: 16px; background: var(--ion-color-light); }
+    .rate-prompt { text-align: center; }
+    .rp-title { margin: 0 0 12px; font-weight: 700; font-size: 1.05rem; }
+    .rp-sub { margin: 12px 0 0; color: var(--ion-color-medium); font-size: .82rem; }
+
+    .my-review { padding: 16px 18px; }
     .mr-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .mr-label { font-weight: 700; }
-    .mr-comment { margin: 10px 0 0; color: var(--ion-color-dark); line-height: 1.45; }
+    .mr-comment { margin: 10px 0 0; color: var(--ion-color-medium-shade); line-height: 1.5; font-style: italic; }
   `],
 })
 export class ReviewSectionComponent {
@@ -62,22 +66,18 @@ export class ReviewSectionComponent {
     private api = inject(ApiReviewService);
     private toast = inject(ToastService);
 
-    constructor() {
-        addIcons({ star });
-    }
-
     private title(): string {
         return this.auth.user?.isCompany
             ? `How was ${this.reservation.user?.firstname ?? 'the influencer'}?`
             : `How was ${this.reservation.offer?.venue?.nameVenue ?? 'this venue'}?`;
     }
 
-    async openDialog(): Promise<void> {
+    async openDialog(initialRating = 0): Promise<void> {
         const modal = await this.modalCtrl.create({
             component: ReviewDialogComponent,
             cssClass: 'review-alert-modal',
             backdropDismiss: true,
-            componentProps: { title: this.title() },
+            componentProps: { title: this.title(), initialRating },
         });
         await modal.present();
 
