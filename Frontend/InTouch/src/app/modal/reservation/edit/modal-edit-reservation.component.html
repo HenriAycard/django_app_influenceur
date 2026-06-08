@@ -1,28 +1,27 @@
 <div class="ion-page">
-    <ion-header>
+    <ion-header class="ion-no-border">
         <ion-toolbar>
             <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Cancel</ion-button>
+                <ion-button (click)="cancel()">Cancel</ion-button>
             </ion-buttons>
             <ion-title>Edit reservation</ion-title>
             <ion-buttons slot="end">
-            <ion-button (click)="confirm()">Accept</ion-button>
+                <ion-button class="confirm-btn" [strong]="true" (click)="confirm()">Save</ion-button>
             </ion-buttons>
         </ion-toolbar>
     </ion-header>
-    <ion-content>
-        <ion-list>
-            <ion-item>
-                <ion-datetime [min]="minDate" [max]="maxDate" [(ngModel)]="dateReservation" ngDefaultControl style="margin-top: 25px; margin-bottom: 25px;">
-                    <span slot="title">Select a new reservation date</span>
-                </ion-datetime>
-            </ion-item>
+    <ion-content class="ion-padding">
+        <h2 class="resa-title">Pick a date &amp; time</h2>
+        <div class="resa-cal">
+            <ion-datetime [min]="minDate" [max]="maxDate" [(ngModel)]="dateReservation" ngDefaultControl>
+                <span slot="title">Select a reservation date</span>
+            </ion-datetime>
+        </div>
 
-            <ion-item>
-                <ion-checkbox justify="space-between" (ionChange)="onTermsChanged($event)" [checked]="canDismiss">
-                    Do you accept the terms and conditions?
-                </ion-checkbox>
-            </ion-item>
-        </ion-list>
+        <div class="resa-terms">
+            <ion-checkbox justify="start" labelPlacement="end" (ionChange)="onTermsChanged($event)" [checked]="canDismiss">
+                I accept the terms &amp; conditions
+            </ion-checkbox>
+        </div>
     </ion-content>
 </div>

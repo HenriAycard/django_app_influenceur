@@ -7,7 +7,7 @@ import { IonButton, IonIcon } from "@ionic/angular/standalone";
     changeDetection: ChangeDetectionStrategy.OnPush,
     selector: 'app-venue-picture',
     templateUrl: './venue-picture.component.html',
-    styleUrls: ['../venue.component.scss'],
+    styleUrls: ['../venue.component.scss', './venue-picture.component.scss'],
     standalone: true,
     imports: [IonButton, IonIcon]
 })

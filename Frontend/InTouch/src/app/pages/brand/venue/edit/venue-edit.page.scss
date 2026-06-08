@@ -1,0 +1,54 @@
+ion-content { --background: var(--p-surface, #fff); }
+
+/* Wizard chrome */
+.wiz-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(env(safe-area-inset-top) + 10px) 0 10px;
+}
+.wiz-icon {
+  width: 40px; height: 40px; border-radius: 50%; border: 0; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--p-card, #f2f2f5); color: var(--p-ink, #16161d);
+  -webkit-tap-highlight-color: transparent;
+}
+.wiz-icon:active { transform: scale(.92); }
+.wiz-icon.hidden { visibility: hidden; }
+.wiz-icon ion-icon { font-size: 1.35rem; }
+.wiz-step { font-weight: 700; color: var(--p-sub, #6b6b76); font-size: .9rem; }
+
+.wiz-progress {
+  --progress-background: var(--p-accent, #6c5ce7);
+  --background: var(--p-hairline, #ececf1);
+  height: 6px;
+  border-radius: 999px;
+  margin: 4px 0 8px;
+}
+
+/* Step heading (shared look) */
+.heading {
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--p-ink, #16161d);
+  padding: 0;
+  margin: 28px 0 8px;
+}
+
+/* Final save step */
+.wiz-final { padding-top: 12px; }
+.wiz-final-sub { color: var(--p-sub, #6b6b76); margin: 0 0 28px; }
+.wiz-final-actions { display: flex; gap: 12px; }
+.wiz-yes, .wiz-no { flex: 1; height: 50px; margin: 0; --border-radius: 14px; font-weight: 700; }
+.wiz-yes {
+  --background: var(--p-accent, #6c5ce7);
+  --background-activated: #5a4bd4;
+  --color: #fff;
+  --box-shadow: 0 8px 22px rgba(108, 92, 231, .35);
+}
+.wiz-no {
+  --background: var(--p-card, #f2f2f5);
+  --color: var(--p-ink, #16161d);
+  --box-shadow: none;
+}

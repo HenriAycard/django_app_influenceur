@@ -1,0 +1,47 @@
+ion-toolbar {
+  --background: var(--p-surface, #fff);
+  --border-width: 0;
+}
+ion-title { font-weight: 800; letter-spacing: -.01em; }
+.confirm-btn { --color: var(--p-accent, #6c5ce7); font-weight: 700; }
+
+ion-content { --background: var(--p-surface, #fff); }
+
+.resa-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--p-ink, #16161d);
+  margin: 6px 2px 14px;
+}
+
+.resa-cal {
+  display: flex;
+  justify-content: center;
+  background: var(--p-card, #fbfbfd);
+  border: 1px solid var(--p-hairline, #ececf1);
+  border-radius: 18px;
+  box-shadow: var(--p-shadow-sm, 0 2px 10px rgba(20,20,40,.05));
+  padding: 6px;
+  margin-bottom: 18px;
+}
+ion-datetime {
+  --background: transparent;
+  margin: 0 auto;
+  border-radius: 14px;
+}
+
+.resa-terms {
+  display: flex;
+  align-items: center;
+  background: var(--p-card, #fbfbfd);
+  border: 1px solid var(--p-hairline, #ececf1);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.resa-terms ion-checkbox {
+  width: 100%;
+  font-weight: 600;
+  --size: 22px;
+  --checkbox-background-checked: var(--p-accent, #6c5ce7);
+  --border-color-checked: var(--p-accent, #6c5ce7);
+}

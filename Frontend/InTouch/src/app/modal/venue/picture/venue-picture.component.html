@@ -1,12 +1,22 @@
-<h1 class="heading item-text-wrap">📸 Choose your more beautifull image</h1>
+<h1 class="heading">📸 Add a photo</h1>
+<p class="pic-sub">Pick the most attractive image of your venue.</p>
+
 @if (pictureEdit !== '') {
-  <img style="height: 250px; width: 100%; object-fit: cover;" [src]="pictureEdit"/>
+  <div class="pic-preview">
+    <img [src]="pictureEdit" alt="Venue photo" />
+  </div>
+} @else {
+  <button type="button" class="pic-drop" (click)="chooseOrTakePicture()">
+    <ion-icon name="cloud-upload-outline"></ion-icon>
+    <span>Tap to upload a photo</span>
+  </button>
 }
-<ion-button size="full" (click)="chooseOrTakePicture()">
-  <ion-icon name="cloud-upload-outline" style="margin-right: 10px;"></ion-icon>Import a new picture
+
+<ion-button expand="block" class="pic-primary" (click)="chooseOrTakePicture()">
+  <ion-icon name="cloud-upload-outline" slot="start"></ion-icon>
+  {{ pictureEdit !== '' ? 'Change photo' : 'Import a picture' }}
 </ion-button>
+
 @if (isEditing) {
-  <ion-button size="full" (click)="keepCurrentPicture()">
-    Keep current picture
-  </ion-button>
+  <button type="button" class="pic-keep" (click)="keepCurrentPicture()">Keep current picture</button>
 }

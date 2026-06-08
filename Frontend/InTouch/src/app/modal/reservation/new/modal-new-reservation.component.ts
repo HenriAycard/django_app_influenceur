@@ -14,7 +14,7 @@ import { ApiApplicationService } from "src/app/features/applications/api-applica
     templateUrl: './modal-new-reservation.component.html',
     styleUrls: ['./modal-new-reservation.component.scss'],
     standalone: true,
-    imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonItem, IonCheckbox, IonButton, IonButtons, ReactiveFormsModule, IonDatetime, IonList],
+    imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonCheckbox, IonButton, IonButtons, ReactiveFormsModule, IonDatetime],
   })
   export class ModalNewReservationComponent implements OnInit {
 

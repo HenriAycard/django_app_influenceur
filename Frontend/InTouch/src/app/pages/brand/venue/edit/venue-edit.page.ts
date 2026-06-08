@@ -1,7 +1,7 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { IonButton, IonCol, IonContent, IonIcon, IonItem, IonProgressBar, IonRow } from "@ionic/angular/standalone";
+import { IonButton, IonContent, IonIcon, IonProgressBar } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { closeOutline, chevronBackOutline, cloudUploadOutline, addCircleOutline } from "ionicons/icons";
 import { forkJoin, Observable } from "rxjs";
@@ -26,7 +26,7 @@ import { ToastService } from "src/app/services/toast.service";
     templateUrl: './venue-edit.page.html',
     styleUrls: ['./venue-edit.page.scss'],
     standalone: true,
-    imports: [VenueMainPage, VenueDescriptionPage, VenueAddressPage, VenueOpeningDayPage, VenuePicturePage, VenueSocialMediaComponent, IonProgressBar, IonIcon, IonButton, IonItem, IonContent, IonCol, IonRow]
+    imports: [VenueMainPage, VenueDescriptionPage, VenueAddressPage, VenueOpeningDayPage, VenuePicturePage, VenueSocialMediaComponent, IonProgressBar, IonIcon, IonButton, IonContent]
 })
 export class VenueEditPage implements OnInit {
     @Input() venueId!: number;
