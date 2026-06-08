@@ -42,7 +42,8 @@ export class BrandBookingViewPage implements OnInit {
   }
 
   goBack(): void {
-    this.navCtrl.back();
+    // Deterministic: this page is always reached from the calendar.
+    this.navCtrl.navigateBack('/brand/calendar');
   }
 
   ngOnInit(): void {

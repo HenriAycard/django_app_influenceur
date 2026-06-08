@@ -19,8 +19,17 @@ import { ModalNewReservationComponent } from "src/app/modal/reservation/new/moda
 })
 export class OfferDetailPage implements OnInit {
     @Input() offerId!: number;
+    /** Present when this offer is opened from an existing collaboration (route
+     *  `…/:bookingId/offer/:offerId`). In that context the page is read-only:
+     *  the influencer has already applied, so the "apply" CTA is hidden. */
+    @Input() bookingId?: number;
     public offer!: Offer;
     readonly isLoad = signal(false);
+
+    /** Influencers can apply only when browsing an offer, not from a collaboration. */
+    get canApply(): boolean {
+        return this.bookingId == null;
+    }
 
     public noEndDate: boolean = true;
     public isPaymentTerms: boolean = false;

@@ -37,7 +37,9 @@ export class InfluencerCollaborationPage implements OnInit {
   }
 
   goBack(): void {
-    this.navCtrl.back();
+    // Deterministic: this page is always reached from the calendar, so go there
+    // directly (avoids a polluted history looping back into the offer detail).
+    this.navCtrl.navigateBack('/influencer/calendar');
   }
 
   ngOnInit(): void {
