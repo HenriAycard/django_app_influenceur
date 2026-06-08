@@ -40,10 +40,10 @@ p { margin: 0; white-space: pre-line; word-wrap: break-word; text-align: justify
 .apply-cta {
   margin: 8px 16px calc(16px + env(safe-area-inset-bottom));
   --background: var(--p-accent);
-  --background-activated: #5a4bd4;
+  --background-activated: #0A5740;
   --color: #fff;
   --border-radius: 14px;
-  --box-shadow: 0 8px 22px rgba(108, 92, 231, .35);
+  --box-shadow: 0 8px 22px rgba(14, 110, 82, .35);
   font-weight: 700;
   height: 50px;
 }

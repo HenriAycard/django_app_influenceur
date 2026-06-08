@@ -32,16 +32,16 @@ ion-list ion-item { --background: transparent; --padding-start: 0; --inner-paddi
   font-size: .72rem; font-weight: 800; letter-spacing: .4px; text-transform: uppercase;
   color: var(--p-sub, #6b6b76); padding: 0;
 }
-.input-item legend ion-icon { color: var(--p-accent, #6c5ce7); font-size: 1rem; }
+.input-item legend ion-icon { color: var(--p-accent, #0E6E52); font-size: 1rem; }
 
 /* Save CTA */
 .save-btn {
   margin: 8px 16px calc(20px + env(safe-area-inset-bottom));
-  --background: var(--p-accent, #6c5ce7);
-  --background-activated: #5a4bd4;
+  --background: var(--p-accent, #0E6E52);
+  --background-activated: #0A5740;
   --color: #fff;
   --border-radius: 14px;
-  --box-shadow: 0 8px 22px rgba(108, 92, 231, .35);
+  --box-shadow: 0 8px 22px rgba(14, 110, 82, .35);
   font-weight: 700;
   height: 50px;
 }

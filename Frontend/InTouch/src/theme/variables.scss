@@ -1,10 +1,13 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+// InTouch brand — Emerald premium (deep emerald, luxe hospitality).
+// Companion brand tokens live in global.scss under the --p-* namespace.
 :root {
-    --ion-color-primary: green;
-    --ion-color-primary-rgb:40, 167, 69;
-	--ion-color-primary-contrast: #ffffff;
-	--ion-color-primary-contrast-rgb: 255,255,255;
-	--ion-color-primary-shade: #23963f;
-	--ion-color-primary-tint: #3cb85c;
+    --ion-color-primary: #0E6E52;
+    --ion-color-primary-rgb: 14, 110, 82;
+    --ion-color-primary-contrast: #ffffff;
+    --ion-color-primary-contrast-rgb: 255, 255, 255;
+    --ion-color-primary-shade: #0A5740;
+    --ion-color-primary-tint: #16916C;
 }

@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-
+import { Location, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, NavController, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { ApplicationView } from 'src/app/shared/models';
 import { addIcons } from 'ionicons';
 import { closeOutline, helpOutline, timeOutline } from 'ionicons/icons';
 import { CalendarInfluencerComponent } from 'src/app/modal/calendar/influencer/calendar-influencer.component';
@@ -14,12 +15,14 @@ import { AlertControllerService } from 'src/app/services/alert-controller.servic
   templateUrl: './calendar.page.html',
   styleUrls: ['./calendar.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonLabel, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, CalendarInfluencerComponent]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, FormsModule, IonLabel, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, CalendarInfluencerComponent, DatePipe]
 })
 export class CalendarPage {
 
   protected readonly store = inject(ApplicationStore);
   private readonly alertCtrlService = inject(AlertControllerService);
+  private readonly navCtrl = inject(NavController);
+  private readonly location = inject(Location);
 
   constructor() {
     addIcons({ helpOutline, timeOutline, closeOutline });
@@ -41,6 +44,11 @@ export class CalendarPage {
       complete: () => { this.alertCtrlService.stopLoading(); onDone?.(); },
       error: () => { this.alertCtrlService.stopLoading(); onDone?.(); },
     });
+  }
+
+  public displayInfo(application: ApplicationView): void {
+    this.location.replaceState('/influencer/calendar');
+    this.navCtrl.navigateForward(['/influencer/collaboration/', application.id]);
   }
 
 }

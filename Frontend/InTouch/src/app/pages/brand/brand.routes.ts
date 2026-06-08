@@ -22,6 +22,10 @@ export const BRAND_TABS_ROUTES: Routes = [{
           loadComponent: () => import('../profile/edit/profile-edit.page').then(m => m.ProfileEditPage)
         },
         {
+          path: 'profile/security',
+          loadComponent: () => import('../profile/security/security.page').then(m => m.SecurityPage)
+        },
+        {
             path: 'venue/create',
             loadComponent: () => import('./venue/create/create.page').then(m => m.CreatePage)
         },

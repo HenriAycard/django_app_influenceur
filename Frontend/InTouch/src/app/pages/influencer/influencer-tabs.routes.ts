@@ -34,6 +34,10 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
       loadComponent: () => import('../profile/edit/profile-edit.page').then(m => m.ProfileEditPage)
     },
     {
+      path: 'profile/security',
+      loadComponent: () => import('../profile/security/security.page').then(m => m.SecurityPage)
+    },
+    {
       path: 'collaboration/:bookingId',
       loadComponent: () => import('./collaboration/main/influencer-collaboration.page').then(m => m.InfluencerCollaborationPage)
     },

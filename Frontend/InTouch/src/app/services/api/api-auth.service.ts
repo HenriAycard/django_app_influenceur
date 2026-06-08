@@ -38,6 +38,12 @@ export class ApiAuthService extends ApiService {
     return this.http.get<User>(this.urlBase + "users/me/");
   }
 
+  // Djoser change-password: verifies `current_password` server-side and runs
+  // Django's AUTH_PASSWORD_VALIDATORS against `new_password`. 204 on success.
+  changePassword(params: { current_password: string; new_password: string }) : Observable<void> {
+    return this.http.post<void>(this.urlBase + "users/set_password/", params);
+  }
+
   createUser(params: UserParam) : Observable<any> {
     return this.http.post<any>(this.urlBase + "users/", params);
   }

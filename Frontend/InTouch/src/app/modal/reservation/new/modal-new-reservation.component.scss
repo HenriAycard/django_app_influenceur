@@ -3,7 +3,7 @@ ion-toolbar {
   --border-width: 0;
 }
 ion-title { font-weight: 800; letter-spacing: -.01em; }
-.confirm-btn { --color: var(--p-accent, #6c5ce7); font-weight: 700; }
+.confirm-btn { --color: var(--p-accent, #0E6E52); font-weight: 700; }
 
 ion-content { --background: var(--p-surface, #fff); }
 
@@ -42,6 +42,6 @@ ion-datetime {
   width: 100%;
   font-weight: 600;
   --size: 22px;
-  --checkbox-background-checked: var(--p-accent, #6c5ce7);
-  --border-color-checked: var(--p-accent, #6c5ce7);
+  --checkbox-background-checked: var(--p-accent, #0E6E52);
+  --border-color-checked: var(--p-accent, #0E6E52);
 }
