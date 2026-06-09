@@ -1,9 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
-import { ApiFCMTokenService } from './services/api/api-fcm-token.service';
-import { getToken, onMessage, getMessaging, Messaging } from 'firebase/messaging';
-import { initializeApp, getApps } from 'firebase/app';
-import { environment } from 'src/environments/environment';
+import { PushNotificationService } from './services/push-notification.service';
 
 @Component({
   selector: 'app-root',
@@ -12,48 +9,12 @@ import { environment } from 'src/environments/environment';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  constructor(
-    private platform: Platform,
-    private apiFcmToken: ApiFCMTokenService,
-  ) {
-    // Initialize Firebase
-    const app = initializeApp(environment.firebaseConfig);
-    const messaging = getMessaging(app);
-    this.getFirebaseStatus()
-    this.initializeApp(messaging)
+  private platform = inject(Platform);
+  private push = inject(PushNotificationService);
+
+  constructor() {
+    // Silent token refresh if already granted; the explicit opt-in lives in the
+    // profile (Notifications). Best-effort — never blocks app bootstrap.
+    this.platform.ready().then(() => this.push.init());
   }
-
-  initializeApp(messaging: Messaging) {
-    // Session is restored by provideAppInitializer (see main.ts) before routing,
-    // so we only need to initialize push notifications here.
-    this.platform.ready().then(() => {
-      this.initFirebase(messaging)
-    })
-  }
-
-  getFirebaseStatus() {
-    if (getApps().length === 0) {
-      console.error('Firebase is not initialized');
-    } else {
-      console.log('Firebase Messaging initialized');
-    }
-  }
-
-  async initFirebase(messaging: Messaging) {
-    try {
-      if (!('Notification' in window) || Notification.permission !== 'granted') {
-        return;
-      }
-      const token = await getToken(messaging, { vapidKey: environment.vapidKey });
-      this.apiFcmToken.sendTokenToBackend(token).subscribe();
-
-      onMessage(messaging, (payload) => {
-        console.log('Notification received:', payload);
-        alert(`${payload.notification?.title}: ${payload.notification?.body}`);
-      });
-    } catch (error) {
-      console.error('Firebase error:', error);
-    }
-  }
-
 }

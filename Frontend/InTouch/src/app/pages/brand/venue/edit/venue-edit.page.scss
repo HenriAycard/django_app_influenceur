@@ -19,7 +19,7 @@ ion-content { --background: var(--p-surface, #fff); }
 .wiz-step { font-weight: 700; color: var(--p-sub, #6b6b76); font-size: .9rem; }
 
 .wiz-progress {
-  --progress-background: var(--p-accent, #6c5ce7);
+  --progress-background: var(--p-accent, #0E6E52);
   --background: var(--p-hairline, #ececf1);
   height: 6px;
   border-radius: 999px;
@@ -42,10 +42,10 @@ ion-content { --background: var(--p-surface, #fff); }
 .wiz-final-actions { display: flex; gap: 12px; }
 .wiz-yes, .wiz-no { flex: 1; height: 50px; margin: 0; --border-radius: 14px; font-weight: 700; }
 .wiz-yes {
-  --background: var(--p-accent, #6c5ce7);
-  --background-activated: #5a4bd4;
+  --background: var(--p-accent, #0E6E52);
+  --background-activated: #0A5740;
   --color: #fff;
-  --box-shadow: 0 8px 22px rgba(108, 92, 231, .35);
+  --box-shadow: 0 8px 22px rgba(14, 110, 82, .35);
 }
 .wiz-no {
   --background: var(--p-card, #f2f2f5);

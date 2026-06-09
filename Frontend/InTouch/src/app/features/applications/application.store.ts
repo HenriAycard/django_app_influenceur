@@ -7,10 +7,10 @@ import {
 } from 'src/app/shared/models';
 import { ApiApplicationService } from './api-application.service';
 
-/** Applications grouped under a single calendar day (brand "coming soon" view). */
-export interface DayGroup {
+/** Applications grouped under a single calendar day (calendar "coming soon" agenda). */
+export interface DayGroup<T = Application> {
     date: Date;
-    valeur: Application[];
+    valeur: T[];
 }
 
 /**
@@ -38,6 +38,7 @@ export class ApplicationStore {
     readonly iPastCount = computed(() => this._iPast().length);
     readonly iDeclinedCount = computed(() => this._iDeclined().length);
     readonly iComingSoonCount = computed(() => this._iComingSoon().length);
+    readonly iComingSoonByDate = computed<DayGroup<ApplicationView>[]>(() => groupByDay(this._iComingSoon()));
 
     // ---- Brand calendar groups ----
     private readonly _bWaiting = signal<Application[]>([]);
@@ -80,6 +81,11 @@ export class ApplicationStore {
         return this.api.findApplication(id);
     }
 
+    /** Collaboration agreement PDF (chantier #8) — accepted collaborations only. */
+    downloadContract(id: number): Observable<Blob> {
+        return this.api.downloadContract(id);
+    }
+
     accept(id: number): Observable<unknown> {
         return this.api.updateApplication(id, { status: ApplicationStatus.Accepted });
     }
@@ -93,7 +99,7 @@ export class ApplicationStore {
     }
 }
 
-function groupByDay(items: Application[]): DayGroup[] {
+function groupByDay<T extends { dateReservation: Date }>(items: T[]): DayGroup<T>[] {
     const days = new Set(items.map(item => item.dateReservation.toDateString()));
     return Array.from(days).map(day => ({
         date: new Date(day),

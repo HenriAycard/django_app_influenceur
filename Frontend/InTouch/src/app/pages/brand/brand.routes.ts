@@ -22,6 +22,10 @@ export const BRAND_TABS_ROUTES: Routes = [{
           loadComponent: () => import('../profile/edit/profile-edit.page').then(m => m.ProfileEditPage)
         },
         {
+          path: 'profile/security',
+          loadComponent: () => import('../profile/security/security.page').then(m => m.SecurityPage)
+        },
+        {
             path: 'venue/create',
             loadComponent: () => import('./venue/create/create.page').then(m => m.CreatePage)
         },
@@ -32,6 +36,10 @@ export const BRAND_TABS_ROUTES: Routes = [{
         {
             path: 'venue/:venueId/edit',
             loadComponent: () => import('./venue/edit/venue-edit.page').then(m => m.VenueEditPage)
+        },
+        {
+            path: 'venue/:venueId/analytics',
+            loadComponent: () => import('../../features/analytics/pages/venue-analytics/venue-analytics.page').then(m => m.VenueAnalyticsPage)
         },
         {
             path: 'venue/:venueId/offer/create',

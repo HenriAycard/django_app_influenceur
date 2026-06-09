@@ -2,10 +2,11 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, checkmarkCircleOutline, closeCircleOutline, createOutline } from 'ionicons/icons';
+import { arrowBack, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
+import { saveBlob } from 'src/app/shared/util/download.util';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
 import { ModalEditReservationComponent } from 'src/app/modal/reservation/edit/modal-edit-reservation.component';
@@ -38,7 +39,14 @@ export class BrandBookingViewPage implements OnInit {
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ arrowBack, checkmarkCircleOutline, createOutline, closeCircleOutline });
+    addIcons({ arrowBack, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline });
+  }
+
+  public downloadContract(): void {
+    this.store.downloadContract(this.reservation().id).subscribe({
+      next: (blob) => saveBlob(blob, `intouch-contract-${this.reservation().id}.pdf`),
+      error: () => this.toastService.toastDanger('Contract', 'Could not download the contract. Please try again.'),
+    });
   }
 
   goBack(): void {

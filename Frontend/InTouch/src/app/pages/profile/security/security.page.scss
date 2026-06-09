@@ -1,0 +1,40 @@
+.input-item {
+  padding-left: 20px;
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid #e2e2e2;
+  height: 70px;
+  ion-input {
+    margin-top: -12px;
+  }
+}
+.ion-item {
+  margin-top: 20px;
+}
+.toggle-item {
+  margin-top: 14px;
+  --background: transparent;
+}
+.section-label {
+  margin: 20px 20px 0;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--p-ink, #16161d);
+}
+.hint {
+  margin: 10px 20px 0;
+  color: var(--p-sub, #6b6b76);
+  font-size: .85rem;
+}
+.error {
+  margin: 10px 20px 0;
+  color: var(--ion-color-danger, #e5484d);
+  font-size: .85rem;
+  font-weight: 600;
+}
+.update-button {
+  font-size: 18px;
+  height: 50px;
+  border-radius: 25px;
+  margin: 20px;
+}

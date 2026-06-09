@@ -45,6 +45,11 @@ export class ApiApplicationService extends ApiService {
             }));
     }
 
+    /** The signed collaboration agreement as a PDF blob (parties only). */
+    public downloadContract(id: number): Observable<Blob> {
+        return this.http.get(`${this.urlBase}${id}/contract.pdf`, { responseType: 'blob' });
+    }
+
     public createApplication(application: CreateApplicationDto): Observable<Application> {
         var bodyJson: string = JSON.stringify(application)
         return this.http.post<Application>(this.urlBase, bodyJson, this.options)

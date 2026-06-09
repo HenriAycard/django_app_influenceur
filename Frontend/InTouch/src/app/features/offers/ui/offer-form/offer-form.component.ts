@@ -56,7 +56,11 @@ export class OfferFormComponent implements OnInit {
             restrictedCompetitors: [null, Validators.maxLength(200)],
             scopeExclusivity: [null, Validators.maxLength(500)],
             exclusivityType: [null],
-            exclusivitySpecification: [null, Validators.maxLength(500)]
+            exclusivitySpecification: [null, Validators.maxLength(500)],
+            guests: [null, [Validators.maxLength(4)]],
+            minFollowersInstagram: [null],
+            minFollowersTiktok: [null],
+            minFollowersYoutube: [null]
         });
     }
 
@@ -124,6 +128,14 @@ export class OfferFormComponent implements OnInit {
         }
         if (form.get('publishingDeadline')?.value === '') {
             form.patchValue({ publishingDeadline: null })
+        }
+        if (form.get('guests')?.value === '') {
+            form.patchValue({ guests: null })
+        }
+        for (const ctrl of ['minFollowersInstagram', 'minFollowersTiktok', 'minFollowersYoutube']) {
+            if (form.get(ctrl)?.value === '') {
+                form.patchValue({ [ctrl]: null })
+            }
         }
         if (form.get('startDate')?.value) {
             const formattedDate = form.get('startDate')?.value.split('T')[0]; // Extracts "YYYY-MM-DD"

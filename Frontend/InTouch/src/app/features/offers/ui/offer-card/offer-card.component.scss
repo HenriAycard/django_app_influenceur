@@ -16,7 +16,7 @@
 .ocard-head { display: flex; align-items: center; justify-content: space-between; }
 .ocard-eyebrow {
   font-size: .68rem; font-weight: 800; letter-spacing: .6px;
-  text-transform: uppercase; color: var(--p-accent, #6c5ce7);
+  text-transform: uppercase; color: var(--p-accent, #0E6E52);
 }
 .ocard-chev { color: var(--p-sub, #6b6b76); font-size: 1.2rem; }
 .ocard-title {
@@ -27,7 +27,7 @@
 .ocard-pay {
   display: inline-flex; align-items: center; gap: 6px;
   margin-top: 12px; padding: 5px 11px;
-  background: var(--p-accent-soft, rgba(108,92,231,.1)); color: var(--p-accent, #6c5ce7);
+  background: var(--p-accent-soft, rgba(14,110,82,.1)); color: var(--p-accent, #0E6E52);
   border-radius: 999px; font-weight: 800; font-size: .9rem;
 }
 .ocard-pay ion-icon { font-size: 1rem; }
@@ -46,6 +46,6 @@
 /* Action sheet */
 .actions-sheet ion-toolbar { --background: transparent; }
 .actions-list ion-item { --padding-start: 16px; font-weight: 600; }
-.actions-list ion-item ion-icon { color: var(--p-accent, #6c5ce7); }
+.actions-list ion-item ion-icon { color: var(--p-accent, #0E6E52); }
 .actions-list ion-item.danger { --color: #e5484d; }
 .actions-list ion-item.danger ion-icon { color: #e5484d; }

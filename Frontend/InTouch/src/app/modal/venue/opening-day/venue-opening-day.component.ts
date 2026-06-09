@@ -131,7 +131,7 @@ export class VenueOpeningDayPage implements OnInit {
 
     changeTagColor(i: number) {
         if (this.tagDefaultColor[i] === "medium") {
-            this.tagDefaultColor[i] = "success"
+            this.tagDefaultColor[i] = "primary"
             this.daysSelected.push(this.daysChip[i].id)
         } else {
             this.tagDefaultColor[i] = "medium"

@@ -2,7 +2,7 @@
   /* Premium, theme-independent palette (scoped to this view) */
   --ink: var(--ion-text-color, #16161d);
   --sub: var(--ion-color-medium, #6b6b76);
-  --accent: #6c5ce7;
+  --accent: #0E6E52;
   --surface: var(--ion-background-color, #fff);
   --card: var(--ion-color-step-50, #fbfbfd);
   --hairline: var(--ion-color-step-100, #ececf1);
@@ -94,7 +94,7 @@
 }
 .status ion-icon { font-size: 1rem; }
 .is-confirmed { color: #0f7b4f; background: rgba(31,170,89,.12); }
-.is-completed { color: var(--accent); background: rgba(108,92,231,.12); }
+.is-completed { color: var(--accent); background: rgba(14,110,82,.12); }
 .is-pending   { color: #9a6a00; background: rgba(245,166,35,.15); }
 .is-declined  { color: #c0303a; background: rgba(229,72,77,.12); }
 .when {
@@ -137,7 +137,7 @@
 .pay {
   display: inline-flex; align-items: center; gap: 6px;
   margin-top: 12px; padding: 6px 12px;
-  background: rgba(108,92,231,.1); color: var(--accent);
+  background: rgba(14,110,82,.1); color: var(--accent);
   border-radius: 999px; font-weight: 800; font-size: .95rem;
 }
 .pay ion-icon { font-size: 1.05rem; }
@@ -155,7 +155,7 @@
 .avatar {
   flex: 0 0 56px; width: 56px; height: 56px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center; overflow: hidden;
-  background: linear-gradient(135deg, #6c5ce7, #8e7bff);
+  background: linear-gradient(135deg, #0E6E52, #16916C);
   color: #fff; font-weight: 800; font-size: 1.2rem; text-transform: uppercase;
 }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }

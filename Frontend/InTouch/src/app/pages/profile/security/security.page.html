@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Security</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <p class="section-label">Change password</p>
+
+    <ion-item lines="none" class="ion-item">
+      <fieldset class="input-item">
+        <legend>Current password</legend>
+        <ion-input formControlName="currentPassword" [type]="showPasswords ? 'text' : 'password'"
+          autocomplete="current-password"></ion-input>
+      </fieldset>
+    </ion-item>
+
+    <ion-item lines="none" class="ion-item">
+      <fieldset class="input-item">
+        <legend>New password</legend>
+        <ion-input formControlName="newPassword" [type]="showPasswords ? 'text' : 'password'"
+          autocomplete="new-password"></ion-input>
+      </fieldset>
+    </ion-item>
+
+    <ion-item lines="none" class="ion-item">
+      <fieldset class="input-item">
+        <legend>Confirm new password</legend>
+        <ion-input formControlName="confirmPassword" [type]="showPasswords ? 'text' : 'password'"
+          autocomplete="new-password"></ion-input>
+      </fieldset>
+    </ion-item>
+
+    @if (form.errors?.['mismatch'] && form.get('confirmPassword')?.touched) {
+      <p class="error">The new passwords do not match.</p>
+    }
+
+    <ion-item lines="none" class="toggle-item">
+      <ion-toggle [(ngModel)]="showPasswords" [ngModelOptions]="{ standalone: true }">Show passwords</ion-toggle>
+    </ion-item>
+
+    <p class="hint">Use at least 8 characters. Avoid common or all-numeric passwords.</p>
+
+    <ion-button expand="block" shape="round" class="update-button" type="submit"
+      [disabled]="form.invalid || submitting()">Update password</ion-button>
+  </form>
+</ion-content>

@@ -9,6 +9,9 @@ export interface User {
     youtube: string
     isInfluencer: boolean
     isCompany: boolean
+    instagramFollowers?: number | null
+    tiktokFollowers?: number | null
+    youtubeFollowers?: number | null
     averageRating?: number | null
     reviewCount?: number
 }

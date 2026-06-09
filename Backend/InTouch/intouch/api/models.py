@@ -76,6 +76,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     twitter = models.CharField(max_length=100, null=True, blank=True)
     youtube = models.CharField(max_length=100, null=True, blank=True)
     snapchat = models.CharField(max_length=100, null=True, blank=True)
+    # self-declared follower counts per network (chantier #4)
+    instagram_followers = models.PositiveIntegerField(null=True, blank=True)
+    tiktok_followers = models.PositiveIntegerField(null=True, blank=True)
+    youtube_followers = models.PositiveIntegerField(null=True, blank=True)
 
     is_active = models.BooleanField("user account is active", default=False)
     is_influencer = models.BooleanField("user account is an influencer", default=False)
@@ -178,6 +182,12 @@ class Offer(models.Model):
     scope_exclusivity = models.TextField(max_length=500, null=True, blank=True)
     exclusivity_type = models.CharField(max_length=50, null=True, blank=True)
     exclusivity_specification = models.TextField(max_length=500, null=True, blank=True)
+    # chantier #4 — extra offer fields
+    guests = models.PositiveIntegerField(null=True, blank=True)
+    # optional minimum follower requirement, per network
+    min_followers_instagram = models.PositiveIntegerField(null=True, blank=True)
+    min_followers_tiktok = models.PositiveIntegerField(null=True, blank=True)
+    min_followers_youtube = models.PositiveIntegerField(null=True, blank=True)
 
 class Reservation(models.Model):
     id = models.BigAutoField(primary_key=True)
@@ -207,4 +217,14 @@ class Review(models.Model):
 class FCMToken(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=255, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class VenueView(models.Model):
+    """A single visit of a venue page by an influencer (for venue analytics).
+
+    `user` is kept nullable so a view survives the visitor's account deletion;
+    the venue owner's own visits are not recorded (see VenueViewLogView)."""
+    id = models.BigAutoField(primary_key=True)
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='views')
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

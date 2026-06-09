@@ -2,9 +2,6 @@
     font-weight: bold;
 }
 
-.blueColor {
-    color: rgb(0, 128, 255);
-}
 /* --- Premium calendar --- */
 ion-content { --background: var(--p-surface); }
 ion-accordion-group { background: transparent; }
@@ -28,5 +25,26 @@ ion-accordion ion-item[slot="header"] ion-label { font-weight: 700; color: var(-
   background: var(--p-accent-soft); color: var(--p-accent);
   border-radius: 999px; font-weight: 800; font-size: .8rem;
 }
-.tab2Padding { padding: 8px 16px 24px; }
 h2 { color: var(--p-ink); font-weight: 800; letter-spacing: -.01em; }
+
+/* --- "Coming soon" agenda (matches the brand calendar) --- */
+.coming-soon-row { align-items: center; }
+.date-col { text-align: center; }
+.day {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+.date {
+  color: var(--p-accent);
+  font-weight: bold;
+  font-size: 35px;
+  margin: 0;
+}
+.event-info { color: var(--p-accent); }
+.event-card {
+  border-radius: 16px;
+  border: 1px solid var(--p-hairline);
+  box-shadow: var(--p-shadow-sm);
+  margin-top: 0;
+}

@@ -37,7 +37,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'firstname', 'lastname', 'youtube', 'instagram', 'tiktok', 'is_influencer', 'is_company', 'avatar', 'average_rating', 'review_count')
+        fields = ('id', 'firstname', 'lastname', 'youtube', 'instagram', 'tiktok', 'is_influencer', 'is_company', 'avatar', 'instagram_followers', 'tiktok_followers', 'youtube_followers', 'average_rating', 'review_count')
 
     def get_average_rating(self, obj):
         return _influencer_rating(obj)[0]

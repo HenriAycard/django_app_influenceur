@@ -8,43 +8,75 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="profileForm">
-    <ion-item lines="none" class="ion-item">
-      <fieldset class="input-item">
-        <legend>First name</legend>
+  <form [formGroup]="profileForm" class="edit">
+    <p class="section-title">Profile</p>
+    <div class="card">
+      <div class="field">
+        <label>First name</label>
         <ion-input formControlName="firstname" type="text" autocapitalize="on" [clearInput]="true"></ion-input>
-      </fieldset>
-    </ion-item>
-    <ion-item lines="none" class="ion-item">
-      <fieldset class="input-item">
-        <legend>Last name</legend>
+      </div>
+      <div class="field">
+        <label>Last name</label>
         <ion-input formControlName="lastname" type="text" autocapitalize="on" [clearInput]="true"></ion-input>
-      </fieldset>
-    </ion-item>
+      </div>
+    </div>
+
     @if (isInfluencer()) {
-      <ion-item lines="none" class="ion-item">
-        <fieldset class="input-item">
-          <legend>Instagram</legend>
-          <ion-input formControlName="instagram" type="text" [clearInput]="true"></ion-input>
-        </fieldset>
-      </ion-item>
+      <p class="section-title">Social networks</p>
+      <p class="section-hint">Add your handle for each network — the follower count appears once a handle is set.</p>
+
+      <div class="card net">
+        <div class="net-head instagram">
+          <ion-icon name="logo-instagram"></ion-icon>
+          <span>Instagram</span>
+        </div>
+        <div class="field">
+          <label>Handle</label>
+          <ion-input formControlName="instagram" type="text" placeholder="@username" [clearInput]="true"></ion-input>
+        </div>
+        @if (profileForm.get('instagram')?.value) {
+          <div class="field">
+            <label>Followers</label>
+            <ion-input formControlName="instagramFollowers" type="number" placeholder="e.g. 12000" [clearInput]="true"></ion-input>
+          </div>
+        }
+      </div>
+
+      <div class="card net">
+        <div class="net-head tiktok">
+          <ion-icon name="logo-tiktok"></ion-icon>
+          <span>TikTok</span>
+        </div>
+        <div class="field">
+          <label>Handle</label>
+          <ion-input formControlName="tiktok" type="text" placeholder="@username" [clearInput]="true"></ion-input>
+        </div>
+        @if (profileForm.get('tiktok')?.value) {
+          <div class="field">
+            <label>Followers</label>
+            <ion-input formControlName="tiktokFollowers" type="number" placeholder="e.g. 12000" [clearInput]="true"></ion-input>
+          </div>
+        }
+      </div>
+
+      <div class="card net">
+        <div class="net-head youtube">
+          <ion-icon name="logo-youtube"></ion-icon>
+          <span>YouTube</span>
+        </div>
+        <div class="field">
+          <label>Channel</label>
+          <ion-input formControlName="youtube" type="text" placeholder="channel name" [clearInput]="true"></ion-input>
+        </div>
+        @if (profileForm.get('youtube')?.value) {
+          <div class="field">
+            <label>Subscribers</label>
+            <ion-input formControlName="youtubeFollowers" type="number" placeholder="e.g. 12000" [clearInput]="true"></ion-input>
+          </div>
+        }
+      </div>
     }
-    @if (isInfluencer()) {
-      <ion-item lines="none" class="ion-item">
-        <fieldset class="input-item">
-          <legend>Tiktok</legend>
-          <ion-input formControlName="tiktok" type="text" [clearInput]="true"></ion-input>
-        </fieldset>
-      </ion-item>
-    }
-    @if (isInfluencer()) {
-      <ion-item lines="none" class="ion-item">
-        <fieldset class="input-item">
-          <legend>Youtube</legend>
-          <ion-input formControlName="youtube" type="text" [clearInput]="true"></ion-input>
-        </fieldset>
-      </ion-item>
-    }
+
     <ion-button expand="block" shape="round" class="update-button" type="submit" (click)="onSubmit()">Update</ion-button>
   </form>
 </ion-content>

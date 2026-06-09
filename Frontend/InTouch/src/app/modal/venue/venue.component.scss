@@ -38,8 +38,8 @@ ion-modal {
   }
 
   &:focus-within {
-    border-color: var(--p-accent, #6c5ce7);
-    box-shadow: 0 0 0 3px var(--p-accent-soft, rgba(108,92,231,.1));
+    border-color: var(--p-accent, #0E6E52);
+    box-shadow: 0 0 0 3px var(--p-accent-soft, rgba(14,110,82,.1));
   }
 }
 
@@ -54,10 +54,10 @@ ion-modal {
 
 /* Primary step CTA ("Next", upload, …) — premium indigo */
 ion-button[expand="block"] {
-  --background: var(--p-accent, #6c5ce7);
-  --background-activated: #5a4bd4;
+  --background: var(--p-accent, #0E6E52);
+  --background-activated: #0A5740;
   --color: #fff;
-  --box-shadow: 0 8px 22px rgba(108, 92, 231, .35);
+  --box-shadow: 0 8px 22px rgba(14, 110, 82, .35);
   font-weight: 700;
   margin-top: 24px;
 }

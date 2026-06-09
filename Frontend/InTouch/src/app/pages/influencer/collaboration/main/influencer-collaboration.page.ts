@@ -2,9 +2,10 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
 import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, closeCircleOutline } from 'ionicons/icons';
+import { arrowBack, closeCircleOutline, documentTextOutline } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
+import { saveBlob } from 'src/app/shared/util/download.util';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
 import { BookingViewPage } from 'src/app/modal/booking/booking-view.component';
@@ -33,7 +34,14 @@ export class InfluencerCollaborationPage implements OnInit {
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ arrowBack, closeCircleOutline });
+    addIcons({ arrowBack, closeCircleOutline, documentTextOutline });
+  }
+
+  public downloadContract(): void {
+    this.store.downloadContract(this.reservation().id).subscribe({
+      next: (blob) => saveBlob(blob, `intouch-contract-${this.reservation().id}.pdf`),
+      error: () => this.toastService.toastDanger('Contract', 'Could not download the contract. Please try again.'),
+    });
   }
 
   goBack(): void {

@@ -4,9 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { PushNotificationService } from 'src/app/services/push-notification.service';
 import { ProfileStore } from 'src/app/features/profile/profile.store';
 import { addIcons } from 'ionicons';
-import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, notificationsOutline, pencil, personOutline } from 'ionicons/icons';
+import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, notificationsOutline, pencil, personOutline, statsChartOutline } from 'ionicons/icons';
 import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
@@ -21,12 +22,13 @@ export class ProfilePage {
 
   protected readonly store = inject(ProfileStore)
   private authService = inject(AuthService)
+  private push = inject(PushNotificationService)
   public isLogoutModalOpen: boolean = false;
   @ViewChild(IonModal) modal!: IonModal;
 
   constructor(
     private router: Router) {
-    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil })
+    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil, statsChartOutline })
   }
 
   // Reloads on every entry (incl. returning from profile edit).
@@ -48,6 +50,10 @@ export class ProfilePage {
 
   public openSupportEmail() {
     window.location.href = 'mailto:support@intouch.fr';
+  }
+
+  public enableNotifications() {
+    this.push.enable();
   }
 
   public async chooseOrTakePicture() {

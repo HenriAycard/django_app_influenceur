@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronDownCircle, close, closeOutline, createOutline, eyeOutline, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube, trashOutline } from 'ionicons/icons';
+import { chevronDownCircle, close, closeOutline, createOutline, eyeOutline, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube, statsChartOutline, trashOutline } from 'ionicons/icons';
 import { VenueMainViewPage } from 'src/app/modal/venue/main-view/venue-main-view.component';
 import { VenueSkeletonComponent } from 'src/app/modal/venue/skeleton/venue-skeleton.component';
 import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-card.component';
@@ -29,7 +29,7 @@ export class VenueViewPage {
   constructor(
     private router: Router,
     private route: ActivatedRoute) {
-        addIcons({createOutline, trashOutline, close, chevronDownCircle, locationOutline, logoInstagram, logoYoutube, logoTiktok, logoTwitter, logoFacebook, closeOutline});
+        addIcons({createOutline, trashOutline, statsChartOutline, close, chevronDownCircle, locationOutline, logoInstagram, logoYoutube, logoTiktok, logoTwitter, logoFacebook, closeOutline});
     }
 
   // Reloads on every entry (incl. returning from the edit/offer pages).
@@ -74,6 +74,10 @@ export class VenueViewPage {
 
   public editVenue() {
     this.router.navigate(['edit'], { relativeTo: this.route})
+  }
+
+  public viewAnalytics() {
+    this.router.navigate(['analytics'], { relativeTo: this.route })
   }
 
   public back() {
