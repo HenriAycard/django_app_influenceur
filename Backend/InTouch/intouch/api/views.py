@@ -553,3 +553,97 @@ class ContractPdfView(APIView):
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="intouch-contract-{reservation.id}.pdf"'
         return response
+
+
+# ---------------------------------------------------------------------------
+# Messaging (Postgres + DRF; Firebase only alerts the recipient out-of-app)
+# ---------------------------------------------------------------------------
+
+class ConversationListCreateView(generics.ListCreateAPIView):
+    """List my conversations (newest first), or open/get the thread for a venue.
+
+    POST body: `venue_id` (required). When the caller owns the venue (brand side),
+    `user_id` (the influencer) is also required; otherwise the caller is the
+    influencer party."""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ConversationSerializer
+    pagination_class = None
+
+    def get_queryset(self):
+        me = self.request.user
+        return (Conversation.objects
+                .filter(Q(influencer=me) | Q(venue__user=me))
+                .select_related('venue', 'influencer')
+                .order_by('-updated_at'))
+
+    def create(self, request, *args, **kwargs):
+        venue_id = request.data.get('venue_id')
+        if not venue_id:
+            return Response({"detail": "venue_id is required."}, status=status.HTTP_400_BAD_REQUEST)
+        venue = get_object_or_404(Venue, pk=venue_id)
+
+        if request.user.id == venue.user_id:
+            influencer_id = request.data.get('user_id')
+            if not influencer_id:
+                return Response({"detail": "user_id (influencer) is required."}, status=status.HTTP_400_BAD_REQUEST)
+            influencer = get_object_or_404(User, pk=influencer_id)
+        else:
+            influencer = request.user
+
+        conversation, _ = Conversation.objects.get_or_create(influencer=influencer, venue=venue)
+        return Response(self.get_serializer(conversation).data, status=status.HTTP_200_OK)
+
+
+class MessageListCreateView(generics.ListCreateAPIView):
+    """Messages within a conversation the requester takes part in (the influencer
+    or the venue's owner)."""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = MessageSerializer
+    pagination_class = None
+
+    def _conversation(self):
+        conversation = get_object_or_404(
+            Conversation.objects.select_related('venue', 'influencer'), pk=self.kwargs['pk']
+        )
+        if self.request.user.id not in (conversation.influencer_id, conversation.venue.user_id):
+            raise PermissionDenied('You are not part of this conversation.')
+        return conversation
+
+    def get_queryset(self):
+        conversation = self._conversation()
+        # Opening the thread marks the other party's messages as read.
+        conversation.messages.filter(read_at__isnull=True).exclude(
+            sender=self.request.user
+        ).update(read_at=timezone.now())
+        return conversation.messages.all()
+
+    def create(self, request, *args, **kwargs):
+        conversation = self._conversation()
+        body = (request.data.get('body') or '').strip()
+        if not body:
+            return Response({"detail": "Message body is required."}, status=status.HTTP_400_BAD_REQUEST)
+        message = Message.objects.create(conversation=conversation, sender=request.user, body=body)
+        Conversation.objects.filter(pk=conversation.pk).update(updated_at=timezone.now())
+
+        # Notify the other party; the sender is labelled from their perspective.
+        if request.user.id == conversation.influencer_id:
+            recipient_id = conversation.venue.user_id
+            sender_label = request.user.firstname or 'Someone'
+        else:
+            recipient_id = conversation.influencer_id
+            sender_label = conversation.venue.name_venue or 'A venue'
+        _notify(recipient_id, f"New message from {sender_label}", body[:120])
+        return Response(MessageSerializer(message).data, status=status.HTTP_201_CREATED)
+
+
+class UnreadMessagesCountView(APIView):
+    """Total unread messages addressed to me (for the Messages tab badge)."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        me = request.user
+        count = Message.objects.filter(
+            Q(conversation__influencer=me) | Q(conversation__venue__user=me),
+            read_at__isnull=True,
+        ).exclude(sender=me).count()
+        return Response({"count": count})

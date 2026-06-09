@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { IonLabel, IonTabButton, IonTab, IonIcon, IonTabBar, IonTabs } from '@ionic/angular/standalone';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { IonBadge, IonLabel, IonTabButton, IonIcon, IonTabBar, IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { searchOutline, calendarOutline, personCircleOutline } from 'ionicons/icons';
+import { searchOutline, calendarOutline, personCircleOutline, chatbubbleEllipsesOutline } from 'ionicons/icons';
+import { Subscription, interval } from 'rxjs';
+import { MessagingStore } from 'src/app/features/messaging/messaging.store';
 
 // NOTE: do NOT put OnPush on this tab shell. It hosts <ion-tabs> (a router
 // outlet); an undirty OnPush parent makes a CD tick skip its whole subtree, so
@@ -12,15 +14,23 @@ import { searchOutline, calendarOutline, personCircleOutline } from 'ionicons/ic
   templateUrl: './influencer-tabs.page.html',
   styleUrls: ['./influencer-tabs.page.scss'],
   standalone: true,
-  imports: [IonTabButton, IonLabel, IonLabel, IonIcon, IonTabBar, IonTabs]
+  imports: [IonTabButton, IonLabel, IonIcon, IonBadge, IonTabBar, IonTabs]
 })
-export class InfluencerTabsPage implements OnInit {
+export class InfluencerTabsPage implements OnInit, OnDestroy {
 
-  constructor() { 
-    addIcons({searchOutline, calendarOutline, personCircleOutline});
+  protected store = inject(MessagingStore);
+  private poll?: Subscription;
+
+  constructor() {
+    addIcons({ searchOutline, calendarOutline, personCircleOutline, chatbubbleEllipsesOutline });
   }
 
   ngOnInit() {
+    this.store.refreshUnread();
+    this.poll = interval(15000).subscribe(() => this.store.refreshUnread());
   }
 
+  ngOnDestroy() {
+    this.poll?.unsubscribe();
+  }
 }

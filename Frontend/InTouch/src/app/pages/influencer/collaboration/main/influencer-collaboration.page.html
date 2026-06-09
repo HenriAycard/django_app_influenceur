@@ -9,13 +9,16 @@
     <app-booking-view [reservation]="reservation()"></app-booking-view>
     <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
 
-    @if (reservation().status === ApplicationStatus.Accepted) {
-      <div class="action-bar">
+    <div class="action-bar">
+      <ion-button class="act act-ghost" (click)="messageBrand()">
+        <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>Message
+      </ion-button>
+      @if (reservation().status === ApplicationStatus.Accepted) {
         <ion-button class="act act-ghost" (click)="downloadContract()">
-          <ion-icon name="document-text-outline" slot="start"></ion-icon>Download contract (PDF)
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>Contract
         </ion-button>
-      </div>
-    }
+      }
+    </div>
 
     @if ((reservation().status === ApplicationStatus.Pending || reservation().status === ApplicationStatus.Accepted) && isFuture()) {
       <div class="action-bar">

@@ -2,9 +2,10 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
 import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, closeCircleOutline, documentTextOutline } from 'ionicons/icons';
+import { arrowBack, chatbubbleEllipsesOutline, closeCircleOutline, documentTextOutline } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
+import { MessagingStore } from 'src/app/features/messaging/messaging.store';
 import { saveBlob } from 'src/app/shared/util/download.util';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
@@ -29,18 +30,33 @@ export class InfluencerCollaborationPage implements OnInit {
   public readonly ApplicationStatus = ApplicationStatus;
 
   private store = inject(ApplicationStore)
+  private messaging = inject(MessagingStore)
   private toastService = inject(ToastService)
   private router = inject(Router)
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ arrowBack, closeCircleOutline, documentTextOutline });
+    addIcons({ arrowBack, chatbubbleEllipsesOutline, closeCircleOutline, documentTextOutline });
   }
 
   public downloadContract(): void {
     this.store.downloadContract(this.reservation().id).subscribe({
       next: (blob) => saveBlob(blob, `intouch-contract-${this.reservation().id}.pdf`),
       error: () => this.toastService.toastDanger('Contract', 'Could not download the contract. Please try again.'),
+    });
+  }
+
+  public messageBrand(): void {
+    const venue = this.reservation().offer.venue;
+    // Influencer side: thread is scoped to this venue (the caller is the influencer).
+    this.messaging.open(venue.id).subscribe({
+      next: (conv) => {
+        const base = this.router.url.split('/').slice(0, 2).join('/'); // '/influencer'
+        this.navCtrl.navigateForward([`${base}/messages/${conv.id}`], {
+          queryParams: { name: venue.nameVenue },
+        });
+      },
+      error: () => this.toastService.toastDanger('Messaging', 'Could not open the conversation.'),
     });
   }
 

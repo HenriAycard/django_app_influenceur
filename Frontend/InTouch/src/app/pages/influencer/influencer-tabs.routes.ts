@@ -26,6 +26,14 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
       loadComponent: () => import('./calendar/calendar.page').then(m => m.CalendarPage)
     },
     {
+      path: 'messages',
+      loadComponent: () => import('../../features/messaging/pages/inbox/inbox.page').then(m => m.InboxPage)
+    },
+    {
+      path: 'messages/:conversationId',
+      loadComponent: () => import('../../features/messaging/pages/thread/thread.page').then(m => m.ThreadPage)
+    },
+    {
       path: 'profile',
       loadComponent: () => import('../profile/main/profile.page').then(m => m.ProfilePage)
     },

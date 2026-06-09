@@ -242,3 +242,71 @@ class NotificationSerializer(serializers.Serializer):
     user_id = serializers.UUIDField()
     title = serializers.CharField(max_length=255)
     body = serializers.CharField(max_length=1000)
+
+
+class ChatUserSerializer(ModelSerializer):
+    """Minimal user shape for chat (avoids the rating aggregates of UserSerializer)."""
+    class Meta:
+        model = User
+        fields = ('id', 'firstname', 'lastname', 'avatar')
+
+
+class MessageSerializer(ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ('id', 'sender', 'body', 'created_at', 'read_at')
+        read_only_fields = ('id', 'sender', 'created_at', 'read_at')
+
+
+class ConversationSerializer(ModelSerializer):
+    """Viewer-aware: the influencer sees the venue (name + image); the brand sees
+    the influencer (name + avatar) with the venue as a subtitle."""
+    title = SerializerMethodField()
+    subtitle = SerializerMethodField()
+    avatar = SerializerMethodField()
+    last_message = SerializerMethodField()
+    unread_count = SerializerMethodField()
+
+    class Meta:
+        model = Conversation
+        fields = ('id', 'title', 'subtitle', 'avatar', 'last_message', 'unread_count', 'updated_at')
+
+    def _me(self):
+        request = self.context.get('request')
+        user = getattr(request, 'user', None)
+        return user if user is not None and user.is_authenticated else None
+
+    def _influencer_side(self, obj):
+        me = self._me()
+        return bool(me and me.id == obj.influencer_id)
+
+    def _abs(self, field):
+        if not field:
+            return None
+        request = self.context.get('request')
+        return request.build_absolute_uri(field.url) if request else field.url
+
+    def get_title(self, obj):
+        if self._influencer_side(obj):
+            return obj.venue.name_venue
+        return f"{obj.influencer.firstname} {obj.influencer.lastname}".strip()
+
+    def get_subtitle(self, obj):
+        # The brand sees which venue the thread is about; the influencer doesn't need it.
+        return None if self._influencer_side(obj) else obj.venue.name_venue
+
+    def get_avatar(self, obj):
+        if self._influencer_side(obj):
+            img = obj.venue.imgVenue.filter(is_principal=True).first() or obj.venue.imgVenue.first()
+            return self._abs(img.file) if img else None
+        return self._abs(obj.influencer.avatar)
+
+    def get_last_message(self, obj):
+        msg = obj.messages.order_by('-created_at').first()
+        return MessageSerializer(msg).data if msg else None
+
+    def get_unread_count(self, obj):
+        me = self._me()
+        if not me:
+            return 0
+        return obj.messages.filter(read_at__isnull=True).exclude(sender=me).count()
