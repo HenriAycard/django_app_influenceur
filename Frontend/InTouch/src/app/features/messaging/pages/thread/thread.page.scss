@@ -1,0 +1,58 @@
+ion-content.thread { --background: var(--p-surface); }
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 14px 20px;
+}
+
+.bubble-row { display: flex; justify-content: flex-start; }
+.bubble-row.mine { justify-content: flex-end; }
+
+.bubble {
+  max-width: 78%;
+  padding: 9px 13px;
+  border-radius: 16px;
+  background: var(--p-card);
+  border: 1px solid var(--p-hairline);
+  box-shadow: var(--p-shadow-sm);
+}
+.bubble.mine {
+  background: var(--p-accent);
+  border-color: var(--p-accent);
+}
+.bubble .body {
+  display: block;
+  color: var(--p-ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.bubble.mine .body { color: #fff; }
+.bubble .time {
+  display: block;
+  margin-top: 3px;
+  font-size: .68rem;
+  text-align: right;
+  color: var(--p-sub);
+}
+.bubble.mine .time { color: rgba(255, 255, 255, .8); }
+
+.empty { text-align: center; padding: 60px 20px; color: var(--p-sub); }
+
+.composer {
+  --background: var(--p-card);
+  padding: 2px 8px;
+}
+.composer ion-textarea {
+  --background: var(--p-surface);
+  --padding-start: 14px;
+  --padding-end: 14px;
+  border-radius: 18px;
+  margin: 6px 0;
+  max-height: 120px;
+}
+.send {
+  --color: var(--p-accent);
+  font-size: 1.3rem;
+}

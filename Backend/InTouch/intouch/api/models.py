@@ -228,3 +228,31 @@ class VenueView(models.Model):
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='views')
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+class Conversation(models.Model):
+    """A thread between an influencer and a venue. Scoped to the venue (not the
+    brand user) so a company managing several venues gets one thread per venue,
+    labelled by the venue rather than the person who manages it."""
+    id = models.BigAutoField(primary_key=True)
+    influencer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversations')
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='conversations')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)  # bumped on each new message, for sorting
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['influencer', 'venue'], name='unique_influencer_venue_conversation'),
+        ]
+
+
+class Message(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
+    body = models.TextField(max_length=2000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    read_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ['created_at']

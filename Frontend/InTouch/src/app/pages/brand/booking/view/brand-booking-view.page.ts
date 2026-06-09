@@ -2,10 +2,11 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline } from 'ionicons/icons';
+import { arrowBack, chatbubbleEllipsesOutline, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
+import { MessagingStore } from 'src/app/features/messaging/messaging.store';
 import { saveBlob } from 'src/app/shared/util/download.util';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
@@ -34,18 +35,33 @@ export class BrandBookingViewPage implements OnInit {
   public readonly ApplicationStatus = ApplicationStatus;
 
   private store = inject(ApplicationStore)
+  private messaging = inject(MessagingStore)
   private toastService = inject(ToastService)
   private router = inject(Router)
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ arrowBack, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline });
+    addIcons({ arrowBack, chatbubbleEllipsesOutline, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline });
   }
 
   public downloadContract(): void {
     this.store.downloadContract(this.reservation().id).subscribe({
       next: (blob) => saveBlob(blob, `intouch-contract-${this.reservation().id}.pdf`),
       error: () => this.toastService.toastDanger('Contract', 'Could not download the contract. Please try again.'),
+    });
+  }
+
+  public messageInfluencer(): void {
+    const r = this.reservation();
+    // Brand side: thread is scoped to this venue, with the applying influencer.
+    this.messaging.open(r.offer.venue.id, r.user.id).subscribe({
+      next: (conv) => {
+        const base = this.router.url.split('/').slice(0, 2).join('/'); // '/brand'
+        this.navCtrl.navigateForward([`${base}/messages/${conv.id}`], {
+          queryParams: { name: `${r.user.firstname} ${r.user.lastname}`.trim() },
+        });
+      },
+      error: () => this.toastService.toastDanger('Messaging', 'Could not open the conversation.'),
     });
   }
 

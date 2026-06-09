@@ -1,0 +1,43 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Messages</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  @if (store.conversations().length) {
+    <ion-list lines="none">
+      @for (c of store.conversations(); track c.id) {
+        <ion-item button detail="false" class="conv" (click)="openThread(c)">
+          <ion-avatar slot="start">
+            <img [src]="c.avatar || 'assets/profile/default-profile.png'" alt="avatar" />
+          </ion-avatar>
+          <ion-label>
+            <h2 [class.unread]="c.unreadCount">{{ c.title }}</h2>
+            @if (c.subtitle) {
+              <p class="subtitle">{{ c.subtitle }}</p>
+            }
+            <p [class.unread]="c.unreadCount">{{ c.lastMessage?.body || 'No messages yet' }}</p>
+          </ion-label>
+          <div slot="end" class="meta">
+            @if (c.lastMessage) {
+              <span class="time">{{ c.lastMessage.createdAt | date:'shortTime' }}</span>
+            }
+            @if (c.unreadCount) {
+              <ion-badge>{{ c.unreadCount }}</ion-badge>
+            }
+          </div>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <div class="empty">
+      <p>No conversations yet.</p>
+      <span>Message a brand or influencer from a collaboration to start one.</span>
+    </div>
+  }
+</ion-content>

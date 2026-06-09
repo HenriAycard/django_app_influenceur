@@ -14,6 +14,14 @@ export const BRAND_TABS_ROUTES: Routes = [{
             loadComponent: () => import('./home/home.page').then( m => m.HomePage)
         },
         {
+            path: 'messages',
+            loadComponent: () => import('../../features/messaging/pages/inbox/inbox.page').then(m => m.InboxPage)
+        },
+        {
+            path: 'messages/:conversationId',
+            loadComponent: () => import('../../features/messaging/pages/thread/thread.page').then(m => m.ThreadPage)
+        },
+        {
             path: 'profile',
             loadComponent: () => import('../profile/main/profile.page').then( m => m.ProfilePage)
         },
