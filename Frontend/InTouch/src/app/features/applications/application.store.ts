@@ -81,6 +81,11 @@ export class ApplicationStore {
         return this.api.findApplication(id);
     }
 
+    /** Collaboration agreement PDF (chantier #8) — accepted collaborations only. */
+    downloadContract(id: number): Observable<Blob> {
+        return this.api.downloadContract(id);
+    }
+
     accept(id: number): Observable<unknown> {
         return this.api.updateApplication(id, { status: ApplicationStatus.Accepted });
     }

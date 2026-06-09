@@ -9,6 +9,14 @@
     <app-booking-view [reservation]="reservation()"></app-booking-view>
     <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
 
+    @if (reservation().status === ApplicationStatus.Accepted) {
+      <div class="action-bar">
+        <ion-button class="act act-ghost" (click)="downloadContract()">
+          <ion-icon name="document-text-outline" slot="start"></ion-icon>Download contract (PDF)
+        </ion-button>
+      </div>
+    }
+
     @if (reservation().status !== ApplicationStatus.Declined && isFuture()) {
       <div class="action-bar">
         @if (reservation().status === ApplicationStatus.Pending) {

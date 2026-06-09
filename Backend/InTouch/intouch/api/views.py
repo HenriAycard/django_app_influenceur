@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import FilterSet, DateTimeFilter
 from django.contrib.postgres.search import SearchVector, SearchQuery
@@ -514,3 +516,40 @@ class VenueViewLogView(APIView):
         if venue.user_id != request.user.id:
             VenueView.objects.create(venue=venue, user=request.user)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ContractPdfView(APIView):
+    """Renders a designed PDF collaboration agreement for an accepted
+    reservation (chantier #8). Restricted to the two parties."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        reservation = get_object_or_404(
+            Reservation.objects.select_related('offer__venue__user', 'offer__venue__address', 'user'),
+            pk=pk,
+        )
+        is_party = (
+            reservation.user_id == request.user.id
+            or reservation.offer.venue.user_id == request.user.id
+        )
+        if not is_party:
+            raise PermissionDenied('You are not part of this collaboration.')
+        if reservation.status != 1:
+            return Response(
+                {"detail": "The contract is available once the collaboration is accepted."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        import weasyprint  # local import: keeps module import cheap and optional
+        html = render_to_string('contract.html', {
+            'reservation': reservation,
+            'offer': reservation.offer,
+            'venue': reservation.offer.venue,
+            'influencer': reservation.user,
+            'brand': reservation.offer.venue.user,
+            'generated': timezone.now(),
+        })
+        pdf = weasyprint.HTML(string=html).write_pdf()
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="intouch-contract-{reservation.id}.pdf"'
+        return response

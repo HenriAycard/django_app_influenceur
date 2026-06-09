@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @page {
+    size: A4;
+    margin: 22mm 18mm 20mm 18mm;
+    @bottom-center {
+      content: "InTouch — Collaboration Agreement · page " counter(page) " / " counter(pages);
+      font-size: 8pt;
+      color: #9a9aa5;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    font-family: "DejaVu Sans", "Helvetica Neue", Arial, sans-serif;
+    color: #16161d;
+    font-size: 10.5pt;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 3px solid #0E6E52;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+  .brandmark { font-size: 20pt; font-weight: 800; color: #0E6E52; letter-spacing: -.5px; }
+  .brandmark .dot { color: #16161d; }
+  .doc-title { font-size: 15pt; font-weight: 800; margin: 8px 0 2px; letter-spacing: -.3px; }
+  .meta { font-size: 9pt; color: #6b6b76; }
+  .meta strong { color: #16161d; }
+
+  /* Sections */
+  .section { margin-top: 16px; }
+  .section h2 {
+    font-size: 10.5pt;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #0E6E52;
+    border-bottom: 1px solid #ececf1;
+    padding-bottom: 4px;
+    margin: 0 0 8px;
+  }
+  p { margin: 0 0 6px; }
+  .muted { color: #6b6b76; }
+
+  /* Parties */
+  .parties { width: 100%; border-collapse: collapse; }
+  .parties td {
+    width: 50%;
+    vertical-align: top;
+    border: 1px solid #ececf1;
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: #fbfbfd;
+  }
+  .parties td:first-child { border-right: none; }
+  .party-role { font-size: 8pt; text-transform: uppercase; letter-spacing: .08em; color: #0E6E52; font-weight: 700; }
+  .party-name { font-size: 12pt; font-weight: 800; margin: 2px 0 4px; }
+
+  /* Detail rows */
+  .row { margin: 0 0 5px; }
+  .row .k { font-weight: 700; }
+  .pill {
+    display: inline-block;
+    background: #E8F3EF; color: #0E6E52;
+    border-radius: 999px; padding: 1px 9px;
+    font-size: 8.5pt; font-weight: 700; margin: 0 4px 4px 0;
+  }
+  .desc { white-space: pre-line; }
+
+  /* Signatures */
+  .sign { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .sign td { width: 50%; vertical-align: bottom; padding: 30px 14px 0; }
+  .sign-line { border-top: 1px solid #16161d; padding-top: 4px; font-size: 9pt; }
+  .sign-role { font-size: 8pt; color: #6b6b76; text-transform: uppercase; letter-spacing: .06em; }
+
+  .foot-note { margin-top: 22px; font-size: 8pt; color: #9a9aa5; text-align: center; }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="brandmark">InTouch<span class="dot">.</span></div>
+    <div class="doc-title">Collaboration Agreement</div>
+    <div class="meta">
+      Ref <strong>#{{ reservation.id }}</strong> ·
+      Issued {{ generated|date:"F j, Y" }} ·
+      Collaboration date <strong>{{ reservation.date_reservation|date:"F j, Y" }}</strong>
+    </div>
+  </div>
+
+  <p class="muted">
+    This agreement sets out the terms of the collaboration between the Brand and the
+    Influencer for the offer described below, as arranged through the InTouch platform.
+  </p>
+
+  <!-- Parties -->
+  <div class="section">
+    <h2>Parties</h2>
+    <table class="parties">
+      <tr>
+        <td>
+          <div class="party-role">The Brand</div>
+          <div class="party-name">{{ venue.name_venue|default:"—" }}</div>
+          {% if brand.firstname or brand.lastname %}<div>{{ brand.firstname }} {{ brand.lastname }}</div>{% endif %}
+          {% if brand.email %}<div class="muted">{{ brand.email }}</div>{% endif %}
+          {% if venue.address %}<div class="muted">{{ venue.address.address_principal }}{% if venue.address.city %}, {{ venue.address.city }}{% endif %}{% if venue.address.zip_code %} {{ venue.address.zip_code }}{% endif %}{% if venue.address.country %}, {{ venue.address.country }}{% endif %}</div>{% endif %}
+        </td>
+        <td>
+          <div class="party-role">The Influencer</div>
+          <div class="party-name">{{ influencer.firstname }} {{ influencer.lastname }}</div>
+          {% if influencer.email %}<div class="muted">{{ influencer.email }}</div>{% endif %}
+          {% if influencer.instagram %}<div>Instagram: {{ influencer.instagram }}{% if influencer.instagram_followers %} ({{ influencer.instagram_followers }} followers){% endif %}</div>{% endif %}
+          {% if influencer.tiktok %}<div>TikTok: {{ influencer.tiktok }}{% if influencer.tiktok_followers %} ({{ influencer.tiktok_followers }} followers){% endif %}</div>{% endif %}
+          {% if influencer.youtube %}<div>YouTube: {{ influencer.youtube }}{% if influencer.youtube_followers %} ({{ influencer.youtube_followers }} subscribers){% endif %}</div>{% endif %}
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Offer -->
+  <div class="section">
+    <h2>Collaboration — {{ offer.name }}</h2>
+    <p class="desc">{{ offer.content }}</p>
+    {% if offer.guests %}<div class="row"><span class="k">Guests included:</span> {{ offer.guests }}</div>{% endif %}
+    {% if offer.quantity %}<div class="row"><span class="k">Available slots:</span> {{ offer.quantity }}</div>{% endif %}
+  </div>
+
+  <!-- Deliverables & conditions -->
+  <div class="section">
+    <h2>Deliverables &amp; Conditions</h2>
+    <p class="desc">{{ offer.conditions }}</p>
+    {% if offer.tags %}<div class="row"><span class="k">Mandatory tags &amp; hashtags:</span> {{ offer.tags }}</div>{% endif %}
+    {% if offer.publishing_deadline %}<div class="row"><span class="k">Publishing deadline:</span> {{ offer.publishing_deadline }} days after the visit</div>{% endif %}
+    {% if offer.contact_approver %}<div class="row"><span class="k">Content approval contact:</span> {{ offer.contact_approver }}</div>{% endif %}
+    {% if offer.min_followers_instagram or offer.min_followers_tiktok or offer.min_followers_youtube %}
+      <div class="row"><span class="k">Audience requirement:</span>
+        {% if offer.min_followers_instagram %}<span class="pill">Instagram ≥ {{ offer.min_followers_instagram }}</span>{% endif %}
+        {% if offer.min_followers_tiktok %}<span class="pill">TikTok ≥ {{ offer.min_followers_tiktok }}</span>{% endif %}
+        {% if offer.min_followers_youtube %}<span class="pill">YouTube ≥ {{ offer.min_followers_youtube }}</span>{% endif %}
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Compensation -->
+  <div class="section">
+    <h2>Compensation</h2>
+    {% if offer.payment_amount %}
+      <div class="row"><span class="k">Payment:</span> {{ offer.payment_amount }}{% if offer.payment_terms %} — {{ offer.payment_terms }}{% endif %}</div>
+    {% else %}
+      <div class="row">Gifted product / experience as described in the collaboration above.</div>
+    {% endif %}
+  </div>
+
+  <!-- Additional terms -->
+  {% if offer.cancellation_policy or offer.special_instructions %}
+  <div class="section">
+    <h2>Additional Terms</h2>
+    {% if offer.cancellation_policy %}<p><span class="k">Cancellation policy.</span> <span class="desc">{{ offer.cancellation_policy }}</span></p>{% endif %}
+    {% if offer.special_instructions %}<p><span class="k">Special instructions.</span> <span class="desc">{{ offer.special_instructions }}</span></p>{% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Exclusivity -->
+  {% if offer.exclusivity_duration or offer.exclusivity_type or offer.exclusivity_specification or offer.restricted_competitors or offer.scope_exclusivity %}
+  <div class="section">
+    <h2>Exclusivity Clause</h2>
+    {% if offer.exclusivity_duration %}<div class="row"><span class="k">Duration:</span> {{ offer.exclusivity_duration }} days</div>{% endif %}
+    {% if offer.exclusivity_type %}<div class="row"><span class="k">Type:</span> {{ offer.exclusivity_type }}</div>{% endif %}
+    {% if offer.exclusivity_specification %}<div class="row"><span class="k">Specification:</span> {{ offer.exclusivity_specification }}</div>{% endif %}
+    {% if offer.restricted_competitors %}<div class="row"><span class="k">Restricted competitors:</span> {{ offer.restricted_competitors }}</div>{% endif %}
+    {% if offer.scope_exclusivity %}<div class="row"><span class="k">Scope:</span> {{ offer.scope_exclusivity }}</div>{% endif %}
+  </div>
+  {% endif %}
+
+  <!-- Signatures -->
+  <div class="section">
+    <h2>Signatures</h2>
+    <p class="muted">By signing below, both parties accept the terms of this collaboration agreement.</p>
+    <table class="sign">
+      <tr>
+        <td>
+          <div class="sign-line">{{ venue.name_venue }}</div>
+          <div class="sign-role">The Brand — name, signature &amp; date</div>
+        </td>
+        <td>
+          <div class="sign-line">{{ influencer.firstname }} {{ influencer.lastname }}</div>
+          <div class="sign-role">The Influencer — name, signature &amp; date</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="foot-note">Generated by InTouch on {{ generated|date:"F j, Y \a\t H:i" }} · This document reflects the offer terms at generation time.</div>
+
+</body>
+</html>
