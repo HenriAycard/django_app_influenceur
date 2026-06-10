@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, firstValueFrom, map, of, switchMap, tap } from 'rxjs';
-import { LoginParam, TokenResponse, User, UserParam } from 'src/app/shared/models';
+import { LoginParam, TokenResponse, User, RegisterRequest } from 'src/app/shared/models';
 import { TokenManagerService } from './token-manager.service';
 import { ApiAuthService } from './api/api-auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -155,8 +155,8 @@ export class AuthService {
     )
   }
 
-  registerUser(params: UserParam): Observable<any> {
-    return this.apiAuth.createUser(params);
+  registerUser(params: RegisterRequest): Observable<any> {
+    return this.apiAuth.register(params);
   }
 
   isAuth() {

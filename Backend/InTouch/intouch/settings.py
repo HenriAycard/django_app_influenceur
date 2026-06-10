@@ -163,7 +163,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'fr-fr'
+# The product language is English — API validation messages surface in the UI.
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'CET'
 
@@ -188,9 +189,41 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'api.User'
+
+# --- Email ---------------------------------------------------------------
+# SMTP when EMAIL_HOST is configured; console otherwise so every flow stays
+# testable on a fresh environment (the message is printed to gunicorn logs).
+EMAIL_HOST = os.getenv("EMAIL_HOST", "")
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True") == "True"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "InTouch <no-reply@intouch.ovh>")
+
+# Public SPA origin, used to build links inside emails.
+FRONTEND_URL = os.getenv("FRONTEND_URL", "https://frontend.intouch.ovh").rstrip("/")
+# djoser's own emails (password reset) build their links from DOMAIN/SITE_NAME.
+DOMAIN = FRONTEND_URL.split("://", 1)[-1]
+SITE_NAME = "InTouch"
+
+# Set-password links (account invitation + password reset) stay valid 7 days:
+# an approved applicant may not open the email the same day.
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24 * 7
+
 DJOSER = {
     'SERIALIZERS': {
         'current_user': 'intouch.api.serializers.UserSerializer',
+    },
+    # The reset email points to the SPA page that collects the new password.
+    'PASSWORD_RESET_CONFIRM_URL': 'set-password?uid={uid}&token={token}',
+    'PERMISSIONS': {
+        # Self-service signup goes through /api/register/ (application to
+        # join, no password); djoser's direct user creation is admin-only.
+        'user_create': ['rest_framework.permissions.IsAdminUser'],
     },
 }
 

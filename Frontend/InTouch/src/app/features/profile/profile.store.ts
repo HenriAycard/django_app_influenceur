@@ -19,6 +19,16 @@ export class ProfileStore {
         });
     }
 
+    /** Opt in/out of notification emails (optimistic; reverted on failure). */
+    setEmailNotifications(enabled: boolean): void {
+        const current = this._user();
+        if (!current) return;
+        this._user.set({ ...current, emailNotifications: enabled });
+        this.api.update(current.id, { emailNotifications: enabled } as Partial<User>).subscribe({
+            error: () => this._user.set({ ...current }),
+        });
+    }
+
     /** Uploads a new avatar and updates the cached user on the final response. */
     updateAvatar(formData: FormData): Observable<HttpEvent<User>> {
         const id = this._user()?.id ?? '';

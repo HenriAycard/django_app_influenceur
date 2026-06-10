@@ -12,15 +12,21 @@ export interface User {
     instagramFollowers?: number | null
     tiktokFollowers?: number | null
     youtubeFollowers?: number | null
+    emailNotifications?: boolean
     averageRating?: number | null
     reviewCount?: number
 }
 
-export interface UserParam {
+/** Application to join: no password — it is set through the emailed link
+ *  once an admin approves the account. */
+export interface RegisterRequest {
     firstname: string
     lastname: string
     email: string
-    password: string
+    role: 'influencer' | 'venue'
+    instagram?: string
+    tiktok?: string
+    youtube?: string
 }
 
 export interface LoginParam {

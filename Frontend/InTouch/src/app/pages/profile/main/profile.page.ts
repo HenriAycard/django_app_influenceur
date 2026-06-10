@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, ViewChild, inject } from '@angular/core';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToggle, IonToolbar } from '@ionic/angular/standalone';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PushNotificationService } from 'src/app/services/push-notification.service';
 import { ProfileStore } from 'src/app/features/profile/profile.store';
 import { addIcons } from 'ionicons';
-import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, notificationsOutline, pencil, personOutline, statsChartOutline } from 'ionicons/icons';
+import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, mailOutline, notificationsOutline, pencil, personOutline, statsChartOutline } from 'ionicons/icons';
 import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
@@ -16,7 +16,7 @@ import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
   standalone: true,
-  imports: [IonContent, FormsModule, IonItem, IonIcon, IonLabel, IonList, FormsModule, ReactiveFormsModule, IonButton, IonModal, IonTitle, IonToolbar, IonHeader, RouterLink]
+  imports: [IonContent, FormsModule, IonItem, IonIcon, IonLabel, IonList, FormsModule, ReactiveFormsModule, IonButton, IonModal, IonTitle, IonToggle, IonToolbar, IonHeader, RouterLink]
 })
 export class ProfilePage {
 
@@ -28,7 +28,7 @@ export class ProfilePage {
 
   constructor(
     private router: Router) {
-    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil, statsChartOutline })
+    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, mailOutline, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil, statsChartOutline })
   }
 
   // Reloads on every entry (incl. returning from profile edit).
@@ -54,6 +54,10 @@ export class ProfilePage {
 
   public enableNotifications() {
     this.push.enable();
+  }
+
+  public toggleEmailNotifications(event: CustomEvent) {
+    this.store.setEmailNotifications(!!event.detail.checked);
   }
 
   public async chooseOrTakePicture() {
