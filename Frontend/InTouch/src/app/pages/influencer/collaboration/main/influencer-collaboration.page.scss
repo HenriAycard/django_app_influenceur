@@ -23,6 +23,42 @@
   --color: var(--ion-color-medium);
 }
 
+.shortcuts {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 20px 16px 8px;
+}
+.shortcut-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.shortcut-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--ion-color-step-100, #f1f1f4);
+  font-size: 22px;
+  color: var(--ion-text-color, #16161d);
+  transition: background 0.12s;
+}
+.shortcut-item:active .shortcut-icon {
+  background: var(--ion-color-step-150, #e7e7ee);
+}
+.shortcut-item span {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ion-color-medium, #6b6b76);
+  letter-spacing: 0.01em;
+}
+
 .action-bar {
   position: sticky;
   bottom: 0;

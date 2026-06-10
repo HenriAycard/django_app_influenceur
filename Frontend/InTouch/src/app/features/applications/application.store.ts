@@ -86,6 +86,11 @@ export class ApplicationStore {
         return this.api.downloadContract(id);
     }
 
+    /** Standard .ics calendar file — accepted collaborations only. */
+    downloadCalendar(id: number): Observable<Blob> {
+        return this.api.downloadCalendar(id);
+    }
+
     accept(id: number): Observable<unknown> {
         return this.api.updateApplication(id, { status: ApplicationStatus.Accepted });
     }

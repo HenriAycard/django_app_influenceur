@@ -555,6 +555,86 @@ class ContractPdfView(APIView):
         return response
 
 
+class ReservationIcsView(APIView):
+    """Generates a standard .ics calendar file (RFC 5545) for an accepted
+    reservation. Restricted to the two parties."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        from icalendar import Calendar, Event as IcsEvent
+        import uuid as uuid_module
+
+        reservation = get_object_or_404(
+            Reservation.objects.select_related('offer__venue__address', 'offer__venue', 'user'),
+            pk=pk,
+        )
+        is_party = (
+            reservation.user_id == request.user.id
+            or reservation.offer.venue.user_id == request.user.id
+        )
+        if not is_party:
+            raise PermissionDenied('You are not part of this collaboration.')
+        if reservation.status != 1:
+            return Response(
+                {"detail": "The calendar invite is available once the collaboration is accepted."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        offer = reservation.offer
+        venue = offer.venue
+        address = venue.address if hasattr(venue, 'address') and venue.address else None
+
+        # Build location string from address if available
+        location_parts = []
+        if address:
+            if getattr(address, 'address_principal', None):
+                location_parts.append(address.address_principal)
+            if getattr(address, 'city', None):
+                location_parts.append(address.city)
+            if getattr(address, 'country', None):
+                location_parts.append(address.country)
+        if not location_parts and getattr(venue, 'name_venue', None):
+            location_parts.append(venue.name_venue)
+        location = ', '.join(location_parts)
+
+        # Determine event date/time from date_reservation (set by brand on accept)
+        dt = reservation.date_reservation or timezone.now()
+        # Use offer end_date if available, otherwise same day as start
+        dtstart = dt.date() if hasattr(dt, 'date') else dt
+        dtend = offer.end_date if offer.end_date else dtstart
+
+        cal = Calendar()
+        cal.add('prodid', '-//InTouch//intouch.ovh//')
+        cal.add('version', '2.0')
+        cal.add('calscale', 'GREGORIAN')
+        cal.add('method', 'REQUEST')
+
+        event = IcsEvent()
+        event.add('uid', f'intouch-reservation-{reservation.id}@intouch.ovh')
+        event.add('summary', f'{offer.name} — {venue.name_venue}')
+        event.add('dtstart', dtstart)
+        event.add('dtend', dtend)
+        event.add('dtstamp', timezone.now())
+        if location:
+            event.add('location', location)
+        description_lines = [offer.content]
+        if offer.conditions:
+            description_lines.append(f'Conditions: {offer.conditions}')
+        influencer = reservation.user
+        description_lines.append(
+            f'Influencer: {influencer.firstname} {influencer.lastname}'
+        )
+        event.add('description', '\n'.join(description_lines))
+        event.add('status', 'CONFIRMED')
+
+        cal.add_component(event)
+
+        ics_bytes = cal.to_ical()
+        response = HttpResponse(ics_bytes, content_type='text/calendar; charset=utf-8')
+        response['Content-Disposition'] = f'attachment; filename="intouch-collab-{reservation.id}.ics"'
+        return response
+
+
 # ---------------------------------------------------------------------------
 # Messaging (Postgres + DRF; Firebase only alerts the recipient out-of-app)
 # ---------------------------------------------------------------------------
