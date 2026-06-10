@@ -53,6 +53,8 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     cookie, so leaving it in the body does not reintroduce localStorage exposure.
     """
 
+    throttle_scope = "auth"  # brute-force guard (per-IP, see DEFAULT_THROTTLE_RATES)
+
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
         if response.status_code == status.HTTP_200_OK and "refresh" in response.data:
@@ -67,6 +69,8 @@ class CookieTokenRefreshView(TokenRefreshView):
     refresh token is written back to the cookie. An invalid/expired cookie yields
     401 and clears the cookie so the client falls back to a fresh login.
     """
+
+    throttle_scope = "auth-refresh"  # legitimate clients refresh often; looser cap
 
     def post(self, request, *args, **kwargs):
         refresh = request.COOKIES.get(settings.REFRESH_COOKIE_NAME)
@@ -104,6 +108,7 @@ class RefreshCookieFromTokenView(APIView):
     """
 
     permission_classes = [AllowAny]
+    throttle_scope = "auth"  # accepts a raw token from the URL fragment: same guard as login
 
     def post(self, request, *args, **kwargs):
         raw = request.data.get("refresh")

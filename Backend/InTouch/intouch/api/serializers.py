@@ -38,6 +38,9 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'firstname', 'lastname', 'youtube', 'instagram', 'tiktok', 'is_influencer', 'is_company', 'avatar', 'instagram_followers', 'tiktok_followers', 'youtube_followers', 'average_rating', 'review_count')
+        # Roles are assigned out-of-band; a user must not be able to switch
+        # sides of the marketplace by patching their own profile.
+        read_only_fields = ('is_influencer', 'is_company')
 
     def get_average_rating(self, obj):
         return _influencer_rating(obj)[0]
@@ -236,12 +239,6 @@ class FCMTokenSerializer(ModelSerializer):
     class Meta:
         model = FCMToken
         fields = ['token']
-
-
-class NotificationSerializer(serializers.Serializer):
-    user_id = serializers.UUIDField()
-    title = serializers.CharField(max_length=255)
-    body = serializers.CharField(max_length=1000)
 
 
 class ChatUserSerializer(ModelSerializer):

@@ -32,6 +32,5 @@ urlpatterns = [
     path('conversations/<int:pk>/messages/', MessageListCreateView.as_view(), name='conversation_messages'),
     path('typeVenue/', TypeVenueView.as_view(), name='typeVenue_list'),
     path('save-fcm-token/', SaveFCMTokenView.as_view(), name='save_fcm_token'),
-    path('send-notification', send_push_notification, name='send_push_notification'),
     path('', include(router.urls))
 ]

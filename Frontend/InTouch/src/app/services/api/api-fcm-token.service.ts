@@ -12,14 +12,9 @@ import { GetTokenResult } from "@capacitor-firebase/messaging";
 export class ApiFCMTokenService extends ApiService {
 
   urlBase: string = Constant.domainConfig.virtual_host + Constant.domainConfig.apiPrefix + "/save-fcm-token/";
-  urlBase2: string = Constant.domainConfig.virtual_host + Constant.domainConfig.apiPrefix + "/send-notification";
 
   sendTokenToBackend(token: string): Observable<any> {
     return this.http.patch(this.urlBase, { token })
   }
 
-  sendNotification(user: string): Observable<any> {
-    return this.http.post(this.urlBase2, { user_id: user, title: "test", body: "body" })
-  }
-  
 }
