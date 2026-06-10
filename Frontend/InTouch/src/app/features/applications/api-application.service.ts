@@ -50,6 +50,11 @@ export class ApiApplicationService extends ApiService {
         return this.http.get(`${this.urlBase}${id}/contract.pdf`, { responseType: 'blob' });
     }
 
+    /** A standard .ics calendar file for an accepted reservation (parties only). */
+    public downloadCalendar(id: number): Observable<Blob> {
+        return this.http.get(`${this.urlBase}${id}/calendar.ics`, { responseType: 'blob' });
+    }
+
     public createApplication(application: CreateApplicationDto): Observable<Application> {
         var bodyJson: string = JSON.stringify(application)
         return this.http.post<Application>(this.urlBase, bodyJson, this.options)

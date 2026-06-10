@@ -9,14 +9,20 @@
     <app-booking-view [reservation]="reservation()"></app-booking-view>
     <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
 
-    <div class="action-bar">
-      <ion-button class="act act-ghost" (click)="messageBrand()">
-        <ion-icon name="chatbubble-ellipses-outline" slot="start"></ion-icon>Message
-      </ion-button>
+    <div class="shortcuts">
+      <div class="shortcut-item" (click)="messageBrand()">
+        <div class="shortcut-icon"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></div>
+        <span>Message</span>
+      </div>
       @if (reservation().status === ApplicationStatus.Accepted) {
-        <ion-button class="act act-ghost" (click)="downloadContract()">
-          <ion-icon name="document-text-outline" slot="start"></ion-icon>Contract
-        </ion-button>
+        <div class="shortcut-item" (click)="downloadContract()">
+          <div class="shortcut-icon"><ion-icon name="document-text-outline"></ion-icon></div>
+          <span>Contract</span>
+        </div>
+        <div class="shortcut-item" (click)="addToCalendar()">
+          <div class="shortcut-icon"><ion-icon name="calendar-outline"></ion-icon></div>
+          <span>Calendar</span>
+        </div>
       }
     </div>
 

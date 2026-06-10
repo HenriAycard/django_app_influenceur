@@ -55,7 +55,7 @@ class UserListCreateView(generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
-    filterset_fields = ['password','last_login','is_superuser','id','email','firstname','lastname','is_active']
+    filterset_fields = ['id','email','firstname','lastname','is_active']
     swagger_schema = None
     pagination_class = None
          # Filter for connected user
@@ -165,10 +165,21 @@ class OpeningCreate(generics.CreateAPIView):
     queryset = Opening.objects.all()
     serializer_class = OpeningSerializer
 
+    def perform_create(self, serializer):
+        _require_own_venue(self.request, serializer.validated_data.get('venue'), 'set opening hours')
+        serializer.save()
+
 class OpeningDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
     queryset = Opening.objects.all()
     serializer_class = OpeningSerializer
+
+def _require_own_venue(request, venue, action):
+    """Creation guard: nested objects (offer, image, opening) may only be
+    attached to a venue the requester owns."""
+    if venue is None or venue.user_id != request.user.id:
+        raise PermissionDenied(f'You can only {action} for your own venues.')
+
 
 class OfferCreateView(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -177,8 +188,14 @@ class OfferCreateView(generics.ListCreateAPIView):
             return OfferCreateSerializer
         return OfferSerializer
 
+    def perform_create(self, serializer):
+        _require_own_venue(self.request, serializer.validated_data.get('venue'), 'create offers')
+        serializer.save()
+
     def get_queryset(self):
-        venue = self.request.query_params['venue']
+        venue = self.request.query_params.get('venue')
+        if venue is None:
+            raise DRFValidationError({'venue': 'This query parameter is required.'})
         queryset = Offer.objects.filter(venue_id=venue).order_by('id')
         return queryset
 
@@ -282,7 +299,32 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ReservationSerializer
 
     def perform_update(self, serializer):
-        previous_status = serializer.instance.status
+        reservation = serializer.instance
+        previous_status = reservation.status
+        is_owner = reservation.offer.venue.user_id == self.request.user.id
+
+        # The offer is fixed at application time: switching it afterwards would
+        # bypass the follower-eligibility gate enforced on creation.
+        new_offer = serializer.validated_data.get('offer')
+        if new_offer is not None and new_offer.id != reservation.offer_id:
+            raise DRFValidationError({'offer_id': 'The offer of an application cannot be changed.'})
+
+        # Status transitions are role-bound: only the venue owner decides
+        # (accept), either party may cancel/decline, nothing goes back to pending.
+        new_status = serializer.validated_data.get('status', previous_status)
+        if new_status != previous_status:
+            if new_status not in (0, 1, 2):
+                raise DRFValidationError({'status': 'Invalid status.'})
+            if new_status == 0:
+                raise DRFValidationError({'status': 'An application cannot go back to pending.'})
+            if new_status == 1 and not is_owner:
+                raise PermissionDenied('Only the venue owner can accept an application.')
+
+        # Rescheduling the visit is a venue-owner action.
+        if not is_owner and 'date_reservation' in serializer.validated_data:
+            if serializer.validated_data['date_reservation'] != reservation.date_reservation:
+                raise PermissionDenied('Only the venue owner can reschedule the visit.')
+
         reservation = serializer.save()
         # When the brand accepts/declines, tell the influencer (best-effort).
         if reservation.status != previous_status:
@@ -313,6 +355,10 @@ class ImgVenueListCreateView(generics.ListCreateAPIView):
     parser_classes = (MultiPartParser, FormParser)
     serializer_class = imgVenueSerializer
     queryset = imgVenue.objects.all().order_by('id')
+
+    def perform_create(self, serializer):
+        _require_own_venue(self.request, serializer.validated_data.get('venue'), 'upload images')
+        serializer.save()
 
 class ImgVenueRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
@@ -387,48 +433,6 @@ class SaveFCMTokenView(generics.UpdateAPIView):
         )
 
         return Response({'message': 'FCM Token saved successfully', 'created': created})
-
-
-@api_view(['POST'])
-def send_push_notification(request):
-    # Serialize and validate the incoming data
-    serializer = NotificationSerializer(data=request.data)
-    if serializer.is_valid():
-        user_id = serializer.validated_data['user_id']
-        title = serializer.validated_data['title']
-        body = serializer.validated_data['body']
-
-        try:
-            # Convert user_id to UUID to query the database            
-            # Retrieve the FCM token for the user
-            fcm_token = FCMToken.objects.get(user_id=user_id).token
-            if not fcm_token:
-                return Response({"error": "FCM token not found for user"}, status=status.HTTP_404_NOT_FOUND)
-
-            # Create the message payload
-            message = messaging.Message(
-                notification=messaging.Notification(
-                    title=title,
-                    body=body
-                ),
-                token=fcm_token
-            )
-
-            # Send the message using Firebase Admin SDK
-            response = messaging.send(message)
-
-            # Return response
-            return Response(
-                {"status": "Notification sent", "response": response},
-                status=status.HTTP_200_OK
-            )
-
-        except FCMToken.DoesNotExist:
-            return Response({"error": "FCM token not found for user"}, status=status.HTTP_404_NOT_FOUND)
-        except ValueError:
-            return Response({"error": "Invalid UUID format for user_id"}, status=status.HTTP_400_BAD_REQUEST)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # ---------------------------------------------------------------------------
@@ -552,6 +556,86 @@ class ContractPdfView(APIView):
         pdf = weasyprint.HTML(string=html).write_pdf()
         response = HttpResponse(pdf, content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="intouch-contract-{reservation.id}.pdf"'
+        return response
+
+
+class ReservationIcsView(APIView):
+    """Generates a standard .ics calendar file (RFC 5545) for an accepted
+    reservation. Restricted to the two parties."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk):
+        from icalendar import Calendar, Event as IcsEvent
+        import uuid as uuid_module
+
+        reservation = get_object_or_404(
+            Reservation.objects.select_related('offer__venue__address', 'offer__venue', 'user'),
+            pk=pk,
+        )
+        is_party = (
+            reservation.user_id == request.user.id
+            or reservation.offer.venue.user_id == request.user.id
+        )
+        if not is_party:
+            raise PermissionDenied('You are not part of this collaboration.')
+        if reservation.status != 1:
+            return Response(
+                {"detail": "The calendar invite is available once the collaboration is accepted."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        offer = reservation.offer
+        venue = offer.venue
+        address = venue.address if hasattr(venue, 'address') and venue.address else None
+
+        # Build location string from address if available
+        location_parts = []
+        if address:
+            if getattr(address, 'address_principal', None):
+                location_parts.append(address.address_principal)
+            if getattr(address, 'city', None):
+                location_parts.append(address.city)
+            if getattr(address, 'country', None):
+                location_parts.append(address.country)
+        if not location_parts and getattr(venue, 'name_venue', None):
+            location_parts.append(venue.name_venue)
+        location = ', '.join(location_parts)
+
+        # Determine event date/time from date_reservation (set by brand on accept)
+        dt = reservation.date_reservation or timezone.now()
+        # Use offer end_date if available, otherwise same day as start
+        dtstart = dt.date() if hasattr(dt, 'date') else dt
+        dtend = offer.end_date if offer.end_date else dtstart
+
+        cal = Calendar()
+        cal.add('prodid', '-//InTouch//intouch.ovh//')
+        cal.add('version', '2.0')
+        cal.add('calscale', 'GREGORIAN')
+        cal.add('method', 'REQUEST')
+
+        event = IcsEvent()
+        event.add('uid', f'intouch-reservation-{reservation.id}@intouch.ovh')
+        event.add('summary', f'{offer.name} — {venue.name_venue}')
+        event.add('dtstart', dtstart)
+        event.add('dtend', dtend)
+        event.add('dtstamp', timezone.now())
+        if location:
+            event.add('location', location)
+        description_lines = [offer.content]
+        if offer.conditions:
+            description_lines.append(f'Conditions: {offer.conditions}')
+        influencer = reservation.user
+        description_lines.append(
+            f'Influencer: {influencer.firstname} {influencer.lastname}'
+        )
+        event.add('description', '\n'.join(description_lines))
+        event.add('status', 'CONFIRMED')
+
+        cal.add_component(event)
+
+        ics_bytes = cal.to_ical()
+        response = HttpResponse(ics_bytes, content_type='text/calendar; charset=utf-8')
+        response['Content-Disposition'] = f'attachment; filename="intouch-collab-{reservation.id}.ics"'
         return response
 
 

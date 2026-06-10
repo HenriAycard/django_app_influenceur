@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, chatbubbleEllipsesOutline, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline } from 'ionicons/icons';
+import { arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
@@ -41,13 +41,20 @@ export class BrandBookingViewPage implements OnInit {
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ arrowBack, chatbubbleEllipsesOutline, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline });
+    addIcons({ arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline });
   }
 
   public downloadContract(): void {
     this.store.downloadContract(this.reservation().id).subscribe({
       next: (blob) => saveBlob(blob, `intouch-contract-${this.reservation().id}.pdf`),
       error: () => this.toastService.toastDanger('Contract', 'Could not download the contract. Please try again.'),
+    });
+  }
+
+  public addToCalendar(): void {
+    this.store.downloadCalendar(this.reservation().id).subscribe({
+      next: (blob) => saveBlob(blob, `intouch-collab-${this.reservation().id}.ics`),
+      error: () => this.toastService.toastDanger('Calendar', 'Could not generate the calendar file. Please try again.'),
     });
   }
 

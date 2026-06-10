@@ -37,7 +37,8 @@ firebase_admin.initialize_app(cred)
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DJANGO_DEBUG")
+# Strict comparison: any other value (including "False") disables debug.
+DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
 
@@ -46,7 +47,7 @@ SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-SECURE_HSTS_SECONDS = 518400
+SECURE_HSTS_SECONDS = 31536000  # 1 year, required for the preload list
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
@@ -231,6 +232,23 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    # Deny-by-default: every endpoint requires auth unless it explicitly opts
+    # out (login/registration views set AllowAny themselves).
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    # Scoped throttling: only views declaring a `throttle_scope` are limited
+    # (the auth endpoints — see jwt_cookie_views.py).
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.ScopedRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'auth': '10/min',
+        'auth-refresh': '60/min',
+    },
+    # We sit behind exactly one proxy (nginx) which sets X-Forwarded-For;
+    # without this, throttling would key every client on 127.0.0.1.
+    'NUM_PROXIES': 1,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
     'DEFAULT_RENDERER_CLASSES': (
