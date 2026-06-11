@@ -293,11 +293,17 @@ class ReservationCreateView(generics.ListCreateAPIView):
         offer = serializer.validated_data['offer']
         user = request.user
 
-        # One active application per offer. Declined ones don't block:
-        # re-applying later is fine. (A DB constraint backs this check.)
-        if Reservation.objects.filter(user=user, offer=offer, status__in=(0, 1)).exists():
+        # Blocked while a previous application is still "live": pending, or
+        # accepted with the visit ahead. Past collaborations (validated,
+        # no-show, or simply over) and declined ones never block re-applying.
+        now = timezone.now()
+        blocking = Reservation.objects.filter(user=user, offer=offer).filter(
+            Q(status=0)
+            | (Q(status=1) & (Q(date_reservation__isnull=True) | Q(date_reservation__gt=now)))
+        )
+        if blocking.exists():
             return Response(
-                {"detail": "You already have an active application for this offer."},
+                {"detail": "You already have a pending application or an upcoming collaboration for this offer."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         requirements = [
@@ -316,9 +322,9 @@ class ReservationCreateView(generics.ListCreateAPIView):
             self.perform_create(serializer)
         except IntegrityError:
             # Race with a concurrent application: the partial unique index
-            # (unique_active_application) is the source of truth.
+            # (unique_pending_application) is the source of truth.
             return Response(
-                {"detail": "You already have an active application for this offer."},
+                {"detail": "You already have a pending application for this offer."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

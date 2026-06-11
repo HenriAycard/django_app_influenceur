@@ -123,15 +123,41 @@ class ApplicationRulesTests(ApiTestCase):
             'date_reservation': (timezone.now() + timezone.timedelta(days=3)).isoformat(),
         }, format='json')
 
-    def test_duplicate_active_application_rejected(self):
+    def test_duplicate_pending_application_rejected(self):
         self.assertEqual(self.apply().status_code, 201)
         response = self.apply()
         self.assertEqual(response.status_code, 400)
-        self.assertIn('active application', response.json()['detail'])
+        self.assertIn('pending application', response.json()['detail'])
+
+    def test_blocked_while_collaboration_is_upcoming(self):
+        Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() + timezone.timedelta(days=2),
+        )
+        self.assertEqual(self.apply().status_code, 400)
 
     def test_reapply_after_decline_is_allowed(self):
         self.assertEqual(self.apply().status_code, 201)
         Reservation.objects.filter(user=self.influencer, offer=self.offer).update(status=2)
+        self.assertEqual(self.apply().status_code, 201)
+
+    def test_reapply_after_completed_collaboration_is_allowed(self):
+        # The venue validated a past collaboration (status stays Accepted);
+        # the influencer must be able to apply again — Henri's review case.
+        Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=7),
+            completed_at=timezone.now() - timezone.timedelta(days=6),
+        )
+        self.assertEqual(self.apply().status_code, 201)
+
+    def test_reapply_after_past_unvalidated_collaboration_is_allowed(self):
+        # The venue never validated: a stale past collaboration must not
+        # lock the influencer out either.
+        Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=7),
+        )
         self.assertEqual(self.apply().status_code, 201)
 
     def test_follower_gate(self):

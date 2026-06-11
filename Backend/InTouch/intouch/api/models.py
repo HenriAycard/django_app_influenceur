@@ -210,13 +210,14 @@ class Reservation(models.Model):
 
     class Meta:
         constraints = [
-            # One ACTIVE application (pending or accepted) per influencer and
-            # offer. Declined/cancelled ones don't count: re-applying later
-            # is a legitimate flow.
+            # One PENDING application per influencer and offer. Anything else
+            # is time-dependent (an accepted collaboration only blocks until
+            # its visit happens), so it is enforced in the create view — a
+            # partial index cannot reference now().
             models.UniqueConstraint(
                 fields=['user', 'offer'],
-                condition=models.Q(status__in=(0, 1)),
-                name='unique_active_application',
+                condition=models.Q(status=0),
+                name='unique_pending_application',
             ),
         ]
 
