@@ -1,9 +1,9 @@
 name: CI
 
+# Single-developer repo: run on every push (feature branches get feedback
+# before the PR opens; PRs don't double-run since we skip pull_request).
 on:
-  pull_request:
   push:
-    branches: [main]
 
 jobs:
   backend:
