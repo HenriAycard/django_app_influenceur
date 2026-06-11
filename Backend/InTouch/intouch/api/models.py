@@ -200,6 +200,18 @@ class Reservation(models.Model):
     # When the day-before email reminder went out (idempotence for the cron).
     reminder_sent_at = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        constraints = [
+            # One ACTIVE application (pending or accepted) per influencer and
+            # offer. Declined/cancelled ones don't count: re-applying later
+            # is a legitimate flow.
+            models.UniqueConstraint(
+                fields=['user', 'offer'],
+                condition=models.Q(status__in=(0, 1)),
+                name='unique_active_application',
+            ),
+        ]
+
 class Review(models.Model):
     """A rating left after a completed collaboration (an ACCEPTED reservation
     whose date has passed). Direction is inferred from the author:

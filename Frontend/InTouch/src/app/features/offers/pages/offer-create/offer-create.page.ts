@@ -26,7 +26,6 @@ export class OfferCreatePage {
     constructor(
         private router: Router,
         private route: ActivatedRoute) {
-            console.log("create new page")
     }
 
     async save(offer: Partial<Offer>) {

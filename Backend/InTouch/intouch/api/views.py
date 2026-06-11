@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import FilterSet, DateTimeFilter
-from django.contrib.postgres.search import SearchVector, SearchQuery
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,7 +13,8 @@ from rest_framework.parsers import MultiPartParser, FormParser, FileUploadParser
 from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ValidationError as DRFValidationError
 
-from django.db.models import F, Q
+from django.db import IntegrityError
+from django.db.models import Avg, Count, F, Q
 
 from .models import *
 from .serializers import *
@@ -144,13 +145,26 @@ class VenueCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
 
         if user.is_influencer == 0:
             queryset = Venue.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, is_actif=1).order_by('id')
         else:
             queryset = Venue.objects.all().order_by('id')
-        return queryset
+        return _with_venue_card_data(queryset)
+
+def _with_venue_card_data(queryset):
+    """Everything VenueSerializer needs, computed in the main query instead of
+    per-row lookups (kills the N+1: ratings are aggregated by Postgres, related
+    objects are fetched in bulk)."""
+    influencer_reviews = Q(offer__reservation__reviews__author=F('offer__reservation__user'))
+    return (queryset
+            .select_related('type_venue', 'user')
+            .prefetch_related('imgVenue')
+            .annotate(
+                rating_avg=Avg('offer__reservation__reviews__rating', filter=influencer_reviews),
+                rating_count=Count('offer__reservation__reviews', filter=influencer_reviews, distinct=True),
+            ))
+
 
 class VenueSearchView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -158,18 +172,21 @@ class VenueSearchView(generics.ListAPIView):
     swagger_schema = None
 
     def get_queryset(self):
-        query = self.request.GET.get('search')
-        query = "|".join(query.split(' ')) #joining the space separated words with | for OR condition
+        query = (self.request.GET.get('search') or '').strip()
+        if not query:
+            raise DRFValidationError({'search': 'This query parameter is required.'})
 
-        search_query = SearchQuery(query, search_type='raw')
+        # `websearch` parses free-form user input safely (quoted phrases, OR,
+        # minus) — unlike `raw`, malformed input can't crash the tsquery parser.
+        search_query = SearchQuery(query, search_type='websearch')
         search_vector = SearchVector('name_venue', weight='A') + SearchVector('description', weight='B') + SearchVector('address__city', weight='C')
 
-        brands = Venue.objects.annotate(
-            search=search_vector,
-            rank=SearchVector(search_vector, search_query)
-        ).filter(search=search_query).order_by("-rank")
-
-        return brands
+        return _with_venue_card_data(
+            Venue.objects.annotate(
+                search=search_vector,
+                rank=SearchRank(search_vector, search_query),
+            ).filter(search=search_query).order_by('-rank')
+        )
 
 
 class VenueDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -180,13 +197,12 @@ class VenueDetail(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
 
         if user.is_influencer == 0:
             queryset = Venue.objects.filter(user_id=user.id)
         else:
             queryset = Venue.objects.all()
-        return queryset
+        return _with_venue_card_data(queryset.select_related('address').prefetch_related('openings'))
 
 
 class AddressCreate(generics.CreateAPIView):
@@ -274,6 +290,14 @@ class ReservationCreateView(generics.ListCreateAPIView):
         # network (#4). The influencer must meet every requirement the offer sets.
         offer = serializer.validated_data['offer']
         user = request.user
+
+        # One active application per offer. Declined ones don't block:
+        # re-applying later is fine. (A DB constraint backs this check.)
+        if Reservation.objects.filter(user=user, offer=offer, status__in=(0, 1)).exists():
+            return Response(
+                {"detail": "You already have an active application for this offer."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         requirements = [
             ('Instagram', offer.min_followers_instagram, user.instagram_followers),
             ('TikTok', offer.min_followers_tiktok, user.tiktok_followers),
@@ -286,7 +310,15 @@ class ReservationCreateView(generics.ListCreateAPIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        self.perform_create(serializer)
+        try:
+            self.perform_create(serializer)
+        except IntegrityError:
+            # Race with a concurrent application: the partial unique index
+            # (unique_active_application) is the source of truth.
+            return Response(
+                {"detail": "You already have an active application for this offer."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # Best-effort: alert the venue owner (brand) that a new application came
         # in. A missing token must never fail the application itself (the old
@@ -300,6 +332,14 @@ class ReservationCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @staticmethod
+    def _parse_date(raw, param):
+        """Query-param date → aware datetime, or a clean 400 (never a 500)."""
+        try:
+            return timezone.make_aware(datetime.strptime(raw, '%Y-%m-%d'))
+        except (ValueError, TypeError):
+            raise DRFValidationError({param: 'Expected a date in YYYY-MM-DD format.'})
 
     def get_queryset(self):
         queryset = Reservation.objects.all()
@@ -315,20 +355,18 @@ class ReservationCreateView(generics.ListCreateAPIView):
             filter_params = {'user': user.id}
         else:
             filter_params = {'offer__venue__user_id': user.id}
-        
+
         # Apply filters based on status and date range
         if status_resa:
-            filter_params['status'] = status_resa
-        
+            if status_resa not in ('0', '1', '2'):
+                raise DRFValidationError({'status': 'Expected 0 (pending), 1 (accepted) or 2 (declined).'})
+            filter_params['status'] = int(status_resa)
+
         if from_date_resa:
-            filter_params['date_reservation__gte'] = timezone.make_aware(
-                datetime.strptime(from_date_resa, '%Y-%m-%d')
-            )
+            filter_params['date_reservation__gte'] = self._parse_date(from_date_resa, 'from_date')
 
         if to_date_resa:
-            filter_params['date_reservation__lt'] = timezone.make_aware(
-                datetime.strptime(to_date_resa, '%Y-%m-%d')
-            )
+            filter_params['date_reservation__lt'] = self._parse_date(to_date_resa, 'to_date')
 
         # Apply filters and return the result
         return queryset.filter(**filter_params).order_by('date_reservation')
@@ -612,7 +650,6 @@ class ReservationIcsView(APIView):
 
     def get(self, request, pk):
         from icalendar import Calendar, Event as IcsEvent
-        import uuid as uuid_module
 
         reservation = get_object_or_404(
             Reservation.objects.select_related('offer__venue__address', 'offer__venue', 'user'),

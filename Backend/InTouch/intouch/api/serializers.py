@@ -2,24 +2,41 @@ from .models import *
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, PrimaryKeyRelatedField, ValidationError, IntegerField
 import uuid
 from rest_framework import serializers
-from django.db.models import Avg, F
+from django.db.models import Avg, Count, F
 from django.utils import timezone
 
 #created by ionic django crud generator
 
 
 def _venue_rating(venue):
-    """(average, count) of influencer-authored reviews for a venue."""
-    qs = Review.objects.filter(reservation__offer__venue=venue, author=F('reservation__user'))
-    agg = qs.aggregate(avg=Avg('rating'))
-    return (round(agg['avg'], 1) if agg['avg'] is not None else None, qs.count())
+    """(average, count) of influencer-authored reviews for a venue.
+
+    Reads queryset annotations (`rating_avg`/`rating_count`, see
+    `_with_venue_card_data` in views.py) when present — zero extra queries —
+    and memoizes per instance so avg+count never trigger duplicate lookups."""
+    cached = getattr(venue, '_rating_cache', None)
+    if cached is None:
+        if hasattr(venue, 'rating_avg'):
+            avg = venue.rating_avg
+            cached = (round(avg, 1) if avg is not None else None, venue.rating_count)
+        else:
+            qs = Review.objects.filter(reservation__offer__venue=venue, author=F('reservation__user'))
+            agg = qs.aggregate(avg=Avg('rating'), n=Count('id'))
+            cached = (round(agg['avg'], 1) if agg['avg'] is not None else None, agg['n'])
+        venue._rating_cache = cached
+    return cached
 
 
 def _influencer_rating(user):
-    """(average, count) of brand-authored reviews targeting an influencer."""
-    qs = Review.objects.filter(reservation__user=user).exclude(author=F('reservation__user'))
-    agg = qs.aggregate(avg=Avg('rating'))
-    return (round(agg['avg'], 1) if agg['avg'] is not None else None, qs.count())
+    """(average, count) of brand-authored reviews targeting an influencer.
+    Memoized per instance (avg+count = one query instead of four)."""
+    cached = getattr(user, '_rating_cache', None)
+    if cached is None:
+        qs = Review.objects.filter(reservation__user=user).exclude(author=F('reservation__user'))
+        agg = qs.aggregate(avg=Avg('rating'), n=Count('id'))
+        cached = (round(agg['avg'], 1) if agg['avg'] is not None else None, agg['n'])
+        user._rating_cache = cached
+    return cached
 
 class MethodField(SerializerMethodField):
     def __init__(self, method_name=None, **kwargs):
@@ -48,6 +65,14 @@ class UserSerializer(ModelSerializer):
     def get_review_count(self, obj):
         return _influencer_rating(obj)[1]
 
+class BasicUserSerializer(ModelSerializer):
+    """Identity-only user shape (no rating aggregates) for places where the
+    full profile is overkill: venue cards, chat, etc."""
+    class Meta:
+        model = User
+        fields = ('id', 'firstname', 'lastname', 'avatar')
+
+
 class AddressSerializer(ModelSerializer):
 
     class Meta:
@@ -74,7 +99,9 @@ class imgVenueSerializer(ModelSerializer):
         fields = '__all__'
 
 class VenueSerializer(ModelSerializer):
-    user = UserSerializer(many=False, read_only=True)
+    # Identity only: computing the owner's influencer rating on every venue
+    # card was pure N+1 waste (a venue owner has no influencer reviews).
+    user = BasicUserSerializer(many=False, read_only=True)
     type_venue = TypeVenueSerializer(many=False, read_only=True)
     imgVenue = imgVenueSerializer(many=True, read_only=True)
     average_rating = SerializerMethodField()
@@ -260,13 +287,6 @@ class RegisterRequestSerializer(serializers.Serializer):
                 {'detail': 'Please provide at least one social media handle.'}
             )
         return attrs
-
-
-class ChatUserSerializer(ModelSerializer):
-    """Minimal user shape for chat (avoids the rating aggregates of UserSerializer)."""
-    class Meta:
-        model = User
-        fields = ('id', 'firstname', 'lastname', 'avatar')
 
 
 class MessageSerializer(ModelSerializer):
