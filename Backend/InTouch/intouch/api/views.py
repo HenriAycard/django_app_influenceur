@@ -609,6 +609,36 @@ class VenueViewLogView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class MediaKitPdfView(APIView):
+    """One-page PDF media kit for the authenticated influencer: socials,
+    declared audience, and platform-verified track record. Built with the
+    same WeasyPrint pipeline as the contract."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if not user.is_influencer:
+            raise PermissionDenied('The media kit is available to influencer accounts.')
+
+        now = timezone.now()
+        completed = Reservation.objects.filter(user=user, status=1, date_reservation__lt=now)
+        avg_rating, review_count = _influencer_rating(user)
+
+        import weasyprint  # local import: keeps module import cheap and optional
+        html = render_to_string('media_kit.html', {
+            'influencer': user,
+            'generated': now,
+            'collaborations': completed.count(),
+            'venues_visited': completed.values('offer__venue').distinct().count(),
+            'average_rating': avg_rating,
+            'review_count': review_count,
+        })
+        pdf = weasyprint.HTML(string=html).write_pdf()
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="intouch-media-kit-{user.firstname}-{user.lastname}.pdf"'
+        return response
+
+
 # ---------------------------------------------------------------------------
 # Post-acceptance lifecycle: post link -> validation (or no-show)
 # ---------------------------------------------------------------------------

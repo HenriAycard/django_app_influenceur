@@ -15,6 +15,7 @@ urlpatterns = [
     path('venue/<int:pk>/analytics', VenueAnalyticsView.as_view(), name='venue_analytics'),
     path('venue/<int:pk>/view', VenueViewLogView.as_view(), name='venue_view_log'),
     path('influencer/analytics', InfluencerAnalyticsView.as_view(), name='influencer_analytics'),
+    path('influencer/media-kit.pdf', MediaKitPdfView.as_view(), name='influencer_media_kit'),
     path('imgVenue/', ImgVenueListCreateView.as_view(), name='imgVenue_create'),
     path('imgVenue/<int:pk>', ImgVenueRetrieveUpdateDestroyView.as_view(), name='imgVenue_detail'),
     path('address/', AddressCreate.as_view(), name='address_list'),
