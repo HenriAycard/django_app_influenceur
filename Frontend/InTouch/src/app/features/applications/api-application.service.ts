@@ -55,6 +55,24 @@ export class ApiApplicationService extends ApiService {
         return this.http.get(`${this.urlBase}${id}/calendar.ics`, { responseType: 'blob' });
     }
 
+    /** Influencer: share the URL of the content published for this collaboration. */
+    public submitPostLink(id: number, url: string): Observable<Application> {
+        return this.http.post<ApplicationDto>(`${this.urlBase}${id}/post-link`, JSON.stringify({ url }), this.options)
+            .pipe(map(dto => this.toApplication(dto)));
+    }
+
+    /** Venue owner: confirm the collaboration went through. */
+    public complete(id: number): Observable<Application> {
+        return this.http.post<ApplicationDto>(`${this.urlBase}${id}/complete`, '{}', this.options)
+            .pipe(map(dto => this.toApplication(dto)));
+    }
+
+    /** Venue owner: report that the influencer never showed up. */
+    public reportNoShow(id: number): Observable<Application> {
+        return this.http.post<ApplicationDto>(`${this.urlBase}${id}/no-show`, '{}', this.options)
+            .pipe(map(dto => this.toApplication(dto)));
+    }
+
     public createApplication(application: CreateApplicationDto): Observable<Application> {
         var bodyJson: string = JSON.stringify(application)
         return this.http.post<Application>(this.urlBase, bodyJson, this.options)

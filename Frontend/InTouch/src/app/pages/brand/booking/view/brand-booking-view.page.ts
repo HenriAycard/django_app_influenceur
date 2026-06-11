@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
 import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline } from 'ionicons/icons';
+import { alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline, linkOutline, timeOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
@@ -41,7 +41,7 @@ export class BrandBookingViewPage implements OnInit {
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline });
+    addIcons({ alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline, linkOutline, timeOutline });
   }
 
   public downloadContract(): void {
@@ -136,6 +136,46 @@ export class BrandBookingViewPage implements OnInit {
   public isFuture(): boolean {
     const d = this.reservation().dateReservation;
     return !!d && new Date(d) > new Date();
+  }
+
+  /** Lifecycle zone shows once the accepted visit has happened. */
+  public isPastAccepted(): boolean {
+    const r = this.reservation();
+    return r.status === ApplicationStatus.Accepted && !this.isFuture();
+  }
+
+  readonly lifecycleBusy = signal(false);
+
+  public validateCollaboration(): void {
+    if (this.lifecycleBusy()) return;
+    this.lifecycleBusy.set(true);
+    this.store.complete(this.reservation().id).subscribe({
+      next: (updated) => {
+        this.lifecycleBusy.set(false);
+        this.reservation.set(updated);
+        this.toastService.toastSuccess('Collaboration validated', 'The influencer has been notified.');
+      },
+      error: (err) => {
+        this.lifecycleBusy.set(false);
+        this.toastService.toastDanger('Validation', err?.error?.detail ?? 'Could not validate. Please try again.');
+      },
+    });
+  }
+
+  public reportNoShow(): void {
+    if (this.lifecycleBusy()) return;
+    this.lifecycleBusy.set(true);
+    this.store.reportNoShow(this.reservation().id).subscribe({
+      next: (updated) => {
+        this.lifecycleBusy.set(false);
+        this.reservation.set(updated);
+        this.toastService.toastSuccess('No-show reported', 'This collaboration is marked as a no-show.');
+      },
+      error: (err) => {
+        this.lifecycleBusy.set(false);
+        this.toastService.toastDanger('No-show', err?.error?.detail ?? 'Could not report the no-show. Please try again.');
+      },
+    });
   }
 
 }

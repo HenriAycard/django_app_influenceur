@@ -25,6 +25,8 @@ from . import emails
 import logging
 from uuid import UUID
 from datetime import datetime
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
 from firebase_admin import messaging
 
@@ -587,6 +589,7 @@ class InfluencerAnalyticsView(APIView):
             'declined': declined,
             'acceptance_rate': _acceptance_rate(accepted, declined),
             'collaborations_realized': completed.count(),
+            'no_shows': reservations.filter(no_show_at__isnull=False).count(),
             'upcoming': reservations.filter(status=1, date_reservation__gte=now).count(),
             'venues_visited': completed.values('offer__venue').distinct().count(),
             'average_rating': avg_rating,
@@ -604,6 +607,87 @@ class VenueViewLogView(APIView):
         if venue.user_id != request.user.id:
             VenueView.objects.create(venue=venue, user=request.user)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# ---------------------------------------------------------------------------
+# Post-acceptance lifecycle: post link -> validation (or no-show)
+# ---------------------------------------------------------------------------
+
+def _lifecycle_reservation(request, pk):
+    """Shared loader: an ACCEPTED reservation whose visit date has passed."""
+    reservation = get_object_or_404(
+        Reservation.objects.select_related('offer__venue__user', 'user'), pk=pk)
+    if reservation.status != 1:
+        raise DRFValidationError({'detail': 'This collaboration is not accepted.'})
+    if not reservation.date_reservation or reservation.date_reservation > timezone.now():
+        raise DRFValidationError({'detail': 'The visit has not happened yet.'})
+    return reservation
+
+
+class ReservationPostLinkView(APIView):
+    """The influencer shares the URL of the content they published."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        reservation = _lifecycle_reservation(request, pk)
+        if reservation.user_id != request.user.id:
+            raise PermissionDenied('Only the influencer can submit the post link.')
+        if reservation.no_show_at:
+            raise DRFValidationError({'detail': 'This collaboration was reported as a no-show.'})
+
+        url = (request.data.get('url') or '').strip()
+        validator = URLValidator(schemes=['http', 'https'])
+        try:
+            validator(url)
+        except DjangoValidationError:
+            raise DRFValidationError({'url': 'Please provide a valid link to your post.'})
+
+        reservation.post_url = url
+        reservation.post_submitted_at = timezone.now()
+        reservation.save(update_fields=['post_url', 'post_submitted_at'])
+
+        owner_id = reservation.offer.venue.user_id
+        _notify(owner_id, "Content published",
+                f"{request.user.firstname} shared the post for your collaboration.")
+        emails.send_post_submitted(reservation)
+        return Response(ReservationSerializer(reservation, context={'request': request}).data)
+
+
+class ReservationCompleteView(APIView):
+    """The venue owner confirms the collaboration went through."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        reservation = _lifecycle_reservation(request, pk)
+        if reservation.offer.venue.user_id != request.user.id:
+            raise PermissionDenied('Only the venue owner can validate the collaboration.')
+        if reservation.no_show_at:
+            raise DRFValidationError({'detail': 'This collaboration was reported as a no-show.'})
+
+        if not reservation.completed_at:
+            reservation.completed_at = timezone.now()
+            reservation.save(update_fields=['completed_at'])
+            _notify(reservation.user_id, "Collaboration validated",
+                    "The venue confirmed your collaboration. Thank you!")
+            emails.send_collaboration_validated(reservation)
+        return Response(ReservationSerializer(reservation, context={'request': request}).data)
+
+
+class ReservationNoShowView(APIView):
+    """The venue owner reports that the influencer never came."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        reservation = _lifecycle_reservation(request, pk)
+        if reservation.offer.venue.user_id != request.user.id:
+            raise PermissionDenied('Only the venue owner can report a no-show.')
+        if reservation.completed_at:
+            raise DRFValidationError({'detail': 'This collaboration is already validated.'})
+
+        if not reservation.no_show_at:
+            reservation.no_show_at = timezone.now()
+            reservation.save(update_fields=['no_show_at'])
+        return Response(ReservationSerializer(reservation, context={'request': request}).data)
 
 
 class ContractPdfView(APIView):

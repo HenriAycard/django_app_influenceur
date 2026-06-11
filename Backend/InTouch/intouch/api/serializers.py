@@ -210,7 +210,9 @@ class ReservationSerializer(ModelSerializer):
 
     class Meta:
         model = Reservation
-        fields = ('id', 'offer', 'offer_id', 'status', 'date_reservation', 'user', 'my_review', 'can_review')
+        fields = ('id', 'offer', 'offer_id', 'status', 'date_reservation', 'user', 'my_review', 'can_review',
+                  'post_url', 'post_submitted_at', 'completed_at', 'no_show_at')
+        read_only_fields = ('post_url', 'post_submitted_at', 'completed_at', 'no_show_at')
 
     def _viewer(self):
         request = self.context.get('request')

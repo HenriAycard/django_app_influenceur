@@ -166,6 +166,62 @@ class CleanValidationTests(ApiTestCase):
         self.assertEqual(response.status_code, 400)
 
 
+class LifecycleTests(ApiTestCase):
+
+    def past_accepted(self):
+        return Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=1),
+        )
+
+    def test_influencer_submits_post_link(self):
+        reservation = self.past_accepted()
+        response = self.as_user(self.influencer).post(
+            f'/api/reservation/{reservation.id}/post-link',
+            {'url': 'https://instagram.com/p/abc'}, format='json')
+        self.assertEqual(response.status_code, 200)
+        reservation.refresh_from_db()
+        self.assertEqual(reservation.post_url, 'https://instagram.com/p/abc')
+        self.assertIsNotNone(reservation.post_submitted_at)
+
+    def test_post_link_rejected_before_the_visit(self):
+        reservation = self.application(status=1)  # future date
+        response = self.as_user(self.influencer).post(
+            f'/api/reservation/{reservation.id}/post-link',
+            {'url': 'https://instagram.com/p/abc'}, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_owner_validates_collaboration(self):
+        reservation = self.past_accepted()
+        response = self.as_user(self.brand).post(
+            f'/api/reservation/{reservation.id}/complete', {}, format='json')
+        self.assertEqual(response.status_code, 200)
+        reservation.refresh_from_db()
+        self.assertIsNotNone(reservation.completed_at)
+
+    def test_influencer_cannot_validate(self):
+        reservation = self.past_accepted()
+        response = self.as_user(self.influencer).post(
+            f'/api/reservation/{reservation.id}/complete', {}, format='json')
+        self.assertEqual(response.status_code, 403)
+
+    def test_no_show_blocked_after_validation(self):
+        reservation = self.past_accepted()
+        reservation.completed_at = timezone.now()
+        reservation.save()
+        response = self.as_user(self.brand).post(
+            f'/api/reservation/{reservation.id}/no-show', {}, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_owner_reports_no_show(self):
+        reservation = self.past_accepted()
+        response = self.as_user(self.brand).post(
+            f'/api/reservation/{reservation.id}/no-show', {}, format='json')
+        self.assertEqual(response.status_code, 200)
+        reservation.refresh_from_db()
+        self.assertIsNotNone(reservation.no_show_at)
+
+
 class RegistrationTests(ApiTestCase):
 
     def test_influencer_needs_a_social_handle(self):

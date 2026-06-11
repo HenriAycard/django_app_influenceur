@@ -200,6 +200,14 @@ class Reservation(models.Model):
     # When the day-before email reminder went out (idempotence for the cron).
     reminder_sent_at = models.DateTimeField(null=True, blank=True)
 
+    # --- Post-acceptance lifecycle (status stays 1/Accepted throughout) ---
+    # The influencer submits the published content; the venue owner then
+    # validates the collaboration — or reports that nobody showed up.
+    post_url = models.URLField(max_length=500, null=True, blank=True)
+    post_submitted_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    no_show_at = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         constraints = [
             # One ACTIVE application (pending or accepted) per influencer and

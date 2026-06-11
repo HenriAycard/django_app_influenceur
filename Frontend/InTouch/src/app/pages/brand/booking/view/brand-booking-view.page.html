@@ -7,6 +7,56 @@
 
   @if (isLoad()) {
     <app-booking-view [reservation]="reservation()"></app-booking-view>
+
+    @if (isPastAccepted()) {
+      <div class="lifecycle-card">
+        @if (reservation().noShowAt) {
+          <div class="state state-danger">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <div>
+              <h4>Marked as no-show</h4>
+              <p>You reported that the influencer didn't show up.</p>
+            </div>
+          </div>
+        } @else if (reservation().completedAt) {
+          <div class="state state-success">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            <div>
+              <h4>Collaboration validated</h4>
+              @if (reservation().postUrl) {
+                <a [href]="reservation().postUrl" target="_blank" rel="noopener">View the published post</a>
+              }
+            </div>
+          </div>
+        } @else {
+          @if (reservation().postUrl) {
+            <div class="state state-pending">
+              <ion-icon name="link-outline"></ion-icon>
+              <div>
+                <h4>Content published</h4>
+                <p>{{ reservation().user.firstname }} shared the post for this collaboration.</p>
+                <a [href]="reservation().postUrl" target="_blank" rel="noopener">View the post</a>
+              </div>
+            </div>
+          } @else {
+            <div class="state state-pending">
+              <ion-icon name="time-outline"></ion-icon>
+              <div>
+                <h4>Waiting for the post</h4>
+                <p>{{ reservation().user.firstname }} hasn't shared the published content yet.</p>
+              </div>
+            </div>
+          }
+          <div class="lifecycle-actions">
+            <ion-button class="act act-ghost act-danger-text" (click)="reportNoShow()" [disabled]="lifecycleBusy()">No-show</ion-button>
+            <ion-button class="act act-primary" (click)="validateCollaboration()" [disabled]="lifecycleBusy()">
+              <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Validate
+            </ion-button>
+          </div>
+        }
+      </div>
+    }
+
     <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
 
     <div class="shortcuts">
