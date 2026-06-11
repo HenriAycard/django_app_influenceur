@@ -5,3 +5,7 @@ export const domainConfig={
 	staticStorage:"static/storage/",
     apiPrefix : "api"
 }
+
+// Sentry error monitoring. Empty string = disabled. Frontend DSNs are public
+// by design (they only allow submitting events, not reading them).
+export const sentryDsn = '';

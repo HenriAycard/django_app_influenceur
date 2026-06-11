@@ -29,10 +29,25 @@ environ.Env.read_env()
 
 ENVIRONMENT_NAME = os.getenv("ENVIRONMENT_NAME", default="")
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+
+# --- Sentry (error monitoring) ---------------------------------------------
+# Off until SENTRY_DSN is set in .env. Errors only (no performance traces):
+# stays comfortably within the free tier.
+SENTRY_DSN = os.getenv("SENTRY_DSN", "")
+if SENTRY_DSN:
+    import sentry_sdk
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=ENVIRONMENT_NAME or "production",
+        send_default_pii=False,
+        traces_sample_rate=0,
+    )
 DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+# Firebase is optional at boot (absent in CI): push sends fail soft in
+# _notify when no app is initialized.
 FIREBASE_CREDENTIALS_PATH = os.getenv("FIREBASE_CREDENTIALS_PATH")
-cred = credentials.Certificate(FIREBASE_CREDENTIALS_PATH)
-firebase_admin.initialize_app(cred)
+if FIREBASE_CREDENTIALS_PATH and os.path.exists(FIREBASE_CREDENTIALS_PATH):
+    firebase_admin.initialize_app(credentials.Certificate(FIREBASE_CREDENTIALS_PATH))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -40,7 +55,7 @@ firebase_admin.initialize_app(cred)
 # Strict comparison: any other value (including "False") disables debug.
 DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "localhost,testserver").split(",")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SECURE_SSL_REDIRECT = True
