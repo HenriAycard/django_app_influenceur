@@ -1,7 +1,7 @@
 import { HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User, LoginParam, TokenResponse, UserParam } from 'src/app/shared/models';
+import { User, LoginParam, TokenResponse, RegisterRequest } from 'src/app/shared/models';
 import * as Constant from '../../config/constant';
 import { ApiService } from './api.service';
 
@@ -44,8 +44,23 @@ export class ApiAuthService extends ApiService {
     return this.http.post<void>(this.urlBase + "users/set_password/", params);
   }
 
-  createUser(params: UserParam) : Observable<any> {
-    return this.http.post<any>(this.urlBase + "users/", params);
+  // Application to join (no password): the account awaits admin approval.
+  register(params: RegisterRequest) : Observable<any> {
+    const url = `${Constant.domainConfig.virtual_host}${Constant.domainConfig.apiPrefix}/register/`;
+    return this.http.post<any>(url, params);
+  }
+
+  // Djoser: emails a set-password link if an account matches this address.
+  requestPasswordReset(email: string) : Observable<void> {
+    return this.http.post<void>(this.urlBase + "users/reset_password/", { email });
+  }
+
+  // Djoser: consumes the uid+token from the emailed link (invitation or reset)
+  // and stores the user's new password.
+  confirmPassword(uid: string, token: string, newPassword: string) : Observable<void> {
+    return this.http.post<void>(this.urlBase + "users/reset_password_confirm/", {
+      uid, token, new_password: newPassword,
+    });
   }
 
   update(id: string, params: Partial<User>): Observable<User> {

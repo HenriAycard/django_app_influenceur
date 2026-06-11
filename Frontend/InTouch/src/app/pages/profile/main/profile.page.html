@@ -52,6 +52,10 @@
           <ion-item lines="none" [routerLink]="['stats']"><ion-icon slot="start" name="stats-chart-outline"></ion-icon><ion-label>My statistics</ion-label></ion-item>
         }
         <ion-item lines="none" button (click)="enableNotifications()"><ion-icon slot="start" name="notifications-outline"></ion-icon><ion-label>Notifications</ion-label></ion-item>
+        <ion-item lines="none">
+          <ion-icon slot="start" name="mail-outline"></ion-icon>
+          <ion-toggle [checked]="user.emailNotifications !== false" (ionChange)="toggleEmailNotifications($event)">Email notifications</ion-toggle>
+        </ion-item>
         <ion-item lines="none" [routerLink]="['security']"><ion-icon slot="start" name="lock-closed-outline"></ion-icon><ion-label>Security</ion-label></ion-item>
         <ion-item lines="none" (click)="openSupportEmail()">
           <ion-icon slot="start" name="help-circle-outline"></ion-icon>

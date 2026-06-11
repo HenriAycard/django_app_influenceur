@@ -1,40 +1,83 @@
 <ion-content [fullscreen]="true">
   <div class="container">
-    <h1 class="heading">🚀 Create Account<br><br></h1>
-    <p class="para">Sign up to get started!</p>
-    <form [formGroup]="validations_form">
-      <ion-item lines="none" class="ion-item">
-        <fieldset  class="input-item">
-          <legend>First name</legend> 
-          <ion-input formControlName="firstName" type="text" placeholder="John"></ion-input>
-        </fieldset>
-      </ion-item>
-      <ion-item lines="none" class="ion-item">
-        <fieldset  class="input-item">
-          <legend>Last name</legend> 
-          <ion-input formControlName="lastName" type="text" placeholder="Doe"></ion-input>
-        </fieldset>
-      </ion-item>
-      <ion-item lines="none" class="ion-item">
-        <fieldset  class="input-item">
-          <legend>Email</legend> 
-          <ion-input formControlName="email" type="email" placeholder="john@doe.com"></ion-input>
-        </fieldset>
-      </ion-item>
-      <ion-item lines="none" class="ion-item">
-        <fieldset class="input-item">
-          <legend>Password</legend> 
-          <ion-input formControlName="password" type="password" placeholder="*******"></ion-input>
-        </fieldset>
-      </ion-item>
-      <ion-item lines="none" class="ion-item">
-        <fieldset class="input-item">
-          <legend>Confirm password</legend> 
-          <ion-input formControlName="confirmpassword" type="password" placeholder="*******"></ion-input>
-        </fieldset>
-      </ion-item>
-      <p class="signup-text">I'm already a member&nbsp;<a (click)="signin()">Sign In?</a></p>
-      <ion-button class="login-button" (click)="register()" expand="block" [disabled]="!validations_form.valid">Sign Up</ion-button>
-    </form>
+
+    @switch (step()) {
+
+      @case ('role') {
+        <h1 class="heading">Join InTouch</h1>
+        <p class="para">Tell us who you are — we review every application.</p>
+
+        <div class="role-cards">
+          <button type="button" class="role-card" (click)="chooseRole('influencer')">
+            <div class="role-icon"><ion-icon name="megaphone-outline"></ion-icon></div>
+            <h3>I'm an influencer</h3>
+            <p>Discover venues and collaborate with brands you love.</p>
+          </button>
+          <button type="button" class="role-card" (click)="chooseRole('venue')">
+            <div class="role-icon"><ion-icon name="storefront-outline"></ion-icon></div>
+            <h3>I have a venue</h3>
+            <p>Publish offers and welcome creators to your place.</p>
+          </button>
+        </div>
+
+        <p class="signup-text">I'm already a member&nbsp;<a (click)="signin()">Sign In?</a></p>
+      }
+
+      @case ('form') {
+        <button type="button" class="back-link" (click)="back()">
+          <ion-icon name="arrow-back"></ion-icon> Back
+        </button>
+        <h1 class="heading">
+          @if (role() === 'influencer') { Influencer application } @else { Venue application }
+        </h1>
+        <p class="para">No password needed yet — you'll set it once your account is approved.</p>
+
+        <form [formGroup]="form">
+          <fieldset class="input-item">
+            <legend>First name</legend>
+            <ion-input formControlName="firstName" type="text" placeholder="John"></ion-input>
+          </fieldset>
+          <fieldset class="input-item">
+            <legend>Last name</legend>
+            <ion-input formControlName="lastName" type="text" placeholder="Doe"></ion-input>
+          </fieldset>
+          <fieldset class="input-item">
+            <legend>Email</legend>
+            <ion-input formControlName="email" type="email" placeholder="john@doe.com"></ion-input>
+          </fieldset>
+
+          @if (role() === 'influencer') {
+            <p class="section-hint">Your social profiles — at least one is required.</p>
+            <fieldset class="input-item">
+              <legend><ion-icon name="logo-instagram"></ion-icon> Instagram</legend>
+              <ion-input formControlName="instagram" type="text" placeholder="@johndoe"></ion-input>
+            </fieldset>
+            <fieldset class="input-item">
+              <legend><ion-icon name="logo-tiktok"></ion-icon> TikTok</legend>
+              <ion-input formControlName="tiktok" type="text" placeholder="@johndoe"></ion-input>
+            </fieldset>
+            <fieldset class="input-item">
+              <legend><ion-icon name="logo-youtube"></ion-icon> YouTube</legend>
+              <ion-input formControlName="youtube" type="text" placeholder="@johndoe"></ion-input>
+            </fieldset>
+          }
+
+          <ion-button class="login-button" expand="block" (click)="submit()" [disabled]="!canSubmit()">
+            Send my application
+          </ion-button>
+        </form>
+      }
+
+      @case ('done') {
+        <div class="done-state">
+          <ion-icon name="checkmark-circle" class="done-icon"></ion-icon>
+          <h1>Application received!</h1>
+          <p>We review every application to keep the community trusted.</p>
+          <p>You'll receive an email with a link to set your password as soon as your account is approved.</p>
+          <ion-button class="login-button" expand="block" (click)="signin()">Back to sign in</ion-button>
+        </div>
+      }
+    }
+
   </div>
 </ion-content>

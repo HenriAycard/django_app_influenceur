@@ -1,73 +1,145 @@
+.container {
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+}
 
-.heading{
-    font-size: 32px;
-    font-weight: bold;
-    padding-left: 20px;
-    margin-top: 70px;
-    margin-bottom: -60px;
+.heading {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 56px 0 8px;
 }
-.para{
-    font-size: 22px;
-    font-weight: 500;
-    padding-left: 20px;
-    margin-bottom: 70px;
-    color: #A6ABB1;
+
+.para {
+  font-size: 16px;
+  font-weight: 500;
+  color: #a6abb1;
+  margin: 0 0 32px;
 }
-.input-item{
-    padding-left: 20px;
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 40px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ion-color-medium, #6b6b76);
+}
+
+/* --- Step 1: role choice ------------------------------------------------ */
+.role-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.role-card {
+  text-align: left;
+  background: #fff;
+  border: 2px solid #e2e2e2;
+  border-radius: 16px;
+  padding: 20px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.role-card:active {
+  border-color: #0e6e52;
+  background: #e8f3ef;
+}
+.role-card h3 {
+  margin: 12px 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ion-text-color, #16161d);
+}
+.role-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #a6abb1;
+}
+.role-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #e8f3ef;
+  color: #0e6e52;
+  font-size: 22px;
+}
+
+/* --- Step 2: form ------------------------------------------------------- */
+.input-item {
+  padding: 0 16px 6px;
+  width: 100%;
+  border-radius: 12px;
+  border: 2px solid #e2e2e2;
+  margin: 0 0 16px;
+
+  legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0 6px;
+    font-size: 13px;
+    color: var(--ion-color-medium, #6b6b76);
+  }
+}
+
+.section-hint {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ion-color-medium, #6b6b76);
+  margin: 24px 0 14px;
+}
+
+.login-button {
+  height: 50px;
+  --border-radius: 12px;
+  margin-top: 28px;
+  --box-shadow: none;
+}
+
+.signup-text {
+  margin-top: 28px;
+  text-align: end;
+
+  a {
+    text-decoration: none;
+    color: var(--ion-color-primary);
+  }
+}
+
+/* --- Step 3: confirmation ------------------------------------------------ */
+.done-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 18vh;
+
+  .done-icon {
+    font-size: 72px;
+    color: #0e6e52;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 12px;
+  }
+  p {
+    font-size: 15px;
+    line-height: 1.55;
+    color: #a6abb1;
+    margin: 0 0 10px;
+  }
+  ion-button {
     width: 100%;
-    border-radius: 12px;
-    border: 2px solid #e2e2e2;
-    height: 70px;
-    ion-input{
-        margin-top: -12px;
-    }
+    margin-top: 24px;
+  }
 }
-.ion-item{
-    margin-top: 20px;
-}
-.forget-text{
-    a{
-        text-decoration: none;
-        color: black;
-    }
-    text-align: end;
-    margin-bottom: -10px;
-    padding-right: 20px;
-}
-.login-button{
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 50px;
-    --border-radius: 12px;
-    margin-top: 60px;
-    --box-shadow: none;
-}
-.google-button{
-    padding-left: 20px;
-    padding-right: 20px;
-    height: 50px;
-    --border-radius: 12px;
-    margin-top: 20px;
-    margin-bottom: 40px;
-    --box-shadow: none;
-}
-.signup-text{
-    a{
-        text-decoration: none;
-        color: var(--ion-color-primary);
-    }
-    padding-right: 20px;
-    text-align: end;
-}
-ion-footer {
-    display: block;
-    // position: relative;
-    -ms-flex-order: 1;
-    order: 1;
-    width: 100%;
-    z-index: 10;
-}
-.copyright{
-    text-align: center;
-}    

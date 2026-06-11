@@ -1,13 +1,50 @@
 from django.contrib import admin
 from .models import User, Venue, Address, TypeVenue, Opening, Offer, Reservation, imgVenue, FCMToken
+from .emails import send_account_approved
 
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', 'firstname', 'lastname', 'is_influencer', 'is_company', 'is_active', 'created')
-    list_filter = ('is_influencer', 'is_company', 'is_active')
-    search_fields = ('email', 'firstname', 'lastname')
-    ordering = ('-created',)
+    list_display = ('email', 'firstname', 'lastname', 'role', 'socials', 'is_active', 'created')
+    list_filter = ('is_active', 'is_influencer', 'is_company')
+    search_fields = ('email', 'firstname', 'lastname', 'instagram', 'tiktok', 'youtube')
+    ordering = ('is_active', '-created')  # pending applications first
+    actions = ('approve_and_invite',)
+
+    @admin.display(description='Role')
+    def role(self, obj):
+        if obj.is_influencer:
+            return 'Influencer'
+        if obj.is_company:
+            return 'Venue'
+        return '—'
+
+    @admin.display(description='Socials')
+    def socials(self, obj):
+        handles = [h for h in (obj.instagram, obj.tiktok, obj.youtube) if h]
+        return ', '.join(handles) or '—'
+
+    @admin.action(description='Approve and send set-password invitation')
+    def approve_and_invite(self, request, queryset):
+        # Activating before the password exists is safe: an unusable password
+        # cannot authenticate. The emailed link lets the user set one.
+        # Re-running the action on an approved-but-passwordless account
+        # re-sends the invitation (covers a lost email — djoser's forgot
+        # password ignores accounts without a usable password).
+        sent = skipped = 0
+        for user in queryset:
+            if user.is_active and user.has_usable_password():
+                skipped += 1
+                continue
+            if not user.is_active:
+                user.is_active = True
+                user.save(update_fields=['is_active'])
+            send_account_approved(user)
+            sent += 1
+        message = f"{sent} invitation(s) sent."
+        if skipped:
+            message += f" {skipped} account(s) already set up were skipped."
+        self.message_user(request, message)
 
 
 @admin.register(Venue)

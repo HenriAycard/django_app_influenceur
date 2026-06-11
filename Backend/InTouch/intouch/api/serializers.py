@@ -37,7 +37,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'firstname', 'lastname', 'youtube', 'instagram', 'tiktok', 'is_influencer', 'is_company', 'avatar', 'instagram_followers', 'tiktok_followers', 'youtube_followers', 'average_rating', 'review_count')
+        fields = ('id', 'firstname', 'lastname', 'youtube', 'instagram', 'tiktok', 'is_influencer', 'is_company', 'avatar', 'instagram_followers', 'tiktok_followers', 'youtube_followers', 'email_notifications', 'average_rating', 'review_count')
         # Roles are assigned out-of-band; a user must not be able to switch
         # sides of the marketplace by patching their own profile.
         read_only_fields = ('is_influencer', 'is_company')
@@ -239,6 +239,27 @@ class FCMTokenSerializer(ModelSerializer):
     class Meta:
         model = FCMToken
         fields = ['token']
+
+
+class RegisterRequestSerializer(serializers.Serializer):
+    """Application to join: identity + role; influencers must provide at
+    least one social handle so the reviewer can check the profile."""
+    email = serializers.EmailField()
+    firstname = serializers.CharField(max_length=100)
+    lastname = serializers.CharField(max_length=100)
+    role = serializers.ChoiceField(choices=('influencer', 'venue'))
+    instagram = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    tiktok = serializers.CharField(max_length=100, required=False, allow_blank=True)
+    youtube = serializers.CharField(max_length=100, required=False, allow_blank=True)
+
+    def validate(self, attrs):
+        if attrs['role'] == 'influencer' and not any(
+            (attrs.get(n) or '').strip() for n in ('instagram', 'tiktok', 'youtube')
+        ):
+            raise ValidationError(
+                {'detail': 'Please provide at least one social media handle.'}
+            )
+        return attrs
 
 
 class ChatUserSerializer(ModelSerializer):

@@ -85,6 +85,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_influencer = models.BooleanField("user account is an influencer", default=False)
     is_company = models.BooleanField("user account is a company", default=False)
     is_admin = models.BooleanField("user account is admin", default=False)
+    # Opt-out switch for notification emails (account emails are always sent).
+    email_notifications = models.BooleanField(default=True)
 
     avatar = models.ImageField(upload_to=upload_to, null=True, blank=True)
 
@@ -195,6 +197,8 @@ class Reservation(models.Model):
     status = models.IntegerField(blank=True)
     date_reservation = models.DateTimeField(null=True)
     offer = models.ForeignKey(Offer, on_delete=models.CASCADE)
+    # When the day-before email reminder went out (idempotence for the cron).
+    reminder_sent_at = models.DateTimeField(null=True, blank=True)
 
 class Review(models.Model):
     """A rating left after a completed collaboration (an ACCEPTED reservation
@@ -253,6 +257,8 @@ class Message(models.Model):
     body = models.TextField(max_length=2000)
     created_at = models.DateTimeField(auto_now_add=True)
     read_at = models.DateTimeField(null=True, blank=True)
+    # When this message was included in an unread-digest email (cron idempotence).
+    unread_emailed_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         ordering = ['created_at']

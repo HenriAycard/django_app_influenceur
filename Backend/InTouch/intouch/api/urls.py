@@ -6,6 +6,7 @@ from .views import *
 router = DefaultRouter()
 
 urlpatterns = [
+    path('register/', RegisterRequestView.as_view(), name='register_request'),
     path('users/', UserListCreateView.as_view(), name='users_list'),
     path('user/<uuid:pk>',  UserDetailView.as_view(), name='user_detail'),
     path('venue/', VenueCreateView.as_view(), name='venue_create'),

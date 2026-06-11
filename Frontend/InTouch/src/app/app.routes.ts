@@ -21,6 +21,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/register/register.page').then( m => m.RegisterPage)
   },
   {
+    // Public landing for emailed uid+token links (account invitation + reset).
+    path: 'set-password',
+    loadComponent: () => import('./pages/set-password/set-password.page').then( m => m.SetPasswordPage)
+  },
+  {
     path: 'influencer',
     loadChildren: () => import('./pages/influencer/influencer-tabs.routes').then( m => m.INFLUENCER_TABS_ROUTES),
     canActivate: [roleGuard(['INFLUENCER'])]

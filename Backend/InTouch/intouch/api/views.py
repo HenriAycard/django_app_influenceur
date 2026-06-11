@@ -19,6 +19,7 @@ from .models import *
 from .serializers import *
 from .serializers import _venue_rating, _influencer_rating  # underscore names skip `import *`
 from .permissions import IsVenueOwner, IsRelatedToVenueOwner, IsReservationParty
+from . import emails
 
 import logging
 from uuid import UUID
@@ -44,7 +45,45 @@ def _notify(user_id, title, body):
         logger.warning("FCM push to %s failed: %s", user_id, e)
 
 
-# Create your views here.
+class RegisterRequestView(APIView):
+    """Application to join InTouch (gated marketplace).
+
+    No password here: the account is created inactive with an unusable
+    password, an admin reviews it, and approval emails a set-password link
+    (see admin.py). Influencers must declare at least one social handle.
+    """
+    permission_classes = [permissions.AllowAny]
+    throttle_scope = 'auth'
+
+    def post(self, request):
+        serializer = RegisterRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        if User.objects.filter(email__iexact=data['email']).exists():
+            return Response(
+                {"detail": "An account with this email already exists."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user = User(
+            email=User.objects.normalize_email(data['email']),
+            firstname=data['firstname'],
+            lastname=data['lastname'],
+            is_active=False,
+            is_influencer=data['role'] == 'influencer',
+            is_company=data['role'] == 'venue',
+            instagram=data.get('instagram') or None,
+            tiktok=data.get('tiktok') or None,
+            youtube=data.get('youtube') or None,
+        )
+        user.set_unusable_password()
+        user.save()
+        return Response(
+            {"detail": "Application received. We will email you once your account is approved."},
+            status=status.HTTP_201_CREATED,
+        )
+
 
 class UserListCreateView(generics.ListCreateAPIView):
     """
@@ -255,6 +294,7 @@ class ReservationCreateView(generics.ListCreateAPIView):
         reservation = serializer.instance
         _notify(reservation.offer.venue.user_id, "New application",
                 "An influencer applied to one of your offers.")
+        emails.send_new_application(reservation)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -327,13 +367,19 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
 
         reservation = serializer.save()
         # When the brand accepts/declines, tell the influencer (best-effort).
+        # The email mirrors the push: push may be undelivered (no token, iOS).
         if reservation.status != previous_status:
             if reservation.status == 1:
                 _notify(reservation.user_id, "Application accepted",
                         "Your collaboration was accepted!")
+                emails.send_application_decided(reservation, accepted=True)
             elif reservation.status == 2:
                 _notify(reservation.user_id, "Application declined",
                         "Your application was not selected this time.")
+                # Only email the influencer when the venue declined; an
+                # influencer cancelling their own application knows already.
+                if is_owner:
+                    emails.send_application_decided(reservation, accepted=False)
 
 
 #class imgVenueView(APIView):

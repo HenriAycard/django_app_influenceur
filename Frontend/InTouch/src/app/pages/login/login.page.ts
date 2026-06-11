@@ -5,6 +5,8 @@ import { AlertController, IonButton, IonContent, IonHeader, IonInput, IonItem, I
 import { Router } from '@angular/router';
 import { LoginParam } from 'src/app/shared/models';
 import { AuthService } from 'src/app/services/auth.service';
+import { ApiAuthService } from 'src/app/services/api/api-auth.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -22,6 +24,8 @@ export class LoginPage implements OnInit {
   });
 
   public authService = inject(AuthService)
+  private apiAuth = inject(ApiAuthService)
+  private toast = inject(ToastService)
 
   constructor(
     public router:Router,
@@ -90,17 +94,14 @@ export class LoginPage implements OnInit {
         }, {
           text: "Confirm",
           handler: (data) => {
-            if (data["email"]){
-              /*
-              this.apiService.showLoading().then(()=>{
-                this.apiService.sendResetPasswordLink(data["email"]).subscribe(()=>{
-                  this.apiService.stopLoading()
-                  this.apiService.showMessage(this.translateService.instant("Thanks"),this.translateService.instant("If this email exists on our platform, a reset link will be sent. Please don't forget to check your spams!"))
-                })
-              })*/
-            
-            }
-            
+            const email = (data["email"] || '').trim();
+            if (!email) return;
+            // Same message either way: don't leak whether the email exists.
+            const done = () => this.toast.toastSuccess(
+              'Check your inbox',
+              "If this email matches an account, you'll receive a link to reset your password. Don't forget to check your spam folder!"
+            );
+            this.apiAuth.requestPasswordReset(email).subscribe({ next: done, error: done });
           }
         }
       ]
