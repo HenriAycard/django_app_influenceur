@@ -120,6 +120,39 @@ def send_application_decided(reservation, accepted):
           button_label="Open InTouch", button_url=settings.FRONTEND_URL)
 
 
+def send_post_submitted(reservation):
+    owner = reservation.offer.venue.user
+    influencer = reservation.user
+    _send(
+        owner,
+        "Content published for your collaboration",
+        title="The post is live!",
+        lines=[
+            f"{influencer.firstname} {influencer.lastname} shared the content "
+            f"published for “{reservation.offer.name}” at {reservation.offer.venue.name_venue}:",
+            reservation.post_url,
+            "Review it and validate the collaboration in the app.",
+        ],
+        button_label="Open InTouch",
+        button_url=settings.FRONTEND_URL,
+    )
+
+
+def send_collaboration_validated(reservation):
+    _send(
+        reservation.user,
+        "Your collaboration has been validated",
+        title="Collaboration validated 🎉",
+        lines=[
+            f"{reservation.offer.venue.name_venue} confirmed your collaboration "
+            f"for “{reservation.offer.name}”.",
+            "It now counts in your realized collaborations. Well done!",
+        ],
+        button_label="Open InTouch",
+        button_url=settings.FRONTEND_URL,
+    )
+
+
 def send_unread_messages(user, count):
     plural = "s" if count > 1 else ""
     _send(

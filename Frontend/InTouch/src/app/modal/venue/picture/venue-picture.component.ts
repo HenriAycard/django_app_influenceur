@@ -24,7 +24,6 @@ export class VenuePicturePage implements OnInit {
     }
 
     async chooseOrTakePicture() {
-        console.log("Opening camera to choose or take picture...");
         const photo: Photo = await Camera.getPhoto({
             quality: 90,
             allowEditing: true,
@@ -32,13 +31,10 @@ export class VenuePicturePage implements OnInit {
             source: CameraSource.Photos,
         })
 
-        console.log("New Picture Triggered");
         if (photo) {
-            console.log("Photo found:", photo);
             
             const mimeType = `image/${photo.format}`;            
             const blob = this.b64toBlob(photo.base64String!, mimeType);
-            console.log("Blob created:", blob);
 
             //Generate a fake filename
             const name = 

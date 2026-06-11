@@ -31,7 +31,6 @@ export class AuthService {
     if (this.tokenManager.hasAccessToken()){
       this.fetchCurrentUser()
     } else {
-      console.log("The user is not authenticated - Disconnected")
       this.isAuthenticated.next(false);
     }
   }
@@ -68,32 +67,26 @@ export class AuthService {
   redirection() {
     if (this.user) {
       if (this.user.isInfluencer) {
-        console.log("Redirect the user to /influencer")
         this.router.navigate(['/influencer'])
       } else {
-        console.log("Redirect the user to /brand")
         this.router.navigate(['/brand'])
       }
     } else {
-      console.log("The user is not found, redirect the user to /login")
       this.router.navigate(['/login'])
     }
   }
 
   fetchCurrentUser() {
-    console.log("Retrieve the current user")
     this.apiAuth.findUser().subscribe({
       next: (response: User) => {
         let tmpUser: User = createUser(response)
         this.user$.next(tmpUser);
         this.isAuthenticated.next(true);
-        console.log("The user is authenticated - Connect")
       },
       error: (erreur: HttpErrorResponse) => {
         this.user$.next(null)
         this.isAuthenticated.next(false);
         console.error(erreur)
-        console.log("The user is not authenticated - Disconnected")
       },
       complete : () => this.redirection()
     });
@@ -102,7 +95,6 @@ export class AuthService {
   login(params: LoginParam) {
     this.apiAuth.login(params).subscribe({
       next: (response: TokenResponse) => {
-        console.log("The token is correctly settle")
         // Access token kept in memory; the refresh token was set as an httpOnly cookie.
         this.tokenManager.setAccessToken(response.access)
 

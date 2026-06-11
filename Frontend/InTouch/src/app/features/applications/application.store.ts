@@ -91,6 +91,18 @@ export class ApplicationStore {
         return this.api.downloadCalendar(id);
     }
 
+    submitPostLink(id: number, url: string): Observable<Application> {
+        return this.api.submitPostLink(id, url);
+    }
+
+    complete(id: number): Observable<Application> {
+        return this.api.complete(id);
+    }
+
+    reportNoShow(id: number): Observable<Application> {
+        return this.api.reportNoShow(id);
+    }
+
     accept(id: number): Observable<unknown> {
         return this.api.updateApplication(id, { status: ApplicationStatus.Accepted });
     }

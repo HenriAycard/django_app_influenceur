@@ -63,6 +63,12 @@ export class ApiAuthService extends ApiService {
     });
   }
 
+  // One-page PDF media kit (influencer accounts only).
+  downloadMediaKit(): Observable<Blob> {
+    const url = `${Constant.domainConfig.virtual_host}${Constant.domainConfig.apiPrefix}/influencer/media-kit.pdf`;
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
   update(id: string, params: Partial<User>): Observable<User> {
     const url = `${Constant.domainConfig.virtual_host}${Constant.domainConfig.apiPrefix}/user/${id}`;
     return this.http.patch<User>(url, params, this.options)

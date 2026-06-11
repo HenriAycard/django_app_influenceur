@@ -1,8 +1,9 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
-import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner, NavController } from '@ionic/angular/standalone';
+import { FormsModule } from '@angular/forms';
+import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonInput, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, calendarOutline, chatbubbleEllipsesOutline, closeCircleOutline, documentTextOutline } from 'ionicons/icons';
+import { alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, closeCircleOutline, documentTextOutline, linkOutline, timeOutline } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { MessagingStore } from 'src/app/features/messaging/messaging.store';
@@ -19,7 +20,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   templateUrl: './influencer-collaboration.page.html',
   styleUrls: ['./influencer-collaboration.page.scss'],
   standalone: true,
-  imports: [IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner, BookingViewPage, ReviewSectionComponent]
+  imports: [FormsModule, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonInput, IonSpinner, BookingViewPage, ReviewSectionComponent]
 })
 export class InfluencerCollaborationPage implements OnInit {
 
@@ -36,7 +37,7 @@ export class InfluencerCollaborationPage implements OnInit {
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ arrowBack, calendarOutline, chatbubbleEllipsesOutline, closeCircleOutline, documentTextOutline });
+    addIcons({ alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, closeCircleOutline, documentTextOutline, linkOutline, timeOutline });
   }
 
   public downloadContract(): void {
@@ -108,6 +109,33 @@ export class InfluencerCollaborationPage implements OnInit {
   public isFuture(): boolean {
     const d = this.reservation().dateReservation;
     return !!d && new Date(d) > new Date();
+  }
+
+  /** Lifecycle zone shows once the accepted visit has happened. */
+  public isPastAccepted(): boolean {
+    const r = this.reservation();
+    return r.status === ApplicationStatus.Accepted && !this.isFuture();
+  }
+
+  public postUrl = '';
+  readonly submittingPost = signal(false);
+
+  public submitPost(): void {
+    const url = this.postUrl.trim();
+    if (!url || this.submittingPost()) return;
+    this.submittingPost.set(true);
+    this.store.submitPostLink(this.reservation().id, url).subscribe({
+      next: (updated) => {
+        this.submittingPost.set(false);
+        this.reservation.set(updated);
+        this.toastService.toastSuccess('Post shared', 'The venue has been notified. Thank you!');
+      },
+      error: (err) => {
+        this.submittingPost.set(false);
+        const detail = err?.error?.url ?? err?.error?.detail ?? 'Could not submit your link. Please try again.';
+        this.toastService.toastDanger('Post link', Array.isArray(detail) ? detail.join(' ') : detail);
+      },
+    });
   }
 
 }

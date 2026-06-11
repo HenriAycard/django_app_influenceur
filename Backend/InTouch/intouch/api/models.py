@@ -200,6 +200,27 @@ class Reservation(models.Model):
     # When the day-before email reminder went out (idempotence for the cron).
     reminder_sent_at = models.DateTimeField(null=True, blank=True)
 
+    # --- Post-acceptance lifecycle (status stays 1/Accepted throughout) ---
+    # The influencer submits the published content; the venue owner then
+    # validates the collaboration — or reports that nobody showed up.
+    post_url = models.URLField(max_length=500, null=True, blank=True)
+    post_submitted_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    no_show_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        constraints = [
+            # One PENDING application per influencer and offer. Anything else
+            # is time-dependent (an accepted collaboration only blocks until
+            # its visit happens), so it is enforced in the create view — a
+            # partial index cannot reference now().
+            models.UniqueConstraint(
+                fields=['user', 'offer'],
+                condition=models.Q(status=0),
+                name='unique_pending_application',
+            ),
+        ]
+
 class Review(models.Model):
     """A rating left after a completed collaboration (an ACCEPTED reservation
     whose date has passed). Direction is inferred from the author:

@@ -7,6 +7,50 @@
 
   @if (isLoad()) {
     <app-booking-view [reservation]="reservation()"></app-booking-view>
+
+    @if (isPastAccepted()) {
+      <div class="lifecycle-card">
+        @if (reservation().noShowAt) {
+          <div class="state state-danger">
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            <div>
+              <h4>Reported as no-show</h4>
+              <p>The venue reported that this visit didn't happen. Contact them via Message if this is a mistake.</p>
+            </div>
+          </div>
+        } @else if (reservation().completedAt) {
+          <div class="state state-success">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            <div>
+              <h4>Collaboration validated</h4>
+              <p>The venue confirmed your collaboration. It counts in your realized collaborations.</p>
+              @if (reservation().postUrl) {
+                <a [href]="reservation().postUrl" target="_blank" rel="noopener">View the post</a>
+              }
+            </div>
+          </div>
+        } @else if (reservation().postUrl) {
+          <div class="state state-pending">
+            <ion-icon name="time-outline"></ion-icon>
+            <div>
+              <h4>Waiting for venue validation</h4>
+              <p>Your post has been shared with the venue.</p>
+              <a [href]="reservation().postUrl" target="_blank" rel="noopener">View the post</a>
+            </div>
+          </div>
+        } @else {
+          <h4 class="lifecycle-title">Share your published content</h4>
+          <p class="lifecycle-hint">Paste the link to your post so the venue can validate the collaboration.</p>
+          <div class="post-link-row">
+            <ion-input [(ngModel)]="postUrl" type="url" placeholder="https://instagram.com/p/…" aria-label="Post URL"></ion-input>
+            <ion-button class="act act-primary" (click)="submitPost()" [disabled]="submittingPost()">
+              <ion-icon name="link-outline" slot="start"></ion-icon>Submit
+            </ion-button>
+          </div>
+        }
+      </div>
+    }
+
     <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
 
     <div class="shortcuts">

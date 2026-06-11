@@ -39,12 +39,10 @@ import { ApiApplicationService } from "src/app/features/applications/api-applica
       datePlusMonths.setMonth(datePlusMonths.getMonth()+1);
       this.maxDate = datePlusMonths.toISOString();
 
-      console.log(this.idOffer)
     }
 
     
     async saveReservation() {
-      console.log("New reservation on going ...")
       this.alertCtrlService.showLoading()
 
       let newResa: CreateApplicationDto = {

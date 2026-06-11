@@ -71,7 +71,6 @@ export class CreatePage {
   }
 
   public nextVenueMain(newVenueMainData: Partial<VenueMainDto>): void {
-    console.log(newVenueMainData)
     this.venueMainData = newVenueMainData
     this.next()
   }

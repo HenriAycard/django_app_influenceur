@@ -6,8 +6,11 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { PushNotificationService } from 'src/app/services/push-notification.service';
 import { ProfileStore } from 'src/app/features/profile/profile.store';
+import { ApiAuthService } from 'src/app/services/api/api-auth.service';
+import { ToastService } from 'src/app/services/toast.service';
+import { saveBlob } from 'src/app/shared/util/download.util';
 import { addIcons } from 'ionicons';
-import { flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, mailOutline, notificationsOutline, pencil, personOutline, statsChartOutline } from 'ionicons/icons';
+import { documentAttachOutline, flash, helpCircleOutline, lockClosedOutline, logoInstagram, logoTiktok, logOutOutline, logoYoutube, mailOutline, notificationsOutline, pencil, personOutline, statsChartOutline } from 'ionicons/icons';
 import { Photo, Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
@@ -23,12 +26,14 @@ export class ProfilePage {
   protected readonly store = inject(ProfileStore)
   private authService = inject(AuthService)
   private push = inject(PushNotificationService)
+  private apiAuth = inject(ApiAuthService)
+  private toast = inject(ToastService)
   public isLogoutModalOpen: boolean = false;
   @ViewChild(IonModal) modal!: IonModal;
 
   constructor(
     private router: Router) {
-    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, mailOutline, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil, statsChartOutline })
+    addIcons({ logoInstagram, logoTiktok, logoYoutube, flash, documentAttachOutline, mailOutline, personOutline, notificationsOutline, lockClosedOutline, helpCircleOutline, logOutOutline, pencil, statsChartOutline })
   }
 
   // Reloads on every entry (incl. returning from profile edit).
@@ -58,6 +63,14 @@ export class ProfilePage {
 
   public toggleEmailNotifications(event: CustomEvent) {
     this.store.setEmailNotifications(!!event.detail.checked);
+  }
+
+  public downloadMediaKit() {
+    const user = this.store.user();
+    this.apiAuth.downloadMediaKit().subscribe({
+      next: (blob) => saveBlob(blob, `intouch-media-kit-${user?.firstname ?? 'me'}.pdf`),
+      error: () => this.toast.toastDanger('Media kit', 'Could not generate your media kit. Please try again.'),
+    });
   }
 
   public async chooseOrTakePicture() {

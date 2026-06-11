@@ -28,4 +28,9 @@ export interface Application {
     myReview?: Review | null;
     /** True when the viewer may leave a review (completed, party, not yet reviewed). */
     canReview?: boolean;
+    /** Post-acceptance lifecycle (see backend lifecycle endpoints). */
+    postUrl?: string | null;
+    postSubmittedAt?: string | null;
+    completedAt?: string | null;
+    noShowAt?: string | null;
 }
