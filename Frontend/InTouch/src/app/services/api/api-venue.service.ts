@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as Constant from '../../config/constant';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
-import { Venue, VenueCreateDto, VenueSortDto, VenueUpdateDto } from 'src/app/shared/models';
+import { Venue, VenueCreateDto, VenueMapMarker, VenueSortDto, VenueUpdateDto } from 'src/app/shared/models';
 import { ApiService } from './api.service';
 
 export interface VenueFeedFilter {
@@ -49,6 +49,10 @@ export class ApiVenueService extends ApiService {
 
   public findVenueCities(): Observable<string[]> {
     return this.http.get<string[]>(this.urlBase + 'cities/', this.options);
+  }
+
+  public findVenueMapMarkers(): Observable<VenueMapMarker[]> {
+    return this.http.get<VenueMapMarker[]>(this.urlBase + 'map/', this.options);
   }
 
   public create(venue: VenueCreateDto) : Observable<Venue>{

@@ -128,6 +128,8 @@ class Address(models.Model):
     state = models.CharField(max_length=30, blank=True, null=True)
     country = models.CharField(max_length=30, blank=True)
     zip_code = models.CharField(max_length=5, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
 class Venue(models.Model):
     id = models.BigAutoField(primary_key=True)

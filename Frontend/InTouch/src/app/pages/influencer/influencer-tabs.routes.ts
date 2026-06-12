@@ -22,6 +22,14 @@ export const INFLUENCER_TABS_ROUTES: Routes = [{
       loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
     },
     {
+      path: 'map',
+      loadComponent: () => import('../../features/discovery/pages/map/map.page').then(m => m.MapPage)
+    },
+    {
+      path: 'map/venue/:venueId',
+      loadComponent: () => import('./venue/venue.page').then(m => m.VenuePage)
+    },
+    {
       path: 'calendar',
       loadComponent: () => import('./calendar/calendar.page').then(m => m.CalendarPage)
     },

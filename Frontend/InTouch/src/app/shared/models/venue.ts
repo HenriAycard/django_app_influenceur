@@ -108,3 +108,13 @@ export interface SocialMedia {
     facebook: string | null
     twitter: string | null
 }
+
+export interface VenueMapMarker {
+    id: number;
+    nameVenue: string;
+    latitude: number;
+    longitude: number;
+    city: string | null;
+    typeVenue: { id: number; name: string } | null;
+    cover: string | null;
+}
