@@ -27,6 +27,7 @@ urlpatterns = [
     path('offer/', OfferCreateView.as_view(), name='offer_list'),
     path('offer/<int:pk>', OfferDetail.as_view(), name='offer_detail'),
     path('reservation/', ReservationCreateView.as_view(), name='reservation_list'),
+    path('reservation/invite/', ReservationInviteView.as_view(), name='reservation_invite'),
     path('reservation/<int:pk>', ReservationDetail.as_view(), name='reservation_detail'),
     path('reservation/<int:pk>/contract.pdf', ContractPdfView.as_view(), name='reservation_contract'),
     path('reservation/<int:pk>/calendar.ics', ReservationIcsView.as_view(), name='reservation_ics'),

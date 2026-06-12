@@ -9,12 +9,14 @@ export enum ApplicationStatus {
   Pending  = 'PENDING',    // was 0 — applied, awaiting the brand's decision
   Accepted = 'ACCEPTED',   // was 1 — confirmed collaboration
   Declined = 'DECLINED',   // was 2 — rejected or cancelled
+  Invited  = 'INVITED',    // was 3 — brand-initiated direct invitation
 }
 
 const TO_API: Record<ApplicationStatus, number> = {
   [ApplicationStatus.Pending]: 0,
   [ApplicationStatus.Accepted]: 1,
   [ApplicationStatus.Declined]: 2,
+  [ApplicationStatus.Invited]: 3,
 };
 
 const FROM_API = new Map<number, ApplicationStatus>(

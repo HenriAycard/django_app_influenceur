@@ -74,6 +74,17 @@
       }
     </div>
 
+    @if (reservation().status === ApplicationStatus.Invited) {
+      <div class="action-bar">
+        <ion-button class="act act-ghost" (click)="cancelReservation()">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>Decline
+        </ion-button>
+        <ion-button class="act act-primary" (click)="acceptInvitation()">
+          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Accept invitation
+        </ion-button>
+      </div>
+    }
+
     @if ((reservation().status === ApplicationStatus.Pending || reservation().status === ApplicationStatus.Accepted) && isFuture()) {
       <div class="action-bar">
         <ion-button class="act act-danger" (click)="cancelReservation()">

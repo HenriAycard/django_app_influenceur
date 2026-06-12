@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonContent, IonHeader, IonTitle, IonLabel, IonToolbar, IonText, IonItem, IonIcon, IonAccordion, IonAccordionGroup, IonRefresher, IonRefresherContent, IonCol, IonGrid, IonRow, IonCardContent, IonCardSubtitle, IonCardTitle, IonCardHeader, IonCard, NavController, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { Application } from 'src/app/shared/models';
 import { addIcons } from 'ionicons';
-import { closeOutline, helpOutline, timeOutline } from 'ionicons/icons';
+import { closeOutline, helpOutline, mailOutline, timeOutline } from 'ionicons/icons';
 import { CalendarVenueComponent } from 'src/app/modal/calendar/venue/calendar-venue.component';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { AlertControllerService } from 'src/app/services/alert-controller.service';
@@ -25,7 +25,7 @@ export class CalendarPage {
   private readonly location = inject(Location);
 
   constructor() {
-    addIcons({ helpOutline, timeOutline, closeOutline });
+    addIcons({ helpOutline, timeOutline, closeOutline, mailOutline });
   }
 
   ionViewWillEnter(): void {

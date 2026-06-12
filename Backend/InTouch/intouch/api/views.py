@@ -402,12 +402,12 @@ class ReservationCreateView(generics.ListCreateAPIView):
         offer = serializer.validated_data['offer']
         user = request.user
 
-        # Blocked while a previous application is still "live": pending, or
-        # accepted with the visit ahead. Past collaborations (validated,
-        # no-show, or simply over) and declined ones never block re-applying.
+        # Blocked while a previous application is still "live": pending, invited,
+        # or accepted with the visit ahead. Past/declined ones never block.
         now = timezone.now()
         blocking = Reservation.objects.filter(user=user, offer=offer).filter(
             Q(status=0)
+            | Q(status=3)
             | (Q(status=1) & (Q(date_reservation__isnull=True) | Q(date_reservation__gt=now)))
         )
         if blocking.exists():
@@ -475,8 +475,8 @@ class ReservationCreateView(generics.ListCreateAPIView):
 
         # Apply filters based on status and date range
         if status_resa:
-            if status_resa not in ('0', '1', '2'):
-                raise DRFValidationError({'status': 'Expected 0 (pending), 1 (accepted) or 2 (declined).'})
+            if status_resa not in ('0', '1', '2', '3'):
+                raise DRFValidationError({'status': 'Expected 0 (pending), 1 (accepted), 2 (declined) or 3 (invited).'})
             filter_params['status'] = int(status_resa)
 
         if from_date_resa:
@@ -504,16 +504,23 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
         if new_offer is not None and new_offer.id != reservation.offer_id:
             raise DRFValidationError({'offer_id': 'The offer of an application cannot be changed.'})
 
-        # Status transitions are role-bound: only the venue owner decides
-        # (accept), either party may cancel/decline, nothing goes back to pending.
+        # Status transitions are role-bound.
+        # 0→1: only the venue owner may accept a regular application.
+        # 3→1: only the influencer may accept a direct invitation (Option B: immediately Accepted).
+        # *→2: either party may cancel/decline; nothing goes back to pending/invited.
         new_status = serializer.validated_data.get('status', previous_status)
         if new_status != previous_status:
             if new_status not in (0, 1, 2):
                 raise DRFValidationError({'status': 'Invalid status.'})
             if new_status == 0:
                 raise DRFValidationError({'status': 'An application cannot go back to pending.'})
-            if new_status == 1 and not is_owner:
-                raise PermissionDenied('Only the venue owner can accept an application.')
+            if new_status == 1:
+                if previous_status == 0 and not is_owner:
+                    raise PermissionDenied('Only the venue owner can accept an application.')
+                if previous_status == 3 and is_owner:
+                    raise PermissionDenied('Only the invited influencer can accept an invitation.')
+                if previous_status not in (0, 3):
+                    raise DRFValidationError({'status': 'Cannot move to accepted from this state.'})
 
         # Rescheduling the visit is a venue-owner action.
         if not is_owner and 'date_reservation' in serializer.validated_data:
@@ -521,20 +528,86 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
                 raise PermissionDenied('Only the venue owner can reschedule the visit.')
 
         reservation = serializer.save()
-        # When the brand accepts/declines, tell the influencer (best-effort).
-        # The email mirrors the push: push may be undelivered (no token, iOS).
         if reservation.status != previous_status:
             if reservation.status == 1:
-                _notify(reservation.user_id, "Application accepted",
-                        "Your collaboration was accepted!")
-                emails.send_application_decided(reservation, accepted=True)
+                if previous_status == 3:
+                    # Influencer accepted the brand's direct invitation → notify brand.
+                    _notify(reservation.offer.venue.user_id, "Invitation accepted",
+                            f"{reservation.user.firstname} accepted your invitation!")
+                    emails.send_invitation_responded(reservation, accepted=True)
+                else:
+                    # Brand accepted a regular application → notify influencer.
+                    _notify(reservation.user_id, "Application accepted",
+                            "Your collaboration was accepted!")
+                    emails.send_application_decided(reservation, accepted=True)
             elif reservation.status == 2:
-                _notify(reservation.user_id, "Application declined",
-                        "Your application was not selected this time.")
-                # Only email the influencer when the venue declined; an
-                # influencer cancelling their own application knows already.
-                if is_owner:
-                    emails.send_application_decided(reservation, accepted=False)
+                if previous_status == 3:
+                    # Invitation cancelled/declined; only notify the brand if the
+                    # influencer declined (owner revoking their own invite needs no mail).
+                    if not is_owner:
+                        _notify(reservation.offer.venue.user_id, "Invitation declined",
+                                f"{reservation.user.firstname} declined your invitation.")
+                        emails.send_invitation_responded(reservation, accepted=False)
+                else:
+                    _notify(reservation.user_id, "Application declined",
+                            "Your application was not selected this time.")
+                    if is_owner:
+                        emails.send_application_decided(reservation, accepted=False)
+
+
+class ReservationInviteView(generics.GenericAPIView):
+    """Brand-initiated direct invitation: creates a status=3 (Invited) reservation.
+
+    The influencer then accepts (→ Accepted immediately, Option B) or declines
+    via a PATCH on ReservationDetail.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_company:
+            raise PermissionDenied('Only venue owners can send invitations.')
+
+        offer_id = request.data.get('offer_id')
+        influencer_id = request.data.get('influencer_id')
+        if not offer_id:
+            raise DRFValidationError({'offer_id': 'This field is required.'})
+        if not influencer_id:
+            raise DRFValidationError({'influencer_id': 'This field is required.'})
+
+        try:
+            offer = Offer.objects.select_related('venue').get(pk=offer_id)
+        except Offer.DoesNotExist:
+            raise DRFValidationError({'offer_id': 'Offer not found.'})
+
+        if offer.venue.user_id != request.user.id:
+            raise PermissionDenied('You can only invite influencers to your own offers.')
+
+        try:
+            influencer = User.objects.get(id=influencer_id, is_influencer=True)
+        except (User.DoesNotExist, ValueError):
+            raise DRFValidationError({'influencer_id': 'Influencer not found.'})
+
+        now = timezone.now()
+        blocking = Reservation.objects.filter(user=influencer, offer=offer).filter(
+            Q(status=0)
+            | Q(status=3)
+            | (Q(status=1) & (Q(date_reservation__isnull=True) | Q(date_reservation__gt=now)))
+        )
+        if blocking.exists():
+            return Response(
+                {'detail': 'This influencer already has an active application or invitation for this offer.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        reservation = Reservation.objects.create(user=influencer, offer=offer, status=3)
+        _notify(influencer.id, "You have an invitation!",
+                f"{offer.venue.name_venue} invited you to collaborate.")
+        emails.send_invitation(reservation)
+
+        return Response(
+            ReservationSerializer(reservation, context={'request': request}).data,
+            status=status.HTTP_201_CREATED,
+        )
 
 
 #class imgVenueView(APIView):

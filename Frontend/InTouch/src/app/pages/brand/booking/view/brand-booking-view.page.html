@@ -68,6 +68,10 @@
         <div class="shortcut-icon"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></div>
         <span>Message</span>
       </div>
+      <div class="shortcut-item" (click)="inviteToAnotherOffer()">
+        <div class="shortcut-icon"><ion-icon name="mail-outline"></ion-icon></div>
+        <span>Invite</span>
+      </div>
       @if (reservation().status === ApplicationStatus.Accepted) {
         <div class="shortcut-item" (click)="downloadContract()">
           <div class="shortcut-icon"><ion-icon name="document-text-outline"></ion-icon></div>

@@ -29,15 +29,18 @@ export class ApplicationStore {
     private readonly _iPast = signal<ApplicationView[]>([]);
     private readonly _iDeclined = signal<ApplicationView[]>([]);
     private readonly _iComingSoon = signal<ApplicationView[]>([]);
+    private readonly _iInvited = signal<ApplicationView[]>([]);
 
     readonly iWaiting = this._iWaiting.asReadonly();
     readonly iPast = this._iPast.asReadonly();
     readonly iDeclined = this._iDeclined.asReadonly();
     readonly iComingSoon = this._iComingSoon.asReadonly();
+    readonly iInvited = this._iInvited.asReadonly();
     readonly iWaitingCount = computed(() => this._iWaiting().length);
     readonly iPastCount = computed(() => this._iPast().length);
     readonly iDeclinedCount = computed(() => this._iDeclined().length);
     readonly iComingSoonCount = computed(() => this._iComingSoon().length);
+    readonly iInvitedCount = computed(() => this._iInvited().length);
     readonly iComingSoonByDate = computed<DayGroup<ApplicationView>[]>(() => groupByDay(this._iComingSoon()));
 
     // ---- Brand calendar groups ----
@@ -45,13 +48,16 @@ export class ApplicationStore {
     private readonly _bPast = signal<Application[]>([]);
     private readonly _bDeclined = signal<Application[]>([]);
     private readonly _bComingSoon = signal<Application[]>([]);
+    private readonly _bInvited = signal<Application[]>([]);
 
     readonly bWaiting = this._bWaiting.asReadonly();
     readonly bPast = this._bPast.asReadonly();
     readonly bDeclined = this._bDeclined.asReadonly();
+    readonly bInvited = this._bInvited.asReadonly();
     readonly bWaitingCount = computed(() => this._bWaiting().length);
     readonly bPastCount = computed(() => this._bPast().length);
     readonly bDeclinedCount = computed(() => this._bDeclined().length);
+    readonly bInvitedCount = computed(() => this._bInvited().length);
     readonly bComingSoonByDate = computed<DayGroup[]>(() => groupByDay(this._bComingSoon()));
     readonly bComingSoonCount = computed(() => this.bComingSoonByDate().length);
 
@@ -63,6 +69,7 @@ export class ApplicationStore {
             this.api.findApplications4Influencer(ApplicationStatus.Accepted, today, 'to_date').pipe(tap(r => this._iPast.set(r))),
             this.api.findApplications4Influencer(ApplicationStatus.Declined, today).pipe(tap(r => this._iDeclined.set(r))),
             this.api.findApplications4Influencer(ApplicationStatus.Accepted, today, 'from_date').pipe(tap(r => this._iComingSoon.set(r))),
+            this.api.findApplications4Influencer(ApplicationStatus.Invited).pipe(tap(r => this._iInvited.set(r))),
         ]);
     }
 
@@ -74,6 +81,7 @@ export class ApplicationStore {
             this.api.findApplications4Brand(ApplicationStatus.Accepted, today, 'to_date').pipe(tap(r => this._bPast.set(r))),
             this.api.findApplications4Brand(ApplicationStatus.Declined, today).pipe(tap(r => this._bDeclined.set(r))),
             this.api.findApplications4Brand(ApplicationStatus.Accepted, today, 'from_date').pipe(tap(r => this._bComingSoon.set(r))),
+            this.api.findApplications4Brand(ApplicationStatus.Invited).pipe(tap(r => this._bInvited.set(r))),
         ]);
     }
 
@@ -113,6 +121,10 @@ export class ApplicationStore {
 
     updateDate(id: number, date: Date): Observable<unknown> {
         return this.api.updateApplication(id, { dateReservation: date });
+    }
+
+    sendInvitation(offerId: number, influencerId: string): Observable<Application> {
+        return this.api.sendInvitation(offerId, influencerId);
     }
 }
 

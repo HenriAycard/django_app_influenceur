@@ -18,6 +18,17 @@
   </ion-header>
 
   <ion-accordion-group class="ion-padding">
+    <ion-accordion value="invitations">
+      <ion-item slot="header" color="light">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label>Invitations sent</ion-label>
+        <ion-label slot="end" class="no-margin">{{ store.bInvitedCount() }}</ion-label>
+      </ion-item>
+      <div slot="content">
+        <app-calendar-venue [collaborations]="store.bInvited()"></app-calendar-venue>
+      </div>
+    </ion-accordion>
+
     <ion-accordion value="first">
       <ion-item slot="header" color="light">
         <ion-icon name="help-outline" slot="start"></ion-icon>

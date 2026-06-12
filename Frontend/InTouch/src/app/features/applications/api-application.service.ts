@@ -78,6 +78,12 @@ export class ApiApplicationService extends ApiService {
         return this.http.post<Application>(this.urlBase, bodyJson, this.options)
     }
 
+    public sendInvitation(offerId: number, influencerId: string): Observable<Application> {
+        const body = JSON.stringify({ offer_id: offerId, influencer_id: influencerId });
+        return this.http.post<ApplicationDto>(`${this.urlBase}invite/`, body, this.options)
+            .pipe(map(dto => this.toApplication(dto)));
+    }
+
     public updateApplication(id: number, changes: Partial<Application>): Observable<Application> {
         const body: Record<string, unknown> = { ...changes };
         if (changes.status !== undefined) {

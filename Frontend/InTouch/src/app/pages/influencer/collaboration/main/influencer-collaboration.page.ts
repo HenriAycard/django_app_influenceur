@@ -87,6 +87,16 @@ export class InfluencerCollaborationPage implements OnInit {
     })
   }
 
+  public acceptInvitation(): void {
+    this.store.accept(this.reservation().id).subscribe({
+      next: () => {
+        this.toastService.toastSuccess('Invitation accepted!', 'Your collaboration is now confirmed.');
+        this.loadData();
+      },
+      error: () => this.toastService.toastDanger('Error', 'Could not accept the invitation. Please try again.'),
+    });
+  }
+
   public cancelReservation() {
     this.store.decline(this.reservation().id).subscribe({
       next: () => {

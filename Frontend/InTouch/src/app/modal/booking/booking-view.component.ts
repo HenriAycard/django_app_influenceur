@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  alertCircle, calendarOutline, cashOutline, chevronForward, checkmarkCircle, timeOutline,
+  alertCircle, calendarOutline, cashOutline, chevronForward, checkmarkCircle, mailOutline, timeOutline,
   closeCircle, documentTextOutline, listOutline, logoInstagram, logoTiktok, logoYoutube,
 } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
@@ -33,7 +33,7 @@ export class BookingViewPage {
 
   constructor() {
     addIcons({
-      alertCircle, calendarOutline, cashOutline, chevronForward, checkmarkCircle, timeOutline,
+      alertCircle, calendarOutline, cashOutline, chevronForward, checkmarkCircle, mailOutline, timeOutline,
       closeCircle, documentTextOutline, listOutline, logoInstagram, logoTiktok, logoYoutube,
     });
   }
@@ -42,6 +42,7 @@ export class BookingViewPage {
   get status(): StatusMeta {
     const s = this.reservation?.status;
     if (s === ApplicationStatus.Declined) return { label: 'Declined', cls: 'is-declined', icon: 'close-circle' };
+    if (s === ApplicationStatus.Invited) return { label: 'Invited', cls: 'is-pending', icon: 'mail-outline' };
     if (s === ApplicationStatus.Pending) return { label: 'Pending', cls: 'is-pending', icon: 'time-outline' };
     const past = !!this.reservation?.dateReservation && new Date(this.reservation.dateReservation) < new Date();
     return past

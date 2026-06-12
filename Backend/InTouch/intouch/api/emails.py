@@ -165,6 +165,45 @@ def send_unread_messages(user, count):
     )
 
 
+def send_invitation(reservation):
+    influencer = reservation.user
+    venue = reservation.offer.venue
+    offer_name = reservation.offer.name
+    _send(
+        influencer,
+        f"You have an invitation from {venue.name_venue}",
+        title="You have an invitation!",
+        lines=[
+            f'{venue.name_venue} invited you to collaborate on their offer "{offer_name}".',
+            "Open InTouch to review and accept or decline.",
+        ],
+        button_label="View invitation",
+        button_url=settings.FRONTEND_URL,
+    )
+
+
+def send_invitation_responded(reservation, accepted):
+    owner = reservation.offer.venue.user
+    influencer = reservation.user
+    offer_name = reservation.offer.name
+    if accepted:
+        subject = "Invitation accepted"
+        title = f"{influencer.firstname} is in!"
+        lines = [
+            f'{influencer.firstname} {influencer.lastname} accepted your invitation for "{offer_name}".',
+            "The collaboration is now confirmed.",
+        ]
+    else:
+        subject = "Invitation declined"
+        title = "Invitation not accepted"
+        lines = [
+            f'{influencer.firstname} {influencer.lastname} declined your invitation for "{offer_name}".',
+            "You can invite another influencer or wait for new applications.",
+        ]
+    _send(owner, subject, title=title, lines=lines,
+          button_label="Open InTouch", button_url=settings.FRONTEND_URL)
+
+
 def send_visit_reminder(reservation, recipient):
     venue = reservation.offer.venue
     when = reservation.date_reservation
