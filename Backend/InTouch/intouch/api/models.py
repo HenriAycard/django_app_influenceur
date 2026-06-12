@@ -144,6 +144,9 @@ class Venue(models.Model):
     type_venue = models.ForeignKey(TypeVenue, on_delete=models.CASCADE, null=True)
     address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True)
     is_actif = models.BooleanField(default=True)
+    # Nullable: venues created before this field exists have no known creation
+    # date, and the feed's newness boost must not apply to them.
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
 class imgVenue(models.Model):
     id = models.BigAutoField(primary_key=True)

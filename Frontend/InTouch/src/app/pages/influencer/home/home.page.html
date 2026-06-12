@@ -4,62 +4,115 @@
   </ion-refresher>
 
   <div class="wrap">
-    <!-- Top bar -->
-    <div class="topbar">
-      <div class="logo"><ion-icon name="flash"></ion-icon><span>InTouch</span></div>
+
+    <!-- Header: logo + city selector -->
+    <div class="header">
+      <div class="logo">
+        <ion-icon name="flash"></ion-icon>
+        <span>InTouch</span>
+      </div>
+      <button type="button" class="city-pill" (click)="cityModalOpen.set(true)">
+        <ion-icon name="location"></ion-icon>
+        <span class="city-pill-label">{{ store.filterCity() ?? 'All cities' }}</span>
+        <ion-icon name="chevron-down" class="city-pill-chev"></ion-icon>
+      </button>
     </div>
 
     <h1 class="greeting">Hello, {{ firstname }} 👋</h1>
-    <p class="subtitle">Find venues to collaborate with</p>
 
     <!-- Search -->
-    <ion-searchbar class="search" #searchVal placeholder="Try ‘Cancun’ or ‘Sushi’"
-      (keyup)="search($event, searchVal.value)" autocapitalize="on"></ion-searchbar>
+    <ion-searchbar
+      class="search"
+      #searchVal
+      placeholder="Search venues…"
+      (keyup)="search($event, searchVal.value)"
+      autocapitalize="on">
+    </ion-searchbar>
 
-    <!-- Categories -->
-    <h2 class="section">Browse by category</h2>
-    <div class="cats">
-      @for (category of categories; track category.label) {
-        <button type="button" class="cat" (click)="navigation(category.label)">
-          <span class="cat-emoji">{{ category.emoji }}</span>
-          <span class="cat-label">{{ category.label }}</span>
+    <!-- Venue types — Uber Eats style category tiles -->
+    @if (store.typeVenues().length) {
+      <div class="cats">
+        <button type="button" class="cat" [class.cat--on]="store.filterTypeVenueId() === null"
+          (click)="onTypeVenueChange(null)">
+          <span class="cat-icon">✨</span>
+          <span class="cat-label">All</span>
         </button>
+        @for (t of store.typeVenues(); track t.id) {
+          <button type="button" class="cat" [class.cat--on]="store.filterTypeVenueId() === t.id"
+            (click)="onTypeVenueChange(t.id)">
+            <span class="cat-icon">{{ typeEmoji(t.name) }}</span>
+            <span class="cat-label">{{ t.name }}</span>
+          </button>
+        }
+      </div>
+    }
+
+    <!-- Feed -->
+    <div class="feed">
+      @for (venue of store.feed(); track venue.id) {
+        <app-venue-card [venue]="venue" (click)="openVenue(venue.id)"></app-venue-card>
+      }
+
+      @if (store.feedLoading() && store.feed().length === 0) {
+        <div class="skeleton-list">
+          @for (_ of [1,2,3]; track _) {
+            <div class="skeleton"></div>
+          }
+        </div>
+      }
+
+      @if (store.feedEmpty()) {
+        <div class="empty">
+          <ion-icon name="flash"></ion-icon>
+          <p>No venues match your filters.</p>
+        </div>
       }
     </div>
 
-    <!-- Feed -->
-    <h2 class="section">Discover venues</h2>
-
-    @for (venue of store.feed(); track venue.id) {
-      <article class="vcard" (click)="openVenue(venue.id)">
-        <div class="vcard-media">
-          @if (venue.imgVenue.length) {
-            <img [src]="venue.imgVenue[0].file" alt="{{ venue.nameVenue }}" />
-          }
-          <div class="vcard-scrim"></div>
-          @if (venue.averageRating != null) {
-            <span class="vcard-rating">
-              <app-rating-badge [average]="venue.averageRating" [count]="venue.reviewCount"></app-rating-badge>
-            </span>
-          }
-        </div>
-        <div class="vcard-body">
-          <h3 class="vcard-title">{{ venue.nameVenue }}</h3>
-          <span class="vcard-type">{{ venue.typeVenue.name }}</span>
-          <div class="vcard-chips">
-            @if (venue.isOnsit) { <span class="vchip">On site</span> }
-            @if (venue.isTakeaway) { <span class="vchip">Take away</span> }
-          </div>
-          <p class="vcard-desc">{{ venue.description | slice:0:140 }}{{ (venue.description && venue.description.length > 140) ? '…' : '' }}</p>
-        </div>
-      </article>
-    }
-
-    @if (store.feedEmpty()) {
-      <div class="empty">
-        <ion-icon name="flash"></ion-icon>
-        <p>No venues available yet. Check back soon.</p>
-      </div>
-    }
   </div>
+
+  <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)" [disabled]="!store.hasMore()">
+    <ion-infinite-scroll-content loadingSpinner="dots"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+  <!-- City picker — bottom sheet -->
+  <ion-modal
+    class="city-sheet"
+    [isOpen]="cityModalOpen()"
+    [breakpoints]="[0, 0.85]"
+    [initialBreakpoint]="0.85"
+    (didDismiss)="cityModalOpen.set(false); citySearch.set('')">
+    <ng-template>
+      <div class="sheet">
+        <h2 class="sheet-title">Where to?</h2>
+        <ion-searchbar
+          class="sheet-search"
+          placeholder="Search a city"
+          (ionInput)="onCitySearch($event)">
+        </ion-searchbar>
+        <div class="sheet-list">
+          <button type="button" class="sheet-item" (click)="selectCity(null)">
+            <span class="sheet-item-icon"><ion-icon name="earth-outline"></ion-icon></span>
+            <span class="sheet-item-label">All cities</span>
+            @if (store.filterCity() === null) {
+              <ion-icon name="checkmark" class="sheet-item-check"></ion-icon>
+            }
+          </button>
+          @for (city of filteredCities(); track city) {
+            <button type="button" class="sheet-item" (click)="selectCity(city)">
+              <span class="sheet-item-icon"><ion-icon name="location"></ion-icon></span>
+              <span class="sheet-item-label">{{ city }}</span>
+              @if (store.filterCity() === city) {
+                <ion-icon name="checkmark" class="sheet-item-check"></ion-icon>
+              }
+            </button>
+          }
+          @if (!filteredCities().length) {
+            <p class="sheet-empty">No city found.</p>
+          }
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

@@ -46,8 +46,8 @@ export class HomePage {
   public callApiService(): void {
     //Get info 
     this.apiVenue.findVenue().subscribe({
-      next: (data: VenueSortDto[]) => {
-        this.lstVenues.set(data)
+      next: ({ results }) => {
+        this.lstVenues.set(results);
       }
     });
   }

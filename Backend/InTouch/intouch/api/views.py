@@ -14,7 +14,8 @@ from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied, ValidationError as DRFValidationError
 
 from django.db import IntegrityError
-from django.db.models import Avg, Count, F, Q
+from django.db.models import Avg, Case, Count, ExpressionWrapper, F, FloatField, Q, Value, When
+from django.db.models.functions import Cast, Coalesce, Least, Ln
 
 from .models import *
 from .serializers import *
@@ -24,7 +25,7 @@ from . import emails
 
 import logging
 from uuid import UUID
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
 from django.utils import timezone
@@ -147,12 +148,20 @@ class VenueCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
+        params = self.request.query_params
 
         if user.is_influencer == 0:
             queryset = Venue.objects.filter(user_id=user.id, user__is_influencer=user.is_influencer, is_actif=1).order_by('id')
-        else:
-            queryset = Venue.objects.all().order_by('id')
-        return _with_venue_card_data(queryset)
+            return _with_venue_card_data(queryset)
+
+        queryset = Venue.objects.filter(is_actif=True)
+        type_venue = params.get('type_venue')
+        city = (params.get('city') or '').strip()
+        if type_venue:
+            queryset = queryset.filter(type_venue_id=type_venue)
+        if city:
+            queryset = queryset.filter(address__city__iexact=city)
+        return _rank_feed(_with_venue_card_data(queryset))
 
 def _with_venue_card_data(queryset):
     """Everything VenueSerializer needs, computed in the main query instead of
@@ -166,6 +175,60 @@ def _with_venue_card_data(queryset):
                 rating_avg=Avg('offer__reservation__reviews__rating', filter=influencer_reviews),
                 rating_count=Count('offer__reservation__reviews', filter=influencer_reviews, distinct=True),
             ))
+
+
+def _rank_feed(queryset):
+    """Orders the influencer feed by usefulness instead of insertion order.
+
+    score = 3.0 x live offers (capped at 3, so offer spam can't dominate)
+          + 2.0 x bayesian rating pull (low review counts shrink toward the
+                  global mean, so one 5-star review doesn't beat a proven 4.7)
+          + 1.0 x ln(1 + views over 30 days)  (popularity, log-dampened)
+          + 1.5 x accepted collaborations over 90 days (capped at 3)
+          + 2.0 newness boost for venues created in the last 14 days
+          - 2.0 penalty when the venue has no image
+
+    Ties break on -id: the score must yield a deterministic order or page-based
+    infinite scroll would show duplicates/holes. Expects `rating_avg` and
+    `rating_count` from _with_venue_card_data.
+    """
+    now = timezone.now()
+    today = date.today()
+    global_avg = Review.objects.filter(author=F('reservation__user')).aggregate(m=Avg('rating'))['m']
+    m = Value(float(global_avg or 0.0))
+
+    live_offers = Q(offer__end_date__isnull=True) | Q(offer__end_date__gte=today)
+    queryset = queryset.annotate(
+        live_offer_count=Count('offer', filter=live_offers, distinct=True),
+        views_30d=Count('views', filter=Q(views__created_at__gte=now - timedelta(days=30)), distinct=True),
+        accepted_90d=Count(
+            'offer__reservation',
+            filter=Q(offer__reservation__status=1,
+                     offer__reservation__date_reservation__gte=now - timedelta(days=90)),
+            distinct=True,
+        ),
+        img_count=Count('imgVenue', distinct=True),
+    )
+
+    rating_pull = ExpressionWrapper(
+        Value(2.0) * Cast('rating_count', FloatField())
+        * (Coalesce(Cast('rating_avg', FloatField()), m) - m)
+        / (Cast('rating_count', FloatField()) + Value(5.0)),
+        output_field=FloatField(),
+    )
+    score = (
+        ExpressionWrapper(Value(3.0) * Least('live_offer_count', Value(3)), output_field=FloatField())
+        + rating_pull
+        + ExpressionWrapper(Ln(Value(1.0) + Cast('views_30d', FloatField())), output_field=FloatField())
+        + ExpressionWrapper(Value(1.5) * Least('accepted_90d', Value(3)), output_field=FloatField())
+        + Case(When(created_at__gte=now - timedelta(days=14), then=Value(2.0)),
+               default=Value(0.0), output_field=FloatField())
+        + Case(When(img_count=0, then=Value(-2.0)),
+               default=Value(0.0), output_field=FloatField())
+    )
+    return (queryset
+            .annotate(feed_score=ExpressionWrapper(score, output_field=FloatField()))
+            .order_by('-feed_score', '-id'))
 
 
 class VenueSearchView(generics.ListAPIView):
@@ -463,6 +526,22 @@ class TypeVenueView(generics.ListAPIView):
     queryset = TypeVenue.objects.all().order_by('id')
     serializer_class = TypeVenueSerializer
     pagination_class = None
+
+
+class VenueCitiesView(APIView):
+    """Returns the sorted list of distinct, non-empty cities that have at least one active venue."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        cities = (
+            Address.objects
+            .filter(venue__is_actif=True)
+            .exclude(city='')
+            .values_list('city', flat=True)
+            .order_by('city')
+            .distinct()
+        )
+        return Response(list(cities))
 
 class ReviewListCreateView(generics.ListCreateAPIView):
     """List reviews for a venue (?venue=) or an influencer (?influencer=),

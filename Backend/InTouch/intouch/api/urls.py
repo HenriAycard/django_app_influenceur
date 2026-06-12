@@ -10,6 +10,7 @@ urlpatterns = [
     path('users/', UserListCreateView.as_view(), name='users_list'),
     path('user/<uuid:pk>',  UserDetailView.as_view(), name='user_detail'),
     path('venue/', VenueCreateView.as_view(), name='venue_create'),
+    path('venue/cities/', VenueCitiesView.as_view(), name='venue_cities'),
     path('venue/search/', VenueSearchView.as_view(), name='venue_search'),
     path('venue/<int:pk>', VenueDetail.as_view(), name='venue_detail'),
     path('venue/<int:pk>/analytics', VenueAnalyticsView.as_view(), name='venue_analytics'),

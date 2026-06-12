@@ -1,0 +1,26 @@
+<article class="card">
+  <div class="card-img">
+    @if (venue().imgVenue.length) {
+      <img [src]="venue().imgVenue[0].file" [alt]="venue().nameVenue" loading="lazy" />
+    } @else {
+      <div class="card-img-placeholder"></div>
+    }
+    <div class="card-scrim"></div>
+    @if (venue().averageRating !== null) {
+      <span class="card-badge">
+        <app-rating-badge [average]="venue().averageRating" [count]="venue().reviewCount"></app-rating-badge>
+      </span>
+    }
+    @if (venue().typeVenue; as tv) {
+      <span class="card-type-pill">{{ tv.name }}</span>
+    }
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">{{ venue().nameVenue }}</h3>
+    <div class="card-chips">
+      @if (venue().isOnsit) { <span class="vchip">On site</span> }
+      @if (venue().isTakeaway) { <span class="vchip">Take away</span> }
+    </div>
+    <p class="card-desc">{{ venue().description | slice:0:120 }}{{ venue().description.length > 120 ? '…' : '' }}</p>
+  </div>
+</article>
