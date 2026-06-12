@@ -44,12 +44,16 @@
               <div>
                 <h4>Waiting for the post</h4>
                 <p>{{ reservation().user.firstname }} hasn't shared the published content yet.</p>
+                @if (reservation().offer.requirePostProof) {
+                  <p class="proof-required-hint">Post proof is required before you can validate.</p>
+                }
               </div>
             </div>
           }
           <div class="lifecycle-actions">
             <ion-button class="act act-ghost act-danger-text" (click)="reportNoShow()" [disabled]="lifecycleBusy()">No-show</ion-button>
-            <ion-button class="act act-primary" (click)="validateCollaboration()" [disabled]="lifecycleBusy()">
+            <ion-button class="act act-primary" (click)="validateCollaboration()"
+              [disabled]="lifecycleBusy() || (reservation().offer.requirePostProof && !reservation().postUrl)">
               <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Validate
             </ion-button>
           </div>

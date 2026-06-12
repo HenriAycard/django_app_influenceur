@@ -60,7 +60,8 @@ export class OfferFormComponent implements OnInit {
             guests: [null, [Validators.maxLength(4)]],
             minFollowersInstagram: [null],
             minFollowersTiktok: [null],
-            minFollowersYoutube: [null]
+            minFollowersYoutube: [null],
+            requirePostProof: [false]
         });
     }
 

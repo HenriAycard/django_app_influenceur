@@ -190,6 +190,7 @@ class Offer(models.Model):
     min_followers_instagram = models.PositiveIntegerField(null=True, blank=True)
     min_followers_tiktok = models.PositiveIntegerField(null=True, blank=True)
     min_followers_youtube = models.PositiveIntegerField(null=True, blank=True)
+    require_post_proof = models.BooleanField(default=False)
 
 class Reservation(models.Model):
     id = models.BigAutoField(primary_key=True)

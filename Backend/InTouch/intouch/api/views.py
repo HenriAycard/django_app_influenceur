@@ -699,6 +699,8 @@ class ReservationCompleteView(APIView):
             raise PermissionDenied('Only the venue owner can validate the collaboration.')
         if reservation.no_show_at:
             raise DRFValidationError({'detail': 'This collaboration was reported as a no-show.'})
+        if reservation.offer.require_post_proof and not reservation.post_url:
+            raise DRFValidationError({'detail': 'The influencer must submit their post link before you can validate.'})
 
         if not reservation.completed_at:
             reservation.completed_at = timezone.now()
