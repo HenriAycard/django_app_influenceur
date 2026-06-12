@@ -1,0 +1,605 @@
+{
+  "_note": "Seed data for InTouch — validate before running the import script. Password for all accounts: InTouch2026!",
+
+  "companies": [
+
+    {
+      "_city": "Cancún",
+      "email": "contacto@lahabichuela.com",
+      "firstname": "Rodrigo",
+      "lastname": "Domínguez",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "La Habichuela Downtown",
+          "type_venue_id": 2,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Iconic Cancún restaurant open since 1977. Famous for its cochinita pibil, seafood dishes and lush tropical garden setting in the heart of downtown. A landmark of Mexican Caribbean cuisine.",
+          "instagram": "lahabichuela_cancun",
+          "address": {
+            "address_principal": "Margaritas 25",
+            "city": "Cancún",
+            "state": "Quintana Roo",
+            "country": "Mexico",
+            "zip_code": "77500",
+            "latitude": 21.1613,
+            "longitude": -86.8278
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Cancún",
+      "email": "info@laparrillacancun.com",
+      "firstname": "Patricia",
+      "lastname": "Méndez",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "La Parrilla Centro",
+          "type_venue_id": 2,
+          "is_takeaway": true,
+          "is_onsit": true,
+          "description": "Lively Mexican grill in downtown Cancún known for its mariachi shows, tacos al pastor, grilled meats and vibrant street-food atmosphere. A local favourite since the 1990s.",
+          "instagram": "laparrilla_cancun",
+          "tiktok": "laparrillacancun",
+          "address": {
+            "address_principal": "Yaxchilán 51",
+            "city": "Cancún",
+            "state": "Quintana Roo",
+            "country": "Mexico",
+            "zip_code": "77500",
+            "latitude": 21.1587,
+            "longitude": -86.8234
+          }
+        },
+        {
+          "name_venue": "La Parrilla Zona Hotelera",
+          "type_venue_id": 2,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Hotel Zone branch of the famous La Parrilla grill. Beachside terrace, live music nightly and the full menu of traditional Mexican fare — perfect for tourists and locals alike.",
+          "instagram": "laparrilla_cancun",
+          "address": {
+            "address_principal": "Blvd Kukulcán km 12.6",
+            "address_secondary": "Zona Hotelera",
+            "city": "Cancún",
+            "state": "Quintana Roo",
+            "country": "Mexico",
+            "zip_code": "77500",
+            "latitude": 21.0832,
+            "longitude": -86.7726
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Cancún",
+      "email": "hola@sipcancun.com",
+      "firstname": "Andrea",
+      "lastname": "Fuentes",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "Sip Coffee Cancún",
+          "type_venue_id": 5,
+          "is_takeaway": true,
+          "is_onsit": true,
+          "description": "Specialty coffee bar in the heart of Cancún serving single-origin espresso, cold brew and artisan pastries. Minimalist design with fast Wi-Fi — a favourite spot for remote workers and digital nomads.",
+          "instagram": "sipcancun",
+          "tiktok": "sipcancun",
+          "address": {
+            "address_principal": "Av. Tulum 260",
+            "city": "Cancún",
+            "state": "Quintana Roo",
+            "country": "Mexico",
+            "zip_code": "77500",
+            "latitude": 21.1628,
+            "longitude": -86.8302
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Cancún",
+      "email": "reservas@kinanspa.mx",
+      "firstname": "Valeria",
+      "lastname": "Solís",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "Kinan Spa",
+          "type_venue_id": 6,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Luxury day spa inspired by ancient Mayan healing rituals. Offers temazcal ceremonies, chocolate body wraps, deep-tissue massage and hydrotherapy circuits. Located steps from the Hotel Zone beach.",
+          "instagram": "kinanspa",
+          "address": {
+            "address_principal": "Blvd Kukulcán km 8.5",
+            "address_secondary": "Zona Hotelera",
+            "city": "Cancún",
+            "state": "Quintana Roo",
+            "country": "Mexico",
+            "zip_code": "77500",
+            "latitude": 21.1103,
+            "longitude": -86.7652
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Mexico City",
+      "email": "reservas@contramar.com.mx",
+      "firstname": "Gabriela",
+      "lastname": "Cámara",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "Contramar",
+          "type_venue_id": 2,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "One of Mexico City's most celebrated seafood restaurants, open since 1998. Known for tuna tostadas, tuna al pastor and a lively open dining room in the Roma Norte neighbourhood.",
+          "instagram": "contramarmx",
+          "address": {
+            "address_principal": "Durango 200",
+            "address_secondary": "Roma Norte",
+            "city": "Mexico City",
+            "state": "Ciudad de México",
+            "country": "Mexico",
+            "zip_code": "06700",
+            "latitude": 19.4148,
+            "longitude": -99.1643
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Mexico City",
+      "email": "hola@buna47.com",
+      "firstname": "Ignacio",
+      "lastname": "Parra",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "Buna 47 Polanco",
+          "type_venue_id": 5,
+          "is_takeaway": true,
+          "is_onsit": true,
+          "description": "Upscale specialty coffee shop in Polanco serving meticulously sourced Mexican beans. Known for its signature cortado and selection of natural wines. Bright, plant-filled space popular with the Polanco creative crowd.",
+          "instagram": "buna47",
+          "tiktok": "buna47mx",
+          "address": {
+            "address_principal": "Presidente Masaryk 360",
+            "address_secondary": "Polanco",
+            "city": "Mexico City",
+            "state": "Ciudad de México",
+            "country": "Mexico",
+            "zip_code": "11560",
+            "latitude": 19.4316,
+            "longitude": -99.1974
+          }
+        },
+        {
+          "name_venue": "Buna 47 Roma Norte",
+          "type_venue_id": 5,
+          "is_takeaway": true,
+          "is_onsit": true,
+          "description": "The Roma Norte outpost of Buna, tucked in a restored 1920s building with a leafy terrace. Specialty pour-overs, batch brew and a rotating selection of pastries from local bakers.",
+          "instagram": "buna47",
+          "address": {
+            "address_principal": "Orizaba 42",
+            "address_secondary": "Roma Norte",
+            "city": "Mexico City",
+            "state": "Ciudad de México",
+            "country": "Mexico",
+            "zip_code": "06700",
+            "latitude": 19.4162,
+            "longitude": -99.1608
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Mexico City",
+      "email": "info@hotelcarlota.com.mx",
+      "firstname": "Tomás",
+      "lastname": "Arriaga",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "Hotel Carlota",
+          "type_venue_id": 1,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Stylish boutique hotel in Colonia Cuauhtémoc, housed in a 1960s modernist building. Rooftop pool, acclaimed restaurant and a design-focused aesthetic that attracts architects, artists and design lovers.",
+          "instagram": "hotelcarlota",
+          "address": {
+            "address_principal": "Río Amazonas 73",
+            "address_secondary": "Cuauhtémoc",
+            "city": "Mexico City",
+            "state": "Ciudad de México",
+            "country": "Mexico",
+            "zip_code": "06500",
+            "latitude": 19.4349,
+            "longitude": -99.1608
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Mexico City",
+      "email": "info@omr.mx",
+      "firstname": "Pablo",
+      "lastname": "Ortiz Monasterio",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "OMR Gallery",
+          "type_venue_id": 12,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Leading contemporary art gallery founded in 1983, based in Roma Norte. Represents Mexican and international emerging and established artists. Hosts rotating exhibitions, art fairs and collector events.",
+          "instagram": "omrgallery",
+          "address": {
+            "address_principal": "Plaza Río de Janeiro 54",
+            "address_secondary": "Roma Norte",
+            "city": "Mexico City",
+            "state": "Ciudad de México",
+            "country": "Mexico",
+            "zip_code": "06700",
+            "latitude": 19.4186,
+            "longitude": -99.1624
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Mexico City",
+      "email": "hola@coquetastore.mx",
+      "firstname": "Daniela",
+      "lastname": "Ríos",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "Coqueta Boutique Roma",
+          "type_venue_id": 3,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Curated women's fashion boutique in Roma Norte stocking independent Mexican and Latin American designers. Known for bold prints, sustainable fabrics and limited-edition capsule collections.",
+          "instagram": "coquetastore",
+          "tiktok": "coquetastore",
+          "address": {
+            "address_principal": "Álvaro Obregón 168",
+            "address_secondary": "Roma Norte",
+            "city": "Mexico City",
+            "state": "Ciudad de México",
+            "country": "Mexico",
+            "zip_code": "06700",
+            "latitude": 19.4140,
+            "longitude": -99.1631
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Monterrey",
+      "email": "contacto@reydelcabrito.com.mx",
+      "firstname": "Jorge",
+      "lastname": "Garza",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "El Rey del Cabrito Centro",
+          "type_venue_id": 2,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Monterrey's most iconic cabrito (roasted goat) restaurant, a city institution since 1976. The original downtown location serving whole-roasted cabrito, machacado and traditional norteño specialties.",
+          "instagram": "reydelcabrito",
+          "address": {
+            "address_principal": "Constitución 817 Ote",
+            "city": "Monterrey",
+            "state": "Nuevo León",
+            "country": "Mexico",
+            "zip_code": "64000",
+            "latitude": 25.6694,
+            "longitude": -100.3098
+          }
+        },
+        {
+          "name_venue": "El Rey del Cabrito San Pedro",
+          "type_venue_id": 2,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "The San Pedro Garza García branch of El Rey del Cabrito, serving the same legendary roasted goat and norteño cuisine in a more modern setting — ideal for business lunches and family gatherings.",
+          "instagram": "reydelcabrito",
+          "address": {
+            "address_principal": "Blvd Antonio L. Rodríguez 2505",
+            "address_secondary": "San Pedro Garza García",
+            "city": "Monterrey",
+            "state": "Nuevo León",
+            "country": "Mexico",
+            "zip_code": "66220",
+            "latitude": 25.6507,
+            "longitude": -100.4019
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Monterrey",
+      "email": "hola@gordocoffee.mx",
+      "firstname": "Fernanda",
+      "lastname": "Leal",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "Gordo Coffee",
+          "type_venue_id": 5,
+          "is_takeaway": true,
+          "is_onsit": true,
+          "description": "Beloved specialty coffee roaster and café in Monterrey's historic centre. Roasts its own beans sourced from Mexican highlands. Famous for its signature Gordo latte, filter coffee menu and weekend brunch.",
+          "instagram": "gordocoffee",
+          "tiktok": "gordocoffeemty",
+          "address": {
+            "address_principal": "Padre Mier 912",
+            "address_secondary": "Centro",
+            "city": "Monterrey",
+            "state": "Nuevo León",
+            "country": "Mexico",
+            "zip_code": "64000",
+            "latitude": 25.6678,
+            "longitude": -100.3067
+          }
+        }
+      ]
+    },
+
+    {
+      "_city": "Monterrey",
+      "email": "info@crossfitregio.com",
+      "firstname": "Eduardo",
+      "lastname": "Treviño",
+      "password": "InTouch2026!",
+      "is_company": true,
+      "is_active": true,
+      "venues": [
+        {
+          "name_venue": "CrossFit Regio",
+          "type_venue_id": 11,
+          "is_takeaway": false,
+          "is_onsit": true,
+          "description": "Premier CrossFit affiliate box on Garza Sada corridor. Certified coaches, open classes morning and evening, olympic lifting program and a strong community of athletes in Monterrey's university district.",
+          "instagram": "crossfitregio",
+          "address": {
+            "address_principal": "Eugenio Garza Sada 2315",
+            "city": "Monterrey",
+            "state": "Nuevo León",
+            "country": "Mexico",
+            "zip_code": "64849",
+            "latitude": 25.6383,
+            "longitude": -100.2998
+          }
+        }
+      ]
+    }
+
+  ],
+
+  "influencers": [
+
+    {
+      "email": "sofia.mendoza@gmail.com",
+      "firstname": "Sofia",
+      "lastname": "Mendoza",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "sofia.mendoza",
+      "instagram_followers": 85000,
+      "tiktok": "sofiamendoza_mx",
+      "tiktok_followers": 45000,
+      "_niche": "lifestyle / travel",
+      "_base": "Mexico City"
+    },
+
+    {
+      "email": "carlos.reyes.cancun@gmail.com",
+      "firstname": "Carlos",
+      "lastname": "Reyes",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "carlosreyes.food",
+      "instagram_followers": 120000,
+      "tiktok": "carlosreyesfood",
+      "tiktok_followers": 90000,
+      "_niche": "food & restaurant reviews",
+      "_base": "Cancún"
+    },
+
+    {
+      "email": "valentina.cruz.mx@gmail.com",
+      "firstname": "Valentina",
+      "lastname": "Cruz",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "valentinacruz",
+      "instagram_followers": 200000,
+      "tiktok": "valentinacruz",
+      "tiktok_followers": 150000,
+      "_niche": "fashion / lifestyle",
+      "_base": "Mexico City"
+    },
+
+    {
+      "email": "diego.morales.fit@gmail.com",
+      "firstname": "Diego",
+      "lastname": "Morales",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "diegomorales.fit",
+      "instagram_followers": 55000,
+      "tiktok": "diegomoralesfit",
+      "tiktok_followers": 80000,
+      "_niche": "fitness / wellness",
+      "_base": "Monterrey"
+    },
+
+    {
+      "email": "isabella.santos.travel@gmail.com",
+      "firstname": "Isabella",
+      "lastname": "Santos",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "isabella.santos.travel",
+      "instagram_followers": 95000,
+      "tiktok": "isabellasantostravel",
+      "tiktok_followers": 60000,
+      "_niche": "travel / lifestyle",
+      "_base": "Cancún"
+    },
+
+    {
+      "email": "alejandro.vega.cdmx@gmail.com",
+      "firstname": "Alejandro",
+      "lastname": "Vega",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "alejandrovega.cdmx",
+      "instagram_followers": 75000,
+      "tiktok": "alejandrovegamx",
+      "tiktok_followers": 30000,
+      "_niche": "food / culture",
+      "_base": "Mexico City"
+    },
+
+    {
+      "email": "camila.torres.beauty@gmail.com",
+      "firstname": "Camila",
+      "lastname": "Torres",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "camilatorres.beauty",
+      "instagram_followers": 130000,
+      "tiktok": "camilatorresbeauty",
+      "tiktok_followers": 70000,
+      "_niche": "beauty / wellness",
+      "_base": "Monterrey"
+    },
+
+    {
+      "email": "marco.flores.adventures@gmail.com",
+      "firstname": "Marco",
+      "lastname": "Flores",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "marco.flores.adventures",
+      "instagram_followers": 45000,
+      "tiktok": "marcofloresadventures",
+      "tiktok_followers": 110000,
+      "_niche": "travel / adventure",
+      "_base": "Cancún"
+    },
+
+    {
+      "email": "natalia.ruiz.food@gmail.com",
+      "firstname": "Natalia",
+      "lastname": "Ruiz",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "nataliaruiz.eats",
+      "instagram_followers": 160000,
+      "tiktok": "nataliaruizeats",
+      "tiktok_followers": 95000,
+      "_niche": "food / lifestyle",
+      "_base": "Mexico City"
+    },
+
+    {
+      "email": "ricardo.perez.sport@gmail.com",
+      "firstname": "Ricardo",
+      "lastname": "Pérez",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "ricardoperez.sport",
+      "instagram_followers": 35000,
+      "tiktok": "ricardoperezsport",
+      "tiktok_followers": 65000,
+      "_niche": "fitness / sports",
+      "_base": "Monterrey"
+    },
+
+    {
+      "email": "ana.gutierrez.art@gmail.com",
+      "firstname": "Ana",
+      "lastname": "Gutiérrez",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "ana.gutierrez.art",
+      "instagram_followers": 50000,
+      "tiktok": "anagutierrezart",
+      "tiktok_followers": 25000,
+      "_niche": "art / culture",
+      "_base": "Mexico City"
+    },
+
+    {
+      "email": "luis.hernandez.mx@gmail.com",
+      "firstname": "Luis",
+      "lastname": "Hernández",
+      "password": "InTouch2026!",
+      "is_influencer": true,
+      "is_active": true,
+      "instagram": "luishernandez.mx",
+      "instagram_followers": 70000,
+      "tiktok": "luishernandezfood",
+      "tiktok_followers": 55000,
+      "_niche": "travel / food",
+      "_base": "Cancún"
+    }
+
+  ]
+}
