@@ -1,5 +1,5 @@
 <!-- Image Carousel -->
-<swiper-container slides-per-view="1" space-between="10" pagination="true" navigation="true">
+<swiper-container slides-per-view="1" pagination="true">
   @for (venue_image of venue.imgVenue; track venue_image) {
     <swiper-slide>
       <img [src]="venue_image.file" class="venue-image" />

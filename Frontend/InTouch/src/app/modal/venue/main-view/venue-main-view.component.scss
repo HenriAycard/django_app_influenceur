@@ -1,12 +1,21 @@
 :host { display: block; }
 
 /* Hero carousel */
-swiper-container { display: block; }
+swiper-container {
+  display: block;
+
+  /* Pagination dots — white overlay, Airbnb-style */
+  --swiper-pagination-color: #ffffff;
+  --swiper-pagination-bullet-inactive-color: rgba(255, 255, 255, 0.5);
+  --swiper-pagination-bullet-inactive-opacity: 1;
+  --swiper-pagination-bullet-size: 6px;
+  --swiper-pagination-bullet-horizontal-gap: 3px;
+  --swiper-pagination-bottom: 10px;
+}
 .venue-image {
   height: 300px;
   width: 100%;
   object-fit: cover;
-  border-radius: 0;
 }
 
 /* Identity + contact list */
