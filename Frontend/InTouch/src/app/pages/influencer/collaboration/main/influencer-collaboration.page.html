@@ -40,7 +40,11 @@
           </div>
         } @else {
           <h4 class="lifecycle-title">Share your published content</h4>
-          <p class="lifecycle-hint">Paste the link to your post so the venue can validate the collaboration.</p>
+          @if (reservation().offer.requirePostProof) {
+            <p class="lifecycle-hint proof-required">The venue requires your post link before they can validate the collaboration.</p>
+          } @else {
+            <p class="lifecycle-hint">Paste the link to your post so the venue can validate the collaboration.</p>
+          }
           <div class="post-link-row">
             <ion-input [(ngModel)]="postUrl" type="url" placeholder="https://instagram.com/p/…" aria-label="Post URL"></ion-input>
             <ion-button class="act act-primary" (click)="submitPost()" [disabled]="submittingPost()">

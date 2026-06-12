@@ -1,10 +1,20 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as Constant from '../../config/constant';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/operators';
 import { Venue, VenueCreateDto, VenueSortDto, VenueUpdateDto } from 'src/app/shared/models';
 import { ApiService } from './api.service';
+
+export interface VenueFeedFilter {
+  typeVenue?: number;
+  city?: string;
+}
+
+export interface VenuePage {
+  results: VenueSortDto[];
+  hasMore: boolean;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +34,21 @@ export class ApiVenueService extends ApiService {
     return this.http.get<Venue>(this.urlBase + id.toString(), this.options);
   }
 
-  public findVenue() : Observable<VenueSortDto[]> {
-    return this.http.get<any>(this.urlBase, this.options).pipe(
-      map(response => response.results || response)
+  public findVenue(filters?: VenueFeedFilter, page: number = 1): Observable<VenuePage> {
+    let params = new HttpParams().set('page', page);
+    if (filters?.typeVenue != null) params = params.set('type_venue', filters.typeVenue);
+    if (filters?.city) params = params.set('city', filters.city);
+    const options = { ...this.options, params };
+    return this.http.get<any>(this.urlBase, options).pipe(
+      map(response => ({
+        results: Array.isArray(response) ? response : (response.results ?? []),
+        hasMore: !!(response.next),
+      }))
     );
+  }
+
+  public findVenueCities(): Observable<string[]> {
+    return this.http.get<string[]>(this.urlBase + 'cities/', this.options);
   }
 
   public create(venue: VenueCreateDto) : Observable<Venue>{

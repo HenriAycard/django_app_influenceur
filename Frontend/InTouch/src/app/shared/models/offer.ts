@@ -26,6 +26,7 @@ export interface OfferWithVenue {
     minFollowersInstagram: number | null;
     minFollowersTiktok: number | null;
     minFollowersYoutube: number | null;
+    requirePostProof: boolean;
 }
 
 /** A published collaboration opportunity created by a venue/brand. */
@@ -54,4 +55,5 @@ export interface Offer {
     minFollowersInstagram: number | null;
     minFollowersTiktok: number | null;
     minFollowersYoutube: number | null;
+    requirePostProof: boolean;
 }

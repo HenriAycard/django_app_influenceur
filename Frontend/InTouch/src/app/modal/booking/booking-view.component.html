@@ -69,6 +69,23 @@
         @if (reservation.user.averageRating != null) {
           <app-rating-badge [average]="reservation.user.averageRating" [count]="reservation.user.reviewCount ?? 0"></app-rating-badge>
         }
+        <!-- Reliability track record: the backend only sends it to the venue owner. -->
+        @if (reservation.influencerStats; as stats) {
+          <div class="track-record">
+            @if (stats.noShows > 0) {
+              <span class="track-chip is-danger">
+                <ion-icon name="alert-circle"></ion-icon>{{ stats.noShows }} no-show{{ stats.noShows > 1 ? 's' : '' }}
+              </span>
+            }
+            @if (stats.completed > 0) {
+              <span class="track-chip is-good">
+                <ion-icon name="checkmark-circle"></ion-icon>{{ stats.completed }} collaboration{{ stats.completed > 1 ? 's' : '' }} completed
+              </span>
+            } @else if (stats.noShows === 0) {
+              <span class="track-chip is-neutral">New on InTouch</span>
+            }
+          </div>
+        }
       </div>
       <div class="socials">
         @if (reservation.user.instagram) {

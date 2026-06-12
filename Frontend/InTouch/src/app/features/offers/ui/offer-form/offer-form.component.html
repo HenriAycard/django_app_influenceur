@@ -138,6 +138,11 @@
           </ion-item>
           <ion-item>
             <fieldset class="input-item">
+              <ion-toggle formControlName="requirePostProof">Require post proof before validation ?</ion-toggle>
+            </fieldset>
+          </ion-item>
+          <ion-item>
+            <fieldset class="input-item">
               <ion-toggle [(ngModel)]="isApprovalRequired" (ionChange)="toggleApprovalRequired()"
               [ngModelOptions]="{standalone: true}">Approval Required ?</ion-toggle>
             </fieldset>

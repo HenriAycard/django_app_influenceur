@@ -1,4 +1,103 @@
-.chip-padding {
-    margin-left: 0px;
-    margin-right: 8px;
+.search-page { --background: var(--p-surface); }
+
+.wrap {
+  padding: calc(env(safe-area-inset-top) + 16px) 16px 32px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ── Top bar: back button + inline search ────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--p-card);
+  border: 1.5px solid var(--p-hairline);
+  color: var(--p-ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease;
+
+  &:active { transform: scale(.92); }
+
+  ion-icon { font-size: 1.2rem; }
+}
+
+.search {
+  flex: 1;
+  --background: var(--p-card);
+  --border-radius: 14px;
+  --box-shadow: none;
+  --placeholder-color: var(--p-sub);
+  --color: var(--p-ink);
+  padding: 0;
+}
+
+/* ── Section heading ─────────────────────────────────────── */
+.section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 16px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--p-ink);
+}
+
+.count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  font-size: .76rem;
+  font-weight: 700;
+  background: var(--p-accent-soft);
+  color: var(--p-accent);
+}
+
+/* ── Skeleton ────────────────────────────────────────────── */
+.skeleton-list { display: flex; flex-direction: column; gap: 20px; }
+
+.skeleton {
+  border-radius: var(--p-radius-lg);
+  aspect-ratio: 16 / 9;
+  background: linear-gradient(
+    90deg,
+    var(--p-hairline) 25%,
+    var(--p-card) 50%,
+    var(--p-hairline) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Empty ───────────────────────────────────────────────── */
+.empty {
+  text-align: center;
+  color: var(--p-sub);
+  padding: 60px 20px;
+
+  ion-icon { font-size: 2.2rem; color: var(--p-accent); display: block; margin: 0 auto 10px; }
+  p { margin: 0 0 4px; font-size: .95rem; font-weight: 600; color: var(--p-ink); }
+  span { font-size: .85rem; }
 }

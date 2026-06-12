@@ -248,6 +248,42 @@ class LifecycleTests(ApiTestCase):
         self.assertIsNotNone(reservation.no_show_at)
 
 
+class InfluencerStatsTests(ApiTestCase):
+    """The reservation detail carries the applying influencer's track record
+    (realized collaborations + no-shows) — for the venue owner only."""
+
+    def past_collab(self, *, no_show=False, days_ago=5):
+        return Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=days_ago),
+            no_show_at=timezone.now() if no_show else None,
+        )
+
+    def test_owner_sees_track_record(self):
+        self.past_collab(days_ago=10)
+        self.past_collab(days_ago=8)
+        self.past_collab(no_show=True, days_ago=5)
+        application = self.application()
+        response = self.as_user(self.brand).get(f'/api/reservation/{application.id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['influencerStats'],
+                         {'completed': 2, 'noShows': 1})
+
+    def test_pending_and_upcoming_do_not_count(self):
+        self.application()  # pending
+        upcoming = self.application(status=1)  # accepted, future date
+        response = self.as_user(self.brand).get(f'/api/reservation/{upcoming.id}')
+        self.assertEqual(response.json()['influencerStats'],
+                         {'completed': 0, 'noShows': 0})
+
+    def test_influencer_does_not_receive_stats(self):
+        self.past_collab(no_show=True)
+        application = self.application()
+        response = self.as_user(self.influencer).get(f'/api/reservation/{application.id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.json()['influencerStats'])
+
+
 class RegistrationTests(ApiTestCase):
 
     def test_influencer_needs_a_social_handle(self):
