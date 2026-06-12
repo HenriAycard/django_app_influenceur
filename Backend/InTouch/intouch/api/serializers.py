@@ -147,6 +147,36 @@ class VenueDetailsSerializer(ModelSerializer):
         return _venue_rating(obj)[1]
 
 
+class VenueMapSerializer(ModelSerializer):
+    """Minimal payload for the map view: id, name, coordinates, type and cover image."""
+    latitude = serializers.SerializerMethodField()
+    longitude = serializers.SerializerMethodField()
+    city = serializers.SerializerMethodField()
+    type_venue = TypeVenueSerializer(read_only=True)
+    cover = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Venue
+        fields = ('id', 'name_venue', 'latitude', 'longitude', 'city', 'type_venue', 'cover')
+
+    def get_latitude(self, obj):
+        return obj.address.latitude if obj.address else None
+
+    def get_longitude(self, obj):
+        return obj.address.longitude if obj.address else None
+
+    def get_city(self, obj):
+        return obj.address.city if obj.address else None
+
+    def get_cover(self, obj):
+        principal = next((img for img in obj.imgVenue.all() if img.is_principal), None)
+        img = principal or next(iter(obj.imgVenue.all()), None)
+        if img and img.file:
+            request = self.context.get('request')
+            return request.build_absolute_uri(img.file.url) if request else img.file.url
+        return None
+
+
 class VenueCreateSerializer(ModelSerializer):
     user = PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True, required=False)
 

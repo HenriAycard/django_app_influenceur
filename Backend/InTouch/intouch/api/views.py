@@ -24,10 +24,46 @@ from .permissions import IsVenueOwner, IsRelatedToVenueOwner, IsReservationParty
 from . import emails
 
 import logging
+import urllib.request
+import urllib.parse
+import json as _json
 from uuid import UUID
 from datetime import date, datetime, timedelta
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
+
+
+def _geocode(address: 'Address') -> None:
+    """Best-effort Nominatim geocoding — never raises, silently skips on error.
+    Tries full address first; falls back to city+country if no result."""
+    def _query(q: str) -> tuple[float, float] | None:
+        try:
+            params = urllib.parse.urlencode({'q': q, 'format': 'json', 'limit': '1'})
+            url = f'https://nominatim.openstreetmap.org/search?{params}'
+            req = urllib.request.Request(url, headers={'User-Agent': 'InTouch/1.0 (contact@intouch.ovh)'})
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                results = _json.loads(resp.read())
+            if results:
+                return float(results[0]['lat']), float(results[0]['lon'])
+        except Exception:
+            pass
+        return None
+
+    full_parts = [address.address_principal, address.zip_code, address.city, address.country]
+    full_query = ', '.join(p for p in full_parts if p)
+    if not full_query:
+        return
+
+    result = _query(full_query)
+    if result is None:
+        # Fallback: just city + country
+        fallback_parts = [address.city, address.country]
+        fallback_query = ', '.join(p for p in fallback_parts if p)
+        if fallback_query:
+            result = _query(fallback_query)
+
+    if result:
+        address.latitude, address.longitude = result
 from django.utils import timezone
 from firebase_admin import messaging
 
@@ -275,10 +311,20 @@ class AddressCreate(generics.CreateAPIView):
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
 
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        _geocode(instance)
+        instance.save(update_fields=['latitude', 'longitude'])
+
 class AddressDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
     queryset = Address.objects.all()
     serializer_class = AddressSerializer
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        _geocode(instance)
+        instance.save(update_fields=['latitude', 'longitude'])
 
 class OpeningCreate(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -542,6 +588,21 @@ class VenueCitiesView(APIView):
             .distinct()
         )
         return Response(list(cities))
+
+class VenueMapView(APIView):
+    """Returns all active venues that have geocoded coordinates — minimal payload for the map."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        venues = (
+            Venue.objects
+            .filter(is_actif=True, address__latitude__isnull=False, address__longitude__isnull=False)
+            .select_related('type_venue', 'address')
+            .prefetch_related('imgVenue')
+        )
+        serializer = VenueMapSerializer(venues, many=True, context={'request': request})
+        return Response(serializer.data)
+
 
 class ReviewListCreateView(generics.ListCreateAPIView):
     """List reviews for a venue (?venue=) or an influencer (?influencer=),

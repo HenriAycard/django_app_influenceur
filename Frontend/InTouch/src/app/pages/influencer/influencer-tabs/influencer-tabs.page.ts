@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { IonBadge, IonLabel, IonTabButton, IonIcon, IonTabBar, IonTabs } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { searchOutline, calendarOutline, personCircleOutline, chatbubbleEllipsesOutline } from 'ionicons/icons';
+import { searchOutline, calendarOutline, personCircleOutline, chatbubbleEllipsesOutline, mapOutline } from 'ionicons/icons';
 import { Subscription, interval } from 'rxjs';
 import { MessagingStore } from 'src/app/features/messaging/messaging.store';
 
@@ -22,7 +22,7 @@ export class InfluencerTabsPage implements OnInit, OnDestroy {
   private poll?: Subscription;
 
   constructor() {
-    addIcons({ searchOutline, calendarOutline, personCircleOutline, chatbubbleEllipsesOutline });
+    addIcons({ searchOutline, calendarOutline, personCircleOutline, chatbubbleEllipsesOutline, mapOutline });
   }
 
   ngOnInit() {

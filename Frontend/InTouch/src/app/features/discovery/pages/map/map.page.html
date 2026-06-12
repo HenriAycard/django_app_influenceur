@@ -1,0 +1,84 @@
+<ion-content [fullscreen]="true" [scrollY]="false">
+  <div class="map-wrap">
+
+    <!-- Map canvas -->
+    <div #mapContainer class="map-container"></div>
+
+    <!-- Top header overlay -->
+    <div class="map-header">
+      <div class="map-header-logo">
+        <ion-icon name="flash-outline"></ion-icon>
+        <span>InTouch</span>
+      </div>
+      <div class="map-header-right">
+        @if (!loading() && !empty() && !error()) {
+          <div class="venue-count-chip">
+            <ion-icon name="location-outline"></ion-icon>
+            {{ venueCount() }} venue{{ venueCount() > 1 ? 's' : '' }}
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Loading -->
+    @if (loading()) {
+      <div class="map-overlay">
+        <ion-spinner name="dots" color="primary"></ion-spinner>
+        <span class="map-overlay-label">Loading venues…</span>
+      </div>
+    }
+
+    <!-- Empty state -->
+    @if (!loading() && empty()) {
+      <div class="map-overlay">
+        <ion-icon name="map-outline" class="map-state-icon"></ion-icon>
+        <p class="map-state-text">No venues on the map yet.</p>
+      </div>
+    }
+
+    <!-- Error state -->
+    @if (!loading() && error()) {
+      <div class="map-overlay">
+        <p class="map-state-text">Could not load venues.</p>
+      </div>
+    }
+
+    <!-- Selected venue card (bottom sheet) -->
+    @if (selected(); as v) {
+      <div class="venue-card" (click)="$event.stopPropagation()">
+        <button class="venue-card-close" (click)="dismiss()" aria-label="Dismiss">
+          <ion-icon name="close-outline"></ion-icon>
+        </button>
+
+        @if (v.cover) {
+          <div class="venue-card-cover" [style.background-image]="'url(' + v.cover + ')'"></div>
+        } @else {
+          <div class="venue-card-cover venue-card-cover--empty">
+            <span>{{ typeEmoji(v.typeVenue?.name) }}</span>
+          </div>
+        }
+
+        <div class="venue-card-body">
+          <div class="venue-card-type-row">
+            <span class="venue-card-emoji">{{ typeEmoji(v.typeVenue?.name) }}</span>
+            @if (v.typeVenue) {
+              <span class="venue-card-type">{{ v.typeVenue.name }}</span>
+            }
+          </div>
+          <h2 class="venue-card-name">{{ v.nameVenue }}</h2>
+          @if (v.city) {
+            <p class="venue-card-city">
+              <ion-icon name="location-outline"></ion-icon>
+              {{ v.city }}
+            </p>
+          }
+          <button class="venue-card-btn" (click)="openVenue(v.id)">
+            View venue
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    }
+
+  </div>
+</ion-content>
