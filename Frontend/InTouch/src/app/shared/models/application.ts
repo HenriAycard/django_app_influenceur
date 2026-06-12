@@ -17,6 +17,14 @@ export interface CreateApplicationDto {
     dateReservation: string;
 }
 
+/** Reliability track record of the applying influencer across the whole
+ *  platform. Only present when the viewer is the venue owner. */
+export interface InfluencerStats {
+    /** Accepted collaborations whose visit happened (no-shows excluded). */
+    completed: number;
+    noShows: number;
+}
+
 /** An application with the applying influencer attached (brand-facing detail). */
 export interface Application {
     id: number;
@@ -24,6 +32,7 @@ export interface Application {
     status: ApplicationStatus;
     dateReservation: Date;
     user: User;
+    influencerStats?: InfluencerStats | null;
     /** The review the current viewer left for this collaboration, if any. */
     myReview?: Review | null;
     /** True when the viewer may leave a review (completed, party, not yet reviewed). */

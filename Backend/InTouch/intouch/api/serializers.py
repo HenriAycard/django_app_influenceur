@@ -2,7 +2,7 @@ from .models import *
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, PrimaryKeyRelatedField, ValidationError, IntegerField
 import uuid
 from rest_framework import serializers
-from django.db.models import Avg, Count, F
+from django.db.models import Avg, Count, F, Q
 from django.utils import timezone
 
 #created by ionic django crud generator
@@ -207,11 +207,12 @@ class ReservationSerializer(ModelSerializer):
     user = UserSerializer(many=False, read_only=True)
     my_review = SerializerMethodField()
     can_review = SerializerMethodField()
+    influencer_stats = SerializerMethodField()
 
     class Meta:
         model = Reservation
         fields = ('id', 'offer', 'offer_id', 'status', 'date_reservation', 'user', 'my_review', 'can_review',
-                  'post_url', 'post_submitted_at', 'completed_at', 'no_show_at')
+                  'influencer_stats', 'post_url', 'post_submitted_at', 'completed_at', 'no_show_at')
         read_only_fields = ('post_url', 'post_submitted_at', 'completed_at', 'no_show_at')
 
     def _viewer(self):
@@ -233,6 +234,20 @@ class ReservationSerializer(ModelSerializer):
         is_party = obj.user_id == viewer.id or obj.offer.venue.user_id == viewer.id
         already = obj.reviews.filter(author=viewer).exists()
         return is_party and _reservation_completed(obj) and not already
+
+    def get_influencer_stats(self, obj):
+        """Reliability track record of the applying influencer, exposed to the
+        venue owner only so a brand can judge an application. Influencers see
+        their own numbers in /influencer/analytics instead."""
+        viewer = self._viewer()
+        if not viewer or viewer.id != obj.offer.venue.user_id:
+            return None
+        return Reservation.objects.filter(user_id=obj.user_id).aggregate(
+            completed=Count('id', filter=Q(
+                status=1, date_reservation__lt=timezone.now(), no_show_at__isnull=True,
+            )),
+            no_shows=Count('id', filter=Q(no_show_at__isnull=False)),
+        )
 
 class InfluenceurReservationSerializer(ModelSerializer):
     offer = OfferVenueSerializer(many=False, read_only=True)

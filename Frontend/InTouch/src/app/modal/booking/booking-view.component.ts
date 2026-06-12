@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
-  calendarOutline, cashOutline, chevronForward, checkmarkCircle, timeOutline,
+  alertCircle, calendarOutline, cashOutline, chevronForward, checkmarkCircle, timeOutline,
   closeCircle, documentTextOutline, listOutline, logoInstagram, logoTiktok, logoYoutube,
 } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
@@ -33,7 +33,7 @@ export class BookingViewPage {
 
   constructor() {
     addIcons({
-      calendarOutline, cashOutline, chevronForward, checkmarkCircle, timeOutline,
+      alertCircle, calendarOutline, cashOutline, chevronForward, checkmarkCircle, timeOutline,
       closeCircle, documentTextOutline, listOutline, logoInstagram, logoTiktok, logoYoutube,
     });
   }
