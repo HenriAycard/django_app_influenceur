@@ -1,0 +1,47 @@
+<ion-card class="inf-card">
+  <ion-card-content>
+    <div class="inf-card-inner">
+
+      <div class="inf-avatar">
+        @if (influencer.avatar) {
+          <img [src]="influencer.avatar" [alt]="influencer.firstname" />
+        } @else {
+          <span class="inf-initials">{{ initials }}</span>
+        }
+      </div>
+
+      <div class="inf-info">
+        <ion-card-title class="inf-name">{{ influencer.firstname }} {{ influencer.lastname }}</ion-card-title>
+
+        <div class="inf-socials">
+          @if (influencer.instagram) {
+            <span class="inf-social">
+              <ion-icon name="logo-instagram"></ion-icon>
+              {{ format(influencer.instagramFollowers) || influencer.instagram }}
+            </span>
+          }
+          @if (influencer.tiktok) {
+            <span class="inf-social">
+              <ion-icon name="logo-tiktok"></ion-icon>
+              {{ format(influencer.tiktokFollowers) || influencer.tiktok }}
+            </span>
+          }
+          @if (influencer.youtube) {
+            <span class="inf-social">
+              <ion-icon name="logo-youtube"></ion-icon>
+              {{ format(influencer.youtubeFollowers) || influencer.youtube }}
+            </span>
+          }
+        </div>
+
+        @if (influencer.averageRating != null && (influencer.reviewCount ?? 0) > 0) {
+          <span class="inf-rating">
+            <ion-icon name="star-outline"></ion-icon>
+            {{ influencer.averageRating | number:'1.1-1' }} ({{ influencer.reviewCount }})
+          </span>
+        }
+      </div>
+
+    </div>
+  </ion-card-content>
+</ion-card>

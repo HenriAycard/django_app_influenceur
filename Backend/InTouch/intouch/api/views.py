@@ -828,6 +828,30 @@ class VenueViewLogView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class InfluencerListView(generics.ListAPIView):
+    """Brand-facing influencer discovery feed.
+
+    Returns the list of active influencers with their public profile.
+    Optional ?search= filters on first/last name.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = InfluencerCardSerializer
+
+    def get_queryset(self):
+        qs = User.objects.filter(is_influencer=True, is_active=True)
+        search = self.request.query_params.get('search', '').strip()
+        if search:
+            qs = qs.filter(Q(firstname__icontains=search) | Q(lastname__icontains=search))
+        return qs.order_by('firstname', 'lastname')
+
+
+class InfluencerDetailView(generics.RetrieveAPIView):
+    """Full public profile of a single influencer (for the brand invite flow)."""
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserSerializer
+    queryset = User.objects.filter(is_influencer=True, is_active=True)
+
+
 class MediaKitPdfView(APIView):
     """One-page PDF media kit for the authenticated influencer: socials,
     declared audience, and platform-verified track record. Built with the

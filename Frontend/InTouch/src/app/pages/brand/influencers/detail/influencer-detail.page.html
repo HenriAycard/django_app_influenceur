@@ -1,0 +1,113 @@
+<ion-content [fullscreen]="true">
+  <ion-fab slot="fixed" vertical="top" horizontal="start" class="back-fab">
+    <ion-fab-button (click)="goBack()" aria-label="Back">
+      <ion-icon name="arrow-back"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  @if (!isLoad()) {
+    <div class="loading"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (influencer(); as inf) {
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-avatar">
+        @if (inf.avatar) {
+          <img [src]="inf.avatar" [alt]="inf.firstname" />
+        } @else {
+          <span>{{ initials }}</span>
+        }
+      </div>
+      <h1 class="hero-name">{{ inf.firstname }} {{ inf.lastname }}</h1>
+      @if (inf.averageRating != null && (inf.reviewCount ?? 0) > 0) {
+        <app-rating-badge [average]="inf.averageRating" [count]="inf.reviewCount ?? 0"></app-rating-badge>
+      }
+    </div>
+
+    <!-- SOCIAL STATS -->
+    <div class="sheet">
+      @if (inf.instagram || inf.tiktok || inf.youtube) {
+        <div class="block socials-block">
+          @if (inf.instagram) {
+            <div class="social-row">
+              <ion-icon name="logo-instagram"></ion-icon>
+              <span class="social-handle">&#64;{{ inf.instagram }}</span>
+              @if (inf.instagramFollowers) {
+                <span class="social-followers">{{ format(inf.instagramFollowers) }} followers</span>
+              }
+            </div>
+          }
+          @if (inf.tiktok) {
+            <div class="social-row">
+              <ion-icon name="logo-tiktok"></ion-icon>
+              <span class="social-handle">&#64;{{ inf.tiktok }}</span>
+              @if (inf.tiktokFollowers) {
+                <span class="social-followers">{{ format(inf.tiktokFollowers) }} followers</span>
+              }
+            </div>
+          }
+          @if (inf.youtube) {
+            <div class="social-row">
+              <ion-icon name="logo-youtube"></ion-icon>
+              <span class="social-handle">&#64;{{ inf.youtube }}</span>
+              @if (inf.youtubeFollowers) {
+                <span class="social-followers">{{ format(inf.youtubeFollowers) }} followers</span>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <!-- INVITE BLOCK -->
+      <div class="block invite-block">
+        <div class="block-head">
+          <ion-icon name="mail-outline"></ion-icon>
+          <h2>Send an invitation</h2>
+        </div>
+        <p class="invite-hint">Select one of your offers to invite this influencer to collaborate.</p>
+
+        <ion-item lines="none" class="select-item">
+          <ion-label>Venue</ion-label>
+          <ion-select
+            [(ngModel)]="selectedVenueId"
+            (ngModelChange)="onVenueChange()"
+            placeholder="Select a venue"
+            interface="action-sheet">
+            @for (venue of venues(); track venue.id) {
+              <ion-select-option [value]="venue.id">{{ venue.nameVenue }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        @if (selectedVenueId) {
+          <ion-item lines="none" class="select-item">
+            <ion-label>Offer</ion-label>
+            <ion-select
+              [(ngModel)]="selectedOfferId"
+              placeholder="Select an offer"
+              interface="action-sheet"
+              [disabled]="offers().length === 0">
+              @for (offer of offers(); track offer.id) {
+                <ion-select-option [value]="offer.id">{{ offer.name }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        }
+
+        <ion-button
+          expand="block"
+          class="invite-btn"
+          [disabled]="!selectedOfferId || sending()"
+          (click)="sendInvitation()">
+          @if (sending()) {
+            <ion-spinner name="crescent" slot="start"></ion-spinner>
+          } @else {
+            <ion-icon name="mail-outline" slot="start"></ion-icon>
+          }
+          Send invitation
+        </ion-button>
+      </div>
+
+    </div>
+  }
+</ion-content>

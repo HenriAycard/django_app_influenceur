@@ -48,6 +48,25 @@ class MethodField(SerializerMethodField):
         method = getattr(self.parent, self.method_name)
         return method(value, **self.func_kwargs)
 
+class InfluencerCardSerializer(ModelSerializer):
+    """Public-facing influencer card — used by the brand influencer discovery feed."""
+    average_rating = SerializerMethodField()
+    review_count = SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'firstname', 'lastname', 'avatar',
+                  'instagram', 'tiktok', 'youtube',
+                  'instagram_followers', 'tiktok_followers', 'youtube_followers',
+                  'average_rating', 'review_count')
+
+    def get_average_rating(self, obj):
+        return _influencer_rating(obj)[0]
+
+    def get_review_count(self, obj):
+        return _influencer_rating(obj)[1]
+
+
 class UserSerializer(ModelSerializer):
     average_rating = SerializerMethodField()
     review_count = SerializerMethodField()

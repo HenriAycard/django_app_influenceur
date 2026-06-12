@@ -1,0 +1,115 @@
+:host { display: block; }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding-top: 120px;
+}
+
+/* Hero */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 24px 32px;
+  background: linear-gradient(160deg, var(--p-strong) 0%, var(--p-primary) 60%, transparent 100%);
+}
+
+.hero-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: rgba(255,255,255,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid rgba(255,255,255,.5);
+  margin-bottom: 16px;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+
+  span {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+  }
+}
+
+.hero-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+  text-align: center;
+}
+
+/* Content sheet */
+.sheet {
+  background: var(--ion-background-color);
+  border-radius: 24px 24px 0 0;
+  margin-top: -24px;
+  padding: 24px 0 32px;
+}
+
+.block {
+  margin: 0 16px 16px;
+  background: var(--ion-card-background, #fff);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+/* Socials */
+.social-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--ion-color-light-shade);
+
+  &:last-child { border-bottom: none; }
+
+  ion-icon { font-size: 1.2rem; color: var(--ion-color-medium); }
+}
+
+.social-handle { font-weight: 500; flex: 1; }
+
+.social-followers {
+  font-size: .8rem;
+  color: var(--ion-color-medium);
+}
+
+/* Invite block */
+.invite-block .block-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+
+  ion-icon { font-size: 1.3rem; color: var(--p-primary); }
+  h2 { font-size: 1.1rem; font-weight: 600; margin: 0; }
+}
+
+.invite-hint {
+  font-size: .85rem;
+  color: var(--ion-color-medium);
+  margin: 0 0 12px;
+}
+
+.select-item {
+  --background: var(--ion-color-light);
+  --border-radius: 10px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.invite-btn {
+  --background: var(--p-primary);
+  --background-activated: var(--p-strong);
+  margin-top: 8px;
+}
+
+.back-fab {
+  margin-top: var(--ion-safe-area-top, 0);
+}

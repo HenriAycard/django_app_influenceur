@@ -73,6 +73,14 @@ export const BRAND_TABS_ROUTES: Routes = [{
             loadComponent: () => import('../../features/offers/pages/offer-detail/offer-detail.page').then(m => m.OfferDetailPage)
         },
         {
+            path: 'influencers',
+            loadComponent: () => import('./influencers/influencers.page').then(m => m.InfluencersPage)
+        },
+        {
+            path: 'influencers/:influencerId',
+            loadComponent: () => import('./influencers/detail/influencer-detail.page').then(m => m.InfluencerDetailPage)
+        },
+        {
             path: '',
             redirectTo: '/brand/home',
             pathMatch: 'full'

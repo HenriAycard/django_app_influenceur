@@ -1,0 +1,38 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Influencers</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar
+      [(ngModel)]="search"
+      placeholder="Search by name…"
+      debounce="400"
+      (ionInput)="onSearch()"
+      animated>
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Influencers</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  @if (store.loading()) {
+    <div class="loading-center"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (store.influencers().length === 0) {
+    <p class="empty-state">No influencers found.</p>
+  } @else {
+    @for (inf of store.influencers(); track inf.id) {
+      <div (click)="openProfile(inf)">
+        <app-influencer-card [influencer]="inf"></app-influencer-card>
+      </div>
+    }
+  }
+</ion-content>
