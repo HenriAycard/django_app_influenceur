@@ -4,6 +4,7 @@ import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { logoInstagram, logoTiktok, logoYoutube, star } from 'ionicons/icons';
 import { User } from 'src/app/shared/models';
+import { formatFollowers, getInfluencerInitials } from 'src/app/shared/util/influencer.util';
 
 interface SocialStat { icon: string; cls: string; label: string; value: string; }
 
@@ -23,7 +24,7 @@ export class InfluencerCardComponent {
     }
 
     get initials(): string {
-        return ((this.influencer.firstname?.[0] ?? '') + (this.influencer.lastname?.[0] ?? '')) || '?';
+        return getInfluencerInitials(this.influencer.firstname, this.influencer.lastname);
     }
 
     get primaryHandle(): string {
@@ -48,9 +49,6 @@ export class InfluencerCardComponent {
     }
 
     format(n: number | null | undefined): string {
-        if (n == null) return '';
-        if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-        if (n >= 1_000)     return (n / 1_000).toFixed(0) + 'K';
-        return n.toString();
+        return formatFollowers(n);
     }
 }

@@ -5,6 +5,7 @@ import { addIcons } from 'ionicons';
 import { alertCircle, arrowBack, checkmarkCircle, logoInstagram, logoTiktok, logoYoutube, mailOutline, star } from 'ionicons/icons';
 import { firstValueFrom, forkJoin } from 'rxjs';
 import { User, VenueSortDto } from 'src/app/shared/models';
+import { formatFollowers, getInfluencerInitials } from 'src/app/shared/util/influencer.util';
 import { InfluencerDiscoveryStore } from 'src/app/features/influencer-discovery/influencer-discovery.store';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { ApiVenueService } from 'src/app/services/api/api-venue.service';
@@ -121,15 +122,12 @@ export class InfluencerDetailPage implements OnInit {
     }
 
     protected format(n: number | null | undefined): string {
-        if (n == null) return '';
-        if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-        if (n >= 1_000)     return (n / 1_000).toFixed(0) + 'K';
-        return n.toString();
+        return formatFollowers(n);
     }
 
     get initials(): string {
         const u = this.influencer();
-        return ((u?.firstname?.[0] ?? '') + (u?.lastname?.[0] ?? '')) || '?';
+        return getInfluencerInitials(u?.firstname, u?.lastname);
     }
 
     get socials(): Social[] {

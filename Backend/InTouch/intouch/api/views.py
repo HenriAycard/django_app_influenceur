@@ -1,3 +1,5 @@
+import threading
+
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -71,18 +73,20 @@ logger = logging.getLogger(__name__)
 
 
 def _notify(user_id, title, body):
-    """Best-effort FCM push. Never raises: a missing token or a send failure
-    must not break the action (reservation create/update) that triggered it."""
-    try:
-        fcm = FCMToken.objects.filter(user_id=user_id).first()
-        if not fcm:
-            return
-        messaging.send(messaging.Message(
-            notification=messaging.Notification(title=title, body=body),
-            token=fcm.token,
-        ))
-    except Exception as e:
-        logger.warning("FCM push to %s failed: %s", user_id, e)
+    """Best-effort FCM push in a daemon thread. Never raises: a missing token
+    or send failure must not break the action that triggered it."""
+    def _do():
+        try:
+            fcm = FCMToken.objects.filter(user_id=user_id).first()
+            if not fcm:
+                return
+            messaging.send(messaging.Message(
+                notification=messaging.Notification(title=title, body=body),
+                token=fcm.token,
+            ))
+        except Exception as e:
+            logger.warning("FCM push to %s failed: %s", user_id, e)
+    threading.Thread(target=_do, daemon=True).start()
 
 
 class RegisterRequestView(APIView):
@@ -810,6 +814,8 @@ class InfluencerAnalyticsView(APIView):
 
     def get(self, request):
         user = request.user
+        if not user.is_influencer:
+            raise PermissionDenied('Analytics is available to influencer accounts.')
         now = timezone.now()
         reservations = Reservation.objects.filter(user=user)
         accepted = reservations.filter(status=1).count()
@@ -854,6 +860,8 @@ class InfluencerListView(generics.ListAPIView):
     serializer_class = InfluencerCardSerializer
 
     def get_queryset(self):
+        if not self.request.user.is_company:
+            raise PermissionDenied('This endpoint is for venue accounts.')
         qs = User.objects.filter(is_influencer=True, is_active=True)
         search = self.request.query_params.get('search', '').strip()
         if search:
@@ -866,7 +874,11 @@ class InfluencerDetailView(generics.RetrieveAPIView):
     socials, declared audience, rating and reliability track record."""
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = InfluencerProfileSerializer
-    queryset = User.objects.filter(is_influencer=True, is_active=True)
+
+    def get_queryset(self):
+        if not self.request.user.is_company:
+            raise PermissionDenied('This endpoint is for venue accounts.')
+        return User.objects.filter(is_influencer=True, is_active=True)
 
 
 class MediaKitPdfView(APIView):
