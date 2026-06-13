@@ -73,16 +73,21 @@ logger = logging.getLogger(__name__)
 
 
 def _notify(user_id, title, body):
-    """Best-effort FCM push in a daemon thread. Never raises: a missing token
-    or send failure must not break the action that triggered it."""
+    """Best-effort FCM push. DB lookup is synchronous; only the Firebase HTTP
+    call runs in a daemon thread so it never blocks the request path."""
+    try:
+        fcm = FCMToken.objects.filter(user_id=user_id).first()
+        if not fcm:
+            return
+        token = fcm.token
+    except Exception:
+        return
+
     def _do():
         try:
-            fcm = FCMToken.objects.filter(user_id=user_id).first()
-            if not fcm:
-                return
             messaging.send(messaging.Message(
                 notification=messaging.Notification(title=title, body=body),
-                token=fcm.token,
+                token=token,
             ))
         except Exception as e:
             logger.warning("FCM push to %s failed: %s", user_id, e)
