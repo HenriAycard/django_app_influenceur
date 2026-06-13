@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonBackButton, IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonTextarea, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { paperPlaneOutline } from 'ionicons/icons';
-import { Subscription, interval } from 'rxjs';
+import { Subscription, switchMap, timer } from 'rxjs';
 import { MessagingStore } from 'src/app/features/messaging/messaging.store';
 import { ChatMessage } from 'src/app/features/messaging/messaging.models';
 import { AuthService } from 'src/app/services/auth.service';
@@ -47,23 +47,22 @@ export class ThreadPage {
     private get id(): number { return Number(this.conversationId); }
 
     ionViewWillEnter(): void {
-        this.load(true);
-        this.poll = interval(4000).subscribe(() => this.load(false));
+        let first = true;
+        this.poll = timer(0, 4000).pipe(
+            switchMap(() => this.store.messages(this.id)),
+        ).subscribe({
+            next: list => {
+                const grew = list.length !== this.messages().length;
+                this.messages.set(list);
+                if (first || grew) this.scrollToBottom();
+                first = false;
+            },
+            error: () => {},
+        });
     }
 
     ionViewWillLeave(): void {
         this.poll?.unsubscribe();
-    }
-
-    private load(scroll: boolean): void {
-        this.store.messages(this.id).subscribe({
-            next: list => {
-                const grew = list.length !== this.messages().length;
-                this.messages.set(list);
-                if (scroll || grew) this.scrollToBottom();
-            },
-            error: () => {},
-        });
     }
 
     send(): void {

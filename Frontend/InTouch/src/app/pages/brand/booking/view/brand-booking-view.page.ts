@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, signal, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -24,7 +24,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   standalone: true,
   imports: [DatePipe, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
 })
-export class BrandBookingViewPage implements OnInit {
+export class BrandBookingViewPage {
 
   @Input() bookingId!: number;
   @ViewChild(IonModal) modal!: IonModal;
@@ -78,17 +78,14 @@ export class BrandBookingViewPage implements OnInit {
     this.navCtrl.navigateBack('/brand/calendar');
   }
 
-  ngOnInit(): void {
-    this.loadData()
-  }
-
-  public loadData(): void {
+  ionViewWillEnter(): void {
     this.store.findOne(this.bookingId).subscribe({
       next: (value: Application) => {
-        this.reservation.set(value)
-        this.isLoad.set(true)
-      }
-    })
+        this.reservation.set(value);
+        this.isLoad.set(true);
+      },
+      error: () => this.isLoad.set(true),
+    });
   }
 
   public acceptReservation() {

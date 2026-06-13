@@ -69,7 +69,7 @@ export class ApplicationStore {
     readonly bInvitedCount = computed(() => this._bInvited().length);
     readonly bDateProposedCount = computed(() => this._bDateProposed().length);
     readonly bComingSoonByDate = computed<DayGroup[]>(() => groupByDay(this._bComingSoon()));
-    readonly bComingSoonCount = computed(() => this.bComingSoonByDate().length);
+    readonly bComingSoonCount = computed(() => this.bComingSoonByDate().reduce((s, g) => s + g.valeur.length, 0));
 
     /** Loads every influencer calendar group. Completes once all queries resolve. */
     loadInfluencerCalendar(): Observable<unknown> {

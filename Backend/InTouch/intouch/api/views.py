@@ -562,6 +562,7 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
                     else:
                         _notify(reservation.user_id, "Invitation withdrawn",
                                 "The venue withdrew their invitation.")
+                        emails.send_invitation_responded(reservation, accepted=False)
                 else:
                     _notify(reservation.user_id, "Application declined",
                             "Your application was not selected this time.")
@@ -1128,7 +1129,7 @@ class ConversationListCreateView(generics.ListCreateAPIView):
             influencer_id = request.data.get('user_id')
             if not influencer_id:
                 return Response({"detail": "user_id (influencer) is required."}, status=status.HTTP_400_BAD_REQUEST)
-            influencer = get_object_or_404(User, pk=influencer_id)
+            influencer = get_object_or_404(User, pk=influencer_id, is_influencer=True)
         else:
             influencer = request.user
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
@@ -269,7 +270,7 @@ class Conversation(models.Model):
     influencer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='conversations')
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE, related_name='conversations')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now_add=True)  # bumped on each new message, for sorting
+    updated_at = models.DateTimeField(default=timezone.now)  # bumped on each new message, for sorting
 
     class Meta:
         constraints = [

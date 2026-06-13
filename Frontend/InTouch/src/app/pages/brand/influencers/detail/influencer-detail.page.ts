@@ -51,6 +51,7 @@ export class InfluencerDetailPage implements OnInit {
                 this.venues.set(venuePage.results);
                 this.isLoad.set(true);
             },
+            error: () => this.isLoad.set(true),
         });
     }
 

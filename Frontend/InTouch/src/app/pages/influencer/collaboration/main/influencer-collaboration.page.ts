@@ -1,5 +1,5 @@
 
-import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonButton, IonContent, IonDatetime, IonFab, IonFabButton, IonIcon, IonInput, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
@@ -23,7 +23,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   standalone: true,
   imports: [DatePipe, FormsModule, IonButton, IonContent, IonDatetime, IonFab, IonFabButton, IonIcon, IonInput, IonModal, IonSpinner, BookingViewPage, ReviewSectionComponent]
 })
-export class InfluencerCollaborationPage implements OnInit {
+export class InfluencerCollaborationPage {
 
   @Input() bookingId!: number;
 
@@ -60,7 +60,7 @@ export class InfluencerCollaborationPage implements OnInit {
         this.proposing.set(false);
         this.proposeOpen.set(false);
         this.toastService.toastSuccess('Date proposed', 'The venue has been notified and will confirm your date.');
-        this.loadData();
+        this.ionViewWillEnter();
       },
       error: (err) => {
         this.proposing.set(false);
@@ -103,17 +103,14 @@ export class InfluencerCollaborationPage implements OnInit {
     this.navCtrl.navigateBack('/influencer/calendar');
   }
 
-  ngOnInit(): void {
-    this.loadData()
-  }
-
-  public loadData(): void {
+  ionViewWillEnter(): void {
     this.store.findOne(this.bookingId).subscribe({
       next: (value: Application) => {
-        this.reservation.set(value)
-        this.isLoad.set(true)
-      }
-    })
+        this.reservation.set(value);
+        this.isLoad.set(true);
+      },
+      error: () => this.isLoad.set(true),
+    });
   }
 
   public cancelReservation() {

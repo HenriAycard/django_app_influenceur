@@ -326,7 +326,10 @@ class ReservationSerializer(ModelSerializer):
         viewer = self._viewer()
         if not viewer:
             return False
-        is_party = obj.user_id == viewer.id or obj.offer.venue.user_id == viewer.id
+        try:
+            is_party = obj.user_id == viewer.id or obj.offer.venue.user_id == viewer.id
+        except AttributeError:
+            return False
         already = obj.reviews.filter(author=viewer).exists()
         return is_party and _reservation_completed(obj) and not already
 

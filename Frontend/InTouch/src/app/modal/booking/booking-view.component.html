@@ -20,10 +20,12 @@
       <span class="status" [ngClass]="status.cls">
         <ion-icon [name]="status.icon"></ion-icon>{{ status.label }}
       </span>
-      <span class="when">
-        <ion-icon name="calendar-outline"></ion-icon>
-        {{ reservation.dateReservation | date:'EEE d MMM • HH:mm' }}
-      </span>
+      @if (reservation.dateReservation) {
+        <span class="when">
+          <ion-icon name="calendar-outline"></ion-icon>
+          {{ reservation.dateReservation | date:'EEE d MMM • HH:mm' }}
+        </span>
+      }
     </div>
 
     <!-- Offer -->
