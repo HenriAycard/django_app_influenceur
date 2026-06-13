@@ -1,16 +1,17 @@
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonLabel, IonSelect, IonSelectOption, IonSpinner, NavController } from '@ionic/angular/standalone';
+import { DecimalPipe } from '@angular/common';
+import { ActionSheetController, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { arrowBack, logoInstagram, logoTiktok, logoYoutube, mailOutline, starOutline } from 'ionicons/icons';
-import { forkJoin } from 'rxjs';
-import { Application, Offer, User, VenueSortDto } from 'src/app/shared/models';
+import { alertCircle, arrowBack, checkmarkCircle, logoInstagram, logoTiktok, logoYoutube, mailOutline, star } from 'ionicons/icons';
+import { firstValueFrom, forkJoin } from 'rxjs';
+import { User, VenueSortDto } from 'src/app/shared/models';
 import { InfluencerDiscoveryStore } from 'src/app/features/influencer-discovery/influencer-discovery.store';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { ApiVenueService } from 'src/app/services/api/api-venue.service';
 import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 import { ToastService } from 'src/app/services/toast.service';
-import { RatingBadgeComponent } from 'src/app/features/reviews/ui/rating-badge/rating-badge.component';
+
+interface Social { icon: string; cls: string; label: string; count: string; handle: string; url: string; }
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,29 +19,26 @@ import { RatingBadgeComponent } from 'src/app/features/reviews/ui/rating-badge/r
     templateUrl: './influencer-detail.page.html',
     styleUrls: ['./influencer-detail.page.scss'],
     standalone: true,
-    imports: [FormsModule, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonItem, IonLabel, IonSelect, IonSelectOption, IonSpinner, RatingBadgeComponent],
+    imports: [DecimalPipe, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonSpinner],
 })
 export class InfluencerDetailPage implements OnInit {
     @Input() influencerId!: string;
 
     protected readonly influencer = signal<User | null>(null);
     protected readonly venues = signal<VenueSortDto[]>([]);
-    protected readonly offers = signal<Offer[]>([]);
     protected readonly isLoad = signal(false);
     protected readonly sending = signal(false);
-
-    protected selectedVenueId: number | null = null;
-    protected selectedOfferId: number | null = null;
 
     private readonly store = inject(InfluencerDiscoveryStore);
     private readonly appStore = inject(ApplicationStore);
     private readonly apiVenue = inject(ApiVenueService);
     private readonly apiOffer = inject(ApiOfferService);
+    private readonly actionSheet = inject(ActionSheetController);
     private readonly toast = inject(ToastService);
     private readonly navCtrl = inject(NavController);
 
     constructor() {
-        addIcons({ arrowBack, logoInstagram, logoTiktok, logoYoutube, mailOutline, starOutline });
+        addIcons({ alertCircle, arrowBack, checkmarkCircle, logoInstagram, logoTiktok, logoYoutube, mailOutline, star });
     }
 
     ngOnInit(): void {
@@ -56,29 +54,63 @@ export class InfluencerDetailPage implements OnInit {
         });
     }
 
-    protected onVenueChange(): void {
-        this.selectedOfferId = null;
-        this.offers.set([]);
-        if (!this.selectedVenueId) return;
-        this.apiOffer.findOffersByVenueId(this.selectedVenueId).subscribe(
-            offers => this.offers.set(offers)
-        );
+    protected async inviteCta(): Promise<void> {
+        const vs = this.venues();
+        if (!vs.length) {
+            this.toast.toastWarn('No venues', 'Create a venue first before sending invitations.');
+            return;
+        }
+
+        const venueSheet = await this.actionSheet.create({
+            header: 'Select a venue',
+            buttons: [
+                ...vs.map(v => ({
+                    text: v.nameVenue,
+                    handler: () => { void this.pickOffer(v.id!); },
+                })),
+                { text: 'Cancel', role: 'cancel' },
+            ],
+        });
+        await venueSheet.present();
     }
 
-    protected sendInvitation(): void {
-        if (!this.selectedOfferId || !this.influencerId || this.sending()) return;
+    private async pickOffer(venueId: number): Promise<void> {
+        let offers: any[] = [];
+        try {
+            offers = await firstValueFrom(this.apiOffer.findOffersByVenueId(venueId));
+        } catch { /* ignore */ }
+
+        if (!offers.length) {
+            this.toast.toastWarn('No offers', 'This venue has no active offers. Create one first.');
+            return;
+        }
+
+        const offerSheet = await this.actionSheet.create({
+            header: 'Select an offer',
+            buttons: [
+                ...offers
+                    .filter(o => o.id != null)
+                    .map(o => ({
+                        text: o.name,
+                        handler: () => { this.doSend(o.id); },
+                    })),
+                { text: 'Cancel', role: 'cancel' },
+            ],
+        });
+        await offerSheet.present();
+    }
+
+    private doSend(offerId: number): void {
+        if (this.sending()) return;
         this.sending.set(true);
-        this.appStore.sendInvitation(this.selectedOfferId, this.influencerId).subscribe({
+        this.appStore.sendInvitation(offerId, this.influencerId).subscribe({
             next: () => {
                 this.sending.set(false);
                 this.toast.toastSuccess('Invitation sent!', 'The influencer will be notified.');
-                this.selectedOfferId = null;
-                this.selectedVenueId = null;
-                this.offers.set([]);
             },
             error: (err: any) => {
                 this.sending.set(false);
-                this.toast.toastDanger('Invitation', err?.error?.detail ?? 'Could not send the invitation.');
+                this.toast.toastDanger('Invitation failed', err?.error?.detail ?? 'Could not send the invitation.');
             },
         });
     }
@@ -90,12 +122,22 @@ export class InfluencerDetailPage implements OnInit {
     protected format(n: number | null | undefined): string {
         if (n == null) return '';
         if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + 'M';
-        if (n >= 1_000) return (n / 1_000).toFixed(0) + 'K';
+        if (n >= 1_000)     return (n / 1_000).toFixed(0) + 'K';
         return n.toString();
     }
 
     get initials(): string {
         const u = this.influencer();
         return ((u?.firstname?.[0] ?? '') + (u?.lastname?.[0] ?? '')) || '?';
+    }
+
+    get socials(): Social[] {
+        const u = this.influencer();
+        if (!u) return [];
+        const out: Social[] = [];
+        if (u.instagram) out.push({ icon: 'logo-instagram', cls: 'ig', label: 'Instagram', count: this.format(u.instagramFollowers) || '—', handle: u.instagram, url: 'https://instagram.com/' + u.instagram });
+        if (u.tiktok)    out.push({ icon: 'logo-tiktok',    cls: 'tt', label: 'TikTok',    count: this.format(u.tiktokFollowers) || '—', handle: u.tiktok, url: 'https://tiktok.com/@' + u.tiktok });
+        if (u.youtube)   out.push({ icon: 'logo-youtube',   cls: 'yt', label: 'YouTube',   count: this.format(u.youtubeFollowers) || '—', handle: u.youtube, url: 'https://youtube.com/@' + u.youtube });
+        return out;
     }
 }

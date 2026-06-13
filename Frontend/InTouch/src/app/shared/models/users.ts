@@ -15,6 +15,10 @@ export interface User {
     emailNotifications?: boolean
     averageRating?: number | null
     reviewCount?: number
+    // Discovery profile aggregates (InfluencerProfileSerializer, brand-facing)
+    totalReach?: number
+    completedCollaborations?: number
+    noShows?: number
 }
 
 /** Application to join: no password — it is set through the emailed link

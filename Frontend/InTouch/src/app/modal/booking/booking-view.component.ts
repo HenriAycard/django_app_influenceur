@@ -43,6 +43,7 @@ export class BookingViewPage {
     const s = this.reservation?.status;
     if (s === ApplicationStatus.Declined) return { label: 'Declined', cls: 'is-declined', icon: 'close-circle' };
     if (s === ApplicationStatus.Invited) return { label: 'Invited', cls: 'is-pending', icon: 'mail-outline' };
+    if (s === ApplicationStatus.DateProposed) return { label: 'Date proposed', cls: 'is-pending', icon: 'time-outline' };
     if (s === ApplicationStatus.Pending) return { label: 'Pending', cls: 'is-pending', icon: 'time-outline' };
     const past = !!this.reservation?.dateReservation && new Date(this.reservation.dateReservation) < new Date();
     return past

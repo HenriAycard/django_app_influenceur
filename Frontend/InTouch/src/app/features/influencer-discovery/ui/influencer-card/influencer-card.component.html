@@ -1,47 +1,39 @@
-<ion-card class="inf-card">
-  <ion-card-content>
-    <div class="inf-card-inner">
+<article class="card">
 
-      <div class="inf-avatar">
-        @if (influencer.avatar) {
-          <img [src]="influencer.avatar" [alt]="influencer.firstname" />
-        } @else {
-          <span class="inf-initials">{{ initials }}</span>
-        }
-      </div>
-
-      <div class="inf-info">
-        <ion-card-title class="inf-name">{{ influencer.firstname }} {{ influencer.lastname }}</ion-card-title>
-
-        <div class="inf-socials">
-          @if (influencer.instagram) {
-            <span class="inf-social">
-              <ion-icon name="logo-instagram"></ion-icon>
-              {{ format(influencer.instagramFollowers) || influencer.instagram }}
-            </span>
-          }
-          @if (influencer.tiktok) {
-            <span class="inf-social">
-              <ion-icon name="logo-tiktok"></ion-icon>
-              {{ format(influencer.tiktokFollowers) || influencer.tiktok }}
-            </span>
-          }
-          @if (influencer.youtube) {
-            <span class="inf-social">
-              <ion-icon name="logo-youtube"></ion-icon>
-              {{ format(influencer.youtubeFollowers) || influencer.youtube }}
-            </span>
-          }
-        </div>
-
-        @if (influencer.averageRating != null && (influencer.reviewCount ?? 0) > 0) {
-          <span class="inf-rating">
-            <ion-icon name="star-outline"></ion-icon>
-            {{ influencer.averageRating | number:'1.1-1' }} ({{ influencer.reviewCount }})
-          </span>
-        }
-      </div>
-
+  <div class="card-top">
+    <div class="avatar">
+      @if (influencer.avatar) {
+        <img [src]="influencer.avatar" [alt]="influencer.firstname" />
+      } @else {
+        <span>{{ initials }}</span>
+      }
     </div>
-  </ion-card-content>
-</ion-card>
+
+    <div class="head">
+      <p class="name">{{ influencer.firstname }} {{ influencer.lastname }}</p>
+      @if (primaryHandle) {
+        <p class="handle">{{ primaryHandle }}</p>
+      }
+    </div>
+
+    @if (influencer.averageRating != null && (influencer.reviewCount ?? 0) > 0) {
+      <span class="rating">
+        <ion-icon name="star"></ion-icon>
+        {{ influencer.averageRating | number:'1.1-1' }}
+      </span>
+    }
+  </div>
+
+  @if (socials.length) {
+    <div class="stats">
+      @for (s of socials; track s.icon) {
+        <div class="stat">
+          <ion-icon [name]="s.icon" [class]="s.cls"></ion-icon>
+          <span class="stat-num">{{ s.value }}</span>
+          <span class="stat-lab">{{ s.label }}</span>
+        </div>
+      }
+    </div>
+  }
+
+</article>

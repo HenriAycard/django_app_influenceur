@@ -1,11 +1,32 @@
+ion-content { --background: var(--p-surface); }
+
+.wrap {
+  padding: 10px 16px 28px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 .loading-center {
   display: flex;
   justify-content: center;
-  padding: 48px 0;
+  padding: 64px 0;
 }
 
 .empty-state {
   text-align: center;
-  color: var(--ion-color-medium);
-  padding: 48px 24px;
+  padding: 64px 24px;
+}
+
+.empty-title {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--p-ink);
+}
+
+.empty-sub {
+  margin: 0;
+  font-size: .9rem;
+  color: var(--p-sub);
 }

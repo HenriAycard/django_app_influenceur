@@ -1,13 +1,13 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal, ViewChild } from '@angular/core';
-import { ActionSheetController, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
+import { DatePipe } from '@angular/common';
+import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline, linkOutline, mailOutline, timeOutline } from 'ionicons/icons';
+import { alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, closeCircleOutline, createOutline, documentTextOutline, linkOutline, timeOutline } from 'ionicons/icons';
 import { Observable } from 'rxjs';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { MessagingStore } from 'src/app/features/messaging/messaging.store';
-import { ApiOfferService } from 'src/app/features/offers/api-offer.service';
 import { saveBlob } from 'src/app/shared/util/download.util';
 import { ToastService } from 'src/app/services/toast.service';
 import { Router } from '@angular/router';
@@ -22,7 +22,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   templateUrl: './brand-booking-view.page.html',
   styleUrls: ['./brand-booking-view.page.scss'],
   standalone: true,
-  imports: [IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
+  imports: [DatePipe, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonModal, IonSpinner, ModalEditReservationComponent, BookingViewPage, ReviewSectionComponent]
 })
 export class BrandBookingViewPage implements OnInit {
 
@@ -37,14 +37,12 @@ export class BrandBookingViewPage implements OnInit {
 
   private store = inject(ApplicationStore)
   private messaging = inject(MessagingStore)
-  private offerService = inject(ApiOfferService)
-  private actionSheetCtrl = inject(ActionSheetController)
   private toastService = inject(ToastService)
   private router = inject(Router)
   private navCtrl = inject(NavController)
 
   constructor() {
-    addIcons({ alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline, linkOutline, mailOutline, timeOutline });
+    addIcons({ alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, createOutline, closeCircleOutline, documentTextOutline, linkOutline, timeOutline });
   }
 
   public downloadContract(): void {
@@ -109,6 +107,15 @@ export class BrandBookingViewPage implements OnInit {
     )
   }
 
+  /** Confirm the date the influencer proposed on a direct invitation (4 → 1). */
+  public confirmProposedDate() {
+    this.applyStatusChange(
+      this.store.confirmDate(this.reservation().id),
+      'Collaboration confirmed!',
+      `The date proposed by ${this.reservation().user.firstname} ${this.reservation().user.lastname} is confirmed`
+    )
+  }
+
   async editReservation() {
     await this.modal.present()
   }
@@ -139,40 +146,6 @@ export class BrandBookingViewPage implements OnInit {
   public isFuture(): boolean {
     const d = this.reservation().dateReservation;
     return !!d && new Date(d) > new Date();
-  }
-
-  public async inviteToAnotherOffer(): Promise<void> {
-    const r = this.reservation();
-    const venueId = r.offer.venue.id;
-    const influencerId = r.user.id;
-
-    this.offerService.findOffersByVenueId(venueId).subscribe({
-      next: async (offers) => {
-        if (!offers.length) {
-          this.toastService.toastDanger('No offers', 'This venue has no active offers to invite to.');
-          return;
-        }
-        const sheet = await this.actionSheetCtrl.create({
-          header: 'Select an offer to invite to',
-          buttons: [
-            ...offers.filter(o => o.id != null).map(offer => ({
-              text: offer.name,
-              handler: () => this.sendInvite(offer.id!, influencerId),
-            })),
-            { text: 'Cancel', role: 'cancel' },
-          ],
-        });
-        await sheet.present();
-      },
-      error: () => this.toastService.toastDanger('Error', 'Could not load offers. Please try again.'),
-    });
-  }
-
-  private sendInvite(offerId: number, influencerId: string): void {
-    this.store.sendInvitation(offerId, influencerId).subscribe({
-      next: () => this.toastService.toastSuccess('Invitation sent!', 'The influencer will be notified.'),
-      error: (err) => this.toastService.toastDanger('Invitation', err?.error?.detail ?? 'Could not send the invitation.'),
-    });
   }
 
   /** Lifecycle zone shows once the accepted visit has happened. */

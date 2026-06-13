@@ -17,7 +17,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-accordion-group class="ion-padding">
+  <ion-accordion-group class="ion-padding" [value]="store.bDateProposedCount() > 0 ? 'to-confirm' : null">
+    @if (store.bDateProposedCount() > 0) {
+      <ion-accordion value="to-confirm">
+        <ion-item slot="header" color="light">
+          <ion-icon name="time-outline" slot="start"></ion-icon>
+          <ion-label>To confirm — date proposed</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.bDateProposedCount() }}</ion-label>
+        </ion-item>
+        <div slot="content">
+          <app-calendar-venue [collaborations]="store.bDateProposed()"></app-calendar-venue>
+        </div>
+      </ion-accordion>
+    }
+
     <ion-accordion value="invitations">
       <ion-item slot="header" color="light">
         <ion-icon name="mail-outline" slot="start"></ion-icon>

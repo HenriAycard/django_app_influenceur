@@ -6,10 +6,11 @@
  * `toApiStatus` / `fromApiStatus` so the rest of the app never sees magic numbers.
  */
 export enum ApplicationStatus {
-  Pending  = 'PENDING',    // was 0 — applied, awaiting the brand's decision
-  Accepted = 'ACCEPTED',   // was 1 — confirmed collaboration
-  Declined = 'DECLINED',   // was 2 — rejected or cancelled
-  Invited  = 'INVITED',    // was 3 — brand-initiated direct invitation
+  Pending      = 'PENDING',        // was 0 — applied, awaiting the brand's decision
+  Accepted     = 'ACCEPTED',       // was 1 — confirmed collaboration (always has a date)
+  Declined     = 'DECLINED',       // was 2 — rejected or cancelled
+  Invited      = 'INVITED',        // was 3 — brand-initiated invitation, no date yet
+  DateProposed = 'DATE_PROPOSED',  // was 4 — influencer proposed a date, awaiting brand confirmation
 }
 
 const TO_API: Record<ApplicationStatus, number> = {
@@ -17,6 +18,7 @@ const TO_API: Record<ApplicationStatus, number> = {
   [ApplicationStatus.Accepted]: 1,
   [ApplicationStatus.Declined]: 2,
   [ApplicationStatus.Invited]: 3,
+  [ApplicationStatus.DateProposed]: 4,
 };
 
 const FROM_API = new Map<number, ApplicationStatus>(

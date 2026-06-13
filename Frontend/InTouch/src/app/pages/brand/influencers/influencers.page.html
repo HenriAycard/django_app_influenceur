@@ -24,15 +24,20 @@
     </ion-toolbar>
   </ion-header>
 
-  @if (store.loading()) {
-    <div class="loading-center"><ion-spinner name="crescent"></ion-spinner></div>
-  } @else if (store.influencers().length === 0) {
-    <p class="empty-state">No influencers found.</p>
-  } @else {
-    @for (inf of store.influencers(); track inf.id) {
-      <div (click)="openProfile(inf)">
-        <app-influencer-card [influencer]="inf"></app-influencer-card>
+  <div class="wrap">
+    @if (store.loading()) {
+      <div class="loading-center"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (store.influencers().length === 0) {
+      <div class="empty-state">
+        <p class="empty-title">No influencers found</p>
+        <p class="empty-sub">Try a different search term.</p>
       </div>
+    } @else {
+      @for (inf of store.influencers(); track inf.id) {
+        <div (click)="openProfile(inf)">
+          <app-influencer-card [influencer]="inf"></app-influencer-card>
+        </div>
+      }
     }
-  }
+  </div>
 </ion-content>

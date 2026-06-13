@@ -9,105 +9,96 @@
     <div class="loading"><ion-spinner name="crescent"></ion-spinner></div>
   } @else if (influencer(); as inf) {
 
-    <!-- HERO -->
-    <div class="hero">
-      <div class="hero-avatar">
-        @if (inf.avatar) {
-          <img [src]="inf.avatar" [alt]="inf.firstname" />
-        } @else {
-          <span>{{ initials }}</span>
+    <!-- HERO: identity + headline metrics (aggregates, not per-platform) -->
+    <header class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-content">
+        <div class="avatar">
+          @if (inf.avatar) {
+            <img [src]="inf.avatar" [alt]="inf.firstname" />
+          } @else {
+            <span>{{ initials }}</span>
+          }
+        </div>
+        <h1 class="name">{{ inf.firstname }} {{ inf.lastname }}</h1>
+
+        <div class="hero-stats">
+          <div class="hstat">
+            <span class="hstat-num">{{ format(inf.totalReach) || '0' }}</span>
+            <span class="hstat-lab">Reach</span>
+          </div>
+          <div class="hstat">
+            <span class="hstat-num">{{ inf.completedCollaborations ?? 0 }}</span>
+            <span class="hstat-lab">Collabs</span>
+          </div>
+          <div class="hstat">
+            @if (inf.averageRating != null && (inf.reviewCount ?? 0) > 0) {
+              <span class="hstat-num"><ion-icon name="star" class="star"></ion-icon>{{ inf.averageRating | number:'1.1-1' }}</span>
+              <span class="hstat-lab">{{ inf.reviewCount }} review{{ (inf.reviewCount ?? 0) > 1 ? 's' : '' }}</span>
+            } @else {
+              <span class="hstat-num">—</span>
+              <span class="hstat-lab">No reviews</span>
+            }
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SHEET -->
+    <div class="sheet">
+
+      <!-- Audience: per-platform breakdown, shown once -->
+      @if (socials.length) {
+        <span class="section-label">Audience</span>
+        <div class="links">
+          @for (s of socials; track s.icon) {
+            <a class="link-row" [href]="s.url" target="_blank" rel="noopener">
+              <div class="li" [class]="s.cls"><ion-icon [name]="s.icon"></ion-icon></div>
+              <div class="lt">
+                <span class="lh">&#64;{{ s.handle }}</span>
+                <span class="lp">{{ s.label }}</span>
+              </div>
+              <span class="lc">{{ s.count }} <span class="lc-sub">followers</span></span>
+            </a>
+          }
+        </div>
+      }
+
+      <!-- Reliability: real track record from completed collaborations -->
+      <span class="section-label">Reliability</span>
+      <div class="track">
+        @if ((inf.completedCollaborations ?? 0) > 0) {
+          <span class="chip chip-good">
+            <ion-icon name="checkmark-circle"></ion-icon>
+            {{ inf.completedCollaborations }} collaboration{{ (inf.completedCollaborations ?? 0) > 1 ? 's' : '' }} completed
+          </span>
+        }
+        @if ((inf.noShows ?? 0) > 0) {
+          <span class="chip chip-bad">
+            <ion-icon name="alert-circle"></ion-icon>
+            {{ inf.noShows }} no-show{{ (inf.noShows ?? 0) > 1 ? 's' : '' }}
+          </span>
+        }
+        @if ((inf.completedCollaborations ?? 0) === 0 && (inf.noShows ?? 0) === 0) {
+          <span class="chip chip-neutral">New on InTouch — no collaborations yet</span>
         }
       </div>
-      <h1 class="hero-name">{{ inf.firstname }} {{ inf.lastname }}</h1>
-      @if (inf.averageRating != null && (inf.reviewCount ?? 0) > 0) {
-        <app-rating-badge [average]="inf.averageRating" [count]="inf.reviewCount ?? 0"></app-rating-badge>
-      }
     </div>
 
-    <!-- SOCIAL STATS -->
-    <div class="sheet">
-      @if (inf.instagram || inf.tiktok || inf.youtube) {
-        <div class="block socials-block">
-          @if (inf.instagram) {
-            <div class="social-row">
-              <ion-icon name="logo-instagram"></ion-icon>
-              <span class="social-handle">&#64;{{ inf.instagram }}</span>
-              @if (inf.instagramFollowers) {
-                <span class="social-followers">{{ format(inf.instagramFollowers) }} followers</span>
-              }
-            </div>
-          }
-          @if (inf.tiktok) {
-            <div class="social-row">
-              <ion-icon name="logo-tiktok"></ion-icon>
-              <span class="social-handle">&#64;{{ inf.tiktok }}</span>
-              @if (inf.tiktokFollowers) {
-                <span class="social-followers">{{ format(inf.tiktokFollowers) }} followers</span>
-              }
-            </div>
-          }
-          @if (inf.youtube) {
-            <div class="social-row">
-              <ion-icon name="logo-youtube"></ion-icon>
-              <span class="social-handle">&#64;{{ inf.youtube }}</span>
-              @if (inf.youtubeFollowers) {
-                <span class="social-followers">{{ format(inf.youtubeFollowers) }} followers</span>
-              }
-            </div>
-          }
-        </div>
-      }
-
-      <!-- INVITE BLOCK -->
-      <div class="block invite-block">
-        <div class="block-head">
-          <ion-icon name="mail-outline"></ion-icon>
-          <h2>Send an invitation</h2>
-        </div>
-        <p class="invite-hint">Select one of your offers to invite this influencer to collaborate.</p>
-
-        <ion-item lines="none" class="select-item">
-          <ion-label>Venue</ion-label>
-          <ion-select
-            [(ngModel)]="selectedVenueId"
-            (ngModelChange)="onVenueChange()"
-            placeholder="Select a venue"
-            interface="action-sheet">
-            @for (venue of venues(); track venue.id) {
-              <ion-select-option [value]="venue.id">{{ venue.nameVenue }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
-
-        @if (selectedVenueId) {
-          <ion-item lines="none" class="select-item">
-            <ion-label>Offer</ion-label>
-            <ion-select
-              [(ngModel)]="selectedOfferId"
-              placeholder="Select an offer"
-              interface="action-sheet"
-              [disabled]="offers().length === 0">
-              @for (offer of offers(); track offer.id) {
-                <ion-select-option [value]="offer.id">{{ offer.name }}</ion-select-option>
-              }
-            </ion-select>
-          </ion-item>
+    <!-- STICKY CTA -->
+    <div class="action-bar">
+      <ion-button
+        class="act act-primary"
+        [disabled]="sending()"
+        (click)="inviteCta()">
+        @if (sending()) {
+          <ion-spinner name="crescent" slot="start"></ion-spinner>
+          Sending…
+        } @else {
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          Invite to collaborate
         }
-
-        <ion-button
-          expand="block"
-          class="invite-btn"
-          [disabled]="!selectedOfferId || sending()"
-          (click)="sendInvitation()">
-          @if (sending()) {
-            <ion-spinner name="crescent" slot="start"></ion-spinner>
-          } @else {
-            <ion-icon name="mail-outline" slot="start"></ion-icon>
-          }
-          Send invitation
-        </ion-button>
-      </div>
-
+      </ion-button>
     </div>
   }
 </ion-content>

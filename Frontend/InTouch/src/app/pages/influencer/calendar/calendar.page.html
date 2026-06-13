@@ -17,34 +17,20 @@
     </ion-toolbar>
   </ion-header>
 
-  @if (store.iInvitedCount() > 0) {
-    <div class="invitations-section ion-padding">
-      <h2 class="invitations-title">
-        <ion-icon name="mail-outline"></ion-icon>
-        Invitations ({{ store.iInvitedCount() }})
-      </h2>
-      @for (inv of store.iInvited(); track inv.id) {
-        <ion-card class="invitation-card" button (click)="displayInfo(inv)">
-          <ion-card-header>
-            <ion-card-title>{{ inv.offer.venue.nameVenue }}</ion-card-title>
-            <ion-card-subtitle>{{ inv.offer.name }}</ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-            <div class="invitation-actions">
-              <ion-button class="inv-btn inv-decline" (click)="$event.stopPropagation(); respondToInvitation(inv, false)">
-                <ion-icon name="close-circle-outline" slot="start"></ion-icon>Decline
-              </ion-button>
-              <ion-button class="inv-btn inv-accept" (click)="$event.stopPropagation(); respondToInvitation(inv, true)">
-                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Accept
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      }
-    </div>
-  }
+  <ion-accordion-group class="ion-padding" [value]="store.iInvitationFlowCount() > 0 ? 'invitations' : null">
+    @if (store.iInvitationFlowCount() > 0) {
+      <ion-accordion value="invitations">
+        <ion-item slot="header" color="light">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label>Invitations</ion-label>
+          <ion-label slot="end" class="no-margin">{{ store.iInvitationFlowCount() }}</ion-label>
+        </ion-item>
+        <div slot="content">
+          <app-calendar-influencer [collaborations]="store.iInvitationFlow()"></app-calendar-influencer>
+        </div>
+      </ion-accordion>
+    }
 
-  <ion-accordion-group class="ion-padding">
     <ion-accordion value="first">
       <ion-item slot="header" color="light">
         <ion-icon name="help-outline" slot="start"></ion-icon>

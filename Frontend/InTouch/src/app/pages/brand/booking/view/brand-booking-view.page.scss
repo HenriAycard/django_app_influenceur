@@ -125,3 +125,18 @@
   --color: #e5484d;
   --box-shadow: none;
 }
+
+/* Date proposed by the influencer — awaiting the brand's confirmation */
+.propose-note {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(184, 134, 11, .12);
+
+  ion-icon { font-size: 24px; color: #b8860b; flex-shrink: 0; margin-top: 1px; }
+  h4 { margin: 0 0 4px; font-size: 15px; font-weight: 700; color: var(--ion-text-color, #16161d); }
+  p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--ion-color-medium, #6b6b76); }
+}

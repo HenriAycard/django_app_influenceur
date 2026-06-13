@@ -84,6 +84,52 @@ class UserSerializer(ModelSerializer):
     def get_review_count(self, obj):
         return _influencer_rating(obj)[1]
 
+class InfluencerProfileSerializer(ModelSerializer):
+    """Full influencer profile for the brand discovery detail page: socials,
+    declared audience, rating, and the reliability track record (completed
+    collaborations + no-shows) — the same numbers a brand sees on an
+    application, surfaced here to help decide whether to invite."""
+    average_rating = SerializerMethodField()
+    review_count = SerializerMethodField()
+    total_reach = SerializerMethodField()
+    completed_collaborations = SerializerMethodField()
+    no_shows = SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ('id', 'firstname', 'lastname', 'avatar',
+                  'instagram', 'tiktok', 'youtube',
+                  'instagram_followers', 'tiktok_followers', 'youtube_followers',
+                  'average_rating', 'review_count',
+                  'total_reach', 'completed_collaborations', 'no_shows')
+
+    def get_average_rating(self, obj):
+        return _influencer_rating(obj)[0]
+
+    def get_review_count(self, obj):
+        return _influencer_rating(obj)[1]
+
+    def get_total_reach(self, obj):
+        return (obj.instagram_followers or 0) + (obj.tiktok_followers or 0) + (obj.youtube_followers or 0)
+
+    def _track(self, obj):
+        # Cache on the instance: this serializer runs both getters per object.
+        if not hasattr(obj, '_track_cache'):
+            obj._track_cache = Reservation.objects.filter(user_id=obj.id).aggregate(
+                completed=Count('id', filter=Q(
+                    status=1, date_reservation__lt=timezone.now(), no_show_at__isnull=True,
+                )),
+                no_shows=Count('id', filter=Q(no_show_at__isnull=False)),
+            )
+        return obj._track_cache
+
+    def get_completed_collaborations(self, obj):
+        return self._track(obj)['completed']
+
+    def get_no_shows(self, obj):
+        return self._track(obj)['no_shows']
+
+
 class BasicUserSerializer(ModelSerializer):
     """Identity-only user shape (no rating aggregates) for places where the
     full profile is overkill: venue cards, chat, etc."""

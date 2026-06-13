@@ -1,69 +1,110 @@
-:host { display: block; }
+:host { display: block; margin-bottom: 14px; }
 
-.inf-card {
-  margin: 8px 16px;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,.07);
+.card {
+  display: block;
+  background: var(--p-card);
+  border: 1px solid var(--p-hairline);
+  border-radius: var(--p-radius);
+  box-shadow: var(--p-shadow);
+  padding: 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .13s ease, box-shadow .13s ease;
+
+  &:active { transform: scale(.985); box-shadow: var(--p-shadow-sm); }
 }
 
-.inf-card-inner {
+.card-top {
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
-.inf-avatar {
-  flex-shrink: 0;
-  width: 56px;
-  height: 56px;
+.avatar {
+  flex: 0 0 60px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   overflow: hidden;
-  background: var(--ion-color-light-shade);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #eef0f3;
+  color: #5a5a66;
+  font-weight: 800;
+  font-size: 1.35rem;
+  text-transform: uppercase;
 
   img { width: 100%; height: 100%; object-fit: cover; }
 }
 
-.inf-initials {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--ion-color-medium);
+.head { flex: 1; min-width: 0; }
+
+.name {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 800;
+  letter-spacing: -.01em;
+  color: var(--p-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.inf-info { flex: 1; min-width: 0; }
-
-.inf-name {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 6px;
+.handle {
+  margin: 2px 0 0;
+  font-size: .85rem;
+  color: var(--p-sub);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.inf-socials {
+.rating {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: .88rem;
+  font-weight: 800;
+  color: var(--p-ink);
+
+  ion-icon { font-size: .98rem; color: var(--p-gold, #ffb400); }
+}
+
+.stats {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 10px;
+  margin-top: 14px;
 }
 
-.inf-social {
+.stat {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 3px;
-  font-size: .8rem;
-  color: var(--ion-color-medium);
+  padding: 11px 6px;
+  background: var(--p-surface);
+  border: 1px solid var(--p-hairline);
+  border-radius: 14px;
 
-  ion-icon { font-size: .9rem; }
+  ion-icon { font-size: 1.1rem; }
+  ion-icon.ig { color: #e1306c; }
+  ion-icon.tt { color: #111111; }
+  ion-icon.yt { color: #ff0000; }
 }
 
-.inf-rating {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  font-size: .8rem;
-  color: #c8a24b;
-  font-weight: 600;
+.stat-num {
+  font-size: .95rem;
+  font-weight: 800;
+  color: var(--p-ink);
+}
 
-  ion-icon { font-size: .85rem; }
+.stat-lab {
+  font-size: .64rem;
+  font-weight: 600;
+  color: var(--p-sub);
+  text-transform: uppercase;
+  letter-spacing: .03em;
 }

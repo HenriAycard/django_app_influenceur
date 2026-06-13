@@ -1,9 +1,10 @@
 
 import { ChangeDetectionStrategy, Component, inject, Input, OnInit, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonInput, IonSpinner, NavController } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonDatetime, IonFab, IonFabButton, IonIcon, IonInput, IonModal, IonSpinner, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, closeCircleOutline, documentTextOutline, linkOutline, timeOutline } from 'ionicons/icons';
+import { alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, closeCircleOutline, documentTextOutline, linkOutline, timeOutline } from 'ionicons/icons';
 import { Application, ApplicationStatus } from 'src/app/shared/models';
 import { ApplicationStore } from 'src/app/features/applications/application.store';
 import { MessagingStore } from 'src/app/features/messaging/messaging.store';
@@ -20,7 +21,7 @@ import { ReviewSectionComponent } from 'src/app/features/reviews/ui/review-secti
   templateUrl: './influencer-collaboration.page.html',
   styleUrls: ['./influencer-collaboration.page.scss'],
   standalone: true,
-  imports: [FormsModule, IonButton, IonContent, IonFab, IonFabButton, IonIcon, IonInput, IonSpinner, BookingViewPage, ReviewSectionComponent]
+  imports: [DatePipe, FormsModule, IonButton, IonContent, IonDatetime, IonFab, IonFabButton, IonIcon, IonInput, IonModal, IonSpinner, BookingViewPage, ReviewSectionComponent]
 })
 export class InfluencerCollaborationPage implements OnInit {
 
@@ -36,8 +37,36 @@ export class InfluencerCollaborationPage implements OnInit {
   private router = inject(Router)
   private navCtrl = inject(NavController)
 
+  // ---- Propose-a-date flow (answer a brand invitation) ----
+  readonly proposeOpen = signal(false);
+  readonly proposing = signal(false);
+  readonly minDate = new Date().toISOString();
+  proposedDate: string = new Date().toISOString();
+
   constructor() {
-    addIcons({ alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, closeCircleOutline, documentTextOutline, linkOutline, timeOutline });
+    addIcons({ alertCircleOutline, arrowBack, calendarOutline, chatbubbleEllipsesOutline, checkmarkCircle, checkmarkCircleOutline, closeCircleOutline, documentTextOutline, linkOutline, timeOutline });
+  }
+
+  public openPropose(): void {
+    this.proposedDate = new Date().toISOString();
+    this.proposeOpen.set(true);
+  }
+
+  public submitProposal(): void {
+    if (this.proposing()) return;
+    this.proposing.set(true);
+    this.store.proposeDate(this.reservation().id, new Date(this.proposedDate)).subscribe({
+      next: () => {
+        this.proposing.set(false);
+        this.proposeOpen.set(false);
+        this.toastService.toastSuccess('Date proposed', 'The venue has been notified and will confirm your date.');
+        this.loadData();
+      },
+      error: (err) => {
+        this.proposing.set(false);
+        this.toastService.toastDanger('Proposal', err?.error?.detail ?? 'Could not propose this date. Please try again.');
+      },
+    });
   }
 
   public downloadContract(): void {
@@ -85,16 +114,6 @@ export class InfluencerCollaborationPage implements OnInit {
         this.isLoad.set(true)
       }
     })
-  }
-
-  public acceptInvitation(): void {
-    this.store.accept(this.reservation().id).subscribe({
-      next: () => {
-        this.toastService.toastSuccess('Invitation accepted!', 'Your collaboration is now confirmed.');
-        this.loadData();
-      },
-      error: () => this.toastService.toastDanger('Error', 'Could not accept the invitation. Please try again.'),
-    });
   }
 
   public cancelReservation() {

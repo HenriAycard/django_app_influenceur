@@ -61,16 +61,22 @@
       </div>
     }
 
+    @if (reservation().status === ApplicationStatus.DateProposed) {
+      <div class="propose-note">
+        <ion-icon name="time-outline"></ion-icon>
+        <div>
+          <h4>{{ reservation().user.firstname }} proposed a date</h4>
+          <p>{{ reservation().dateReservation | date:'EEE d MMM • HH:mm' }} — confirm to lock in the collaboration, or decline.</p>
+        </div>
+      </div>
+    }
+
     <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
 
     <div class="shortcuts">
       <div class="shortcut-item" (click)="messageInfluencer()">
         <div class="shortcut-icon"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></div>
         <span>Message</span>
-      </div>
-      <div class="shortcut-item" (click)="inviteToAnotherOffer()">
-        <div class="shortcut-icon"><ion-icon name="mail-outline"></ion-icon></div>
-        <span>Invite</span>
       </div>
       @if (reservation().status === ApplicationStatus.Accepted) {
         <div class="shortcut-item" (click)="downloadContract()">
@@ -86,7 +92,14 @@
 
     @if (reservation().status !== ApplicationStatus.Declined && isFuture()) {
       <div class="action-bar">
-        @if (reservation().status === ApplicationStatus.Pending) {
+        @if (reservation().status === ApplicationStatus.DateProposed) {
+          <ion-button class="act act-ghost" (click)="cancelReservation()">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>Decline
+          </ion-button>
+          <ion-button class="act act-primary" (click)="confirmProposedDate()">
+            <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Confirm date
+          </ion-button>
+        } @else if (reservation().status === ApplicationStatus.Pending) {
           <ion-button class="act act-ghost" (click)="cancelReservation()">Decline</ion-button>
           <ion-button class="act act-primary" (click)="acceptReservation()">
             <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Accept

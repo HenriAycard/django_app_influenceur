@@ -75,12 +75,28 @@
     </div>
 
     @if (reservation().status === ApplicationStatus.Invited) {
+      <div class="invite-note">
+        <ion-icon name="mail-outline"></ion-icon>
+        <p>{{ reservation().offer.venue.nameVenue }} invited you to collaborate. Propose a date that works for you — they'll confirm it.</p>
+      </div>
       <div class="action-bar">
         <ion-button class="act act-ghost" (click)="cancelReservation()">
           <ion-icon name="close-circle-outline" slot="start"></ion-icon>Decline
         </ion-button>
-        <ion-button class="act act-primary" (click)="acceptInvitation()">
-          <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Accept invitation
+        <ion-button class="act act-primary" (click)="openPropose()">
+          <ion-icon name="calendar-outline" slot="start"></ion-icon>Propose a date
+        </ion-button>
+      </div>
+    }
+
+    @if (reservation().status === ApplicationStatus.DateProposed) {
+      <div class="invite-note is-waiting">
+        <ion-icon name="time-outline"></ion-icon>
+        <p>You proposed <strong>{{ reservation().dateReservation | date:'EEE d MMM • HH:mm' }}</strong>. Waiting for {{ reservation().offer.venue.nameVenue }} to confirm.</p>
+      </div>
+      <div class="action-bar">
+        <ion-button class="act act-danger" (click)="cancelReservation()">
+          <ion-icon name="close-circle-outline" slot="start"></ion-icon>Cancel invitation
         </ion-button>
       </div>
     }
@@ -95,4 +111,32 @@
   } @else {
     <div class="loading"><ion-spinner name="crescent"></ion-spinner></div>
   }
+
+  <!-- Propose-a-date picker -->
+  <ion-modal class="date-modal" [isOpen]="proposeOpen()" (didDismiss)="proposeOpen.set(false)">
+    <ng-template>
+      <div class="date-sheet">
+        <h2>Propose a date</h2>
+        <p>Pick when you'd like this collaboration to happen. The venue will confirm it.</p>
+        <ion-datetime
+          presentation="date-time"
+          [min]="minDate"
+          [(ngModel)]="proposedDate"
+          [showDefaultButtons]="false"
+          [preferWheel]="false">
+        </ion-datetime>
+        <div class="date-actions">
+          <ion-button class="act act-ghost" (click)="proposeOpen.set(false)">Cancel</ion-button>
+          <ion-button class="act act-primary" [disabled]="proposing()" (click)="submitProposal()">
+            @if (proposing()) {
+              <ion-spinner name="crescent" slot="start"></ion-spinner>
+            } @else {
+              <ion-icon name="calendar-outline" slot="start"></ion-icon>
+            }
+            Propose
+          </ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 </ion-content>
