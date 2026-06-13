@@ -71,7 +71,7 @@
       </div>
     }
 
-    <app-review-section [reservation]="reservation()" (reviewed)="loadData()"></app-review-section>
+    <app-review-section [reservation]="reservation()" (reviewed)="ionViewWillEnter()"></app-review-section>
 
     <div class="shortcuts">
       <div class="shortcut-item" (click)="messageInfluencer()">
