@@ -544,7 +544,7 @@ class ReservationDetail(generics.RetrieveUpdateDestroyAPIView):
                 # Influencer proposed a date → the brand must confirm it.
                 _notify(reservation.offer.venue.user_id, "A date was proposed",
                         f"{reservation.user.firstname} proposed a date for your invitation.")
-                emails.send_invitation_responded(reservation, accepted=True)
+                emails.send_date_proposed(reservation)
             elif reservation.status == 1:
                 # 0→1 (application accepted) and 4→1 (date confirmed) both notify the influencer.
                 title = "Date confirmed" if previous_status == 4 else "Application accepted"

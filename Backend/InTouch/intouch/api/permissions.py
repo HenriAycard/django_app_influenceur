@@ -20,10 +20,8 @@ class IsRelatedToVenueOwner(BasePermission):
 
 
 class IsReservationParty(BasePermission):
-    """Allow write access to the influencer who made the reservation or the venue owner."""
+    """Allow access only to the influencer who made the reservation or the venue owner."""
 
     def has_object_permission(self, request, view, obj):
-        if request.method in SAFE_METHODS:
-            return True
         user = request.user
         return obj.user == user or obj.offer.venue.user == user

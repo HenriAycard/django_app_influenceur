@@ -27,6 +27,7 @@ type StatusMeta = { label: string; cls: string; icon: string };
 })
 export class BookingViewPage {
   @Input() reservation!: Application;
+  @Input() isInfluencer = true;
 
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
@@ -65,6 +66,7 @@ export class BookingViewPage {
   }
 
   navToVenue() {
+    if (!this.isInfluencer) return;
     this.router.navigate(['influencer/home/search/venue', this.reservation.offer.venue.id]);
   }
 }

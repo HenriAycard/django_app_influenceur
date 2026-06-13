@@ -182,6 +182,23 @@ def send_invitation(reservation):
     )
 
 
+def send_date_proposed(reservation):
+    owner = reservation.offer.venue.user
+    influencer = reservation.user
+    offer_name = reservation.offer.name
+    _send(
+        owner,
+        f"{influencer.firstname} proposed a date",
+        title="Date proposal received",
+        lines=[
+            f'{influencer.firstname} {influencer.lastname} proposed a date for your invitation on "{offer_name}".',
+            "Open InTouch to review and confirm the proposed date.",
+        ],
+        button_label="Confirm date",
+        button_url=settings.FRONTEND_URL,
+    )
+
+
 def send_invitation_responded(reservation, accepted):
     owner = reservation.offer.venue.user
     influencer = reservation.user

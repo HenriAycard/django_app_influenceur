@@ -6,7 +6,7 @@
   </ion-fab>
 
   @if (isLoad()) {
-    <app-booking-view [reservation]="reservation()"></app-booking-view>
+    <app-booking-view [reservation]="reservation()" [isInfluencer]="false"></app-booking-view>
 
     @if (isPastAccepted()) {
       <div class="lifecycle-card">
@@ -90,7 +90,7 @@
       }
     </div>
 
-    @if (reservation().status !== ApplicationStatus.Declined && isFuture()) {
+    @if (reservation().status !== ApplicationStatus.Declined && (isFuture() || reservation().status === ApplicationStatus.Invited)) {
       <div class="action-bar">
         @if (reservation().status === ApplicationStatus.DateProposed) {
           <ion-button class="act act-ghost" (click)="cancelReservation()">
@@ -98,6 +98,10 @@
           </ion-button>
           <ion-button class="act act-primary" (click)="confirmProposedDate()">
             <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>Confirm date
+          </ion-button>
+        } @else if (reservation().status === ApplicationStatus.Invited) {
+          <ion-button class="act act-danger" (click)="cancelReservation()">
+            <ion-icon name="close-circle-outline" slot="start"></ion-icon>Withdraw invitation
           </ion-button>
         } @else if (reservation().status === ApplicationStatus.Pending) {
           <ion-button class="act act-ghost" (click)="cancelReservation()">Decline</ion-button>
