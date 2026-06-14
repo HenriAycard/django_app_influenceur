@@ -33,6 +33,7 @@ from uuid import UUID
 from datetime import date, datetime, timedelta
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.utils.dateparse import parse_datetime
 
 
 def _geocode(address: 'Address') -> None:
@@ -1171,11 +1172,17 @@ class MessageListCreateView(generics.ListCreateAPIView):
 
     def get_queryset(self):
         conversation = self._conversation()
-        # Opening the thread marks the other party's messages as read.
-        conversation.messages.filter(read_at__isnull=True).exclude(
+        qs = conversation.messages.all()
+        since_str = self.request.query_params.get('since')
+        if since_str:
+            since_dt = parse_datetime(since_str)
+            if since_dt:
+                qs = qs.filter(created_at__gt=since_dt)
+        # Mark returned messages from the other party as read.
+        qs.filter(read_at__isnull=True).exclude(
             sender=self.request.user
         ).update(read_at=timezone.now())
-        return conversation.messages.all()
+        return qs
 
     def create(self, request, *args, **kwargs):
         conversation = self._conversation()

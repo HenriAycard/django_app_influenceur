@@ -32,6 +32,7 @@ export class ThreadPage {
     private auth = inject(AuthService);
     private router = inject(Router);
     private poll?: Subscription;
+    private lastMessageAt?: string;
 
     constructor() {
         addIcons({ paperPlaneOutline });
@@ -49,13 +50,19 @@ export class ThreadPage {
     ionViewWillEnter(): void {
         let first = true;
         this.poll = timer(0, 4000).pipe(
-            switchMap(() => this.store.messages(this.id)),
+            switchMap(() => this.store.messages(this.id, first ? undefined : this.lastMessageAt)),
         ).subscribe({
             next: list => {
-                const grew = list.length !== this.messages().length;
-                this.messages.set(list);
-                if (first || grew) this.scrollToBottom();
-                first = false;
+                if (first) {
+                    this.messages.set(list);
+                    if (list.length) this.lastMessageAt = list[list.length - 1].createdAt;
+                    this.scrollToBottom();
+                    first = false;
+                } else if (list.length) {
+                    this.messages.update(msgs => [...msgs, ...list]);
+                    this.lastMessageAt = list[list.length - 1].createdAt;
+                    this.scrollToBottom();
+                }
             },
             error: () => {},
         });
@@ -63,6 +70,7 @@ export class ThreadPage {
 
     ionViewWillLeave(): void {
         this.poll?.unsubscribe();
+        this.lastMessageAt = undefined;
     }
 
     send(): void {
@@ -73,7 +81,8 @@ export class ThreadPage {
             next: msg => {
                 this.draft = '';
                 this.sending = false;
-                this.messages.set([...this.messages(), msg]);
+                this.messages.update(msgs => [...msgs, msg]);
+                this.lastMessageAt = msg.createdAt;
                 this.scrollToBottom();
             },
             error: () => { this.sending = false; },

@@ -21,8 +21,10 @@ export class ApiMessagingService extends ApiService {
         return this.http.post<Conversation>(`${this.base}/conversations/`, payload, this.options);
     }
 
-    getMessages(conversationId: number): Observable<ChatMessage[]> {
-        return this.http.get<ChatMessage[]>(`${this.base}/conversations/${conversationId}/messages/`, this.options);
+    getMessages(conversationId: number, since?: string): Observable<ChatMessage[]> {
+        const url = `${this.base}/conversations/${conversationId}/messages/`
+            + (since ? `?since=${encodeURIComponent(since)}` : '');
+        return this.http.get<ChatMessage[]>(url, this.options);
     }
 
     sendMessage(conversationId: number, body: string): Observable<ChatMessage> {

@@ -35,8 +35,8 @@ export class MessagingStore {
         return this.api.openConversation(venueId, influencerId);
     }
 
-    messages(conversationId: number): Observable<ChatMessage[]> {
-        return this.api.getMessages(conversationId);
+    messages(conversationId: number, since?: string): Observable<ChatMessage[]> {
+        return this.api.getMessages(conversationId, since);
     }
 
     send(conversationId: number, body: string): Observable<ChatMessage> {
