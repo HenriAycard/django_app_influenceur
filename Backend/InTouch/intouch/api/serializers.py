@@ -158,7 +158,16 @@ class TypeVenueSerializer(ModelSerializer):
 
 
 class imgVenueSerializer(ModelSerializer):
-    
+
+    def validate_imgVenue(self, value):
+        allowed = {'image/jpeg', 'image/png', 'image/webp', 'image/gif'}
+        content_type = getattr(value, 'content_type', '') or ''
+        if content_type not in allowed:
+            raise ValidationError(
+                f"Unsupported file type '{content_type}'. Allowed: JPEG, PNG, WebP, GIF."
+            )
+        return value
+
     class Meta:
         model = imgVenue
         fields = '__all__'
@@ -405,6 +414,8 @@ class RegisterRequestSerializer(serializers.Serializer):
 
 
 class MessageSerializer(ModelSerializer):
+    body = serializers.CharField(max_length=4000)
+
     class Meta:
         model = Message
         fields = ('id', 'sender', 'body', 'created_at', 'read_at')

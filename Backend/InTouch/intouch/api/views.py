@@ -26,6 +26,7 @@ from .permissions import IsVenueOwner, IsRelatedToVenueOwner, IsReservationParty
 from . import emails
 
 import logging
+import re
 import urllib.request
 import urllib.parse
 import json as _json
@@ -293,7 +294,7 @@ class VenueSearchView(generics.ListAPIView):
         search_vector = SearchVector('name_venue', weight='A') + SearchVector('description', weight='B') + SearchVector('address__city', weight='C')
 
         return _with_venue_card_data(
-            Venue.objects.annotate(
+            Venue.objects.filter(is_actif=True).annotate(
                 search=search_vector,
                 rank=SearchRank(search_vector, search_query),
             ).filter(search=search_query).order_by('-rank')
@@ -312,7 +313,7 @@ class VenueDetail(generics.RetrieveUpdateDestroyAPIView):
         if user.is_influencer == 0:
             queryset = Venue.objects.filter(user_id=user.id)
         else:
-            queryset = Venue.objects.all()
+            queryset = Venue.objects.filter(is_actif=True)
         return _with_venue_card_data(queryset.select_related('address').prefetch_related('openings'))
 
 
@@ -848,6 +849,7 @@ class VenueViewLogView(APIView):
     """Records one influencer visit of a venue page (the owner's own visits are
     skipped). Fire-and-forget from the venue page; always returns 204."""
     permission_classes = [permissions.IsAuthenticated]
+    throttle_scope = 'venue-view'
 
     def post(self, request, pk):
         venue = get_object_or_404(Venue, pk=pk)
@@ -892,6 +894,7 @@ class MediaKitPdfView(APIView):
     declared audience, and platform-verified track record. Built with the
     same WeasyPrint pipeline as the contract."""
     permission_classes = [permissions.IsAuthenticated]
+    throttle_scope = 'pdf-gen'
 
     def get(self, request):
         user = request.user
@@ -913,7 +916,8 @@ class MediaKitPdfView(APIView):
         })
         pdf = weasyprint.HTML(string=html).write_pdf()
         response = HttpResponse(pdf, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="intouch-media-kit-{user.firstname}-{user.lastname}.pdf"'
+        safe_name = re.sub(r'[^\w\-]', '_', f"{user.firstname}-{user.lastname}")
+        response['Content-Disposition'] = f'attachment; filename="intouch-media-kit-{safe_name}.pdf"'
         return response
 
 
@@ -1004,6 +1008,7 @@ class ContractPdfView(APIView):
     """Renders a designed PDF collaboration agreement for an accepted
     reservation (chantier #8). Restricted to the two parties."""
     permission_classes = [permissions.IsAuthenticated]
+    throttle_scope = 'pdf-gen'
 
     def get(self, request, pk):
         reservation = get_object_or_404(

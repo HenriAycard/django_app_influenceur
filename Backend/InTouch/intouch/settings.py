@@ -293,6 +293,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'auth': '10/min',
         'auth-refresh': '60/min',
+        'venue-view': '60/hour',   # analytics inflation guard
+        'pdf-gen': '10/hour',      # WeasyPrint worker exhaustion guard
     },
     # We sit behind exactly one proxy (nginx) which sets X-Forwarded-For;
     # without this, throttling would key every client on 127.0.0.1.
