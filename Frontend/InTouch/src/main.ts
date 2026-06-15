@@ -8,14 +8,14 @@ import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './app/services/auth.interceptor';
 import { AuthService } from './app/services/auth.service';
-import { sentryDsn } from './app/config/constant';
+import { environment } from './environments/environment';
 import { register as registerSwiperElements } from 'swiper/element/bundle';
 
 registerSwiperElements()
 
-// Error monitoring — inert until a DSN is configured in config/constant.ts.
-if (sentryDsn) {
-  Sentry.init({ dsn: sentryDsn, sendDefaultPii: false });
+// Error monitoring — inert when sentryDsn is empty (dev / CI builds).
+if (environment.sentryDsn) {
+  Sentry.init({ dsn: environment.sentryDsn, sendDefaultPii: false });
 }
 
 bootstrapApplication(AppComponent, {
@@ -28,6 +28,6 @@ bootstrapApplication(AppComponent, {
     // so guards don't race an un-initialized session on hard refresh.
     provideAppInitializer(() => inject(AuthService).restoreSession()),
     // Uncaught errors go to Sentry when enabled; default behavior otherwise.
-    { provide: ErrorHandler, useValue: sentryDsn ? Sentry.createErrorHandler() : new ErrorHandler() },
+    { provide: ErrorHandler, useValue: environment.sentryDsn ? Sentry.createErrorHandler() : new ErrorHandler() },
   ],
 });

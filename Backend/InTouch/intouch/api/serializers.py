@@ -160,11 +160,30 @@ class TypeVenueSerializer(ModelSerializer):
 class imgVenueSerializer(ModelSerializer):
 
     def validate_imgVenue(self, value):
-        allowed = {'image/jpeg', 'image/png', 'image/webp', 'image/gif'}
+        from PIL import Image, UnidentifiedImageError
+        allowed_content_types = {'image/jpeg', 'image/png', 'image/webp', 'image/gif'}
+        allowed_formats = {'JPEG', 'PNG', 'WEBP', 'GIF'}
+
         content_type = getattr(value, 'content_type', '') or ''
-        if content_type not in allowed:
+        if content_type not in allowed_content_types:
             raise ValidationError(
                 f"Unsupported file type '{content_type}'. Allowed: JPEG, PNG, WebP, GIF."
+            )
+
+        # Verify actual file content with Pillow — rejects SVG/HTML/exe files
+        # that lie about their content-type.
+        try:
+            img = Image.open(value)
+            fmt = img.format
+            img.verify()  # Checks file integrity (PNG checksums, JPEG markers…)
+        except (UnidentifiedImageError, Exception):
+            raise ValidationError('Invalid or corrupted image file.')
+        finally:
+            value.seek(0)
+
+        if fmt not in allowed_formats:
+            raise ValidationError(
+                f"File is '{fmt}', not a supported image. Allowed: JPEG, PNG, WebP, GIF."
             )
         return value
 

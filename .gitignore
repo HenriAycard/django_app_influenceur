@@ -125,6 +125,9 @@ __pycache__
 db.sqlite3
 media
 
+# Angular production environment — secrets live here, not in source
+Frontend/InTouch/src/environments/environment.prod.ts
+
 # Backup files # 
 *.bak 
 
