@@ -54,8 +54,12 @@ export class LoginPage implements OnInit {
         Notification.requestPermission();
       }
 
+      // Emails are case-insensitive; mobile keyboards love to auto-capitalize the
+      // first letter (and slip in a trailing space), which the backend lookup
+      // treats as a different — non-existent — account and rejects with a 401.
+      // Normalize here so "Lorena@…" / " lorena@… " still sign in.
       let params: LoginParam = {
-        "email": this.f['email'].value,
+        "email": (this.f['email'].value ?? '').trim().toLowerCase(),
         "password": this.f['password'].value,
       }
 
