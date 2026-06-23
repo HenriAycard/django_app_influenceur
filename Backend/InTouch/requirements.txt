@@ -41,7 +41,7 @@ httpx==0.28.1
 hyperframe==6.1.0
 idna==3.18
 MarkupSafe==3.0.3
-msgpack==1.1.2
+msgpack==1.2.1
 oauthlib==3.3.1
 packaging==26.2
 pillow==12.2.0
