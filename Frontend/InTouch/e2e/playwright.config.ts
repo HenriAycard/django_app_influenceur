@@ -43,7 +43,7 @@ export default defineConfig({
       command: 'npm run start -- --host 127.0.0.1 --port 8110',
       cwd: frontendDir,
       url: 'http://127.0.0.1:8110',
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !process.env['CI'],
       timeout: 240_000,
     },
   ],
