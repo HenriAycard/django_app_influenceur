@@ -24,7 +24,8 @@ export class ApiOfferService extends ApiService {
     return this.http.post<any>(this.urlBase, bodyJson, this.options);
   }
 
-  public deleteOffer(id: number): Observable<any> {
+  /** Archives the offer (the API never hard-deletes: DELETE = archive). */
+  public archiveOffer(id: number): Observable<any> {
     return this.http.delete(this.urlBase + id, this.options)
   }
 

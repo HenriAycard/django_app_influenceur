@@ -283,12 +283,16 @@ class OfferCreateSerializer(ModelSerializer):
     class Meta:
         model = Offer
         fields = '__all__'
+        # Archiving only happens through DELETE on OfferDetail — the flag can
+        # be neither forged at creation nor reset by a PATCH.
+        read_only_fields = ('archived_at',)
 
 class OfferSerializer(ModelSerializer):
 
     class Meta:
         model = Offer
         fields = '__all__'
+        read_only_fields = ('archived_at',)
 
 class ReservationVenueSerializer(ModelSerializer):
     imgVenue = imgVenueSerializer(many=True, read_only=True)

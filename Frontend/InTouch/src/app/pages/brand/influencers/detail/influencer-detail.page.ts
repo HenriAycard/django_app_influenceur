@@ -81,6 +81,8 @@ export class InfluencerDetailPage implements OnInit {
         try {
             offers = await firstValueFrom(this.apiOffer.findOffersByVenueId(venueId));
         } catch { /* ignore */ }
+        // The owner listing includes archived offers; they can't be invited to.
+        offers = offers.filter(o => !o.archivedAt);
 
         if (!offers.length) {
             this.toast.toastWarn('No offers', 'This venue has no active offers. Create one first.');

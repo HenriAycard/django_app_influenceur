@@ -44,7 +44,7 @@ export class VenueStore {
         );
     }
 
-    deleteOffer(id: number): Observable<unknown> {
-        return this.apiOffer.deleteOffer(id);
+    archiveOffer(id: number): Observable<unknown> {
+        return this.apiOffer.archiveOffer(id);
     }
 }

@@ -27,6 +27,8 @@ export interface OfferWithVenue {
     minFollowersTiktok: number | null;
     minFollowersYoutube: number | null;
     requirePostProof: boolean;
+    /** Set once the brand archives the offer; archived offers are read-only. */
+    archivedAt: string | null;
 }
 
 /** A published collaboration opportunity created by a venue/brand. */
@@ -56,4 +58,6 @@ export interface Offer {
     minFollowersTiktok: number | null;
     minFollowersYoutube: number | null;
     requirePostProof: boolean;
+    /** Set once the brand archives the offer; archived offers are read-only. */
+    archivedAt?: string | null;
 }

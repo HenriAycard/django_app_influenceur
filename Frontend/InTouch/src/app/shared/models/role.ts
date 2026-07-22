@@ -20,7 +20,7 @@ export const unknow: UserRole = {
     roles: ['UNKNOW']
 }
 
-export type ActionType = 'view' | 'edit' | 'delete';
+export type ActionType = 'view' | 'edit' | 'archive';
 
 export interface ActionPayload<T = any> {
     action: ActionType;

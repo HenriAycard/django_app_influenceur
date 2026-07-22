@@ -1,7 +1,7 @@
 
-import { ChangeDetectionStrategy, Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { AlertController, IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { chevronDownCircle, close, closeOutline, createOutline, eyeOutline, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube, statsChartOutline, trashOutline } from 'ionicons/icons';
 import { VenueMainViewPage } from 'src/app/modal/venue/main-view/venue-main-view.component';
@@ -25,6 +25,10 @@ export class VenueViewPage {
 
   protected readonly store = inject(VenueStore);
   private loadingController = inject(LoadingController);
+  private alertController = inject(AlertController);
+
+  protected readonly activeOffers = computed(() => this.store.offers().filter(o => !o.archivedAt));
+  protected readonly archivedOffers = computed(() => this.store.offers().filter(o => !!o.archivedAt));
 
   constructor(
     private router: Router,
@@ -61,13 +65,26 @@ export class VenueViewPage {
       this.router.navigate(['offer', data], { relativeTo: this.route });
     } else if (action === 'edit') {
       this.router.navigate(['offer', data, 'edit'], { relativeTo: this.route })
-    } else if (action === 'delete') {
-      this.deleteOffer(data);
+    } else if (action === 'archive') {
+      this.confirmArchive(data);
     }
   }
 
-  deleteOffer(id: number) {
-    this.store.deleteOffer(id).subscribe({
+  // Archiving is one-way (no unarchive endpoint): confirm before committing.
+  private async confirmArchive(id: number) {
+    const alert = await this.alertController.create({
+      header: 'Archive this offer?',
+      message: 'Influencers will no longer see it or apply to it. Ongoing collaborations are not affected. This cannot be undone.',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        { text: 'Archive', role: 'destructive', handler: () => this.archiveOffer(id) },
+      ],
+    });
+    await alert.present();
+  }
+
+  archiveOffer(id: number) {
+    this.store.archiveOffer(id).subscribe({
       complete: () => this.load(),
     })
   }

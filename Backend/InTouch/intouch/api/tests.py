@@ -315,3 +315,78 @@ class RegistrationTests(ApiTestCase):
         self.client.force_authenticate(user=None)
         response = self.client.get('/api/reservation/')
         self.assertEqual(response.status_code, 401)
+
+
+class OfferArchiveTests(ApiTestCase):
+    """Offers are the contract of record for their reservations: DELETE
+    archives them instead of destroying (offer-archive chantier A)."""
+
+    def archive(self):
+        return self.as_user(self.brand).delete(f'/api/offer/{self.offer.id}')
+
+    def listed_offer_ids(self, user):
+        response = self.as_user(user).get(f'/api/offer/?venue={self.venue.id}')
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        items = data['results'] if isinstance(data, dict) else data
+        return [offer['id'] for offer in items]
+
+    def test_delete_archives_instead_of_destroying(self):
+        reservation = self.application(status=1)
+        response = self.archive()
+        self.assertEqual(response.status_code, 204)
+        self.offer.refresh_from_db()
+        self.assertIsNotNone(self.offer.archived_at)
+        reservation.refresh_from_db()  # the collaboration survives
+
+    def test_archive_is_idempotent(self):
+        self.archive()
+        self.offer.refresh_from_db()
+        first = self.offer.archived_at
+        self.archive()
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.archived_at, first)
+
+    def test_influencer_cannot_archive(self):
+        response = self.as_user(self.influencer).delete(f'/api/offer/{self.offer.id}')
+        self.assertEqual(response.status_code, 403)
+        self.offer.refresh_from_db()
+        self.assertIsNone(self.offer.archived_at)
+
+    def test_archived_offer_hidden_from_influencer_listing(self):
+        self.archive()
+        self.assertNotIn(self.offer.id, self.listed_offer_ids(self.influencer))
+
+    def test_archived_offer_still_listed_for_owner(self):
+        self.archive()
+        self.assertIn(self.offer.id, self.listed_offer_ids(self.brand))
+
+    def test_apply_to_archived_offer_rejected(self):
+        self.archive()
+        response = self.as_user(self.influencer).post(
+            '/api/reservation/', {'offer_id': self.offer.id}, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_invite_on_archived_offer_rejected(self):
+        self.archive()
+        response = self.as_user(self.brand).post('/api/reservation/invite/', {
+            'offer_id': self.offer.id, 'influencer_id': str(self.influencer.id),
+        }, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_patch_cannot_unarchive(self):
+        self.archive()
+        response = self.as_user(self.brand).patch(
+            f'/api/offer/{self.offer.id}', {'archivedAt': None}, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.offer.refresh_from_db()
+        self.assertIsNotNone(self.offer.archived_at)
+
+    def test_reservation_still_exposes_archived_offer(self):
+        # Calendar path: the influencer keeps seeing the offer of an accepted
+        # collaboration even after the brand archives it.
+        self.application(status=1)
+        self.archive()
+        response = self.as_user(self.influencer).get('/api/reservation/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()[0]['offer']['id'], self.offer.id)
