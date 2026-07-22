@@ -11,7 +11,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "bddgen -c e2e/playwright.config.ts && playwright test -c e2e/playwright.config.ts",
-    "e2e:ui": "bddgen -c e2e/playwright.config.ts && playwright test -c e2e/playwright.config.ts --ui-host=127.0.0.1 --ui-port=9323",
+    "e2e:ui": "bddgen -c e2e/playwright.config.ts && playwright test -c e2e/playwright.config.ts --ui-port=9323",
     "e2e:report": "playwright show-report --host 127.0.0.1 --port 9323"
   },
   "private": true,
