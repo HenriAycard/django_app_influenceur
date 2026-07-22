@@ -60,4 +60,6 @@ export interface Offer {
     requirePostProof: boolean;
     /** Set once the brand archives the offer; archived offers are read-only. */
     archivedAt?: string | null;
+    /** False once archived or applied to: terms are frozen, duplicate to change. */
+    isEditable?: boolean;
 }

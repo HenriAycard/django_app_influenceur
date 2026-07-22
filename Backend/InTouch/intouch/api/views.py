@@ -385,6 +385,17 @@ class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
 
+    def perform_update(self, serializer):
+        offer = serializer.instance
+        if offer.archived_at is not None:
+            raise DRFValidationError({'detail': 'Archived offers are read-only.'})
+        # The offer is the contract shown to every applicant: once any
+        # non-declined reservation exists its terms are frozen for good.
+        # To change the deal, duplicate the offer and archive this one.
+        if offer.reservation_set.exclude(status=2).exists():
+            raise DRFValidationError({'detail': 'This offer has applications: its terms are frozen. Duplicate it to make changes.'})
+        serializer.save()
+
     def perform_destroy(self, instance):
         # An offer is the contract of record for its reservations — never
         # hard-delete. DELETE archives instead (idempotent: keeps the first

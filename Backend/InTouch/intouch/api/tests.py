@@ -378,7 +378,7 @@ class OfferArchiveTests(ApiTestCase):
         self.archive()
         response = self.as_user(self.brand).patch(
             f'/api/offer/{self.offer.id}', {'archivedAt': None}, format='json')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)  # archived offers are read-only
         self.offer.refresh_from_db()
         self.assertIsNotNone(self.offer.archived_at)
 
@@ -390,3 +390,53 @@ class OfferArchiveTests(ApiTestCase):
         response = self.as_user(self.influencer).get('/api/reservation/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()[0]['offer']['id'], self.offer.id)
+
+
+class OfferFreezeTests(ApiTestCase):
+    """The offer is the contract shown to applicants: once any non-declined
+    reservation exists, its terms are frozen for good (offer-archive chantier B)."""
+
+    def rename(self):
+        return self.as_user(self.brand).patch(
+            f'/api/offer/{self.offer.id}', {'name': 'Renamed'}, format='json')
+
+    def test_editable_before_any_application(self):
+        response = self.rename()
+        self.assertEqual(response.status_code, 200)
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.name, 'Renamed')
+
+    def test_frozen_once_application_exists(self):
+        self.application()  # pending
+        response = self.rename()
+        self.assertEqual(response.status_code, 400)
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.name, 'Test Offer')
+
+    def test_declined_application_does_not_freeze(self):
+        self.application(status=2)
+        self.assertEqual(self.rename().status_code, 200)
+
+    def test_invitation_freezes(self):
+        Reservation.objects.create(user=self.influencer, offer=self.offer, status=3)
+        self.assertEqual(self.rename().status_code, 400)
+
+    def test_past_collaboration_keeps_terms_frozen(self):
+        # Even a finished collaboration must keep its contract intact:
+        # the PDF renders live from the offer row.
+        Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=30),
+        )
+        self.assertEqual(self.rename().status_code, 400)
+
+    def test_is_editable_flag(self):
+        def flag():
+            response = self.as_user(self.brand).get(f'/api/offer/?venue={self.venue.id}')
+            data = response.json()
+            items = data['results'] if isinstance(data, dict) else data
+            return next(o['isEditable'] for o in items if o['id'] == self.offer.id)
+
+        self.assertTrue(flag())
+        self.application()
+        self.assertFalse(flag())

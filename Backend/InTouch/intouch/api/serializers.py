@@ -288,11 +288,19 @@ class OfferCreateSerializer(ModelSerializer):
         read_only_fields = ('archived_at',)
 
 class OfferSerializer(ModelSerializer):
+    # False once the offer is archived or has a non-declined reservation:
+    # the terms are frozen and the front routes "edit" to duplicate instead.
+    is_editable = SerializerMethodField()
 
     class Meta:
         model = Offer
         fields = '__all__'
         read_only_fields = ('archived_at',)
+
+    def get_is_editable(self, obj):
+        if obj.archived_at is not None:
+            return False
+        return not obj.reservation_set.exclude(status=2).exists()
 
 class ReservationVenueSerializer(ModelSerializer):
     imgVenue = imgVenueSerializer(many=True, read_only=True)

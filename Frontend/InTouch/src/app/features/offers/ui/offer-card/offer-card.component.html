@@ -44,10 +44,12 @@
                     <ion-label>View</ion-label>
                 </ion-item>
                 @if (!isArchived) {
-                    <ion-item button (click)="onEdit()">
-                        <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
-                        <ion-label>Edit</ion-label>
-                    </ion-item>
+                    @if (canEdit) {
+                        <ion-item button (click)="onEdit()">
+                            <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
+                            <ion-label>Edit</ion-label>
+                        </ion-item>
+                    }
                     <ion-item button (click)="onArchive()" class="danger">
                         <ion-icon aria-hidden="true" name="archive-outline" slot="start"></ion-icon>
                         <ion-label>Archive</ion-label>

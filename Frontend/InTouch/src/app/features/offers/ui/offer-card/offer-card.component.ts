@@ -32,6 +32,11 @@ export class OfferCardComponent {
         return !!this.offer.archivedAt;
     }
 
+    /** Missing flag (older payloads) counts as editable. */
+    get canEdit(): boolean {
+        return this.offer.isEditable !== false;
+    }
+
     checkUserRole(requiredRoles: Role[]): boolean {
         const userRoles = this.authService.getCurrentUserProfile();
         return userRoles.roles.some(role => requiredRoles.includes(role));
