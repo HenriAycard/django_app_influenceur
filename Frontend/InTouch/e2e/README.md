@@ -36,11 +36,43 @@ npm run e2e
 then runs them. Playwright boots the two servers on first run (first `ng serve`
 compile takes a while — the webServer timeout allows for it).
 
+## Watching the tests run
+
+The VPS has no display, so the browser always runs headless — but you can
+still watch everything:
+
+**Live (interactive) — Playwright UI mode through an SSH tunnel:**
+
+```bash
+# on your machine:
+ssh -L 9323:127.0.0.1:9323 ubuntu@51.75.20.230
+# on the VPS, in Frontend/InTouch:
+npm run e2e:ui
+# then open http://localhost:9323 in your local browser
+```
+
+You get the Playwright UI: pick a scenario, run it, and watch the app being
+driven live (screenshots stream in real time), with the action log, DOM
+snapshots and network calls side by side.
+
+**Replay — a video of every test:**
+
+Every `npm run e2e` records a video of each scenario and builds an HTML
+report (`playwright-report/`). Through the same SSH tunnel:
+
+```bash
+npm run e2e:report        # serves the report on 127.0.0.1:9323
+# open http://localhost:9323 locally — each test embeds its video
+```
+
 ## Scenarios
 
-- `login.feature` — influencer and brand sign in and land on their role home
+- `login.feature` — sign-in for both roles, uppercase-email regression, wrong password
 - `registration.feature` — an influencer applies for an account
-- `application.feature` — an influencer browses from the feed to an offer and applies
+- `application.feature` — feed → venue → offer → apply, plus the follower gate
+- `collaboration.feature` — brand accepts, influencer submits post link, brand
+  validates or reports a no-show
+- `offer_management.feature` — archive, duplicate, frozen-offer edit routing
 - `brand_venue.feature` — a brand sees an offer listed on its venue
 
 ## Layout

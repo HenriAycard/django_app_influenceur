@@ -16,11 +16,14 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   fullyParallel: false,
   workers: 1,
-  reporter: [['list']],
+  // The HTML report (playwright-report/) embeds a video of every test — see
+  // e2e/README.md "Watching the tests run" for how to view it from the VPS.
+  reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: 'http://127.0.0.1:8110',
     ignoreHTTPSErrors: true, // the E2E backend serves a self-signed cert on :8010
     trace: 'on-first-retry',
+    video: 'on',
   },
   webServer: [
     {
@@ -37,6 +40,9 @@ export default defineConfig({
         PG_DBNAME: 'intouch_e2e',
         DJANGO_ALLOWED_HOSTS: 'localhost,127.0.0.1,testserver',
         CORS_ALLOWED_ORIGINS: 'http://127.0.0.1:8110,http://localhost:8110',
+        // Every scenario signs in through the UI from one IP; the production
+        // brute-force guard (10/min) would 429 the suite.
+        DRF_AUTH_THROTTLE_RATE: '1000/min',
       },
     },
     {
