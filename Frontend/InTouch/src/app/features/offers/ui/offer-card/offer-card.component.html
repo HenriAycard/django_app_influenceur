@@ -43,7 +43,7 @@
                     <ion-icon aria-hidden="true" name="eye-outline" slot="start"></ion-icon>
                     <ion-label>View</ion-label>
                 </ion-item>
-                @if (!isArchived && canEdit) {
+                @if (!isArchived) {
                     <ion-item button (click)="onEdit()">
                         <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
                         <ion-label>Edit</ion-label>

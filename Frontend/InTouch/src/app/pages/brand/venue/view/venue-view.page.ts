@@ -64,12 +64,30 @@ export class VenueViewPage {
     if (action === 'view') {
       this.router.navigate(['offer', data], { relativeTo: this.route });
     } else if (action === 'edit') {
-      this.router.navigate(['offer', data, 'edit'], { relativeTo: this.route })
+      this.editOffer(data);
     } else if (action === 'archive') {
       this.confirmArchive(data);
     } else if (action === 'duplicate') {
       this.duplicateOffer(data);
     }
+  }
+
+  // Frozen terms can't be edited in place: offer the duplicate path instead.
+  private async editOffer(id: number) {
+    const offer = this.store.offers().find(o => o.id === id);
+    if (offer?.isEditable === false) {
+      const alert = await this.alertController.create({
+        header: 'Terms are frozen',
+        message: 'Influencers have applied to this offer, so the agreed terms cannot change. Duplicate it to edit a fresh copy.',
+        buttons: [
+          { text: 'Cancel', role: 'cancel' },
+          { text: 'Duplicate', handler: () => this.duplicateOffer(id) },
+        ],
+      });
+      await alert.present();
+      return;
+    }
+    this.router.navigate(['offer', id, 'edit'], { relativeTo: this.route });
   }
 
   // The point of duplicating is editing the copy: go there directly.
