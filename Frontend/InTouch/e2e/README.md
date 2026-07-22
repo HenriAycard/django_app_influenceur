@@ -15,9 +15,11 @@ Everything runs locally and isolated — nothing touches production:
   backend by `e2e/steps/fixtures.ts`, which sets `window.__API_BASE__` before
   the app boots (`src/app/config/constant.ts` reads it, falling back to the
   deployed backend for normal builds).
-- Playwright's `webServer` starts both automatically (or reuses them if already
-  running locally). Ports `8010`/`8110` are dedicated so they never collide with
-  the live services on the VPS (`:8001` gunicorn, `:8100` PM2 ng serve).
+- Playwright's `webServer` starts the frontend automatically (or reuses a local
+  `ng serve`), and **always boots a fresh backend** so `intouch_e2e` is re-seeded
+  to a known slate every run — scenarios that write (apply, register) stay
+  idempotent. Ports `8010`/`8110` are dedicated so they never collide with the
+  live services on the VPS (`:8001` gunicorn, `:8100` PM2 ng serve).
 
 ## Run
 
@@ -34,10 +36,18 @@ npm run e2e
 then runs them. Playwright boots the two servers on first run (first `ng serve`
 compile takes a while — the webServer timeout allows for it).
 
+## Scenarios
+
+- `login.feature` — influencer and brand sign in and land on their role home
+- `registration.feature` — an influencer applies for an account
+- `application.feature` — an influencer browses from the feed to an offer and applies
+- `brand_venue.feature` — a brand sees an offer listed on its venue
+
 ## Layout
 
 - `features/*.feature` — scenarios in Gherkin
-- `steps/*.ts` — step definitions (`fixtures.ts` wires the `__API_BASE__` seam)
+- `steps/*.ts` — step definitions (`fixtures.ts` wires the `__API_BASE__` seam,
+  `helpers.ts` holds the seeded actors + `signIn`)
 - `backend.sh` / `seed.py` — the isolated E2E backend
 - `playwright.config.ts` — servers, ports, timeouts
 
