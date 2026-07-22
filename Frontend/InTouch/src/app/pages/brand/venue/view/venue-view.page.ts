@@ -10,6 +10,7 @@ import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-
 import { ActionPayload } from 'src/app/shared/models';
 import { VenueStore } from 'src/app/features/venues/venue.store';
 import { VenueReviewsComponent } from 'src/app/features/reviews/ui/venue-reviews/venue-reviews.component';
+import { ToastService } from 'src/app/services/toast.service';
 
 
 @Component({
@@ -26,6 +27,7 @@ export class VenueViewPage {
   protected readonly store = inject(VenueStore);
   private loadingController = inject(LoadingController);
   private alertController = inject(AlertController);
+  private toast = inject(ToastService);
 
   protected readonly activeOffers = computed(() => this.store.offers().filter(o => !o.archivedAt));
   protected readonly archivedOffers = computed(() => this.store.offers().filter(o => !!o.archivedAt));
@@ -94,6 +96,7 @@ export class VenueViewPage {
   duplicateOffer(id: number) {
     this.store.duplicateOffer(id).subscribe({
       next: (offer) => this.router.navigate(['offer', offer.id, 'edit'], { relativeTo: this.route }),
+      error: () => this.toast.toastDanger('Duplicate failed', 'Something went wrong. Please try again.'),
     })
   }
 
@@ -113,6 +116,7 @@ export class VenueViewPage {
   archiveOffer(id: number) {
     this.store.archiveOffer(id).subscribe({
       complete: () => this.load(),
+      error: () => this.toast.toastDanger('Archive failed', 'Something went wrong. Please try again.'),
     })
   }
 
