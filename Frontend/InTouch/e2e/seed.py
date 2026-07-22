@@ -51,7 +51,11 @@ venue = Venue.objects.create(user=brand, name_venue='E2E Test Venue')
 # venue one (empty-file) image row so the card renders on an imageless seed.
 imgVenue.objects.create(venue=venue, is_principal=True)
 
-past = timezone.now() - timezone.timedelta(days=1)
+# -2 days, not -1: the calendar buckets by *local* (CET) calendar day while
+# the server clock is UTC. Between 22:00 UTC and midnight UTC, "now - 1 day"
+# still lands on today's local date and the collaboration shows up in
+# "Coming soon" instead of "Last collaborations".
+past = timezone.now() - timezone.timedelta(days=2)
 future = timezone.now() + timezone.timedelta(days=3)
 
 # One offer per journey:
