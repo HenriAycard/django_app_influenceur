@@ -1,0 +1,19 @@
+.archive-hint {
+  margin: 8px 16px 4px;
+  font-size: .85rem;
+  color: var(--p-sub, #6b6b76);
+}
+
+ion-item ion-icon[slot="start"] {
+  color: var(--p-sub, #6b6b76);
+  font-size: 1.2rem;
+}
+
+.archive-empty {
+  text-align: center;
+  padding: 64px 24px;
+  color: var(--p-sub, #6b6b76);
+
+  ion-icon { font-size: 2.4rem; margin-bottom: 8px; }
+  p { margin: 0; }
+}

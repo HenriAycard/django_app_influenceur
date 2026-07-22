@@ -1,0 +1,33 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/brand/venue/' + venueId"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Archived offers</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  @if (archivedOffers().length) {
+    <p class="archive-hint">No longer visible to influencers; kept for your records. Duplicate one to reuse its terms.</p>
+    <ion-list lines="full">
+      @for (offer of archivedOffers(); track offer.id) {
+        <ion-item button detail="false" (click)="view(offer.id!)">
+          <ion-icon aria-hidden="true" name="archive-outline" slot="start"></ion-icon>
+          <ion-label>
+            <h2>{{ offer.name }}</h2>
+            <p>Archived on {{ offer.archivedAt | date:'mediumDate' }}</p>
+          </ion-label>
+          <ion-button slot="end" fill="clear" aria-label="Duplicate" (click)="duplicate(offer.id!, $event)">
+            <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
+    <div class="archive-empty">
+      <ion-icon name="archive-outline"></ion-icon>
+      <p>No archived offers yet.</p>
+    </div>
+  }
+</ion-content>

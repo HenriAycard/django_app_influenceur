@@ -43,16 +43,11 @@
         ></app-offer-card>
       }
       @if (archivedOffers().length) {
-        <ion-item lines="none">
-          <ion-label class="ion-text-wrap">
-            <h1 class="header-font">Archived</h1>
-            <p>No longer visible to influencers; kept for your records</p>
-          </ion-label>
+        <ion-item button detail="true" lines="none" [routerLink]="['archives']">
+          <ion-icon aria-hidden="true" name="archive-outline" slot="start"></ion-icon>
+          <ion-label>Archived offers</ion-label>
+          <ion-note slot="end">{{ archivedOffers().length }}</ion-note>
         </ion-item>
-        @for (deal of archivedOffers(); track deal) {
-          <app-offer-card [offer]="deal" (actionPerformed)="onActionPerformed($event)"
-          ></app-offer-card>
-        }
       }
       <app-venue-reviews [venueId]="venueId"></app-venue-reviews>
     </div>

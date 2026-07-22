@@ -1,9 +1,9 @@
 
 import { ChangeDetectionStrategy, Component, computed, inject, Input } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { AlertController, IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonRefresher, IonRefresherContent, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
+import { AlertController, IonButton, IonContent, IonFab, IonFabButton, IonFabList, IonIcon, IonItem, IonLabel, IonNote, IonRefresher, IonRefresherContent, LoadingController, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { chevronDownCircle, close, closeOutline, createOutline, eyeOutline, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube, statsChartOutline, trashOutline } from 'ionicons/icons';
+import { archiveOutline, chevronDownCircle, close, closeOutline, createOutline, eyeOutline, locationOutline, logoFacebook, logoInstagram, logoTiktok, logoTwitter, logoYoutube, statsChartOutline, trashOutline } from 'ionicons/icons';
 import { VenueMainViewPage } from 'src/app/modal/venue/main-view/venue-main-view.component';
 import { VenueSkeletonComponent } from 'src/app/modal/venue/skeleton/venue-skeleton.component';
 import { OfferCardComponent } from 'src/app/features/offers/ui/offer-card/offer-card.component';
@@ -19,7 +19,7 @@ import { ToastService } from 'src/app/services/toast.service';
     templateUrl: './venue-view.page.html',
     styleUrls: ['./venue-view.page.scss'],
     standalone: true,
-    imports: [IonContent, IonLabel, IonItem, IonIcon, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, VenueMainViewPage, VenueSkeletonComponent, VenueReviewsComponent]
+    imports: [IonContent, IonLabel, IonItem, IonIcon, IonNote, IonRefresher, IonRefresherContent, IonFab, IonFabList, IonFabButton, RouterModule, OfferCardComponent, IonButton, VenueMainViewPage, VenueSkeletonComponent, VenueReviewsComponent]
 })
 export class VenueViewPage {
   @Input() venueId!: number;
@@ -35,7 +35,7 @@ export class VenueViewPage {
   constructor(
     private router: Router,
     private route: ActivatedRoute) {
-        addIcons({createOutline, trashOutline, statsChartOutline, close, chevronDownCircle, locationOutline, logoInstagram, logoYoutube, logoTiktok, logoTwitter, logoFacebook, closeOutline});
+        addIcons({archiveOutline, createOutline, trashOutline, statsChartOutline, close, chevronDownCircle, locationOutline, logoInstagram, logoYoutube, logoTiktok, logoTwitter, logoFacebook, closeOutline});
     }
 
   // Reloads on every entry (incl. returning from the edit/offer pages).
