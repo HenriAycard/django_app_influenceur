@@ -292,7 +292,10 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.ScopedRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'auth': '10/min',
+        # Env-overridable for the E2E suite only: its scenarios all sign in
+        # through the UI from one IP and would trip the brute-force guard.
+        # Production keeps the default.
+        'auth': os.getenv('DRF_AUTH_THROTTLE_RATE', '10/min'),
         'auth-refresh': '60/min',
         'venue-view': '60/hour',   # analytics inflation guard
         'pdf-gen': '10/hour',      # WeasyPrint worker exhaustion guard

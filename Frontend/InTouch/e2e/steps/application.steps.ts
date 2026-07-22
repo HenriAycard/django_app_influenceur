@@ -27,3 +27,9 @@ When('I apply for the collaboration', async ({ page }) => {
 Then('my application is confirmed', async ({ page }) => {
   await expect(page.getByText(/added to your calendar/i)).toBeVisible();
 });
+
+Then('I am told I do not meet the follower requirements', async ({ page }) => {
+  // The backend detail ("This collaboration requires at least: Instagram
+  // (10,000) followers.") is surfaced in the error toast.
+  await expect(page.getByText(/requires at least/i)).toBeVisible();
+});
