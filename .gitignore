@@ -133,8 +133,14 @@ Frontend/InTouch/android/
 Frontend/InTouch/ios/
 Frontend/InTouch/www/
 
-# Backup files # 
-*.bak 
+# Playwright E2E — generated specs, run artifacts (browsers live in ~/.cache)
+Frontend/InTouch/.features-gen/
+Frontend/InTouch/test-results/
+Frontend/InTouch/playwright-report/
+Frontend/InTouch/blob-report/
+
+# Backup files #
+*.bak
 
 
 *~
