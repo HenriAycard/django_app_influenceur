@@ -9,44 +9,16 @@ Run with: python manage.py test intouch.api
 from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.utils import timezone
-from rest_framework.test import APIClient
 
-from .models import Offer, Reservation, User, Venue
-
-
-def make_user(email, *, influencer=False, company=False, **extra):
-    user = User.objects.create_user(email, 'Test', 'User', 'Str0ng-Pass-42!')
-    user.is_active = True
-    user.is_influencer = influencer
-    user.is_company = company
-    for field, value in extra.items():
-        setattr(user, field, value)
-    user.save()
-    return user
+from .models import Offer, Reservation, User
+from .test_support import ApiWorldMixin, make_user
 
 
 @override_settings(SECURE_SSL_REDIRECT=False)  # the test client speaks plain http
-class ApiTestCase(TestCase):
+class ApiTestCase(ApiWorldMixin, TestCase):
     def setUp(self):
         cache.clear()  # throttle counters live in the cache
-        self.brand = make_user('brand@test.io', company=True)
-        self.influencer = make_user('influencer@test.io', influencer=True,
-                                    instagram='@flo', instagram_followers=5000)
-        self.venue = Venue.objects.create(user=self.brand, name_venue='Test Venue')
-        self.offer = Offer.objects.create(
-            venue=self.venue, name='Test Offer', content='x', conditions='x', tags='x',
-        )
-        self.client = APIClient()
-
-    def as_user(self, user):
-        self.client.force_authenticate(user=user)
-        return self.client
-
-    def application(self, status=0):
-        return Reservation.objects.create(
-            user=self.influencer, offer=self.offer, status=status,
-            date_reservation=timezone.now() + timezone.timedelta(days=3),
-        )
+        self.build_world()
 
 
 class ReservationAuthorizationTests(ApiTestCase):

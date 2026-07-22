@@ -100,6 +100,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'djoser',
     'django_filters',
+    'behave_django',
 ]
 
 LOCAL_APPS = [
