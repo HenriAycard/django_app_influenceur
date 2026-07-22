@@ -404,6 +404,26 @@ class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
             instance.archived_at = timezone.now()
             instance.save(update_fields=['archived_at'])
 
+
+class OfferDuplicateView(APIView):
+    """Duplicates an offer on the same venue. The copy starts fresh — no
+    reservations, not archived — so it is freely editable: this is the way
+    to "modify" a frozen offer (duplicate, adjust, archive the original)."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        offer = get_object_or_404(Offer.objects.select_related('venue'), pk=pk)
+        if offer.venue.user_id != request.user.id:
+            raise PermissionDenied('You can only duplicate your own offers.')
+
+        offer.pk = None
+        offer._state.adding = True
+        offer.archived_at = None
+        suffix = ' (copy)'
+        offer.name = offer.name[:Offer._meta.get_field('name').max_length - len(suffix)] + suffix
+        offer.save()
+        return Response(OfferSerializer(offer).data, status=status.HTTP_201_CREATED)
+
 class ReservationFilter(FilterSet):
     from_reservation = DateTimeFilter(field_name='date_reservation', lookup_expr='gte')
     to_reservation = DateTimeFilter(field_name='date_reservation', lookup_expr='lte')

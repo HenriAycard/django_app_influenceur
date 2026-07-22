@@ -29,6 +29,11 @@ export class ApiOfferService extends ApiService {
     return this.http.delete(this.urlBase + id, this.options)
   }
 
+  /** Duplicates the offer on the same venue; returns the fresh, editable copy. */
+  public duplicateOffer(id: number): Observable<Offer> {
+    return this.http.post<Offer>(this.urlBase + id + '/duplicate', null, this.options)
+  }
+
   public findOfferById(id: number): Observable<Offer> {
     const url = this.urlBase + id.toString()
     return this.http.get<Offer>(url, this.options)

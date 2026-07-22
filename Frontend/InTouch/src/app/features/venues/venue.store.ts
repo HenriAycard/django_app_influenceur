@@ -47,4 +47,8 @@ export class VenueStore {
     archiveOffer(id: number): Observable<unknown> {
         return this.apiOffer.archiveOffer(id);
     }
+
+    duplicateOffer(id: number): Observable<Offer> {
+        return this.apiOffer.duplicateOffer(id);
+    }
 }

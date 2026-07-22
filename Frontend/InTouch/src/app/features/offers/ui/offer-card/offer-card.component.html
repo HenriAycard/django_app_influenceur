@@ -43,13 +43,17 @@
                     <ion-icon aria-hidden="true" name="eye-outline" slot="start"></ion-icon>
                     <ion-label>View</ion-label>
                 </ion-item>
+                @if (!isArchived && canEdit) {
+                    <ion-item button (click)="onEdit()">
+                        <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
+                        <ion-label>Edit</ion-label>
+                    </ion-item>
+                }
+                <ion-item button (click)="onDuplicate()">
+                    <ion-icon aria-hidden="true" name="copy-outline" slot="start"></ion-icon>
+                    <ion-label>Duplicate</ion-label>
+                </ion-item>
                 @if (!isArchived) {
-                    @if (canEdit) {
-                        <ion-item button (click)="onEdit()">
-                            <ion-icon aria-hidden="true" name="create-outline" slot="start"></ion-icon>
-                            <ion-label>Edit</ion-label>
-                        </ion-item>
-                    }
                     <ion-item button (click)="onArchive()" class="danger">
                         <ion-icon aria-hidden="true" name="archive-outline" slot="start"></ion-icon>
                         <ion-label>Archive</ion-label>

@@ -67,7 +67,16 @@ export class VenueViewPage {
       this.router.navigate(['offer', data, 'edit'], { relativeTo: this.route })
     } else if (action === 'archive') {
       this.confirmArchive(data);
+    } else if (action === 'duplicate') {
+      this.duplicateOffer(data);
     }
+  }
+
+  // The point of duplicating is editing the copy: go there directly.
+  duplicateOffer(id: number) {
+    this.store.duplicateOffer(id).subscribe({
+      next: (offer) => this.router.navigate(['offer', offer.id, 'edit'], { relativeTo: this.route }),
+    })
   }
 
   // Archiving is one-way (no unarchive endpoint): confirm before committing.

@@ -440,3 +440,42 @@ class OfferFreezeTests(ApiTestCase):
         self.assertTrue(flag())
         self.application()
         self.assertFalse(flag())
+
+
+class OfferDuplicateTests(ApiTestCase):
+    """Duplicating is the way to "modify" a frozen offer: the copy starts
+    fresh and editable (offer-archive chantier C)."""
+
+    def duplicate(self, user=None):
+        return self.as_user(user or self.brand).post(f'/api/offer/{self.offer.id}/duplicate')
+
+    def test_owner_duplicates_offer(self):
+        self.offer.payment_amount = 150
+        self.offer.save()
+        response = self.duplicate()
+        self.assertEqual(response.status_code, 201)
+        body = response.json()
+        self.assertNotEqual(body['id'], self.offer.id)
+        self.assertEqual(body['name'], 'Test Offer (copy)')
+        self.assertEqual(body['venue'], self.venue.id)
+        self.assertEqual(float(body['paymentAmount']), 150.0)
+        self.assertTrue(body['isEditable'])
+
+    def test_copy_of_archived_offer_is_not_archived(self):
+        self.as_user(self.brand).delete(f'/api/offer/{self.offer.id}')
+        response = self.duplicate()
+        self.assertEqual(response.status_code, 201)
+        self.assertIsNone(response.json()['archivedAt'])
+
+    def test_stranger_cannot_duplicate(self):
+        response = self.duplicate(user=self.influencer)
+        self.assertEqual(response.status_code, 403)
+
+    def test_copy_is_editable_while_original_stays_frozen(self):
+        self.application()  # freezes the original
+        copy_id = self.duplicate().json()['id']
+        response = self.as_user(self.brand).patch(
+            f'/api/offer/{copy_id}', {'name': 'Adjusted terms'}, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.name, 'Test Offer')

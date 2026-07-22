@@ -2,7 +2,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, Output, ViewChild } from "@angular/core";
 import { IonButton, IonButtons, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonModal, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
-import { archiveOutline, createOutline, eyeOutline, chevronForward, cashOutline } from "ionicons/icons";
+import { archiveOutline, copyOutline, createOutline, eyeOutline, chevronForward, cashOutline } from "ionicons/icons";
 import { Offer, ActionPayload, ActionType, Role } from "src/app/shared/models";
 import { AuthService } from "src/app/services/auth.service";
 
@@ -25,7 +25,7 @@ export class OfferCardComponent {
     private authService = inject(AuthService)
 
     constructor() {
-        addIcons({archiveOutline, createOutline, eyeOutline, chevronForward, cashOutline});
+        addIcons({archiveOutline, copyOutline, createOutline, eyeOutline, chevronForward, cashOutline});
     }
 
     get isArchived(): boolean {
@@ -65,6 +65,10 @@ export class OfferCardComponent {
 
     onArchive() {
         this.closeModalAndSetAction('archive')
+    }
+
+    onDuplicate() {
+        this.closeModalAndSetAction('duplicate')
     }
 
     async closeModalAndSetAction(action: ActionType) {
