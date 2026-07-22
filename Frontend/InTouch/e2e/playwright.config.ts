@@ -31,10 +31,11 @@ export default defineConfig({
       cwd: backendDir,
       url: 'https://127.0.0.1:8010/admin/login/',
       ignoreHTTPSErrors: true,
-      // Always boot a fresh backend so the intouch_e2e DB is re-seeded to a
-      // known slate every run (scenarios that write — apply, etc. — stay
-      // idempotent). Torn down after the run.
-      reuseExistingServer: false,
+      // Freshness comes from the seededDatabase worker fixture (steps/
+      // fixtures.ts), which re-seeds intouch_e2e at the start of every run —
+      // so an already-running backend (UI mode, local iteration) is safe to
+      // reuse.
+      reuseExistingServer: !process.env['CI'],
       timeout: 120_000,
       env: {
         PG_DBNAME: 'intouch_e2e',
