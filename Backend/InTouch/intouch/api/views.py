@@ -244,7 +244,7 @@ def _rank_feed(queryset):
     global_avg = Review.objects.filter(author=F('reservation__user')).aggregate(m=Avg('rating'))['m']
     m = Value(float(global_avg or 0.0))
 
-    live_offers = Q(offer__end_date__isnull=True) | Q(offer__end_date__gte=today)
+    live_offers = Q(offer__archived_at__isnull=True) & (Q(offer__end_date__isnull=True) | Q(offer__end_date__gte=today))
     queryset = queryset.annotate(
         live_offer_count=Count('offer', filter=live_offers, distinct=True),
         views_30d=Count('views', filter=Q(views__created_at__gte=now - timedelta(days=30)), distinct=True),
@@ -374,12 +374,55 @@ class OfferCreateView(generics.ListCreateAPIView):
         if venue is None:
             raise DRFValidationError({'venue': 'This query parameter is required.'})
         queryset = Offer.objects.filter(venue_id=venue).order_by('id')
+        # Archived offers are catalog management: only the venue owner sees
+        # them (influencers must not be able to browse or pick them).
+        if not Venue.objects.filter(pk=venue, user_id=self.request.user.id).exists():
+            queryset = queryset.filter(archived_at__isnull=True)
         return queryset
 
 class OfferDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, IsRelatedToVenueOwner]
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
+
+    def perform_update(self, serializer):
+        offer = serializer.instance
+        if offer.archived_at is not None:
+            raise DRFValidationError({'detail': 'Archived offers are read-only.'})
+        # The offer is the contract shown to every applicant: once any
+        # non-declined reservation exists its terms are frozen for good.
+        # To change the deal, duplicate the offer and archive this one.
+        if offer.reservation_set.exclude(status=2).exists():
+            raise DRFValidationError({'detail': 'This offer has applications: its terms are frozen. Duplicate it to make changes.'})
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        # An offer is the contract of record for its reservations — never
+        # hard-delete. DELETE archives instead (idempotent: keeps the first
+        # archive timestamp).
+        if instance.archived_at is None:
+            instance.archived_at = timezone.now()
+            instance.save(update_fields=['archived_at'])
+
+
+class OfferDuplicateView(APIView):
+    """Duplicates an offer on the same venue. The copy starts fresh — no
+    reservations, not archived — so it is freely editable: this is the way
+    to "modify" a frozen offer (duplicate, adjust, archive the original)."""
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, pk):
+        offer = get_object_or_404(Offer.objects.select_related('venue'), pk=pk)
+        if offer.venue.user_id != request.user.id:
+            raise PermissionDenied('You can only duplicate your own offers.')
+
+        offer.pk = None
+        offer._state.adding = True
+        offer.archived_at = None
+        suffix = ' (copy)'
+        offer.name = offer.name[:Offer._meta.get_field('name').max_length - len(suffix)] + suffix
+        offer.save()
+        return Response(OfferSerializer(offer).data, status=status.HTTP_201_CREATED)
 
 class ReservationFilter(FilterSet):
     from_reservation = DateTimeFilter(field_name='date_reservation', lookup_expr='gte')
@@ -412,6 +455,13 @@ class ReservationCreateView(generics.ListCreateAPIView):
         # network (#4). The influencer must meet every requirement the offer sets.
         offer = serializer.validated_data['offer']
         user = request.user
+
+        # An archived offer is off the catalog: no new applications.
+        if offer.archived_at is not None:
+            return Response(
+                {"detail": "This offer is no longer available."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # Blocked while a previous application is still "live": pending, invited,
         # or accepted with the visit ahead. Past/declined ones never block.
@@ -608,6 +658,9 @@ class ReservationInviteView(generics.GenericAPIView):
         if offer.venue.user_id != request.user.id:
             raise PermissionDenied('You can only invite influencers to your own offers.')
 
+        if offer.archived_at is not None:
+            raise DRFValidationError({'offer_id': 'This offer is archived and can no longer be used for invitations.'})
+
         try:
             influencer = User.objects.get(id=influencer_id, is_influencer=True)
         except (User.DoesNotExist, ValueError):
@@ -803,7 +856,7 @@ class VenueAnalyticsView(APIView):
             'partnerships_completed': completed.count(),
             'upcoming': reservations.filter(status=1, date_reservation__gte=now).count(),
             'influencers_received': completed.values('user').distinct().count(),
-            'active_offers': Offer.objects.filter(venue_id=pk).filter(
+            'active_offers': Offer.objects.filter(venue_id=pk, archived_at__isnull=True).filter(
                 Q(end_date__gte=now.date()) | Q(end_date__isnull=True)
             ).count(),
             'page_views': VenueView.objects.filter(venue_id=pk).count(),

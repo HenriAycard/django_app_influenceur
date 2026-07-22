@@ -50,6 +50,10 @@ export const BRAND_TABS_ROUTES: Routes = [{
             loadComponent: () => import('../../features/analytics/pages/venue-analytics/venue-analytics.page').then(m => m.VenueAnalyticsPage)
         },
         {
+            path: 'venue/:venueId/archives',
+            loadComponent: () => import('../../features/offers/pages/offer-archive-list/offer-archive-list.page').then(m => m.OfferArchiveListPage)
+        },
+        {
             path: 'venue/:venueId/offer/create',
             loadComponent: () => import('../../features/offers/pages/offer-create/offer-create.page').then(m => m.OfferCreatePage)
         },

@@ -19,6 +19,17 @@
   text-transform: uppercase; color: var(--p-accent, #0E6E52);
 }
 .ocard-chev { color: var(--p-sub, #6b6b76); font-size: 1.2rem; }
+
+/* Archived state: muted card + neutral badge */
+.ocard-archived { opacity: .65; }
+.ocard-archived-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 9px; margin-left: auto; margin-right: 8px;
+  background: var(--p-hairline, #ececf1); color: var(--p-sub, #6b6b76);
+  border-radius: 999px; font-size: .68rem; font-weight: 800;
+  letter-spacing: .5px; text-transform: uppercase;
+}
+.ocard-archived-badge ion-icon { font-size: .85rem; }
 .ocard-title {
   margin: 4px 0 0; font-size: 1.2rem; font-weight: 800;
   letter-spacing: -.01em; color: var(--p-ink, #16161d);

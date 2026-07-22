@@ -197,6 +197,10 @@ class Offer(models.Model):
     min_followers_tiktok = models.PositiveIntegerField(null=True, blank=True)
     min_followers_youtube = models.PositiveIntegerField(null=True, blank=True)
     require_post_proof = models.BooleanField(default=False)
+    # Soft-delete: offers are never destroyed (reservations reference them as
+    # the contract of record). An archived offer is hidden from influencers
+    # and can no longer be applied to, but stays readable via its reservations.
+    archived_at = models.DateTimeField(null=True, blank=True)
 
 class Reservation(models.Model):
     id = models.BigAutoField(primary_key=True)

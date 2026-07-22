@@ -315,3 +315,167 @@ class RegistrationTests(ApiTestCase):
         self.client.force_authenticate(user=None)
         response = self.client.get('/api/reservation/')
         self.assertEqual(response.status_code, 401)
+
+
+class OfferArchiveTests(ApiTestCase):
+    """Offers are the contract of record for their reservations: DELETE
+    archives them instead of destroying (offer-archive chantier A)."""
+
+    def archive(self):
+        return self.as_user(self.brand).delete(f'/api/offer/{self.offer.id}')
+
+    def listed_offer_ids(self, user):
+        response = self.as_user(user).get(f'/api/offer/?venue={self.venue.id}')
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        items = data['results'] if isinstance(data, dict) else data
+        return [offer['id'] for offer in items]
+
+    def test_delete_archives_instead_of_destroying(self):
+        reservation = self.application(status=1)
+        response = self.archive()
+        self.assertEqual(response.status_code, 204)
+        self.offer.refresh_from_db()
+        self.assertIsNotNone(self.offer.archived_at)
+        reservation.refresh_from_db()  # the collaboration survives
+
+    def test_archive_is_idempotent(self):
+        self.archive()
+        self.offer.refresh_from_db()
+        first = self.offer.archived_at
+        self.archive()
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.archived_at, first)
+
+    def test_influencer_cannot_archive(self):
+        response = self.as_user(self.influencer).delete(f'/api/offer/{self.offer.id}')
+        self.assertEqual(response.status_code, 403)
+        self.offer.refresh_from_db()
+        self.assertIsNone(self.offer.archived_at)
+
+    def test_archived_offer_hidden_from_influencer_listing(self):
+        self.archive()
+        self.assertNotIn(self.offer.id, self.listed_offer_ids(self.influencer))
+
+    def test_archived_offer_still_listed_for_owner(self):
+        self.archive()
+        self.assertIn(self.offer.id, self.listed_offer_ids(self.brand))
+
+    def test_apply_to_archived_offer_rejected(self):
+        self.archive()
+        response = self.as_user(self.influencer).post(
+            '/api/reservation/', {'offer_id': self.offer.id}, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_invite_on_archived_offer_rejected(self):
+        self.archive()
+        response = self.as_user(self.brand).post('/api/reservation/invite/', {
+            'offer_id': self.offer.id, 'influencer_id': str(self.influencer.id),
+        }, format='json')
+        self.assertEqual(response.status_code, 400)
+
+    def test_patch_cannot_unarchive(self):
+        self.archive()
+        response = self.as_user(self.brand).patch(
+            f'/api/offer/{self.offer.id}', {'archivedAt': None}, format='json')
+        self.assertEqual(response.status_code, 400)  # archived offers are read-only
+        self.offer.refresh_from_db()
+        self.assertIsNotNone(self.offer.archived_at)
+
+    def test_reservation_still_exposes_archived_offer(self):
+        # Calendar path: the influencer keeps seeing the offer of an accepted
+        # collaboration even after the brand archives it.
+        self.application(status=1)
+        self.archive()
+        response = self.as_user(self.influencer).get('/api/reservation/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()[0]['offer']['id'], self.offer.id)
+
+
+class OfferFreezeTests(ApiTestCase):
+    """The offer is the contract shown to applicants: once any non-declined
+    reservation exists, its terms are frozen for good (offer-archive chantier B)."""
+
+    def rename(self):
+        return self.as_user(self.brand).patch(
+            f'/api/offer/{self.offer.id}', {'name': 'Renamed'}, format='json')
+
+    def test_editable_before_any_application(self):
+        response = self.rename()
+        self.assertEqual(response.status_code, 200)
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.name, 'Renamed')
+
+    def test_frozen_once_application_exists(self):
+        self.application()  # pending
+        response = self.rename()
+        self.assertEqual(response.status_code, 400)
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.name, 'Test Offer')
+
+    def test_declined_application_does_not_freeze(self):
+        self.application(status=2)
+        self.assertEqual(self.rename().status_code, 200)
+
+    def test_invitation_freezes(self):
+        Reservation.objects.create(user=self.influencer, offer=self.offer, status=3)
+        self.assertEqual(self.rename().status_code, 400)
+
+    def test_past_collaboration_keeps_terms_frozen(self):
+        # Even a finished collaboration must keep its contract intact:
+        # the PDF renders live from the offer row.
+        Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=30),
+        )
+        self.assertEqual(self.rename().status_code, 400)
+
+    def test_is_editable_flag(self):
+        def flag():
+            response = self.as_user(self.brand).get(f'/api/offer/?venue={self.venue.id}')
+            data = response.json()
+            items = data['results'] if isinstance(data, dict) else data
+            return next(o['isEditable'] for o in items if o['id'] == self.offer.id)
+
+        self.assertTrue(flag())
+        self.application()
+        self.assertFalse(flag())
+
+
+class OfferDuplicateTests(ApiTestCase):
+    """Duplicating is the way to "modify" a frozen offer: the copy starts
+    fresh and editable (offer-archive chantier C)."""
+
+    def duplicate(self, user=None):
+        return self.as_user(user or self.brand).post(f'/api/offer/{self.offer.id}/duplicate')
+
+    def test_owner_duplicates_offer(self):
+        self.offer.payment_amount = 150
+        self.offer.save()
+        response = self.duplicate()
+        self.assertEqual(response.status_code, 201)
+        body = response.json()
+        self.assertNotEqual(body['id'], self.offer.id)
+        self.assertEqual(body['name'], 'Test Offer (copy)')
+        self.assertEqual(body['venue'], self.venue.id)
+        self.assertEqual(float(body['paymentAmount']), 150.0)
+        self.assertTrue(body['isEditable'])
+
+    def test_copy_of_archived_offer_is_not_archived(self):
+        self.as_user(self.brand).delete(f'/api/offer/{self.offer.id}')
+        response = self.duplicate()
+        self.assertEqual(response.status_code, 201)
+        self.assertIsNone(response.json()['archivedAt'])
+
+    def test_stranger_cannot_duplicate(self):
+        response = self.duplicate(user=self.influencer)
+        self.assertEqual(response.status_code, 403)
+
+    def test_copy_is_editable_while_original_stays_frozen(self):
+        self.application()  # freezes the original
+        copy_id = self.duplicate().json()['id']
+        response = self.as_user(self.brand).patch(
+            f'/api/offer/{copy_id}', {'name': 'Adjusted terms'}, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.offer.refresh_from_db()
+        self.assertEqual(self.offer.name, 'Test Offer')

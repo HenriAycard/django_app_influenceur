@@ -38,9 +38,16 @@
         <ion-button slot="end" size="default" fill="solid" [routerLink]="['offer/create']">New
         offer</ion-button>
       </ion-item>
-      @for (deal of store.offers(); track deal) {
+      @for (deal of activeOffers(); track deal) {
         <app-offer-card [offer]="deal" (actionPerformed)="onActionPerformed($event)"
         ></app-offer-card>
+      }
+      @if (archivedOffers().length) {
+        <ion-item button detail="true" lines="none" [routerLink]="['archives']">
+          <ion-icon aria-hidden="true" name="archive-outline" slot="start"></ion-icon>
+          <ion-label>Archived offers</ion-label>
+          <ion-note slot="end">{{ archivedOffers().length }}</ion-note>
+        </ion-item>
       }
       <app-venue-reviews [venueId]="venueId"></app-venue-reviews>
     </div>

@@ -35,6 +35,16 @@ export class OfferEditPage implements OnInit {
     ngOnInit(): void {
         this.apiOffer.findOfferById(this.offerId).subscribe({
             next: (value: Offer) => {
+                // Frozen or archived terms can't be edited (the API would 400):
+                // bounce back with the duplicate hint instead of a dead form.
+                if (value.isEditable === false) {
+                    this.toastService.toastWarn(
+                        'Terms are frozen',
+                        'This offer has applications or is archived. Duplicate it to make changes.'
+                    )
+                    this.router.navigate(['../../..'], { relativeTo: this.route })
+                    return
+                }
                 this.offerInput = value
                 this.isLoad.set(true)
             }

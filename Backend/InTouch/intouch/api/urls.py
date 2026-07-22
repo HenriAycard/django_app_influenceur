@@ -28,6 +28,7 @@ urlpatterns = [
     path('opening/<int:pk>', OpeningDetail.as_view(), name='opening_detail'),
     path('offer/', OfferCreateView.as_view(), name='offer_list'),
     path('offer/<int:pk>', OfferDetail.as_view(), name='offer_detail'),
+    path('offer/<int:pk>/duplicate', OfferDuplicateView.as_view(), name='offer_duplicate'),
     path('reservation/', ReservationCreateView.as_view(), name='reservation_list'),
     path('reservation/invite/', ReservationInviteView.as_view(), name='reservation_invite'),
     path('reservation/<int:pk>', ReservationDetail.as_view(), name='reservation_detail'),
