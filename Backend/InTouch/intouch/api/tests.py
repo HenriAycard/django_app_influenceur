@@ -11,7 +11,7 @@ from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
-from .models import Conversation, Message, Offer, Reservation, User
+from .models import Conversation, Message, Offer, Reservation, User, VenueView
 from .test_support import ApiWorldMixin, make_brand, make_influencer, make_user
 
 
@@ -730,3 +730,150 @@ class MessagingTests(ApiTestCase):
         self.assertEqual(self.client.get(self.CONV).status_code, 401)
         self.assertEqual(self.client.get(self.UNREAD).status_code, 401)
         self.assertEqual(self.client.get(self.messages_url(conv.id)).status_code, 401)
+
+
+class ReviewTests(ApiTestCase):
+    """A review is left after a completed collaboration (an accepted reservation
+    whose date has passed); direction is inferred from the author. Locks the
+    'completed only', 'party only', 'once only', in-range-rating rules and the
+    viewer-directed listing (?venue= = influencer→venue, ?influencer= = brand→
+    influencer)."""
+
+    REVIEW = '/api/review/'
+
+    def setUp(self):
+        super().setUp()
+        self.stranger = make_influencer('stranger-inf@test.io')
+
+    def completed(self):
+        return Reservation.objects.create(
+            user=self.influencer, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=1))
+
+    def post_review(self, actor, reservation, rating=5, comment='Great'):
+        return self.as_user(actor).post(
+            self.REVIEW,
+            {'rating': rating, 'comment': comment, 'reservation_id': reservation.id},
+            format='json')
+
+    # --- creation ---
+    def test_influencer_reviews_the_venue(self):
+        self.assertEqual(self.post_review(self.influencer, self.completed()).status_code, 201)
+
+    def test_brand_reviews_the_influencer(self):
+        self.assertEqual(self.post_review(self.brand, self.completed()).status_code, 201)
+
+    def test_cannot_review_a_foreign_collaboration(self):
+        self.assertEqual(self.post_review(self.stranger, self.completed()).status_code, 403)
+
+    def test_cannot_review_before_completion(self):
+        upcoming = self.application(status=1)  # accepted but its date is in the future
+        self.assertEqual(self.post_review(self.influencer, upcoming).status_code, 400)
+
+    def test_cannot_review_twice(self):
+        collab = self.completed()
+        self.assertEqual(self.post_review(self.influencer, collab).status_code, 201)
+        self.assertEqual(self.post_review(self.influencer, collab).status_code, 400)
+
+    def test_rating_must_be_within_range(self):
+        self.assertEqual(
+            self.post_review(self.influencer, self.completed(), rating=6).status_code, 400)
+
+    def test_review_requires_authentication(self):
+        collab = self.completed()
+        self.client.force_authenticate(user=None)
+        r = self.client.post(
+            self.REVIEW, {'rating': 5, 'reservation_id': collab.id}, format='json')
+        self.assertEqual(r.status_code, 401)
+
+    # --- listing (viewer-directed) ---
+    def test_venue_listing_returns_influencer_authored_reviews(self):
+        self.post_review(self.influencer, self.completed(), comment='Loved it')
+        r = self.as_user(self.brand).get(self.REVIEW, {'venue': self.venue.id})
+        self.assertEqual([rv['comment'] for rv in r.json()], ['Loved it'])
+
+    def test_influencer_listing_returns_brand_authored_reviews(self):
+        self.post_review(self.brand, self.completed(), comment='Reliable')
+        r = self.as_user(self.brand).get(self.REVIEW, {'influencer': str(self.influencer.id)})
+        self.assertEqual([rv['comment'] for rv in r.json()], ['Reliable'])
+
+    def test_listing_without_a_filter_is_empty(self):
+        self.post_review(self.influencer, self.completed())
+        self.assertEqual(self.as_user(self.brand).get(self.REVIEW).json(), [])
+
+
+class AnalyticsTests(ApiTestCase):
+    """Per-venue analytics belong to the owning brand; the influencer funnel to
+    the influencer. Venue page views are logged for influencer visitors only
+    (the owner's own visits never inflate the count)."""
+
+    INF_ANALYTICS = '/api/influencer/analytics'
+
+    def setUp(self):
+        super().setUp()
+        self.visitor = make_influencer('visitor@test.io')
+
+    def venue_analytics(self, pk):
+        return f'/api/venue/{pk}/analytics'
+
+    def venue_view(self, pk):
+        return f'/api/venue/{pk}/view'
+
+    def completed_for(self, user):
+        return Reservation.objects.create(
+            user=user, offer=self.offer, status=1,
+            date_reservation=timezone.now() - timezone.timedelta(days=1))
+
+    # --- venue analytics ---
+    def test_owner_sees_venue_analytics(self):
+        self.completed_for(self.influencer)  # one realized partnership
+        Reservation.objects.create(  # one pending application
+            user=self.visitor, offer=self.offer, status=0,
+            date_reservation=timezone.now() + timezone.timedelta(days=2))
+        data = self.as_user(self.brand).get(self.venue_analytics(self.venue.id)).json()
+        self.assertEqual(data['applicationsTotal'], 2)
+        self.assertEqual(data['pending'], 1)
+        self.assertEqual(data['accepted'], 1)
+        self.assertEqual(data['partnershipsCompleted'], 1)
+        self.assertEqual(data['influencersReceived'], 1)
+
+    def test_venue_analytics_denied_to_non_owner(self):
+        self.assertEqual(
+            self.as_user(self.visitor).get(self.venue_analytics(self.venue.id)).status_code, 403)
+
+    def test_venue_analytics_requires_authentication(self):
+        self.assertEqual(self.client.get(self.venue_analytics(self.venue.id)).status_code, 401)
+
+    # --- influencer analytics ---
+    def test_influencer_sees_own_analytics(self):
+        self.completed_for(self.influencer)
+        data = self.as_user(self.influencer).get(self.INF_ANALYTICS).json()
+        self.assertEqual(data['collaborationsRealized'], 1)
+
+    def test_influencer_analytics_denied_to_brand(self):
+        self.assertEqual(self.as_user(self.brand).get(self.INF_ANALYTICS).status_code, 403)
+
+    def test_influencer_analytics_requires_authentication(self):
+        self.assertEqual(self.client.get(self.INF_ANALYTICS).status_code, 401)
+
+    # --- venue view logging ---
+    def test_visit_is_logged(self):
+        r = self.as_user(self.visitor).post(self.venue_view(self.venue.id))
+        self.assertEqual(r.status_code, 204)
+        self.assertEqual(
+            VenueView.objects.filter(venue=self.venue, user=self.visitor).count(), 1)
+
+    def test_owner_visit_is_not_logged(self):
+        r = self.as_user(self.brand).post(self.venue_view(self.venue.id))
+        self.assertEqual(r.status_code, 204)
+        self.assertEqual(VenueView.objects.filter(venue=self.venue).count(), 0)
+
+    def test_page_views_reflected_in_analytics(self):
+        self.as_user(self.visitor).post(self.venue_view(self.venue.id))
+        self.as_user(self.visitor).post(self.venue_view(self.venue.id))
+        data = self.as_user(self.brand).get(self.venue_analytics(self.venue.id)).json()
+        self.assertEqual(data['pageViews'], 2)
+        self.assertEqual(data['uniqueVisitors'], 1)  # same visitor twice
+
+    def test_view_log_requires_authentication(self):
+        self.assertEqual(self.client.post(self.venue_view(self.venue.id)).status_code, 401)
