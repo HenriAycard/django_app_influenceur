@@ -11,8 +11,8 @@ from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
-from .models import Offer, Reservation, User
-from .test_support import ApiWorldMixin, make_user
+from .models import Conversation, Message, Offer, Reservation, User
+from .test_support import ApiWorldMixin, make_brand, make_influencer, make_user
 
 
 @override_settings(SECURE_SSL_REDIRECT=False)  # the test client speaks plain http
@@ -597,3 +597,136 @@ class ExportOwnershipTests(ApiTestCase):
     def test_media_kit_requires_authentication(self):
         r = self.client.get(self.MEDIA_KIT)
         self.assertEqual(r.status_code, 401)
+
+
+class MessagingTests(ApiTestCase):
+    """A conversation is a thread between an influencer and a venue; only the two
+    parties (the influencer and the venue's owner) may read or post. Locks the
+    isolation guarantees plus the read-receipt / unread-count behavior. The two
+    parties of the standard world are self.influencer and self.brand (who owns
+    self.venue)."""
+
+    CONV = '/api/conversations/'
+    UNREAD = '/api/conversations/unread-count/'
+
+    def setUp(self):
+        super().setUp()
+        self.other_influencer = make_influencer('other@test.io')
+        self.stranger = make_brand('stranger-brand@test.io')  # owns no venue here
+
+    def messages_url(self, conv_id):
+        return f'/api/conversations/{conv_id}/messages/'
+
+    def open_thread(self, actor, **body):
+        return self.as_user(actor).post(self.CONV, body, format='json')
+
+    def thread(self):
+        """The canonical thread between self.influencer and self.venue."""
+        return Conversation.objects.create(influencer=self.influencer, venue=self.venue)
+
+    # --- opening a thread ---
+    def test_open_requires_venue_id(self):
+        self.assertEqual(
+            self.as_user(self.influencer).post(self.CONV, {}, format='json').status_code, 400)
+
+    def test_influencer_opens_a_thread(self):
+        r = self.open_thread(self.influencer, venue_id=self.venue.id)
+        self.assertEqual(r.status_code, 200)
+        conv = Conversation.objects.get(id=r.json()['id'])
+        self.assertEqual((conv.influencer_id, conv.venue_id), (self.influencer.id, self.venue.id))
+
+    def test_brand_must_name_the_influencer(self):
+        # Opening from the venue side needs to say which influencer it's with.
+        r = self.open_thread(self.brand, venue_id=self.venue.id)
+        self.assertEqual(r.status_code, 400)
+
+    def test_brand_opens_a_thread_for_an_influencer(self):
+        r = self.open_thread(self.brand, venue_id=self.venue.id, user_id=str(self.influencer.id))
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(Conversation.objects.get(id=r.json()['id']).influencer_id, self.influencer.id)
+
+    def test_opening_the_same_thread_is_idempotent(self):
+        first = self.open_thread(self.influencer, venue_id=self.venue.id).json()['id']
+        second = self.open_thread(self.influencer, venue_id=self.venue.id).json()['id']
+        self.assertEqual(first, second)
+        self.assertEqual(Conversation.objects.count(), 1)
+
+    # --- listing / isolation ---
+    def test_list_returns_only_my_threads(self):
+        mine = self.thread()
+        Conversation.objects.create(influencer=self.other_influencer, venue=self.venue)
+        r = self.as_user(self.influencer).get(self.CONV)
+        self.assertEqual([c['id'] for c in r.json()], [mine.id])
+
+    def test_brand_sees_threads_on_its_venue(self):
+        conv = self.thread()
+        r = self.as_user(self.brand).get(self.CONV)
+        self.assertEqual([c['id'] for c in r.json()], [conv.id])
+
+    def test_stranger_sees_no_threads(self):
+        self.thread()
+        self.assertEqual(self.as_user(self.stranger).get(self.CONV).json(), [])
+
+    # --- messages: access control ---
+    def test_party_posts_and_the_other_lists_it(self):
+        conv = self.thread()
+        post = self.as_user(self.influencer).post(
+            self.messages_url(conv.id), {'body': 'Hello'}, format='json')
+        self.assertEqual(post.status_code, 201)
+        listing = self.as_user(self.brand).get(self.messages_url(conv.id))
+        self.assertEqual(listing.status_code, 200)
+        self.assertEqual([m['body'] for m in listing.json()], ['Hello'])
+
+    def test_stranger_cannot_read_messages(self):
+        conv = self.thread()
+        self.assertEqual(
+            self.as_user(self.stranger).get(self.messages_url(conv.id)).status_code, 403)
+
+    def test_stranger_cannot_post_messages(self):
+        conv = self.thread()
+        r = self.as_user(self.stranger).post(
+            self.messages_url(conv.id), {'body': 'hi'}, format='json')
+        self.assertEqual(r.status_code, 403)
+
+    def test_blank_body_rejected(self):
+        conv = self.thread()
+        r = self.as_user(self.influencer).post(
+            self.messages_url(conv.id), {'body': '   '}, format='json')
+        self.assertEqual(r.status_code, 400)
+
+    # --- read receipts / unread count ---
+    def test_fetching_marks_the_other_partys_message_read(self):
+        conv = self.thread()
+        self.as_user(self.influencer).post(self.messages_url(conv.id), {'body': 'ping'}, format='json')
+        self.as_user(self.brand).get(self.messages_url(conv.id))  # brand opens the thread
+        self.assertIsNotNone(conv.messages.get().read_at)
+
+    def test_unread_count_excludes_my_own_and_counts_the_rest(self):
+        conv = self.thread()
+        for body in ('a', 'b'):
+            self.as_user(self.influencer).post(self.messages_url(conv.id), {'body': body}, format='json')
+        self.assertEqual(self.as_user(self.brand).get(self.UNREAD).json()['count'], 2)
+        self.assertEqual(self.as_user(self.influencer).get(self.UNREAD).json()['count'], 0)
+
+    def test_unread_count_drops_after_reading(self):
+        conv = self.thread()
+        self.as_user(self.influencer).post(self.messages_url(conv.id), {'body': 'a'}, format='json')
+        self.as_user(self.brand).get(self.messages_url(conv.id))  # read
+        self.assertEqual(self.as_user(self.brand).get(self.UNREAD).json()['count'], 0)
+
+    def test_since_filter_returns_only_newer_messages(self):
+        conv = self.thread()
+        old = Message.objects.create(conversation=conv, sender=self.influencer, body='old')
+        Message.objects.filter(pk=old.pk).update(
+            created_at=timezone.now() - timezone.timedelta(hours=1))
+        Message.objects.create(conversation=conv, sender=self.influencer, body='new')
+        since = (timezone.now() - timezone.timedelta(minutes=30)).isoformat()
+        r = self.as_user(self.brand).get(self.messages_url(conv.id), {'since': since})
+        self.assertEqual([m['body'] for m in r.json()], ['new'])
+
+    def test_messaging_endpoints_require_authentication(self):
+        conv = self.thread()
+        self.client.force_authenticate(user=None)
+        self.assertEqual(self.client.get(self.CONV).status_code, 401)
+        self.assertEqual(self.client.get(self.UNREAD).status_code, 401)
+        self.assertEqual(self.client.get(self.messages_url(conv.id)).status_code, 401)
