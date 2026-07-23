@@ -11,7 +11,8 @@ reads.
 """
 from django.utils import timezone
 
-from intouch.api.models import User, Venue, Offer, Reservation, imgVenue
+from intouch.api.models import (User, Venue, Offer, Reservation, imgVenue,
+                                 Conversation, Message)
 
 PW = 'E2e-Pass-123!'
 
@@ -74,5 +75,10 @@ Reservation.objects.create(user=ivy, offer=post_offer, status=1, date_reservatio
 Reservation.objects.create(user=mia, offer=validate_offer, status=1, date_reservation=past)
 Reservation.objects.create(user=leo, offer=noshow_offer, status=1, date_reservation=past)
 Reservation.objects.create(user=mia, offer=frozen_offer, status=0, date_reservation=future)
+
+# A conversation Ivy can open, with an incoming message from the venue to read
+# and reply to (the messaging E2E journey).
+conversation = Conversation.objects.create(influencer=ivy, venue=venue)
+Message.objects.create(conversation=conversation, sender=brand, body='Hi Ivy, welcome!')
 
 print('e2e seed ready')

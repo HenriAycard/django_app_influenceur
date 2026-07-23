@@ -74,6 +74,7 @@ video embedded in every test (every run records one).
 - `collaboration.feature` — brand accepts, influencer submits post link, brand
   validates or reports a no-show
 - `offer_management.feature` — archive, duplicate, frozen-offer edit routing
+- `messaging.feature` — the influencer reads a venue's message and replies
 - `brand_venue.feature` — a brand sees an offer listed on its venue
 
 ## Layout
