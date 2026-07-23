@@ -39,9 +39,18 @@ compile takes a while — the webServer timeout allows for it).
 ## Watching the tests run
 
 The VPS has no display, so the browser always runs headless — but you can
-still watch everything:
+still watch everything. Playwright's UI mode and the HTML report both serve
+on `127.0.0.1:9323`, which you can reach two ways:
 
-**Live (interactive) — Playwright UI mode through an SSH tunnel:**
+**Through the InTouch portal (recommended):** on the VPS, in `Frontend/InTouch`,
+run `npm run e2e:ui` (or `npm run e2e:report` for a replay). Then from the
+portal dashboard (`https://intouch.ovh`, login required) click the **InTouch
+E2E** card — it opens `https://e2e.intouch.ovh`, which nginx reverse-proxies
+to `127.0.0.1:9323` behind its own HTTP Basic Auth (separate password from
+the portal login; ask Henri). A 502 there just means nothing is currently
+serving on 9323 — start `e2e:ui` or `e2e:report` first.
+
+**SSH tunnel (fallback, no portal needed):**
 
 ```bash
 # on your machine:
@@ -51,19 +60,11 @@ npm run e2e:ui
 # then open http://localhost:9323 in your local browser
 ```
 
-You get the Playwright UI: pick a scenario, run it, and watch the app being
-driven live (screenshots stream in real time), with the action log, DOM
-snapshots and network calls side by side.
-
-**Replay — a video of every test:**
-
-Every `npm run e2e` records a video of each scenario and builds an HTML
-report (`playwright-report/`). Through the same SSH tunnel:
-
-```bash
-npm run e2e:report        # serves the report on 127.0.0.1:9323
-# open http://localhost:9323 locally — each test embeds its video
-```
+Either way, in UI mode you get the Playwright UI: pick a scenario, run it,
+and watch the app being driven live (screenshots stream in real time), with
+the action log, DOM snapshots and network calls side by side. `npm run
+e2e:report` instead serves the last `npm run e2e` run's HTML report, with a
+video embedded in every test (every run records one).
 
 ## Scenarios
 
