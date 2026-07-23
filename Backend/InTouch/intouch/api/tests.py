@@ -6,12 +6,15 @@ venue-ownership guards, read-only role flags) and the application rules
 
 Run with: python manage.py test intouch.api
 """
+from unittest.mock import patch
+
 from django.conf import settings
 from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.utils import timezone
 
-from .models import Conversation, Message, Offer, Reservation, User, VenueView
+from .models import (Address, Conversation, FCMToken, Message, Offer, Opening,
+                     Reservation, TypeVenue, User, Venue, VenueView, imgVenue)
 from .test_support import ApiWorldMixin, make_brand, make_influencer, make_user
 
 
@@ -877,3 +880,157 @@ class AnalyticsTests(ApiTestCase):
 
     def test_view_log_requires_authentication(self):
         self.assertEqual(self.client.post(self.venue_view(self.venue.id)).status_code, 401)
+
+
+class SubResourceOwnershipTests(ApiTestCase):
+    """Openings and images may only be attached to (or edited on) a venue the
+    requester owns — `_require_own_venue` on create, `IsRelatedToVenueOwner` on
+    detail."""
+
+    OPENING = '/api/opening/'
+    IMG = '/api/imgVenue/'
+
+    def setUp(self):
+        super().setUp()
+        self.other_brand = make_brand('other-brand@test.io')
+        self.other_venue = Venue.objects.create(user=self.other_brand, name_venue='Rival')
+
+    # --- opening create ---
+    def test_owner_sets_opening_hours(self):
+        r = self.as_user(self.brand).post(
+            self.OPENING, {'venue': self.venue.id, 'id_day': 1, 'day': 'Monday', 'is_open': True}, format='json')
+        self.assertEqual(r.status_code, 201)
+
+    def test_cannot_set_opening_on_a_foreign_venue(self):
+        r = self.as_user(self.brand).post(
+            self.OPENING, {'venue': self.other_venue.id, 'id_day': 1, 'day': 'Monday'}, format='json')
+        self.assertEqual(r.status_code, 403)
+
+    def test_cannot_edit_an_opening_on_a_foreign_venue(self):
+        opening = Opening.objects.create(venue=self.other_venue, id_day=1, day='Monday')
+        r = self.as_user(self.brand).patch(
+            f'{self.OPENING}{opening.id}', {'day': 'Tuesday'}, format='json')
+        self.assertEqual(r.status_code, 403)
+
+    def test_owner_edits_its_own_opening(self):
+        opening = Opening.objects.create(venue=self.venue, id_day=1, day='Monday')
+        r = self.as_user(self.brand).patch(
+            f'{self.OPENING}{opening.id}', {'day': 'Tuesday'}, format='json')
+        self.assertEqual(r.status_code, 200)
+
+    # --- image create (file is optional; the actual field is `file`) ---
+    def test_owner_uploads_an_image_row(self):
+        r = self.as_user(self.brand).post(
+            self.IMG, {'venue': self.venue.id, 'is_principal': True}, format='multipart')
+        self.assertEqual(r.status_code, 201)
+
+    def test_cannot_upload_to_a_foreign_venue(self):
+        r = self.as_user(self.brand).post(
+            self.IMG, {'venue': self.other_venue.id}, format='multipart')
+        self.assertEqual(r.status_code, 403)
+
+    def test_cannot_delete_an_image_on_a_foreign_venue(self):
+        img = imgVenue.objects.create(venue=self.other_venue)
+        r = self.as_user(self.brand).delete(f'{self.IMG}{img.id}')
+        self.assertEqual(r.status_code, 403)
+
+
+class AddressTests(ApiTestCase):
+    """Address create geocodes (a network call — mocked here); AddressDetail
+    edits are gated to the owner of the venue the address belongs to."""
+
+    ADDRESS = '/api/address/'
+
+    def setUp(self):
+        super().setUp()
+        self.stranger = make_brand('addr-stranger@test.io')
+        self.address = Address.objects.create(address_principal='1 Main', city='Cancún')
+        self.venue.address = self.address  # links the reverse `address.venue`
+        self.venue.save()
+
+    @patch('intouch.api.views._geocode')
+    def test_create_address(self, _geo):
+        r = self.as_user(self.brand).post(
+            self.ADDRESS, {'address_principal': '2 Side', 'city': 'CDMX'}, format='json')
+        self.assertEqual(r.status_code, 201)
+        _geo.assert_called_once()
+
+    @patch('intouch.api.views._geocode')
+    def test_owner_edits_the_venue_address(self, _geo):
+        r = self.as_user(self.brand).patch(
+            f'{self.ADDRESS}{self.address.id}', {'city': 'Monterrey'}, format='json')
+        self.assertEqual(r.status_code, 200)
+
+    @patch('intouch.api.views._geocode')
+    def test_stranger_cannot_edit_the_venue_address(self, _geo):
+        r = self.as_user(self.stranger).patch(
+            f'{self.ADDRESS}{self.address.id}', {'city': 'Hacked'}, format='json')
+        self.assertEqual(r.status_code, 403)
+
+    def test_address_create_requires_authentication(self):
+        r = self.client.post(self.ADDRESS, {'city': 'CDMX'}, format='json')
+        self.assertEqual(r.status_code, 401)
+
+
+class FcmTokenTests(ApiTestCase):
+    """Saving a device token attaches it to the caller; a token already tied to
+    another device row is moved, never duplicated (the unique token constraint)."""
+
+    FCM = '/api/save-fcm-token/'
+
+    def test_saving_attaches_the_token_to_me(self):
+        r = self.as_user(self.influencer).patch(self.FCM, {'token': 'device-A'}, format='json')
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(FCMToken.objects.get(token='device-A').user_id, self.influencer.id)
+
+    def test_token_is_required(self):
+        r = self.as_user(self.influencer).patch(self.FCM, {}, format='json')
+        self.assertEqual(r.status_code, 400)
+
+    def test_reused_token_moves_to_the_new_owner(self):
+        self.as_user(self.influencer).patch(self.FCM, {'token': 'shared'}, format='json')
+        self.as_user(self.brand).patch(self.FCM, {'token': 'shared'}, format='json')
+        self.assertEqual(FCMToken.objects.get(token='shared').user_id, self.brand.id)
+        self.assertEqual(FCMToken.objects.filter(user=self.influencer).count(), 0)
+
+    def test_fcm_requires_authentication(self):
+        r = self.client.patch(self.FCM, {'token': 'x'}, format='json')
+        self.assertEqual(r.status_code, 401)
+
+
+class VenueDiscoveryTests(ApiTestCase):
+    """Public discovery lists: distinct cities and the geocoded map, both scoped
+    to active venues and behind authentication."""
+
+    CITIES = '/api/venue/cities/'
+    MAP = '/api/venue/map/'
+    TYPES = '/api/typeVenue/'
+
+    def setUp(self):
+        super().setUp()
+        addr = Address.objects.create(city='Cancún', latitude=21.16, longitude=-86.85)
+        self.venue.address = addr
+        self.venue.save()
+        # An inactive venue must not surface in either list.
+        hidden_addr = Address.objects.create(city='Tulum', latitude=20.2, longitude=-87.4)
+        Venue.objects.create(user=self.brand, name_venue='Closed', address=hidden_addr, is_actif=False)
+
+    def test_cities_lists_active_venue_cities(self):
+        r = self.as_user(self.influencer).get(self.CITIES)
+        self.assertEqual(r.json(), ['Cancún'])
+
+    def test_map_lists_geocoded_active_venues(self):
+        r = self.as_user(self.influencer).get(self.MAP)
+        names = [v['nameVenue'] for v in r.json()]
+        self.assertEqual(names, [self.venue.name_venue])
+
+    def test_type_venue_list(self):
+        TypeVenue.objects.create(name='Restaurant')
+        r = self.as_user(self.influencer).get(self.TYPES)
+        self.assertIn('Restaurant', [t['name'] for t in r.json()])
+
+    def test_cities_requires_authentication(self):
+        self.assertEqual(self.client.get(self.CITIES).status_code, 401)
+
+    def test_map_requires_authentication(self):
+        self.assertEqual(self.client.get(self.MAP).status_code, 401)
