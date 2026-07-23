@@ -6,6 +6,7 @@ venue-ownership guards, read-only role flags) and the application rules
 
 Run with: python manage.py test intouch.api
 """
+from django.conf import settings
 from django.core.cache import cache
 from django.test import TestCase, override_settings
 from django.utils import timezone
@@ -451,3 +452,148 @@ class OfferDuplicateTests(ApiTestCase):
         self.assertEqual(response.status_code, 200)
         self.offer.refresh_from_db()
         self.assertEqual(self.offer.name, 'Test Offer')
+
+
+# The password make_user() gives every fixture account; needed to exercise the
+# real login endpoint (force_authenticate bypasses it).
+FIXTURE_PASSWORD = 'Str0ng-Pass-42!'
+
+
+class JwtCookieAuthTests(ApiTestCase):
+    """The refresh token lives only in an httpOnly cookie; the access token is
+    returned in the body. Locks the security contract of the httpOnly-refresh
+    batch: rotation on every refresh, blacklist on logout, and no refresh token
+    reachable from JavaScript-readable storage."""
+
+    LOGIN = '/auth/jwt/create/'
+    REFRESH = '/auth/jwt/refresh/'
+    LOGOUT = '/auth/jwt/logout/'
+
+    def login(self):
+        return self.client.post(
+            self.LOGIN,
+            {'email': self.influencer.email, 'password': FIXTURE_PASSWORD},
+            format='json',
+        )
+
+    def test_login_sets_httponly_refresh_cookie(self):
+        response = self.login()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('access', response.data)
+        cookie = response.cookies.get(settings.REFRESH_COOKIE_NAME)
+        self.assertIsNotNone(cookie)
+        self.assertTrue(cookie['httponly'])
+        self.assertEqual(cookie['path'], settings.REFRESH_COOKIE_PATH)
+
+    def test_login_body_still_carries_refresh_for_portal_sso(self):
+        # The SSO portal mints tokens server-side and reads `refresh` from the
+        # body to build its redirect — that contract must stay intact.
+        self.assertIn('refresh', self.login().data)
+
+    def test_refresh_uses_cookie_and_rotates_it(self):
+        old_cookie = self.login().cookies[settings.REFRESH_COOKIE_NAME].value
+        response = self.client.post(self.REFRESH, {}, format='json')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('access', response.data)
+        # A rotated refresh token is written back, different from the old one...
+        new_cookie = response.cookies[settings.REFRESH_COOKIE_NAME].value
+        self.assertNotEqual(old_cookie, new_cookie)
+        # ...and the refresh token is never leaked in the JSON body here.
+        self.assertNotIn('refresh', response.data)
+
+    def test_refresh_without_cookie_is_401(self):
+        response = self.client.post(self.REFRESH, {}, format='json')
+        self.assertEqual(response.status_code, 401)
+
+    def test_logout_blacklists_the_refresh_token(self):
+        self.login()
+        self.assertEqual(self.client.post(self.LOGOUT).status_code, 205)
+        # The now-blacklisted cookie can no longer be refreshed.
+        self.assertEqual(
+            self.client.post(self.REFRESH, {}, format='json').status_code, 401)
+
+    def test_rotated_refresh_token_cannot_be_replayed(self):
+        # BLACKLIST_AFTER_ROTATION: the pre-rotation token dies once it is used.
+        original = self.login().cookies[settings.REFRESH_COOKIE_NAME].value
+        self.client.post(self.REFRESH, {}, format='json')  # rotates the cookie
+        self.client.cookies[settings.REFRESH_COOKIE_NAME] = original  # replay it
+        self.assertEqual(
+            self.client.post(self.REFRESH, {}, format='json').status_code, 401)
+
+
+class ExportOwnershipTests(ApiTestCase):
+    """Contract PDF and calendar ICS are restricted to the two parties of an
+    accepted collaboration; the media kit is the authenticated influencer's own.
+    These lock the ownership/authorization gates (the happy paths also confirm
+    the WeasyPrint / icalendar pipelines still render)."""
+
+    def setUp(self):
+        super().setUp()
+        self.accepted = self.application(status=1)
+        self.stranger = make_user('stranger@test.io', influencer=True,
+                                   instagram='@x', instagram_followers=100)
+
+    def contract(self, pk):
+        return f'/api/reservation/{pk}/contract.pdf'
+
+    def ics(self, pk):
+        return f'/api/reservation/{pk}/calendar.ics'
+
+    MEDIA_KIT = '/api/influencer/media-kit.pdf'
+
+    # --- contract PDF ---
+    def test_contract_available_to_the_influencer(self):
+        r = self.as_user(self.influencer).get(self.contract(self.accepted.id))
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r['Content-Type'], 'application/pdf')
+
+    def test_contract_available_to_the_brand(self):
+        r = self.as_user(self.brand).get(self.contract(self.accepted.id))
+        self.assertEqual(r.status_code, 200)
+
+    def test_contract_denied_to_a_stranger(self):
+        r = self.as_user(self.stranger).get(self.contract(self.accepted.id))
+        self.assertEqual(r.status_code, 403)
+
+    def test_contract_requires_authentication(self):
+        r = self.client.get(self.contract(self.accepted.id))
+        self.assertEqual(r.status_code, 401)
+
+    def test_contract_unavailable_before_acceptance(self):
+        pending = self.application(status=0)
+        r = self.as_user(self.influencer).get(self.contract(pending.id))
+        self.assertEqual(r.status_code, 400)
+
+    # --- calendar ICS ---
+    def test_ics_available_to_a_party(self):
+        r = self.as_user(self.brand).get(self.ics(self.accepted.id))
+        self.assertEqual(r.status_code, 200)
+        self.assertIn('text/calendar', r['Content-Type'])
+        self.assertIn(b'BEGIN:VCALENDAR', r.content)
+
+    def test_ics_denied_to_a_stranger(self):
+        r = self.as_user(self.stranger).get(self.ics(self.accepted.id))
+        self.assertEqual(r.status_code, 403)
+
+    def test_ics_requires_authentication(self):
+        r = self.client.get(self.ics(self.accepted.id))
+        self.assertEqual(r.status_code, 401)
+
+    def test_ics_unavailable_before_acceptance(self):
+        pending = self.application(status=0)
+        r = self.as_user(self.brand).get(self.ics(pending.id))
+        self.assertEqual(r.status_code, 400)
+
+    # --- media kit PDF ---
+    def test_media_kit_for_the_influencer(self):
+        r = self.as_user(self.influencer).get(self.MEDIA_KIT)
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r['Content-Type'], 'application/pdf')
+
+    def test_media_kit_denied_to_a_brand(self):
+        r = self.as_user(self.brand).get(self.MEDIA_KIT)
+        self.assertEqual(r.status_code, 403)
+
+    def test_media_kit_requires_authentication(self):
+        r = self.client.get(self.MEDIA_KIT)
+        self.assertEqual(r.status_code, 401)
